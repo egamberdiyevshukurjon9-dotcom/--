@@ -261,9 +261,21 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .footer-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
 .footer p { margin: 4px 0 0; }
 
+/* Кириш / рўйхатдан ўтиш */
+.auth-btn { background: var(--primary); color: #fff; border: 0; border-radius: 10px; height: 38px; padding: 0 14px; cursor: pointer; font: 600 .9rem Inter, system-ui, sans-serif; white-space: nowrap; flex-shrink: 0; }
+.auth-btn.signed { background: var(--card); color: var(--text); border: 1px solid var(--line); max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+.auth-btn[hidden] { display: none; }
+.auth-tabs { display: flex; gap: 8px; margin: 4px 40px 16px 0; }
+.auth-form { display: grid; gap: 12px; }
+.auth-form label { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
+.auth-form input { font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.auth-form input:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.auth-error { color: #dc2626; min-height: 1.2em; margin: 0; font-size: .9rem; }
+#authModal { width: min(440px, calc(100% - 32px)); }
+
 /* Responsive */
 .topbar .wrap { max-width: 1320px; }
-@media (max-width: 1239px) {
+@media (max-width: 1319px) {
   .menu-btn { display: block; margin-left: auto; }
   .nav { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; background: var(--card); border-bottom: 1px solid var(--line); padding: 8px 16px 16px; box-shadow: var(--shadow); }
   .nav.open { display: flex; }
@@ -281,6 +293,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 @media (max-width: 620px) {
   .aud-grid, .course-grid, .news-grid, .ch-grid { grid-template-columns: 1fr; }
   .user-chip span:last-child { display: none; }
+  .auth-btn.signed .auth-name { display: none; }
   .topbar-inner { gap: 8px; }
   .search { min-width: 0; width: 100%; }
   .section { padding: 48px 0; }
@@ -294,6 +307,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 }
 @media (max-width: 420px) {
   .brand { font-size: 1rem; gap: 6px; }
+  .auth-btn { padding: 0 10px; }
   .user-chip { padding: 6px 8px; }
   .lang-btn { padding: 0 8px; }
 }
@@ -320,6 +334,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
         <span id="levelIcon">🌰</span>
         <span><b id="xpVal">0</b> XP</span>
       </div>
+      <button class="auth-btn" id="authBtn" hidden>Кириш</button>
       <button class="lang-btn" id="langBtn" data-notr aria-label="Lotin alifbosiga oʻtish">Lotin</button>
       <button class="theme-btn" id="themeBtn" aria-label="Мавзуни алмаштириш">🌓</button>
     </div>
@@ -556,6 +571,30 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
     <div class="modal-inner">
       <button class="modal-close" id="modalClose" aria-label="Ёпиш">✕</button>
       <div id="modalBody"></div>
+    </div>
+  </dialog>
+
+  <!-- AUTH MODAL -->
+  <dialog class="modal" id="authModal">
+    <div class="modal-inner">
+      <button class="modal-close" id="authClose" aria-label="Ёпиш">✕</button>
+      <div class="auth-tabs" role="tablist">
+        <button class="chip active" data-mode="login" role="tab">Кириш</button>
+        <button class="chip" data-mode="register" role="tab">Рўйхатдан ўтиш</button>
+      </div>
+      <form class="auth-form" id="authForm" novalidate>
+        <label id="authNameRow" hidden>Исм Фамилия
+          <input name="name" maxlength="60" autocomplete="name">
+        </label>
+        <label>Электрон почта
+          <input name="email" type="email" maxlength="254" autocomplete="email" required>
+        </label>
+        <label>Парол
+          <input name="password" type="password" minlength="6" autocomplete="current-password" required>
+        </label>
+        <p class="auth-error" id="authError" role="alert"></p>
+        <button class="btn btn-primary" type="submit" id="authSubmit">Кириш</button>
+      </form>
     </div>
   </dialog>
 
@@ -2009,6 +2048,102 @@ const LIBRARY = {
 
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+})();
+</script>
+  <script>
+/* ЭкоТаълим — кириш ва чиқиш.
+   Платформа server.js орқали очилганда ишлайди; файл тўғридан-тўғри очилса
+   ёки сервер бўлмаса, «Кириш» тугмаси кўринмайди ва сайт аввалгидек ишлайди. */
+(() => {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const T = (s) => EkoLang.t(s);
+  const btn = $("#authBtn"), modal = $("#authModal"), form = $("#authForm");
+  const errEl = $("#authError"), nameRow = $("#authNameRow"), submit = $("#authSubmit");
+  let user = null, mode = "login", pingTimer = null;
+
+  const notify = (msg) => {
+    const t = $("#toast");
+    t.textContent = T(msg); t.classList.add("show");
+    clearTimeout(notify.timer); notify.timer = setTimeout(() => t.classList.remove("show"), 2600);
+  };
+
+  async function call(url, body) {
+    const res = await fetch(url, {
+      method: body === undefined ? "GET" : "POST",
+      headers: body === undefined ? {} : { "Content-Type": "application/json" },
+      body: body === undefined ? undefined : JSON.stringify(body),
+      credentials: "same-origin"
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || "Хатолик юз берди");
+    return data;
+  }
+
+  function render() {
+    btn.hidden = false;
+    btn.classList.toggle("signed", !!user);
+    btn.textContent = user ? "👤 " : T("Кириш");
+    if (user) {
+      const n = document.createElement("span");
+      n.className = "auth-name"; n.textContent = user.name;
+      btn.append(n);
+    }
+    btn.title = user ? user.name + " · " + T("Чиқиш") : "";
+  }
+
+  function setMode(m) {
+    mode = m;
+    modal.querySelectorAll("[data-mode]").forEach((b) => b.classList.toggle("active", b.dataset.mode === m));
+    nameRow.hidden = m !== "register";
+    form.password.autocomplete = m === "register" ? "new-password" : "current-password";
+    submit.textContent = T(m === "register" ? "Рўйхатдан ўтиш" : "Кириш");
+    errEl.textContent = "";
+  }
+
+  function startPing() {
+    clearInterval(pingTimer);
+    if (!user) return;
+    pingTimer = setInterval(() => {
+      if (document.visibilityState === "visible") call("/api/ping", {}).catch(() => {});
+    }, 60 * 1000);
+  }
+
+  btn.addEventListener("click", async () => {
+    if (!user) { setMode("login"); modal.showModal(); form.email.focus(); return; }
+    if (!confirm(T("Ҳисобдан чиқмоқчимисиз?"))) return;
+    try { await call("/api/logout", {}); } catch (e) { /* ignore */ }
+    user = null; render(); startPing();
+    notify("Ҳисобдан чиқдингиз");
+  });
+  $("#authClose").addEventListener("click", () => modal.close());
+  modal.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const body = { email: form.email.value.trim(), password: form.password.value };
+    if (mode === "register") body.name = form.name.value.trim();
+    submit.disabled = true; errEl.textContent = "";
+    try {
+      const data = await call(mode === "register" ? "/api/register" : "/api/login", body);
+      user = data.user; form.reset(); modal.close(); render(); startPing();
+      notify(mode === "register" ? "Хуш келибсиз! Ҳисоб яратилди" : "Хуш келибсиз!");
+    } catch (err) {
+      errEl.textContent = T(err.message);
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (user && document.visibilityState === "visible") call("/api/ping", {}).catch(() => {});
+  });
+
+  if (location.protocol.startsWith("http")) {
+    call("/api/ping", {})
+      .then((data) => { user = data.user; render(); startPing(); })
+      .catch(() => { /* сервер йўқ — кириш тугмаси яширин қолади */ });
   }
 })();
 </script>

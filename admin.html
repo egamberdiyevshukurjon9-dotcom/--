@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="uz-Cyrl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ЭкоТаълим Админ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7faf7; --bg-alt: #eef5ef; --card: #ffffff; --text: #13261a; --muted: #5b6f61; --line: #dbe7dd;
+  --primary: #15803d; --primary-soft: #dcfce7; --danger: #dc2626; --danger-soft: #fee2e2;
+  --warn: #b45309; --warn-soft: #fef3c7; --info: #0369a1; --info-soft: #e0f2fe;
+  --shadow: 0 6px 24px rgba(20, 60, 30, .08); --radius: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1510; --bg-alt: #111c15; --card: #16241b; --text: #e6f2e9; --muted: #9bb3a2; --line: #24382b;
+    --primary: #22c55e; --primary-soft: #183b24; --danger: #f87171; --danger-soft: #3b1a1a;
+    --warn: #fbbf24; --warn-soft: #3a2c10; --info: #38bdf8; --info-soft: #0f2a3a; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1510; --bg-alt: #111c15; --card: #16241b; --text: #e6f2e9; --muted: #9bb3a2; --line: #24382b;
+  --primary: #22c55e; --primary-soft: #183b24; --danger: #f87171; --danger-soft: #3b1a1a;
+  --warn: #fbbf24; --warn-soft: #3a2c10; --info: #38bdf8; --info-soft: #0f2a3a; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.5; overflow-x: hidden; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.topbar { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.topbar-inner { display: flex; align-items: center; gap: 12px; height: 60px; }
+.brand { font-weight: 800; font-size: 1.1rem; text-decoration: none; color: var(--text); }
+.spacer { flex: 1; }
+.btn { font: 600 .9rem Inter, system-ui, sans-serif; border-radius: 10px; padding: 9px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--card); color: var(--text); white-space: nowrap; }
+.btn:hover { border-color: var(--primary); }
+.btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.login { max-width: 380px; margin: 12vh auto 0; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+.login h1 { margin: 0 0 6px; font-size: 1.4rem; }
+.login form { display: grid; gap: 12px; margin-top: 18px; }
+input, select { font: inherit; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
+input:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.error { color: var(--danger); min-height: 1.2em; margin: 0; font-size: .9rem; }
+.stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin: 24px 0; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; min-width: 0; }
+.stat b { display: block; font-size: 1.7rem; line-height: 1.2; }
+.stat span { color: var(--muted); font-size: .85rem; }
+.stat.green b { color: var(--primary); }
+.stat.red b { color: var(--danger); }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 20px; overflow: hidden; }
+.panel-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.panel-head h2 { margin: 0; font-size: 1.05rem; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); background: var(--bg-alt); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+.empty { padding: 20px 16px; color: var(--muted); }
+.tag { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-weight: 600; font-size: .8rem; }
+.t-login, .t-register, .t-return { background: var(--primary-soft); color: var(--primary); }
+.t-logout { background: var(--info-soft); color: var(--info); }
+.t-timeout { background: var(--warn-soft); color: var(--warn); }
+.t-login_failed { background: var(--danger-soft); color: var(--danger); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); display: inline-block; box-shadow: 0 0 0 3px var(--primary-soft); }
+.dot.off { background: var(--line); box-shadow: none; }
+.who b { display: block; }
+.who span { color: var(--muted); font-size: .8rem; }
+@media (max-width: 960px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .topbar .hide-sm { display: none; }
+  th, td { padding: 9px 12px; }
+}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/">🌿 ЭкоТаълим</a>
+      <span class="muted hide-sm">Админ панел</span>
+      <span class="spacer"></span>
+      <span class="small muted hide-sm" id="updated"></span>
+      <button class="btn" id="refreshBtn" hidden>↻ Янгилаш</button>
+      <button class="btn" id="logoutBtn" hidden>Чиқиш</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="login" id="loginBox" hidden>
+      <h1>Админ панел</h1>
+      <p class="muted small">Сервердаги ADMIN_PASSWORD паролини киритинг.</p>
+      <form id="loginForm">
+        <input type="password" name="password" placeholder="Парол" autocomplete="current-password" required>
+        <p class="error" id="loginError" role="alert"></p>
+        <button class="btn btn-primary" type="submit">Кириш</button>
+      </form>
+    </section>
+
+    <div id="dash" hidden>
+      <div class="stats">
+        <div class="stat green"><b id="sOnline">0</b><span>Ҳозир онлайн</span></div>
+        <div class="stat"><b id="sUsers">0</b><span>Жами фойдаланувчи</span></div>
+        <div class="stat"><b id="sRegisters">0</b><span>Бугун рўйхатдан ўтди</span></div>
+        <div class="stat"><b id="sLogins">0</b><span>Бугун кирди</span></div>
+        <div class="stat"><b id="sLogouts">0</b><span>Бугун чиқди</span></div>
+        <div class="stat red"><b id="sFailed">0</b><span>Бугун хато уриниш</span></div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>🟢 Ҳозир сайтда</h2>
+          <span class="small muted" id="onlineNote"></span>
+        </div>
+        <div class="table-wrap" id="onlineTable"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>📋 Ким кирди, ким чиқди</h2>
+          <div class="filters">
+            <input type="search" id="evSearch" placeholder="Исм ёки почта бўйича қидириш">
+            <select id="evType" aria-label="Ҳодиса тури">
+              <option value="">Барча ҳодисалар</option>
+              <option value="in">Кирганлар</option>
+              <option value="out">Чиққанлар</option>
+              <option value="register">Рўйхатдан ўтганлар</option>
+              <option value="login_failed">Хато уринишлар</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap" id="eventsTable"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>👥 Фойдаланувчилар</h2>
+          <input type="search" id="userSearch" placeholder="Қидириш">
+        </div>
+        <div class="table-wrap" id="usersTable"></div>
+      </section>
+    </div>
+  </main>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmt = (t) => t ? new Date(t).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "—";
+  function ago(t, nowT) {
+    const s = Math.max(0, Math.round((nowT - t) / 1000));
+    if (s < 60) return "ҳозиргина";
+    const m = Math.round(s / 60);
+    if (m < 60) return m + " дақиқа олдин";
+    const h = Math.floor(m / 60);
+    if (h < 24) return h + " соат олдин";
+    return Math.floor(h / 24) + " кун олдин";
+  }
+  const TYPES = {
+    register: ["t-register", "🆕 Рўйхатдан ўтди"],
+    login: ["t-login", "➡️ Кирди"],
+    return: ["t-return", "↩️ Қайтди"],
+    logout: ["t-logout", "⬅️ Чиқди"],
+    timeout: ["t-timeout", "⏱️ Саҳифани ёпди"],
+    login_failed: ["t-login_failed", "⛔ Хато парол"]
+  };
+  const GROUPS = { in: ["login", "return"], out: ["logout", "timeout"] };
+
+  let data = null, timer = null;
+
+  async function load() {
+    const res = await fetch("/api/admin/overview", { credentials: "same-origin" });
+    if (res.status === 401) return showLogin();
+    if (!res.ok) throw new Error("load_failed");
+    data = await res.json();
+    showDash();
+    render();
+  }
+
+  function showLogin() {
+    clearInterval(timer); timer = null;
+    $("#dash").hidden = true; $("#refreshBtn").hidden = true; $("#logoutBtn").hidden = true;
+    $("#loginBox").hidden = false; $("#updated").textContent = "";
+    document.querySelector("#loginForm input").focus();
+  }
+  function showDash() {
+    $("#loginBox").hidden = true; $("#dash").hidden = false;
+    $("#refreshBtn").hidden = false; $("#logoutBtn").hidden = false;
+    if (!timer) timer = setInterval(() => load().catch(() => {}), 15000);
+  }
+
+  function table(headers, rows, emptyText) {
+    if (!rows.length) return `<p class="empty">${esc(emptyText)}</p>`;
+    return `<table><thead><tr>${headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table>`;
+  }
+  const who = (name, email) => `<div class="who"><b>${esc(name || "—")}</b><span>${esc(email)}</span></div>`;
+
+  function render() {
+    const s = data.stats;
+    $("#sOnline").textContent = s.online; $("#sUsers").textContent = s.users;
+    $("#sRegisters").textContent = s.registersToday; $("#sLogins").textContent = s.loginsToday;
+    $("#sLogouts").textContent = s.logoutsToday; $("#sFailed").textContent = s.failedToday;
+    $("#updated").textContent = "Янгиланди: " + new Date(data.now).toLocaleTimeString("ru-RU");
+    $("#onlineNote").textContent = `Охирги ${data.onlineMinutes} дақиқада фаол бўлганлар`;
+
+    $("#onlineTable").innerHTML = table(
+      ["Фойдаланувчи", "Кирган вақти", "Охирги фаоллик", "Қурилма", "IP"],
+      data.online.map((o) => `<tr><td>${who(o.name, o.email)}</td><td>${fmt(o.since)}</td><td>${ago(o.lastSeen, data.now)}</td><td>${esc(o.device)}</td><td>${esc(o.ip)}</td></tr>`),
+      "Ҳозир сайтда ҳеч ким йўқ."
+    );
+
+    const q = $("#evSearch").value.trim().toLowerCase();
+    const type = $("#evType").value;
+    const evs = data.events.filter((e) =>
+      (!type || (GROUPS[type] ? GROUPS[type].includes(e.type) : e.type === type)) &&
+      (!q || (e.name || "").toLowerCase().includes(q) || (e.email || "").toLowerCase().includes(q)));
+    $("#eventsTable").innerHTML = table(
+      ["Вақт", "Ҳодиса", "Фойдаланувчи", "Қурилма", "IP"],
+      evs.map((e) => {
+        const [cls, label] = TYPES[e.type] || ["", e.type];
+        return `<tr><td>${fmt(e.at)}</td><td><span class="tag ${cls}">${esc(label)}</span></td><td>${who(e.name, e.email)}</td><td>${esc(e.device)}</td><td>${esc(e.ip)}</td></tr>`;
+      }),
+      "Ҳали ҳеч қандай ҳодиса йўқ."
+    );
+
+    const uq = $("#userSearch").value.trim().toLowerCase();
+    const users = data.users.filter((u) => !uq || u.name.toLowerCase().includes(uq) || u.email.toLowerCase().includes(uq));
+    $("#usersTable").innerHTML = table(
+      ["", "Фойдаланувчи", "Рўйхатдан ўтган", "Охирги кириш", "Киришлар сони"],
+      users.map((u) => `<tr><td><span class="dot ${u.online ? "" : "off"}" title="${u.online ? "Онлайн" : "Офлайн"}"></span></td><td>${who(u.name, u.email)}</td><td>${fmt(u.createdAt)}</td><td>${fmt(u.lastLogin)}</td><td>${u.loginCount}</td></tr>`),
+      "Ҳали рўйхатдан ўтган фойдаланувчи йўқ."
+    );
+  }
+
+  $("#loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector("button"); btn.disabled = true; $("#loginError").textContent = "";
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: e.target.password.value })
+      });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.error || "Хатолик");
+      e.target.reset();
+      await load();
+    } catch (err) {
+      $("#loginError").textContent = err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+  $("#logoutBtn").addEventListener("click", async () => {
+    await fetch("/api/admin/logout", { method: "POST", credentials: "same-origin" }).catch(() => {});
+    data = null;
+    showLogin();
+  });
+  $("#refreshBtn").addEventListener("click", () => load().catch(() => {}));
+  ["#evSearch", "#evType", "#userSearch"].forEach((s) => $(s).addEventListener("input", () => data && render()));
+
+  load().catch(() => {
+    $("#loginBox").hidden = false;
+    $("#loginError").textContent = "Сервер билан алоқа йўқ. Админ панел фақат server.js орқали ишлайди.";
+  });
+})();
+</script>
+</body>
+</html>

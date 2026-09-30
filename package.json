@@ -1,0 +1,14 @@
+{
+  "name": "ekotalim",
+  "version": "1.0.0",
+  "description": "ЭкоТаълим — экологик таълим платформаси ва админ панел",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
