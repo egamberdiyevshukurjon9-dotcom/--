@@ -1,0 +1,25 @@
+# Render Blueprint — ЭкоТаълим
+# Render'да: New → Blueprint → шу репозиторийни танланг. ADMIN_PASSWORD ни ўзингиз киритасиз.
+services:
+  - type: web
+    name: ekotalim
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: ADMIN_PASSWORD
+        sync: false # Render сиздан паролни сўрайди, у репозиторийга ёзилмайди
+    # Бепул (free) режимда сервер қайта ишга тушганда фойдаланувчилар ва журнал ўчиб кетади.
+    # Маълумотлар сақланиб қолиши учун пулли режимга ўтиб, қуйидаги қаторларни очинг:
+    #   plan: starter
+    #   disk:
+    #     name: ekotalim-data
+    #     mountPath: /var/data
+    #     sizeGB: 1
+    # ва envVars га қўшинг:
+    #   - key: DATA_DIR
+    #     value: /var/data
