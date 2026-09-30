@@ -47,6 +47,18 @@ ADMIN_PASSWORD="кучли-парол" node server.js
 
 `index.html` ни серверсиз очса ҳам платформа ишлайди, фақат «Кириш» тугмаси кўринмайди.
 
+## Google Play'га чиқариш
+
+Сайт ўрнатиладиган илова (PWA) сифатида тайёр: `manifest.webmanifest`, `sw.js` (интернетсиз ҳам очилади), `icons/` ва махфийлик сиёсати (`/privacy`). Android иловаси сайтни Trusted Web Activity орқали очади — алоҳида код ёзиш шарт эмас.
+
+1. Сайт Render'да HTTPS манзилда ишлаётган бўлсин (масалан `https://ekotalim-xxxx.onrender.com`).
+2. https://www.pwabuilder.com га шу манзилни киритинг → **Package for stores → Android → Generate**. Package ID: `uz.ekotalim.app`.
+3. Юклаб олинган архивда `.aab` файл, имзо калити (`signing.keystore`, паролларини сақлаб қўйинг!) ва `assetlinks.json` бўлади.
+4. Play Console'да илова яратинг, `.aab` ни юкланг. **App integrity → App signing** бўлимидаги **SHA-256** изини Render'даги `ANDROID_SHA256` ўзгарувчисига ёзинг (PWABuilder калитининг изи ҳам бўлса, вергул билан иккаласини). Шунда `/.well-known/assetlinks.json` ишлайди ва илова манзил сатрисиз очилади.
+5. Store listing учун махфийлик сиёсати манзили: `https://…onrender.com/privacy`. Ҳисобни ўчириш иловада бор (исм → «Ҳисобни ўчириш»).
+
+`ANDROID_PACKAGE` (асл қиймат `uz.ekotalim.app`) ва `CONTACT_EMAIL` ҳам Render'да созланади.
+
 ## Лицензия
 
 MIT

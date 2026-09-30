@@ -6,6 +6,8 @@
   <title>ЭкоТаълим — экологик таълим платформаси</title>
   <meta name="description" content="Аҳоли, корхоналар ва таълим муассасалари учун бепул экологик таълим платформаси: курслар, тестлар, янгиликлар, ҳаво сифати ва углерод калькулятори.">
   <meta name="theme-color" content="#15803d">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxNTgwM2QiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZWE1ZTkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0idXJsKCNnKSIvPgogIDxwYXRoIGQ9Ik0zODAgMTMyYy0xNTAgMC0yNDggNzgtMjQ4IDE5NiAwIDIyIDQgNDIgMTEgNTggMjYtNzQgODYtMTMyIDE3MC0xNjAtNzAgNDAtMTIyIDk4LTE0NiAxNzYgMTQgNiAzMCAxMCA0OCAxMCAxMTggMCAxNjUtMTIwIDE2NS0yODB6IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo=" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -271,7 +273,14 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .auth-form input { font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
 .auth-form input:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
 .auth-error { color: #dc2626; min-height: 1.2em; margin: 0; font-size: .9rem; }
-#authModal { width: min(440px, calc(100% - 32px)); }
+#authModal, #accountModal { width: min(440px, calc(100% - 32px)); }
+.auth-note { margin: 0; font-size: .85rem; color: var(--muted); }
+.account-head { margin: 4px 40px 16px 0; }
+.account-head b { display: block; font-size: 1.15rem; }
+.account-actions { display: grid; gap: 10px; }
+.danger-zone { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 12px; }
+.danger-zone summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
+.btn-danger { background: #dc2626; color: #fff; }
 
 /* Responsive */
 .topbar .wrap { max-width: 1320px; }
@@ -561,6 +570,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
         <p class="muted small">Экологик маданиятни ошириш учун очиқ таълим платформаси. Барча материаллар бепул.</p>
       </div>
       <div class="small muted">
+        <a href="/privacy">Махфийлик сиёсати</a> ·
         <button class="linklike" id="resetBtn">Натижаларимни тозалаш</button>
       </div>
     </div>
@@ -594,7 +604,33 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
         </label>
         <p class="auth-error" id="authError" role="alert"></p>
         <button class="btn btn-primary" type="submit" id="authSubmit">Кириш</button>
+        <p class="auth-note" id="authPrivacy" hidden>Рўйхатдан ўтиш орқали <a href="/privacy" target="_blank" rel="noopener">махфийлик сиёсати</a>га розилик билдирасиз.</p>
       </form>
+    </div>
+  </dialog>
+
+  <!-- ACCOUNT MODAL -->
+  <dialog class="modal" id="accountModal">
+    <div class="modal-inner">
+      <button class="modal-close" id="accountClose" aria-label="Ёпиш">✕</button>
+      <div class="account-head">
+        <b id="accountName"></b>
+        <span class="muted small" id="accountEmail"></span>
+      </div>
+      <div class="account-actions">
+        <button class="btn btn-ghost" id="logoutBtn">Ҳисобдан чиқиш</button>
+      </div>
+      <details class="danger-zone">
+        <summary>Ҳисобни ўчириш</summary>
+        <form class="auth-form" id="deleteForm" novalidate>
+          <p class="auth-note">Исмингиз, почтангиз ва кириш тарихингиз бутунлай ўчирилади. Буни қайтариб бўлмайди.</p>
+          <label>Тасдиқлаш учун паролингиз
+            <input name="password" type="password" autocomplete="current-password" required>
+          </label>
+          <p class="auth-error" id="deleteError" role="alert"></p>
+          <button class="btn btn-danger" type="submit">Ҳисобни бутунлай ўчириш</button>
+        </form>
+      </details>
     </div>
   </dialog>
 
@@ -2090,7 +2126,7 @@ const LIBRARY = {
       n.className = "auth-name"; n.textContent = user.name;
       btn.append(n);
     }
-    btn.title = user ? user.name + " · " + T("Чиқиш") : "";
+    btn.title = user ? user.name : "";
   }
 
   function setMode(m) {
@@ -2099,6 +2135,7 @@ const LIBRARY = {
     nameRow.hidden = m !== "register";
     form.password.autocomplete = m === "register" ? "new-password" : "current-password";
     submit.textContent = T(m === "register" ? "Рўйхатдан ўтиш" : "Кириш");
+    $("#authPrivacy").hidden = m !== "register";
     errEl.textContent = "";
   }
 
@@ -2110,13 +2147,34 @@ const LIBRARY = {
     }, 60 * 1000);
   }
 
-  btn.addEventListener("click", async () => {
+  const account = $("#accountModal"), delForm = $("#deleteForm");
+  btn.addEventListener("click", () => {
     if (!user) { setMode("login"); modal.showModal(); form.email.focus(); return; }
-    if (!confirm(T("Ҳисобдан чиқмоқчимисиз?"))) return;
+    $("#accountName").textContent = user.name;
+    $("#accountEmail").textContent = user.email;
+    delForm.reset(); $("#deleteError").textContent = "";
+    account.querySelector("details").open = false;
+    account.showModal();
+  });
+  $("#logoutBtn").addEventListener("click", async () => {
     try { await call("/api/logout", {}); } catch (e) { /* ignore */ }
-    user = null; render(); startPing();
+    user = null; account.close(); render(); startPing();
     notify("Ҳисобдан чиқдингиз");
   });
+  delForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const b = delForm.querySelector("button"); b.disabled = true; $("#deleteError").textContent = "";
+    try {
+      await call("/api/account/delete", { password: delForm.password.value });
+      user = null; account.close(); render(); startPing();
+      notify("Ҳисобингиз ўчирилди");
+    } catch (err) {
+      $("#deleteError").textContent = T(err.message);
+    } finally {
+      b.disabled = false;
+    }
+  });
+  $("#accountClose").addEventListener("click", () => account.close());
   $("#authClose").addEventListener("click", () => modal.close());
   modal.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
 

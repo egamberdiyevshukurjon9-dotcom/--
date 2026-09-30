@@ -13,6 +13,10 @@ services:
         value: "22"
       - key: ADMIN_PASSWORD
         sync: false # Render сиздан паролни сўрайди, у репозиторийга ёзилмайди
+      - key: CONTACT_EMAIL
+        sync: false # Махфийлик сиёсатида кўрсатиладиган почтангиз
+      - key: ANDROID_SHA256
+        sync: false # Google Play иловаси учун: Play Console → App signing даги SHA-256 изи
     # Бепул (free) режимда сервер қайта ишга тушганда фойдаланувчилар ва журнал ўчиб кетади.
     # Маълумотлар сақланиб қолиши учун пулли режимга ўтиб, қуйидаги қаторларни очинг:
     #   plan: starter

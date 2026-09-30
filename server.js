@@ -9,6 +9,9 @@
      DATA_DIR        — маълумотлар папкаси (асл қиймат ./data)
      ONLINE_MINUTES  — фойдаланувчи неча дақиқа жим турса «офлайн» ҳисобланади (асл қиймат 3)
      SESSION_DAYS    — кириш сессияси неча кун амал қилади (асл қиймат 30)
+     CONTACT_EMAIL   — махфийлик сиёсатида кўрсатиладиган алоқа почтаси
+     ANDROID_PACKAGE — Google Play иловасининг пакет номи (асл қиймат uz.ekotalim.app)
+     ANDROID_SHA256  — илова имзо калитининг SHA-256 изи (бир нечта бўлса вергул билан)
 */
 "use strict";
 
@@ -25,6 +28,9 @@ const ONLINE_MS = (Number(process.env.ONLINE_MINUTES) || 3) * 60 * 1000;
 const SESSION_MS = (Number(process.env.SESSION_DAYS) || 30) * 24 * 60 * 60 * 1000;
 const ADMIN_SESSION_MS = 12 * 60 * 60 * 1000;
 const MAX_EVENTS = 20000;
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "";
+const ANDROID_PACKAGE = process.env.ANDROID_PACKAGE || "uz.ekotalim.app";
+const ANDROID_SHA256 = (process.env.ANDROID_SHA256 || "").split(",").map((x) => x.trim().toUpperCase()).filter(Boolean);
 
 if (!ADMIN_PASSWORD) {
   console.warn("⚠️  ADMIN_PASSWORD берилмаган — админ панелга кириб бўлмайди.");
@@ -261,6 +267,25 @@ async function api(req, res, pathname) {
     return send(res, 200, { ok: true });
   }
 
+  /* Ҳисобни бутунлай ўчириш (Google Play талаби) */
+  if (pathname === "/api/account/delete" && method === "POST") {
+    const cur = currentUser(req);
+    if (!cur) return send(res, 401, { error: "Аввал ҳисобга киринг" });
+    const body = await readBody(req);
+    if (!checkPassword(String(body.password || ""), cur.user.password)) {
+      noteFailure(ip);
+      return send(res, 401, { error: "Парол нотўғри" });
+    }
+    const id = cur.user.id;
+    db.users = db.users.filter((u) => u.id !== id);
+    for (const [token, s] of Object.entries(db.sessions)) if (s.userId === id) delete db.sessions[token];
+    db.events = db.events.filter((e) => e.userId !== id);
+    db.events.push({ id: newId(), at: now(), type: "deleted", userId: null, name: "", email: "", ip: "", device: "" });
+    save();
+    res.setHeader("Set-Cookie", cookie("eko_session", "", 0, req));
+    return send(res, 200, { ok: true });
+  }
+
   /* Саҳифа очиқ турганда ҳар дақиқада юборилади — «ҳозир онлайн» учун */
   if (pathname === "/api/ping" && method === "POST") {
     const cur = currentUser(req);
@@ -331,12 +356,30 @@ async function api(req, res, pathname) {
 }
 
 /* ---------- Статик файллар ---------- */
+const HTML = "text/html; charset=utf-8";
 const STATIC = {
-  "/": { file: "index.html", type: "text/html; charset=utf-8" },
-  "/index.html": { file: "index.html", type: "text/html; charset=utf-8" },
-  "/admin": { file: "admin.html", type: "text/html; charset=utf-8" },
-  "/admin.html": { file: "admin.html", type: "text/html; charset=utf-8" }
+  "/": { file: "index.html", type: HTML },
+  "/index.html": { file: "index.html", type: HTML },
+  "/admin": { file: "admin.html", type: HTML },
+  "/admin.html": { file: "admin.html", type: HTML },
+  "/privacy": { file: "privacy.html", type: HTML },
+  "/privacy.html": { file: "privacy.html", type: HTML },
+  "/manifest.webmanifest": { file: "manifest.webmanifest", type: "application/manifest+json; charset=utf-8" },
+  "/sw.js": { file: "sw.js", type: "text/javascript; charset=utf-8" },
+  "/icons/icon.svg": { file: "icons/icon.svg", type: "image/svg+xml", cache: true },
+  "/icons/icon-192.png": { file: "icons/icon-192.png", type: "image/png", cache: true },
+  "/icons/icon-512.png": { file: "icons/icon-512.png", type: "image/png", cache: true },
+  "/icons/icon-maskable-512.png": { file: "icons/icon-maskable-512.png", type: "image/png", cache: true },
+  "/icons/apple-touch-icon.png": { file: "icons/apple-touch-icon.png", type: "image/png", cache: true }
 };
+
+/* Android иловаси сайтни манзил сатрисиз очиши учун (Trusted Web Activity) */
+function assetLinks() {
+  return [{
+    relation: ["delegate_permission/common.handle_all_urls"],
+    target: { namespace: "android_app", package_name: ANDROID_PACKAGE, sha256_cert_fingerprints: ANDROID_SHA256 }
+  }];
+}
 
 const server = http.createServer(async (req, res) => {
   let pathname;
@@ -353,12 +396,22 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  if (pathname === "/.well-known/assetlinks.json" && (req.method === "GET" || req.method === "HEAD")) {
+    if (!ANDROID_SHA256.length) return send(res, 404, "ANDROID_SHA256 созланмаган");
+    return send(res, 200, assetLinks(), { "Cache-Control": "public, max-age=3600" });
+  }
+
   const entry = STATIC[pathname];
   if (!entry || (req.method !== "GET" && req.method !== "HEAD")) return send(res, 404, "Топилмади");
   fs.readFile(path.join(__dirname, entry.file), (err, data) => {
     if (err) return send(res, 500, "Файл ўқилмади");
-    const headers = { "Content-Type": entry.type, "Cache-Control": "no-cache" };
+    const headers = { "Content-Type": entry.type, "Cache-Control": entry.cache ? "public, max-age=604800" : "no-cache" };
     if (entry.file === "admin.html") headers["X-Frame-Options"] = "DENY";
+    if (entry.file === "sw.js") headers["Service-Worker-Allowed"] = "/";
+    if (entry.file === "privacy.html") {
+      const contact = CONTACT_EMAIL.replace(/[&<>"']/g, "") || "сайт администратори";
+      data = Buffer.from(data.toString("utf8").replaceAll("{{CONTACT_EMAIL}}", contact));
+    }
     res.writeHead(200, headers);
     res.end(req.method === "HEAD" ? undefined : data);
   });
