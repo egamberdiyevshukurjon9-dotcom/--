@@ -3,7 +3,7 @@
    /api/ ва /admin ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekotalim-v3";
+const CACHE = "ekotalim-v4";
 const SHELL = [
   "/",
   "/privacy",
@@ -11,7 +11,10 @@ const SHELL = [
   "/icons/icon.svg",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
-  "/icons/icon-maskable-512.png"
+  "/icons/icon-maskable-512.png",
+  "/vendor/leaflet/leaflet.js",
+  "/vendor/leaflet/leaflet.css",
+  "/vendor/uz-border.json"
 ];
 
 self.addEventListener("install", (e) => {

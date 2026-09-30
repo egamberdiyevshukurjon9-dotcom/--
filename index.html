@@ -37,6 +37,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
@@ -370,15 +371,87 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .eye-wait { color: var(--muted); }
 .eye-examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 
+/* Умумий форма элементлари */
+.auth-form select, .auth-form textarea { font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); width: 100%; min-width: 0; }
+.auth-form textarea { resize: vertical; }
+.btn-sm { padding: 8px 12px; font-size: .9rem; border-radius: 10px; }
+.panel-title { margin: 0 0 12px; font-size: 1.1rem; }
+.eye-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.appeal { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 14px; }
+.appeal textarea { width: 100%; min-height: 260px; font: .92rem/1.55 Inter, system-ui, sans-serif; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); resize: vertical; }
+
+/* Эко-харита */
+.map-wrap { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px; margin-top: 20px; align-items: start; }
+.map-box { position: sticky; top: 80px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.eko-map { height: 520px; background: #cfe8f3; }
+[data-theme="dark"] .eko-map { background: #10222c; }
+.map-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 10px 14px; font-size: .85rem; color: var(--muted); border-top: 1px solid var(--line); }
+.map-side { display: grid; gap: 16px; min-width: 0; }
+.rep-where { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.pin { font-size: 22px; line-height: 30px; width: 34px; height: 34px; text-align: center; background: #fff; border: 2px solid var(--pin, #15803d); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 3px 8px rgba(0, 0, 0, .3); }
+.pin span { display: inline-block; transform: rotate(45deg); }
+.pin.new { --pin: #dc2626; animation: bob 1s ease-in-out infinite alternate; }
+@keyframes bob { to { margin-top: -6px; } }
+.city-label { background: none; border: 0; box-shadow: none; font: 600 11px Inter, system-ui, sans-serif; color: #14532d; text-shadow: 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
+.leaflet-popup-content { font: .9rem/1.45 Inter, system-ui, sans-serif; }
+.leaflet-container { font-family: Inter, system-ui, sans-serif; }
+.rep-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+.rep-item:last-child { border-bottom: 0; }
+.rep-item p { margin: 2px 0 0; overflow-wrap: anywhere; }
+.st { font-size: .75rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.st-pending { background: #fef3c7; color: #92400e; }
+.st-approved { background: #dcfce7; color: #166534; }
+.st-rejected { background: #fee2e2; color: #991b1b; }
+
+/* Ҳашар: олдин/кейин */
+.ba { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 24px; margin-top: 20px; align-items: start; }
+.ba-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.ba-slot { position: relative; aspect-ratio: 1; border: 2px dashed var(--line); border-radius: 16px; display: grid; place-items: center; text-align: center; cursor: pointer; background: var(--bg-alt) center / cover no-repeat; color: var(--muted); font-weight: 600; overflow: hidden; }
+.ba-slot.has { border-style: solid; border-color: var(--primary); }
+.ba-slot.has .ba-ph { visibility: hidden; }
+.ba-slot input { display: none; }
+.ba-ph { font-size: .9rem; line-height: 1.5; }
+.ba-tag { position: absolute; top: 8px; left: 8px; background: #b45309; color: #fff; font-size: .75rem; padding: 3px 8px; border-radius: 999px; }
+.ba-tag.after { background: #15803d; }
+.ba-canvas { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line); }
+.ba-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+/* Мактаблар */
+.school-view { margin-top: 8px; }
+.school-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.task { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.task:last-child { border-bottom: 0; }
+.task-ic { font-size: 1.6rem; grid-row: span 2; }
+.task b { overflow-wrap: anywhere; }
+.task .bar { grid-column: 2 / 4; height: 8px; background: var(--bg-alt); border-radius: 99px; overflow: hidden; }
+.task .bar i { display: block; height: 100%; background: var(--primary); border-radius: 99px; }
+.task.done b::after { content: " ✓"; color: var(--primary); }
+.lead-row { display: flex; justify-content: space-between; gap: 10px; padding: 6px 10px; border-radius: 10px; }
+.lead-row.me { background: var(--primary-soft); font-weight: 700; }
+.class-code { font: 800 1.8rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; color: var(--primary); background: var(--primary-soft); padding: 10px 16px; border-radius: 12px; display: inline-block; }
+.class-card { margin-bottom: 20px; }
+.class-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.class-head h3 { margin: 0; }
+.task-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: end; margin-top: 12px; }
+.tbl-wrap { overflow-x: auto; margin-top: 12px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tbl th, .tbl td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tbl th { color: var(--muted); font-weight: 600; }
+.x-btn { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 4px 8px; border-radius: 8px; }
+.x-btn:hover { background: var(--bg-alt); color: #dc2626; }
+
 /* Responsive */
 .topbar .wrap { max-width: 1320px; }
+@media (min-width: 1440px) { .nav a.nav-x { display: none; } }
 @media (max-width: 1439px) {
   .menu-btn { display: block; margin-left: auto; }
   .nav { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; background: var(--card); border-bottom: 1px solid var(--line); padding: 8px 16px 16px; box-shadow: var(--shadow); }
   .nav.open { display: flex; }
 }
 @media (max-width: 960px) {
-  .eye { grid-template-columns: 1fr; }
+  .eye, .map-wrap, .ba, .school-grid { grid-template-columns: 1fr; }
+  .eko-map { height: 420px; }
+  .map-box { position: static; }
   .game-grid { grid-template-columns: repeat(2, 1fr); }
   .aud-grid, .course-grid, .news-grid { grid-template-columns: repeat(2, 1fr); }
   .ch-grid { grid-template-columns: repeat(2, 1fr); }
@@ -426,13 +499,16 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
       <nav class="nav" id="nav">
         <a href="#oyinlar">Ўйинлар</a>
         <a href="#ekokoz">Эко-кўз</a>
+        <a href="#xarita">Харита</a>
+        <a href="#hashar">Ҳашар</a>
+        <a href="#maktab">Мактаб</a>
         <a href="#kurslar">Курслар</a>
-        <a href="#yangiliklar">Янгиликлар</a>
+        <a class="nav-x" href="#yangiliklar">Янгиликлар</a>
         <a href="#kutubxona">Кутубхона</a>
         <a href="#havo">Ҳаво</a>
-        <a href="#kalkulyator">Калькулятор</a>
+        <a class="nav-x" href="#kalkulyator">Калькулятор</a>
         <a href="#chellenj">Челленж</a>
-        <a href="#yordamchi">Ёрдамчи</a>
+        <a class="nav-x" href="#yordamchi">Ёрдамчи</a>
       </nav>
       <div class="user-chip" id="userChip" title="Сизнинг даражангиз">
         <span id="levelIcon">🌰</span>
@@ -548,6 +624,89 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ECO MAP -->
+    <section class="section" id="xarita">
+      <div class="wrap">
+        <h2 class="section-title">🗺️ Эко-харита</h2>
+        <p class="muted">Ахлатхона, тутун, кесилган дарахт ёки ифлосланган ариқни кўрдингизми? Харитада белгиланг. Админ текширгандан кейингина хабар ҳамма учун кўринади. Тасдиқланган ҳар бир хабар учун <b>+20 XP</b> ва «🛡️ Эко-патрул» нишони.</p>
+        <div class="map-wrap">
+          <div class="map-box">
+            <div id="ekoMap" class="eko-map" role="application" aria-label="Эко-харита"></div>
+            <div class="map-legend" id="mapLegend"></div>
+          </div>
+          <div class="map-side">
+            <div class="eye-panel">
+              <h3 class="panel-title">📍 Муаммо хабар қилиш</h3>
+              <div class="eye-gate" id="repGate"></div>
+              <form class="auth-form" id="repForm" hidden novalidate>
+                <label>Муаммо тури
+                  <select name="category" required></select>
+                </label>
+                <label>Қисқача ёзинг
+                  <textarea name="text" rows="3" maxlength="500" required placeholder="Масалан: ариқ бўйида катта ахлат уюми, ҳар куни ёқилади"></textarea>
+                </label>
+                <div class="rep-where">
+                  <span id="repCoords" class="muted small">Харитани босиб жойни белгиланг</span>
+                  <button class="btn btn-ghost btn-sm" type="button" id="repGeo">📍 Менинг жойим</button>
+                </div>
+                <p class="note small">Одамлар, уй ёки машина рақамлари ҳақида ёзманг. Жойлашув ~100 м аниқликда оммага кўрсатилади, исмингиз кўрсатилмайди.</p>
+                <p class="auth-error" id="repError" role="alert"></p>
+                <button class="btn btn-primary" type="submit">Юбориш</button>
+              </form>
+            </div>
+            <div class="eye-panel" id="myReportsBox" hidden>
+              <h3 class="panel-title">🛡️ Менинг хабарларим</h3>
+              <div id="myReports"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEFORE / AFTER -->
+    <section class="section alt" id="hashar">
+      <div class="wrap">
+        <h2 class="section-title">🧹 Ҳашар: олдин ва кейин</h2>
+        <p class="muted">Жойни тозалашдан олдин ва кейин суратга олинг — илова иккала расмни бир расмга бирлаштириб беради. Уни дўстларингизга юборинг ва бошқаларни ҳам ҳашарга чорланг! Расмлар фақат телефонингизда ишланади, ҳеч қаерга юборилмайди.</p>
+        <div class="ba">
+          <div class="eye-panel">
+            <div class="ba-pick">
+              <label class="ba-slot" id="baBeforeSlot"><span class="ba-tag">1 · ОЛДИН</span><span class="ba-ph">📷<br>Тозалашдан олдин</span><input type="file" accept="image/*" id="baBefore"></label>
+              <label class="ba-slot" id="baAfterSlot"><span class="ba-tag after">2 · КЕЙИН</span><span class="ba-ph">✨<br>Тозалашдан кейин</span><input type="file" accept="image/*" id="baAfter"></label>
+            </div>
+            <form class="auth-form" id="baForm" onsubmit="return false">
+              <label>Жой номи (ихтиёрий)
+                <input name="place" maxlength="60" placeholder="Масалан: Бўзсув ариғи бўйи">
+              </label>
+            </form>
+            <p class="note small">Одамларнинг юзи ва машина рақамлари кўринмайдиган расм танланг.</p>
+          </div>
+          <div class="eye-panel">
+            <canvas id="baCanvas" class="ba-canvas" width="1600" height="1000" hidden></canvas>
+            <p class="muted" id="baHint">Иккала расмни танланг — натижа шу ерда кўринади.</p>
+            <div class="ba-actions" id="baActions" hidden>
+              <button class="btn btn-primary" type="button" id="baDownload">⬇️ Юклаб олиш</button>
+              <button class="btn btn-ghost" type="button" id="baShare">📤 Улашиш</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHOOLS -->
+    <section class="section" id="maktab">
+      <div class="wrap">
+        <h2 class="section-title">🏫 Мактаблар учун</h2>
+        <p class="muted">Ўқитувчи синф очади ва «эко-топшириқ» беради. Ўқувчилар ўйинлар ва дарслар орқали балл тўплайди — ўқитувчи натижаларни кўради. Ўқувчига ҳисоб керак эмас: фақат синф коди ва лақаб.</p>
+        <div class="lib-tabs" role="tablist" id="schoolTabs">
+          <button class="lib-tab active" role="tab" aria-selected="true" data-role="student">🧒 Ўқувчи</button>
+          <button class="lib-tab" role="tab" aria-selected="false" data-role="teacher">👩‍🏫 Ўқитувчи</button>
+        </div>
+        <div id="studentView" class="school-view"></div>
+        <div id="teacherView" class="school-view" hidden></div>
       </div>
     </section>
 
@@ -2158,7 +2317,10 @@ const LIBRARY = {
     { id: "g_sort", icon: "♻️", name: "Саралаш устаси", test: () => state.flags.game_sort10 },
     { id: "g_mem", icon: "🧠", name: "Хотира чемпиони", test: () => state.flags.game_memory10 },
     { id: "g_quiz", icon: "⚡", name: "Тезкор билимдон", test: () => state.flags.game_quiz8 },
-    { id: "g_tree", icon: "🌳", name: "Боғбон", test: () => state.flags.game_tree7 }
+    { id: "g_tree", icon: "🌳", name: "Боғбон", test: () => state.flags.game_tree7 },
+    { id: "patrol", icon: "🛡️", name: "Эко-патрул", test: () => Object.values((state.games || {}).patrol || {}).some((n) => n >= 1) },
+    { id: "hashar", icon: "🧹", name: "Ҳашарчи", test: () => state.flags.hashar },
+    { id: "class", icon: "🏫", name: "Синф аъзоси", test: () => state.flags.class_join }
   ];
 
   function renderGamification() {
@@ -2173,6 +2335,7 @@ const LIBRARY = {
       const ok = b.test();
       return `<div class="badge ${ok ? "" : "locked"}" title="${ok ? "Олинган" : "Ҳали олинмаган"}"><span class="bi">${b.icon}</span>${esc(b.name)}</div>`;
     }).join("");
+    window.dispatchEvent(new Event("eko:xp"));
   }
 
   /* ---------- Эко-ёрдамчи ---------- */
@@ -2245,7 +2408,7 @@ const LIBRARY = {
   loadAir();
 
   /* Ўйинлар скрипти учун кўприк */
-  window.EkoApp = { addXp, flag, save, toast, renderGamification, get state() { return state; } };
+  window.EkoApp = { addXp, flag, save, toast, renderGamification, streak, cities: CITIES, courses: COURSES, get state() { return state; } };
 
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
@@ -2310,8 +2473,12 @@ const LIBRARY = {
     clearInterval(pingTimer);
     if (!user) return;
     pingTimer = setInterval(() => {
-      if (document.visibilityState === "visible") call("/api/ping", {}).catch(() => {});
+      if (document.visibilityState === "visible") call("/api/ping", {}).then(refresh).catch(() => {});
     }, 60 * 1000);
+  }
+  /* Админ хабарни тасдиқласа (Эко-патрул), янги ҳисоб дарҳол кўринсин */
+  function refresh(data) {
+    if (data && data.user && user && data.user.approved !== user.approved) { user = data.user; render(); }
   }
 
   (() => {
@@ -2374,7 +2541,7 @@ const LIBRARY = {
   });
 
   document.addEventListener("visibilitychange", () => {
-    if (user && document.visibilityState === "visible") call("/api/ping", {}).catch(() => {});
+    if (user && document.visibilityState === "visible") call("/api/ping", {}).then(refresh).catch(() => {});
   });
 
   if (location.protocol.startsWith("http")) {
@@ -2848,9 +3015,70 @@ const LIBRARY = {
         ${list("Қаерга хабар бериш", r.report)}
         ${r.fact ? `<p class="eye-fact">💡 ${esc(r.fact)}</p>` : ""}
         <p class="muted small">Жавобни сунъий интеллект тайёрлади ва у хато қилиши мумкин. Муҳим қарорлардан олдин мутахассисга мурожаат қилинг.${typeof left === "number" ? ` Бугун яна ${left} та расм юбориш мумкин.` : ""}</p>
+        ${r.status === "ok" && r.risk !== "none" ? `<div class="eye-actions">
+          <button class="btn btn-primary btn-sm" type="button" id="eyeAppeal">✉️ Мурожаат матни</button>
+          <button class="btn btn-ghost btn-sm" type="button" id="eyeToMap">📍 Харитада белгилаш</button>
+        </div>
+        <div class="appeal" id="appealBox" hidden>
+          <form class="auth-form" id="appealForm" novalidate>
+            <label>Жой (туман, маҳалла, кўча — ихтиёрий)<input name="place" maxlength="200" placeholder="Масалан: Чилонзор тумани, Бўзсув ариғи бўйи"></label>
+            <label>Қўшимча изоҳ (ихтиёрий)<input name="note" maxlength="600" placeholder="Масалан: 2 ойдан бери ҳар куни ахлат ёқилади"></label>
+            <button class="btn btn-primary btn-sm" type="submit">✍️ Матнни тузиш</button>
+          </form>
+          <div id="appealOut"></div>
+        </div>` : ""}
       </article>`;
+    lastResult = r;
     if (r.status === "ok" && window.EkoApp) window.EkoApp.addXp(5, "Эко-кўз");
   }
+
+  /* Мурожаат матни ва харитага ўтиш */
+  let lastResult = null;
+  function guessCategory(r) {
+    const s = [r.title, r.summary, ...(r.findings || []).map((f) => f.item)].join(" ").toLowerCase();
+    if (/ёқ|ёнғин|олов/.test(s)) return "burning";
+    if (/тутун|чанг|мўри|газ/.test(s)) return "smoke";
+    if (/дарахт|кесил|тўнка/.test(s)) return "tree";
+    if (/сув|ариқ|дарё|кўл|канал/.test(s)) return "water";
+    if (/ахлат|чиқинди|пластик|уюм/.test(s)) return "dump";
+    return "other";
+  }
+  out.addEventListener("click", (e) => {
+    if (!lastResult) return;
+    if (e.target.closest("#eyeToMap") && window.EkoMap) window.EkoMap.prefill(guessCategory(lastResult), `${lastResult.title}. ${lastResult.summary}`);
+    if (e.target.closest("#eyeAppeal")) { const b = $("#appealBox"); b.hidden = !b.hidden; if (!b.hidden) b.querySelector("input").focus(); }
+    if (e.target.closest("#appealCopy")) {
+      const ta = $("#appealText");
+      (navigator.clipboard ? navigator.clipboard.writeText(ta.value) : Promise.reject()).catch(() => { ta.select(); document.execCommand("copy"); })
+        .finally(() => window.EkoApp && window.EkoApp.toast("📋 Матн нусхаланди"));
+    }
+  });
+  out.addEventListener("submit", async (e) => {
+    if (e.target.id !== "appealForm") return;
+    e.preventDefault();
+    const f = e.target, btn = f.querySelector("button"), box = $("#appealOut");
+    btn.disabled = true;
+    box.innerHTML = `<p class="eye-wait">🔄 Мурожаат матни тузилмоқда…</p>`;
+    try {
+      const res = await fetch("/api/appeal", {
+        method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ analysis: lastResult, place: f.place.value.trim(), note: f.note.value.trim() })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Хатолик юз берди");
+      box.innerHTML = `
+        <h4>📄 ${esc(data.appeal.subject)}</h4>
+        <textarea id="appealText" spellcheck="false" aria-label="Мурожаат матни"></textarea>
+        <p class="note small">[Квадрат қавс] ичидаги жойларни ўзингиз тўлдиринг. Матнни текшириб, расмни илова қилиб, ўзингиз юборасиз — илова ҳеч нарсани юбормайди.</p>
+        <div class="eye-actions">
+          <button class="btn btn-primary btn-sm" type="button" id="appealCopy">📋 Нусхалаш</button>
+          <a class="btn btn-ghost btn-sm" href="https://pm.gov.uz" target="_blank" rel="noopener">🏛️ pm.gov.uz ни очиш</a>
+        </div>`;
+      $("#appealText").value = window.EkoLang ? EkoLang.t(data.appeal.body) : data.appeal.body;
+    } catch (err) {
+      box.innerHTML = `<p class="auth-error">${esc(navigator.onLine ? err.message : "Интернет йўқ. Уланишни текшириб, қайта уриниб кўринг.")}</p>`;
+    } finally { btn.disabled = false; }
+  });
 
   go.addEventListener("click", async () => {
     if (!image || busy) return;
@@ -2871,6 +3099,561 @@ const LIBRARY = {
       busy = false; update();
     }
   });
+})();
+</script>
+  <script>
+/* ЭкоТаълим — «Эко-харита»: фойдаланувчилар муаммони харитада белгилайди,
+   админ тасдиқлагандан кейин ҳамма учун кўринади. Тасдиқланган хабар учун XP.
+   Харита кутубхонаси (Leaflet) ўз серверимиздан, бўлимга етганда юкланади.
+   Интернет бўлмаса ҳам Ўзбекистон чегараси ва шаҳарлар кўринади. */
+(() => {
+  "use strict";
+  const $ = (s, el = document) => el.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const T = (s) => EkoLang.t(s);
+  const App = window.EkoApp;
+  const CATS = {
+    dump: ["🗑️", "Ноқонуний ахлатхона", "#b45309"],
+    burning: ["🔥", "Ахлат ёқиш", "#dc2626"],
+    smoke: ["🏭", "Тутун ва чанг", "#6b7280"],
+    tree: ["🪓", "Кесилган дарахт", "#15803d"],
+    water: ["💧", "Сув ифлосланиши", "#0284c7"],
+    other: ["⚠️", "Бошқа муаммо", "#7c3aed"]
+  };
+  const STATUS = { pending: ["st-pending", "⏳ Текширилмоқда"], approved: ["st-approved", "✅ Тасдиқланди"], rejected: ["st-rejected", "✖ Рад этилди"] };
+  const form = $("#repForm"), gate = $("#repGate"), err = $("#repError"), coordsEl = $("#repCoords");
+  const fmtDate = (t) => { const d = new Date(t); return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`; };
+  let map = null, L = null, layer = null, pickMarker = null, picked = null, user = null, online = false, loading = null;
+
+  form.category.innerHTML = Object.entries(CATS).map(([k, [ic, name]]) => `<option value="${k}">${ic} ${esc(name)}</option>`).join("");
+  $("#mapLegend").innerHTML = Object.values(CATS).map(([ic, name]) => `<span>${ic} ${esc(name)}</span>`).join("");
+
+  function pinIcon(cat, extra = "") {
+    const [ic, , color] = CATS[cat] || CATS.other;
+    return L.divIcon({ className: "", html: `<div class="pin ${extra}" style="--pin:${color}"><span>${ic}</span></div>`, iconSize: [34, 34], iconAnchor: [17, 38], popupAnchor: [0, -34] });
+  }
+
+  function loadLeaflet() {
+    if (loading) return loading;
+    loading = new Promise((resolve, reject) => {
+      const css = document.createElement("link");
+      css.rel = "stylesheet"; css.href = "vendor/leaflet/leaflet.css";
+      document.head.append(css);
+      const js = document.createElement("script");
+      js.src = "vendor/leaflet/leaflet.js";
+      js.onload = () => resolve(window.L);
+      js.onerror = reject;
+      document.head.append(js);
+    });
+    return loading;
+  }
+
+  async function initMap() {
+    try { L = await loadLeaflet(); } catch (e) { $("#ekoMap").innerHTML = `<p class="muted" style="padding:20px">${T("Харитани юклаб бўлмади.")}</p>`; return; }
+    map = L.map("ekoMap", { zoomSnap: 0.25, minZoom: 4, maxBounds: [[34, 50], [49, 79]] }).fitBounds([[37.2, 56], [45.6, 73.1]], { padding: [12, 12] });
+    /* OpenStreetMap харитаси (интернет бўлганда) */
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a>'
+    }).addTo(map);
+    map.attributionControl.setPrefix('<a href="https://leafletjs.com" rel="noopener">Leaflet</a>');
+    /* Ўзбекистон чегараси ва шаҳарлар — интернетсиз ҳам кўринади */
+    fetch("vendor/uz-border.json").then((r) => r.json()).then((geo) => {
+      L.geoJSON(geo, { interactive: false, style: { color: "#15803d", weight: 2, fillColor: "#bbf7d0", fillOpacity: 0.25 } }).addTo(map);
+    }).catch(() => {});
+    (App && App.cities || []).forEach(([name, lat, lng]) => {
+      L.circleMarker([lat, lng], { radius: 3, color: "#14532d", weight: 1, fillOpacity: 1, interactive: false }).addTo(map);
+      L.marker([lat, lng], { interactive: false, keyboard: false, icon: L.divIcon({ className: "city-label", html: esc(T(name)), iconSize: null, iconAnchor: [-6, 8] }) }).addTo(map);
+    });
+    layer = L.layerGroup().addTo(map);
+    map.on("click", (e) => setPick(e.latlng.lat, e.latlng.lng));
+    loadReports();
+  }
+
+  function setPick(lat, lng, zoom) {
+    if (!map) return;
+    picked = { lat, lng };
+    if (!pickMarker) pickMarker = L.marker([lat, lng], { icon: pinIcon(form.category.value, "new"), draggable: true, zIndexOffset: 1000 })
+      .on("dragend", () => { const p = pickMarker.getLatLng(); picked = { lat: p.lat, lng: p.lng }; showCoords(); })
+      .addTo(map);
+    else pickMarker.setLatLng([lat, lng]);
+    if (zoom) map.setView([lat, lng], zoom);
+    showCoords();
+  }
+  function showCoords() {
+    coordsEl.textContent = picked ? `📍 ${picked.lat.toFixed(4)}, ${picked.lng.toFixed(4)}` : T("Харитани босиб жойни белгиланг");
+  }
+  form.category.addEventListener("change", () => { if (pickMarker) pickMarker.setIcon(pinIcon(form.category.value, "new")); });
+
+  async function loadReports() {
+    if (!map || !location.protocol.startsWith("http")) return;
+    try {
+      const res = await fetch("/api/reports");
+      const { reports } = await res.json();
+      layer.clearLayers();
+      reports.forEach((r) => {
+        const [ic, name] = CATS[r.category] || CATS.other;
+        L.marker([r.lat, r.lng], { icon: pinIcon(r.category), title: T(name) })
+          .bindPopup(`<b>${ic} ${esc(T(name))}</b><br>${esc(r.text)}<br><span class="muted small">${T("Тасдиқланган")}: ${fmtDate(r.reviewedAt)}</span>`)
+          .addTo(layer);
+      });
+    } catch (e) { /* интернет йўқ — фақат чегара кўринади */ }
+  }
+
+  function renderGate() {
+    if (!online) { gate.hidden = false; form.hidden = true; gate.textContent = T("🌐 Хабар юбориш фақат онлайн — сайт ёки илова орқали ишлайди."); return; }
+    if (!user) {
+      gate.hidden = false; form.hidden = true;
+      gate.innerHTML = `${T("🔒 Хабар юбориш учун ҳисобингизга киринг (13 ёшдан). Харитани эса ҳамма кўра олади.")} <button class="btn btn-primary btn-sm" type="button" id="repLogin">${T("Кириш")}</button>`;
+      $("#repLogin").onclick = () => $("#authBtn").click();
+      return;
+    }
+    gate.hidden = true; form.hidden = false;
+  }
+
+  async function loadMine() {
+    const box = $("#myReportsBox");
+    if (!user) { box.hidden = true; return; }
+    try {
+      const res = await fetch("/api/my/reports", { credentials: "same-origin" });
+      if (!res.ok) throw new Error();
+      const { reports } = await res.json();
+      box.hidden = false;
+      $("#myReports").innerHTML = reports.length ? reports.slice(0, 8).map((r) => {
+        const [ic, name] = CATS[r.category] || CATS.other;
+        const [cls, label] = STATUS[r.status] || STATUS.pending;
+        return `<div class="rep-item"><span>${ic}</span><div style="flex:1;min-width:0"><b>${esc(name)}</b> <span class="st ${cls}">${label}</span><p>${esc(r.text)}</p><span class="muted small">${fmtDate(r.createdAt)}</span></div></div>`;
+      }).join("") : `<p class="muted small">Ҳали хабар юбормагансиз.</p>`;
+    } catch (e) { box.hidden = true; }
+  }
+
+  /* «Эко-патрул»: админ тасдиқлаган ҳар бир хабар учун +20 XP (бир марта) */
+  function creditPatrol() {
+    if (!App || !user) return;
+    const st = App.state;
+    st.games = st.games || {};
+    const credited = st.games.patrol || (st.games.patrol = {});
+    const have = credited[user.id] || 0, now = user.approved || 0;
+    if (now > have) {
+      credited[user.id] = now;
+      App.addXp(20 * (now - have), `🛡️ ${T("Эко-патрул: хабарингиз тасдиқланди")}`);
+      loadReports(); loadMine();
+    } else if (now < have) { credited[user.id] = now; App.save(); }
+  }
+
+  window.addEventListener("eko:user", (e) => {
+    online = e.detail.online; user = e.detail.user;
+    renderGate(); loadMine(); creditPatrol();
+  });
+  renderGate();
+
+  $("#repGeo").addEventListener("click", () => {
+    if (!navigator.geolocation) { err.textContent = T("Қурилмангиз жойлашувни аниқлай олмайди. Харитани босинг."); return; }
+    err.textContent = "";
+    navigator.geolocation.getCurrentPosition(
+      (p) => setPick(p.coords.latitude, p.coords.longitude, 15),
+      () => { err.textContent = T("Жойлашувга рухсат берилмади. Харитани босиб белгиланг."); },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    err.textContent = "";
+    if (!picked) { err.textContent = T("Харитани босиб муаммо жойини белгиланг"); return; }
+    const btn = form.querySelector("[type=submit]"); btn.disabled = true;
+    try {
+      const res = await fetch("/api/reports", {
+        method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category: form.category.value, text: form.text.value.trim(), lat: picked.lat, lng: picked.lng })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Хатолик юз берди");
+      form.text.value = ""; picked = null; showCoords();
+      if (pickMarker) { pickMarker.remove(); pickMarker = null; }
+      if (App) App.toast(T("Раҳмат! Хабарингиз админга юборилди. Тасдиқланса, +20 XP оласиз 🛡️"));
+      loadMine();
+    } catch (ex) {
+      err.textContent = T(ex.message);
+    } finally { btn.disabled = false; }
+  });
+
+  /* Эко-кўз натижасидан «Харитада белгилаш» */
+  window.EkoMap = {
+    prefill(category, text) {
+      if (CATS[category]) form.category.value = category;
+      if (text) form.text.value = text.slice(0, 500);
+      if (pickMarker) pickMarker.setIcon(pinIcon(form.category.value, "new"));
+      document.getElementById("xarita").scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const target = $("#ekoMap");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((ents) => { if (ents.some((x) => x.isIntersecting)) { io.disconnect(); initMap(); } }, { rootMargin: "400px" });
+    io.observe(target);
+  } else initMap();
+})();
+</script>
+  <script>
+/* ЭкоТаълим — «Ҳашар: олдин ва кейин». Икки расм телефоннинг ўзида бир расмга
+   бирлаштирилади. Ҳеч нарса серверга юборилмайди. */
+(() => {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const T = (s) => EkoLang.t(s);
+  const App = window.EkoApp;
+  const canvas = $("#baCanvas"), ctx = canvas.getContext("2d");
+  const imgs = { before: null, after: null };
+  const dmy = (t) => { const d = new Date(t); return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`; };
+  const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+  async function load(file) {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    return { img, url };
+  }
+  function pick(which, slot) {
+    return async (e) => {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      try {
+        if (imgs[which]) URL.revokeObjectURL(imgs[which].url);
+        imgs[which] = await load(file);
+        slot.style.backgroundImage = `url("${imgs[which].url}")`;
+        slot.classList.add("has");
+        draw();
+      } catch (err) { if (App) App.toast(T("Расмни очиб бўлмади. Бошқа расм танланг.")); }
+    };
+  }
+  $("#baBefore").addEventListener("change", pick("before", $("#baBeforeSlot")));
+  $("#baAfter").addEventListener("change", pick("after", $("#baAfterSlot")));
+  $("#baForm").place.addEventListener("input", () => draw());
+
+  /* Расмни квадратга «cover» қилиб жойлаш */
+  function cover(img, x, y, w, h) {
+    const k = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    const sw = w / k, sh = h / k;
+    ctx.drawImage(img, (img.naturalWidth - sw) / 2, (img.naturalHeight - sh) / 2, sw, sh, x, y, w, h);
+  }
+  function label(text, x, y, color) {
+    ctx.font = "800 44px Inter, system-ui, sans-serif";
+    const w = ctx.measureText(text).width + 44;
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.roundRect(x, y, w, 70, 35); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.textBaseline = "middle";
+    ctx.fillText(text, x + 22, y + 37);
+  }
+
+  let rewarded = false;
+  function draw() {
+    if (!imgs.before || !imgs.after) return;
+    const W = 1600, P = 16, S = (W - P * 3) / 2, HEAD = 110, FOOT = 90;
+    canvas.width = W; canvas.height = HEAD + S + FOOT + P;
+    ctx.fillStyle = "#14532d"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fff"; ctx.textBaseline = "middle";
+    ctx.font = "800 52px Inter, system-ui, sans-serif";
+    ctx.fillText(T("🧹 Ҳашар натижаси"), P + 8, HEAD / 2 + 4);
+    const place = $("#baForm").place.value.trim();
+    ctx.font = "500 34px Inter, system-ui, sans-serif";
+    ctx.textAlign = "right";
+    ctx.fillText(place ? T(place).slice(0, 40) : dmy(Date.now()), W - P - 8, HEAD / 2 + 4);
+    ctx.textAlign = "left";
+    cover(imgs.before.img, P, HEAD, S, S);
+    cover(imgs.after.img, P * 2 + S, HEAD, S, S);
+    label(T("ОЛДИН"), P + 20, HEAD + 20, "#b45309");
+    label(T("КЕЙИН"), P * 2 + S + 20, HEAD + 20, "#15803d");
+    ctx.fillStyle = "#dcfce7";
+    ctx.font = "600 34px Inter, system-ui, sans-serif";
+    ctx.fillText(`🌿 ${T("ЭкоТаълим")} · ${dmy(Date.now())} · ${T("Табиатни биргаликда асраймиз!")}`, P + 8, HEAD + S + FOOT / 2 + 4);
+    canvas.hidden = false; $("#baHint").hidden = true; $("#baActions").hidden = false;
+    $("#baShare").hidden = !navigator.canShare;
+    if (!rewarded && App) {
+      rewarded = true;
+      const g = App.state.games || (App.state.games = {});
+      if (g.hashar !== dayKey()) { g.hashar = dayKey(); App.flag("hashar"); App.addXp(10, T("Ҳашар")); }
+      else App.flag("hashar");
+    }
+  }
+
+  const blob = () => new Promise((r) => canvas.toBlob(r, "image/jpeg", 0.9));
+  const fileName = () => `hashar-${dayKey()}.jpg`;
+  $("#baDownload").addEventListener("click", async () => {
+    const url = URL.createObjectURL(await blob());
+    const a = document.createElement("a");
+    a.href = url; a.download = fileName();
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  });
+  $("#baShare").addEventListener("click", async () => {
+    const file = new File([await blob()], fileName(), { type: "image/jpeg" });
+    const data = { files: [file], title: T("Ҳашар натижаси"), text: T("Биз тозаладик! Сиз ҳам қўшилинг 🌿 #ЭкоТаълим") };
+    if (navigator.canShare && navigator.canShare(data)) navigator.share(data).catch(() => {});
+    else $("#baDownload").click();
+  });
+})();
+</script>
+  <script>
+/* ЭкоТаълим — «Мактаблар учун». Ўқитувчи (18+ ҳисоб) синф очади ва эко-топшириқ беради.
+   Ўқувчи ҳисобсиз: синф коди ва лақаб билан қўшилади. Серверга фақат лақаб, XP ва
+   топшириқлар бўйича рақамлар юборилади. */
+(() => {
+  "use strict";
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const T = (s) => EkoLang.t(s);
+  const App = window.EkoApp;
+  const KEY = "ekotalim:class";
+  const sv = $("#studentView"), tv = $("#teacherView");
+  const courseName = (id) => ((App && App.courses || []).find((c) => c.id === id) || {}).title || id;
+  const TYPES = {
+    xp: ["⭐", "XP тўплаш", (t) => `${t.target} XP тўплаш`],
+    sort: ["♻️", "«Чиқиндини сарала» ўйини", (t) => `«Чиқиндини сарала» да ${t.target}/10 олиш`],
+    quiz: ["⚡", "«Тўғри ёки нотўғри?» ўйини", (t) => `«Тўғри ёки нотўғри?» да ${t.target}/10 олиш`],
+    memory: ["🧠", "«Эко-хотира» ўйини", () => "«Эко-хотира» ўйинини тугатиш"],
+    tree: ["🌳", "«Менинг дарахтим»", (t) => `Дарахтга ${t.target} кун сув бериш`],
+    course: ["📘", "Курсни тугатиш", (t) => `«${courseName(t.course)}» курсини тугатиш`],
+    streak: ["🔥", "Кунлик челленж серияси", (t) => `${t.target} кун кетма-кет челленж`]
+  };
+  const DEFAULT_TARGET = { xp: 200, sort: 8, quiz: 8, memory: 1, tree: 5, course: 1, streak: 3 };
+  const taskTitle = (t) => t.title || TYPES[t.type][2](t);
+  const fmt = (t) => { if (!t) return "—"; const d = new Date(t); return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}`; };
+  let user = null, online = false;
+
+  async function call(url, body) {
+    const res = await fetch(url, {
+      method: body === undefined ? "GET" : "POST", credentials: "same-origin",
+      headers: body === undefined ? {} : { "Content-Type": "application/json" },
+      body: body === undefined ? undefined : JSON.stringify(body)
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { const e = new Error(data.error || "Хатолик юз берди"); e.status = res.status; throw e; }
+    return data;
+  }
+
+  /* Қурилмадаги натижалардан топшириқ бўйича рақам */
+  function measure(t) {
+    const st = App.state, g = st.games || {}, best = g.best || {};
+    switch (t.type) {
+      case "xp": return st.xp;
+      case "sort": return best.sort || 0;
+      case "quiz": return best.quiz || 0;
+      case "memory": return st.flags.game_memory ? 1 : 0;
+      case "tree": return (g.tree && g.tree.water) || 0;
+      case "course": return st.flags[`course_${t.course}`] ? 1 : 0;
+      case "streak": return App.streak();
+      default: return 0;
+    }
+  }
+
+  /* ---------- Ўқувчи ---------- */
+  let token = null, cls = null, syncTimer = null;
+  try { token = localStorage.getItem(KEY); } catch (e) { /* ignore */ }
+
+  function renderStudent() {
+    if (!online) { sv.innerHTML = `<div class="eye-gate">${T("🌐 Синф фақат онлайн — сайт ёки илова орқали ишлайди. Ўйин ва дарслар интернетсиз ҳам ишлайди.")}</div>`; return; }
+    if (!token || !cls) {
+      sv.innerHTML = `
+        <div class="school-grid">
+          <div class="eye-panel">
+            <h3 class="panel-title">🧒 Синфга қўшилиш</h3>
+            <form class="auth-form" id="joinForm" novalidate>
+              <label>Синф коди<input name="code" maxlength="8" autocomplete="off" autocapitalize="characters" placeholder="Масалан: K7M2QX" style="text-transform:uppercase;letter-spacing:.1em"></label>
+              <label>Лақабингиз<input name="nick" maxlength="20" autocomplete="off" placeholder="Масалан: Азиз 7А"></label>
+              <p class="note small">Фақат исмингиз ёки лақабингизни ёзинг. Фамилия, телефон ёки манзил ёзманг. Синфга ўқитувчингиз айтганда қўшилинг.</p>
+              <p class="auth-error" id="joinError" role="alert"></p>
+              <button class="btn btn-primary" type="submit">Қўшилиш</button>
+            </form>
+          </div>
+          <div class="eye-panel">
+            <h3 class="panel-title">Қандай ишлайди?</h3>
+            <ol class="small" style="padding-left:20px;margin:0">
+              <li>Ўқитувчингиздан 6 белгили синф кодини олинг.</li>
+              <li>Код ва лақабингизни ёзиб, синфга қўшилинг.</li>
+              <li>Ўйин ўйнанг, дарс ўқинг, челленж бажаринг — топшириқлар ўзи белгиланади.</li>
+              <li>Синфдошларингиз орасида нечанчи эканингизни кўринг! 🏆</li>
+            </ol>
+          </div>
+        </div>`;
+      $("#joinForm").addEventListener("submit", join);
+      return;
+    }
+    const done = cls.tasks.filter((t) => t.done).length;
+    sv.innerHTML = `
+      <div class="school-grid">
+        <div class="eye-panel">
+          <div class="class-head"><h3>🏫 ${esc(cls.name)}</h3><span class="pill">${done}/${cls.tasks.length} ${T("бажарилди")}</span></div>
+          ${cls.tasks.length ? cls.tasks.map((t) => {
+            const pct = Math.round((t.value / t.target) * 100);
+            return `<div class="task ${t.done ? "done" : ""}"><span class="task-ic">${TYPES[t.type][0]}</span><b>${esc(taskTitle(t))}</b>
+              <span class="muted small">${t.value}/${t.target}${t.due ? ` · ${T("муддат")}: ${esc(t.due)}` : ""}</span>
+              <div class="bar"><i style="width:${pct}%"></i></div></div>`;
+          }).join("") : `<p class="muted">${T("Ўқитувчи ҳали топшириқ бермади.")}</p>`}
+          <div class="eye-actions">
+            <a class="btn btn-primary btn-sm" href="#oyinlar">🎮 ${T("Ўйинларга")}</a>
+            <a class="btn btn-ghost btn-sm" href="#kurslar">📘 ${T("Дарсларга")}</a>
+            <button class="linklike small" type="button" id="leaveBtn">${T("Синфдан чиқиш")}</button>
+          </div>
+        </div>
+        <div class="eye-panel">
+          <h3 class="panel-title">🏆 ${T("Синф рейтинги")}</h3>
+          ${cls.top.map((s, i) => `<div class="lead-row ${s.me ? "me" : ""}"><span>${["🥇", "🥈", "🥉"][i] || `${i + 1}.`} ${esc(s.nick)}</span><b>${s.xp} XP</b></div>`).join("")}
+        </div>
+      </div>`;
+    $("#leaveBtn").addEventListener("click", leave);
+  }
+
+  function progress() {
+    const p = {};
+    (cls ? cls.tasks : []).forEach((t) => { p[t.id] = measure(t); });
+    return p;
+  }
+  async function sync() {
+    if (!token || !online) return;
+    try {
+      const data = await call("/api/class/sync", { token, xp: App.state.xp, progress: progress() });
+      const first = !cls;
+      cls = data.class;
+      /* Топшириқлар рўйхати ўзгарган бўлса, янги рақамлар билан яна бир марта */
+      if (first && cls.tasks.length) { const d2 = await call("/api/class/sync", { token, xp: App.state.xp, progress: progress() }); cls = d2.class; }
+      renderStudent();
+    } catch (e) {
+      if (e.status === 404) { forget(); App.toast(T("Синф топилмади — ўқитувчингиз синфни ўчирган бўлиши мумкин.")); }
+    }
+  }
+  function forget() { token = null; cls = null; try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ } renderStudent(); }
+
+  async function join(e) {
+    e.preventDefault();
+    const f = e.target, errEl = $("#joinError"), btn = f.querySelector("button");
+    errEl.textContent = ""; btn.disabled = true;
+    try {
+      const data = await call("/api/class/join", { code: f.code.value.trim(), nick: f.nick.value.trim() });
+      token = data.token; cls = data.class;
+      try { localStorage.setItem(KEY, token); } catch (ex) { /* ignore */ }
+      App.flag("class_join");
+      App.toast(T(`🏫 «${cls.name}» синфига қўшилдингиз!`));
+      await sync();
+    } catch (ex) { errEl.textContent = T(ex.message); }
+    finally { btn.disabled = false; }
+  }
+  async function leave() {
+    if (!confirm(T("Синфдан чиқасизми? Лақабингиз ва натижаларингиз синфдан ўчирилади."))) return;
+    try { await call("/api/class/leave", { token }); } catch (e) { /* ignore */ }
+    forget();
+  }
+  window.addEventListener("eko:xp", () => { if (!token || !online) return; clearTimeout(syncTimer); syncTimer = setTimeout(sync, 2500); });
+  window.addEventListener("eko:reset", () => { if (token) setTimeout(sync, 500); });
+
+  /* ---------- Ўқитувчи ---------- */
+  let classes = [];
+  function taskForm(c) {
+    const opts = Object.entries(TYPES).map(([k, [ic, name]]) => `<option value="${k}">${ic} ${esc(name)}</option>`).join("");
+    const courses = (App.courses || []).map((x) => `<option value="${x.id}">${esc(x.title)}</option>`).join("");
+    return `<form class="auth-form task-form" data-task="${c.id}" novalidate>
+      <label>Топшириқ<select name="type">${opts}</select></label>
+      <label data-for="target">Мақсад<input name="goal" type="number" min="1" value="${DEFAULT_TARGET.xp}"></label>
+      <label data-for="course" hidden>Курс<select name="course">${courses}</select></label>
+      <label>Муддат (ихтиёрий)<input name="due" type="date"></label>
+      <button class="btn btn-primary btn-sm" type="submit">＋ Қўшиш</button>
+    </form>`;
+  }
+  function renderTeacher() {
+    if (!online) { tv.innerHTML = `<div class="eye-gate">${T("🌐 Ўқитувчи бўлими фақат онлайн ишлайди.")}</div>`; return; }
+    if (!user) {
+      tv.innerHTML = `<div class="eye-gate">${T("👩‍🏫 Синф очиш учун ўз ҳисобингизга киринг (18 ёшдан).")} <button class="btn btn-primary btn-sm" type="button" id="tLogin">${T("Кириш")}</button></div>`;
+      $("#tLogin").onclick = () => $("#authBtn").click();
+      return;
+    }
+    if (!user.adult) { tv.innerHTML = `<div class="eye-gate">${T("🔒 Синф очиш фақат ўқитувчилар (18 ёшдан катталар) учун. Сиз «Ўқувчи» бўлимидан синфга қўшилишингиз мумкин.")}</div>`; return; }
+    tv.innerHTML = `
+      <div class="eye-panel class-card">
+        <form class="auth-form task-form" id="newClass" novalidate>
+          <label>Янги синф номи<input name="cname" maxlength="60" placeholder="Масалан: 7-«А» синф"></label>
+          <button class="btn btn-primary btn-sm" type="submit">＋ Синф очиш</button>
+        </form>
+        <p class="auth-error" id="tError" role="alert"></p>
+      </div>
+      ${classes.length ? "" : `<p class="muted">${T("Ҳали синф йўқ. Юқорида синф очинг — ўқувчиларга 6 белгили код берилади.")}</p>`}
+      ${classes.map((c) => `
+        <div class="eye-panel class-card">
+          <div class="class-head">
+            <div><h3>🏫 ${esc(c.name)}</h3><span class="muted small">${T("Ўқувчилар")}: ${c.students.length} · ${T("Топшириқлар")}: ${c.tasks.length}</span></div>
+            <div style="text-align:right"><span class="muted small">${T("Синф коди")}</span><br><span class="class-code" data-notr>${esc(c.code)}</span></div>
+          </div>
+          <h4 style="margin:8px 0 0">📋 ${T("Эко-топшириқлар")}</h4>
+          ${c.tasks.map((t) => `<div class="task"><span class="task-ic">${TYPES[t.type][0]}</span><b>${esc(taskTitle(t))}</b>
+            <button class="x-btn" data-del-task="${t.id}" data-class="${c.id}" aria-label="${T("Ўчириш")}">✕</button>
+            <span class="muted small" style="grid-column:2/4">${T("Бажарди")}: ${c.students.filter((s) => s.progress[t.id] >= t.target).length}/${c.students.length}${t.due ? ` · ${T("муддат")}: ${esc(t.due)}` : ""}</span></div>`).join("") || `<p class="muted small">${T("Топшириқ йўқ.")}</p>`}
+          ${taskForm(c)}
+          <h4 style="margin:18px 0 0">👥 ${T("Ўқувчилар")}</h4>
+          ${c.students.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>${T("Лақаб")}</th><th>XP</th><th>${T("Топшириқ")}</th><th>${T("Охирги марта")}</th><th></th></tr></thead><tbody>
+            ${c.students.map((s) => `<tr><td>${esc(s.nick)}</td><td><b>${s.xp}</b></td><td>${s.done}/${c.tasks.length}</td><td>${fmt(s.lastSeen)}</td>
+              <td><button class="x-btn" data-del-student="${s.id}" data-class="${c.id}" aria-label="${T("Синфдан чиқариш")}">✕</button></td></tr>`).join("")}
+          </tbody></table></div>` : `<p class="muted small">${T("Ўқувчилар ҳали қўшилмади. Уларга синф кодини беринг.")}</p>`}
+          <div class="eye-actions"><button class="btn btn-ghost btn-sm" data-refresh>🔄 ${T("Янгилаш")}</button><button class="linklike small" data-del-class="${c.id}">${T("Синфни ўчириш")}</button></div>
+        </div>`).join("")}`;
+    $("#newClass").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try { await call("/api/class/teacher/create", { name: e.target.cname.value.trim() }); await loadTeacher(); }
+      catch (ex) { $("#tError").textContent = T(ex.message); }
+    });
+    $$("form[data-task]", tv).forEach((f) => {
+      const adjust = () => {
+        const type = f.type.value;
+        f.querySelector("[data-for=course]").hidden = type !== "course";
+        f.querySelector("[data-for=target]").hidden = type === "course" || type === "memory";
+        f.goal.value = DEFAULT_TARGET[type];
+        f.goal.max = { sort: 10, quiz: 10, tree: 30, streak: 30 }[type] || 100000;
+      };
+      f.type.addEventListener("change", adjust); adjust();
+      f.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        try {
+          await call(`/api/class/teacher/${f.dataset.task}/task`, { type: f.type.value, target: Number(f.goal.value), course: f.course.value, due: f.due.value });
+          await loadTeacher();
+          App.toast(T("Топшириқ қўшилди"));
+        } catch (ex) { App.toast(T(ex.message)); }
+      });
+    });
+  }
+  tv.addEventListener("click", async (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    try {
+      if (b.dataset.delTask) await call(`/api/class/teacher/${b.dataset.class}/task-delete`, { taskId: b.dataset.delTask });
+      else if (b.dataset.delStudent) { if (!confirm(T("Ўқувчини синфдан чиқарасизми?"))) return; await call(`/api/class/teacher/${b.dataset.class}/student-remove`, { studentId: b.dataset.delStudent }); }
+      else if (b.dataset.delClass) { if (!confirm(T("Синф ва унинг барча натижалари ўчирилади. Давом этасизми?"))) return; await call(`/api/class/teacher/${b.dataset.delClass}/delete`, {}); }
+      else if (!("refresh" in b.dataset)) return;
+      await loadTeacher();
+    } catch (ex) { App.toast(T(ex.message)); }
+  });
+  async function loadTeacher() {
+    if (online && user && user.adult) {
+      try { classes = (await call("/api/class/teacher")).classes; } catch (e) { classes = []; }
+    } else classes = [];
+    renderTeacher();
+  }
+
+  /* ---------- Тугмалар ---------- */
+  $("#schoolTabs").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-role]");
+    if (!b) return;
+    $$("#schoolTabs [data-role]").forEach((x) => { const on = x === b; x.classList.toggle("active", on); x.setAttribute("aria-selected", on); });
+    sv.hidden = b.dataset.role !== "student"; tv.hidden = b.dataset.role !== "teacher";
+    if (!tv.hidden) loadTeacher(); else sync();
+  });
+  window.addEventListener("eko:user", (e) => {
+    const was = online;
+    online = e.detail.online; user = e.detail.user;
+    if (!was && online) sync();
+    renderStudent();
+    if (!tv.hidden) loadTeacher(); else renderTeacher();
+  });
+  renderStudent(); renderTeacher();
 })();
 </script>
 </body>

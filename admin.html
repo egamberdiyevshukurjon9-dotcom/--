@@ -43,12 +43,22 @@ body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter,
 input, select { font: inherit; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
 input:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
 .error { color: var(--danger); min-height: 1.2em; margin: 0; font-size: .9rem; }
-.stats { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin: 24px 0; }
+.stats { display: grid; grid-template-columns: repeat(8, 1fr); gap: 12px; margin: 24px 0; }
 .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; min-width: 0; }
 .stat b { display: block; font-size: 1.7rem; line-height: 1.2; }
 .stat span { color: var(--muted); font-size: .85rem; }
 .stat.green b { color: var(--primary); }
 .stat.red b { color: var(--danger); }
+.stat.warn b { color: var(--warn); }
+.t-report { background: var(--warn-soft); color: var(--warn); }
+.st-pending { background: var(--warn-soft); color: var(--warn); }
+.st-approved { background: var(--primary-soft); color: var(--primary); }
+.st-rejected { background: var(--danger-soft); color: var(--danger); }
+.rep-text { white-space: normal; min-width: 200px; max-width: 360px; overflow-wrap: anywhere; }
+.acts { display: flex; gap: 6px; }
+.btn-sm { padding: 6px 10px; font-size: .82rem; }
+.btn-ok { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn-no { color: var(--danger); }
 .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 20px; overflow: hidden; }
 .panel-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--line); }
 .panel-head h2 { margin: 0; font-size: 1.05rem; }
@@ -109,7 +119,24 @@ tr:last-child td { border-bottom: 0; }
         <div class="stat"><b id="sLogouts">0</b><span>Бугун чиқди</span></div>
         <div class="stat red"><b id="sFailed">0</b><span>Бугун хато уриниш</span></div>
         <div class="stat"><b id="sAi">0</b><span>Бугун Эко-кўз</span></div>
+        <div class="stat warn"><b id="sPending">0</b><span>Харита: текширишни кутмоқда</span></div>
       </div>
+
+      <section class="panel" id="modPanel">
+        <div class="panel-head">
+          <h2>🗺️ Эко-харита: модерация</h2>
+          <div class="filters">
+            <select id="repStatus" aria-label="Ҳолат">
+              <option value="pending">Текширишни кутаётганлар</option>
+              <option value="approved">Тасдиқланганлар</option>
+              <option value="rejected">Рад этилганлар</option>
+              <option value="">Барчаси</option>
+            </select>
+          </div>
+        </div>
+        <p class="small muted" style="margin:10px 16px 0">Тасдиқланган хабар харитада ҳамма учун кўринади (муаллиф исмисиз, ~100 м аниқликда) ва муаллифга +20 XP ҳамда «Эко-патрул» нишони берилади. Шахсий маълумот, ҳақорат ёки реклама бўлса — рад этинг.</p>
+        <div class="table-wrap" id="reportsTable"></div>
+      </section>
 
       <section class="panel">
         <div class="panel-head">
@@ -131,6 +158,7 @@ tr:last-child td { border-bottom: 0; }
               <option value="register">Рўйхатдан ўтганлар</option>
               <option value="login_failed">Хато уринишлар</option>
               <option value="ai">Эко-кўз</option>
+              <option value="report">Харита хабарлари</option>
             </select>
           </div>
         </div>
@@ -170,17 +198,22 @@ tr:last-child td { border-bottom: 0; }
     timeout: ["t-timeout", "⏱️ Саҳифани ёпди"],
     login_failed: ["t-login_failed", "⛔ Хато парол"],
     deleted: ["t-login_failed", "🗑️ Ҳисоб ўчирилди"],
-    ai: ["t-logout", "📷 Эко-кўз"]
+    ai: ["t-logout", "📷 Эко-кўз"],
+    report: ["t-report", "📍 Харита хабари"]
   };
+  const CATS = { dump: "🗑️ Ахлатхона", burning: "🔥 Ахлат ёқиш", smoke: "🏭 Тутун/чанг", tree: "🪓 Кесилган дарахт", water: "💧 Сув ифлосланиши", other: "⚠️ Бошқа" };
+  const STATUS = { pending: ["st-pending", "⏳ Кутмоқда"], approved: ["st-approved", "✅ Тасдиқланган"], rejected: ["st-rejected", "✖ Рад этилган"] };
   const GROUPS = { in: ["login", "return"], out: ["logout", "timeout"] };
 
-  let data = null, timer = null;
+  let data = null, timer = null, reports = [];
 
   async function load() {
     const res = await fetch("/api/admin/overview", { credentials: "same-origin" });
     if (res.status === 401) return showLogin();
     if (!res.ok) throw new Error("load_failed");
     data = await res.json();
+    const r2 = await fetch("/api/admin/reports", { credentials: "same-origin" });
+    reports = r2.ok ? (await r2.json()).reports : [];
     showDash();
     render();
   }
@@ -209,6 +242,25 @@ tr:last-child td { border-bottom: 0; }
     $("#sRegisters").textContent = s.registersToday; $("#sLogins").textContent = s.loginsToday;
     $("#sLogouts").textContent = s.logoutsToday; $("#sFailed").textContent = s.failedToday;
     $("#sAi").textContent = s.aiToday || 0;
+    $("#sPending").textContent = s.pendingReports || 0;
+
+    const rs = $("#repStatus").value;
+    const osm = (r) => `https://www.openstreetmap.org/?mlat=${r.lat}&mlon=${r.lng}#map=17/${r.lat}/${r.lng}`;
+    $("#reportsTable").innerHTML = table(
+      ["Вақт", "Тури", "Хабар", "Жой", "Ҳолат", "Амал", "Муаллиф"],
+      reports.filter((r) => !rs || r.status === rs).map((r) => {
+        const [cls, label] = STATUS[r.status] || STATUS.pending;
+        return `<tr><td>${fmt(r.createdAt).slice(0, 17)}</td><td>${esc(CATS[r.category] || r.category)}</td><td class="rep-text">${esc(r.text)}</td>
+          <td><a href="${osm(r)}" target="_blank" rel="noopener">${r.lat.toFixed(4)}, ${r.lng.toFixed(4)} ↗</a></td>
+          <td><span class="tag ${cls}">${label}</span></td>
+          <td><div class="acts">
+            ${r.status !== "approved" ? `<button class="btn btn-sm btn-ok" data-act="approve" data-id="${r.id}">✓ Тасдиқлаш</button>` : ""}
+            ${r.status !== "rejected" ? `<button class="btn btn-sm btn-no" data-act="reject" data-id="${r.id}">✖ Рад этиш</button>` : ""}
+            <button class="btn btn-sm" data-act="delete" data-id="${r.id}" title="Бутунлай ўчириш">🗑️</button>
+          </div></td><td>${who(r.name, r.email)}</td></tr>`;
+      }),
+      rs === "pending" ? "Текширишни кутаётган хабар йўқ. 👍" : "Хабар йўқ."
+    );
     $("#updated").textContent = "Янгиланди: " + new Date(data.now).toLocaleTimeString("ru-RU");
     $("#onlineNote").textContent = `Охирги ${data.onlineMinutes} дақиқада фаол бўлганлар`;
 
@@ -265,7 +317,21 @@ tr:last-child td { border-bottom: 0; }
     showLogin();
   });
   $("#refreshBtn").addEventListener("click", () => load().catch(() => {}));
-  ["#evSearch", "#evType", "#userSearch"].forEach((s) => $(s).addEventListener("input", () => data && render()));
+  $("#reportsTable").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-act]");
+    if (!b) return;
+    if (b.dataset.act === "delete" && !confirm("Хабар бутунлай ўчирилсинми?")) return;
+    b.disabled = true;
+    try {
+      const res = await fetch("/api/admin/reports/" + b.dataset.id, {
+        method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: b.dataset.act })
+      });
+      if (res.status === 401) return showLogin();
+      await load();
+    } catch (err) { b.disabled = false; }
+  });
+  ["#evSearch", "#evType", "#userSearch", "#repStatus"].forEach((s) => $(s).addEventListener("input", () => data && render()));
 
   load().catch(() => {
     $("#loginBox").hidden = false;
