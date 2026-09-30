@@ -43,7 +43,7 @@ body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter,
 input, select { font: inherit; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
 input:focus, select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
 .error { color: var(--danger); min-height: 1.2em; margin: 0; font-size: .9rem; }
-.stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin: 24px 0; }
+.stats { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin: 24px 0; }
 .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; min-width: 0; }
 .stat b { display: block; font-size: 1.7rem; line-height: 1.2; }
 .stat span { color: var(--muted); font-size: .85rem; }
@@ -68,6 +68,7 @@ tr:last-child td { border-bottom: 0; }
 .dot.off { background: var(--line); box-shadow: none; }
 .who b { display: block; }
 .who span { color: var(--muted); font-size: .8rem; }
+@media (max-width: 1100px) { .stats { grid-template-columns: repeat(4, 1fr); } }
 @media (max-width: 960px) { .stats { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 560px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
@@ -107,6 +108,7 @@ tr:last-child td { border-bottom: 0; }
         <div class="stat"><b id="sLogins">0</b><span>Бугун кирди</span></div>
         <div class="stat"><b id="sLogouts">0</b><span>Бугун чиқди</span></div>
         <div class="stat red"><b id="sFailed">0</b><span>Бугун хато уриниш</span></div>
+        <div class="stat"><b id="sAi">0</b><span>Бугун Эко-кўз</span></div>
       </div>
 
       <section class="panel">
@@ -128,6 +130,7 @@ tr:last-child td { border-bottom: 0; }
               <option value="out">Чиққанлар</option>
               <option value="register">Рўйхатдан ўтганлар</option>
               <option value="login_failed">Хато уринишлар</option>
+              <option value="ai">Эко-кўз</option>
             </select>
           </div>
         </div>
@@ -166,7 +169,8 @@ tr:last-child td { border-bottom: 0; }
     logout: ["t-logout", "⬅️ Чиқди"],
     timeout: ["t-timeout", "⏱️ Саҳифани ёпди"],
     login_failed: ["t-login_failed", "⛔ Хато парол"],
-    deleted: ["t-login_failed", "🗑️ Ҳисоб ўчирилди"]
+    deleted: ["t-login_failed", "🗑️ Ҳисоб ўчирилди"],
+    ai: ["t-logout", "📷 Эко-кўз"]
   };
   const GROUPS = { in: ["login", "return"], out: ["logout", "timeout"] };
 
@@ -204,6 +208,7 @@ tr:last-child td { border-bottom: 0; }
     $("#sOnline").textContent = s.online; $("#sUsers").textContent = s.users;
     $("#sRegisters").textContent = s.registersToday; $("#sLogins").textContent = s.loginsToday;
     $("#sLogouts").textContent = s.logoutsToday; $("#sFailed").textContent = s.failedToday;
+    $("#sAi").textContent = s.aiToday || 0;
     $("#updated").textContent = "Янгиланди: " + new Date(data.now).toLocaleTimeString("ru-RU");
     $("#onlineNote").textContent = `Охирги ${data.onlineMinutes} дақиқада фаол бўлганлар`;
 

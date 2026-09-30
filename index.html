@@ -58,7 +58,7 @@ a { color: var(--primary); }
 .brand { font-weight: 800; font-size: 1.2rem; text-decoration: none; color: var(--text); display: flex; gap: 8px; align-items: center; }
 .brand-logo { font-size: 1.4rem; }
 .nav { display: flex; gap: 4px; margin-left: auto; }
-.nav a { white-space: nowrap; text-decoration: none; color: var(--muted); padding: 8px 10px; border-radius: 10px; font-weight: 500; }
+.nav a { white-space: nowrap; text-decoration: none; color: var(--muted); padding: 8px 7px; border-radius: 10px; font-weight: 500; }
 .nav a:hover { background: var(--primary-soft); color: var(--text); }
 .user-chip { display: flex; gap: 6px; align-items: center; background: var(--primary-soft); padding: 6px 12px; border-radius: 999px; font-size: .9rem; white-space: nowrap; }
 .theme-btn, .menu-btn { background: none; border: 1px solid var(--line); border-radius: 10px; height: 38px; width: 38px; cursor: pointer; color: var(--text); font-size: 1.1rem; }
@@ -342,14 +342,43 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .age-row select { font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
 .guest-note { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: var(--primary-soft); font-size: .88rem; }
 
+/* Эко-кўз */
+.eye { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; align-items: start; }
+.eye-panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); min-width: 0; }
+.eye-gate { background: var(--primary-soft); border-radius: var(--radius); padding: 18px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+.eye-notice { font-size: .88rem; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 0 0 12px; }
+.eye-notice ul { margin: 6px 0 0; padding-left: 18px; }
+.eye-consent { display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; margin: 0 0 14px; cursor: pointer; }
+.eye-consent input { margin-top: 4px; width: 18px; height: 18px; flex: none; }
+.eye-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.eye-pick label { text-align: center; }
+.eye-pick input { display: none; }
+.eye-preview { margin: 14px 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--bg-alt); }
+.eye-preview img { display: block; width: 100%; max-height: 320px; object-fit: contain; }
+#eyeGo { width: 100%; margin-top: 4px; }
+.eye-card h3 { margin: 0; font-size: 1.2rem; flex: 1 1 200px; min-width: 0; }
+.eye-card h4 { margin: 16px 0 6px; }
+.eye-card ul { margin: 0; padding-left: 20px; }
+.eye-card li { margin-bottom: 6px; }
+.eye-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.eye-icon { font-size: 2rem; }
+.risk { font-size: .8rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.risk-none, .risk-low { background: #dcfce7; color: #166534; }
+.risk-med { background: #fef3c7; color: #92400e; }
+.risk-high { background: #fee2e2; color: #991b1b; }
+.eye-fact { background: var(--primary-soft); border-radius: 12px; padding: 10px 12px; }
+.eye-wait { color: var(--muted); }
+.eye-examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
 /* Responsive */
 .topbar .wrap { max-width: 1320px; }
-@media (max-width: 1319px) {
+@media (max-width: 1439px) {
   .menu-btn { display: block; margin-left: auto; }
   .nav { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; background: var(--card); border-bottom: 1px solid var(--line); padding: 8px 16px 16px; box-shadow: var(--shadow); }
   .nav.open { display: flex; }
 }
 @media (max-width: 960px) {
+  .eye { grid-template-columns: 1fr; }
   .game-grid { grid-template-columns: repeat(2, 1fr); }
   .aud-grid, .course-grid, .news-grid { grid-template-columns: repeat(2, 1fr); }
   .ch-grid { grid-template-columns: repeat(2, 1fr); }
@@ -396,6 +425,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
       <button class="menu-btn" id="menuBtn" aria-label="Меню" aria-expanded="false">☰</button>
       <nav class="nav" id="nav">
         <a href="#oyinlar">Ўйинлар</a>
+        <a href="#ekokoz">Эко-кўз</a>
         <a href="#kurslar">Курслар</a>
         <a href="#yangiliklar">Янгиликлар</a>
         <a href="#kutubxona">Кутубхона</a>
@@ -479,6 +509,45 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
         <h2 class="section-title">🎮 Эко-ўйинлар</h2>
         <p class="muted">Ўйнаб ўрган! Ҳар бир ўйин учун XP ва нишонлар оласиз. Ҳисоб очиш шарт эмас — натижалар шу қурилмада сақланади.</p>
         <div class="game-grid" id="gameGrid"></div>
+      </div>
+    </section>
+
+    <!-- ECO EYE -->
+    <section class="section alt" id="ekokoz">
+      <div class="wrap">
+        <h2 class="section-title">📷 Эко-кўз</h2>
+        <p class="muted">Атрофингиздаги манзарани суратга олинг — сунъий интеллект уни экологик нуқтаи назардан тушунтиради: чиқиндилар, тутун ва чанг, сув, дарахтлар. Нима қилиш кераклиги ва қаерга хабар бериш мумкинлигини айтади.</p>
+        <div class="eye" id="ekoEye">
+          <div>
+            <div class="eye-gate" id="eyeGate"></div>
+            <div class="eye-panel" id="eyeTool" hidden>
+              <div class="eye-notice">
+                <b>Юборишдан олдин:</b>
+                <ul>
+                  <li>Расм таҳлил учун сунъий интеллект хизматига (Anthropic, Claude) юборилади ва бизнинг серверда сақланмайди.</li>
+                  <li>Одамларни, айниқса болаларни, уй рақамлари ва машина рақамларини суратга олманг.</li>
+                  <li>Хавфли жойга (ёнғин, заҳарли модда) яқинлашманг — узоқдан суратга олинг.</li>
+                </ul>
+              </div>
+              <label class="eye-consent"><input type="checkbox" id="eyeConsent"> Тушундим ва розиман: расмим таҳлил учун СИ хизматига юборилади.</label>
+              <div class="eye-pick">
+                <label class="btn btn-primary">📷 Суратга олиш<input type="file" id="eyeCamera" accept="image/*" capture="environment"></label>
+                <label class="btn btn-ghost">🖼️ Галереядан<input type="file" id="eyeGallery" accept="image/*"></label>
+              </div>
+              <div class="eye-preview" id="eyePreview" hidden></div>
+              <button class="btn btn-primary" id="eyeGo" disabled>🔎 Таҳлил қилиш</button>
+            </div>
+          </div>
+          <div class="eye-panel" aria-live="polite">
+            <div id="eyeResult">
+              <p class="muted">Нималарни суратга олиш мумкин:</p>
+              <div class="eye-examples">
+                <span class="chip">🗑️ Чиқинди уюми</span><span class="chip">🏭 Корхона тутуни</span><span class="chip">🌫️ Чанг ва туман</span>
+                <span class="chip">💧 Ариқ ва дарё</span><span class="chip">🌳 Дарахтлар</span><span class="chip">♻️ Саралаш қутилари</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2214,6 +2283,7 @@ const LIBRARY = {
   }
 
   function render() {
+    window.dispatchEvent(new CustomEvent("eko:user", { detail: { user, online: true } }));
     btn.hidden = false;
     btn.classList.toggle("signed", !!user);
     btn.textContent = user ? "👤 " : T("Кириш");
@@ -2679,6 +2749,128 @@ const LIBRARY = {
 
   window.addEventListener("eko:reset", renderHub);
   renderHub();
+})();
+</script>
+  <script>
+/* ЭкоТаълим — «Эко-кўз»: расмни СИ ёрдамида экологик таҳлил қилиш.
+   Фақат сервер орқали ва ҳисобга кирган 18 ёшдан катта фойдаланувчилар учун ишлайди.
+   Расм браузерда кичрайтирилади (жойлашув каби EXIF маълумотлари ўчади) ва сақланмайди. */
+(() => {
+  "use strict";
+  const $ = (s, el = document) => el.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const box = $("#ekoEye"), gate = $("#eyeGate"), tool = $("#eyeTool");
+  const consent = $("#eyeConsent"), preview = $("#eyePreview"), go = $("#eyeGo"), out = $("#eyeResult");
+  const CONSENT_KEY = "ekotalim:eye-consent";
+  let image = null, busy = false, online = false;
+
+  function state(user) {
+    if (!online) {
+      gate.hidden = false; tool.hidden = true;
+      gate.innerHTML = "🌐 Эко-кўз фақат онлайн — сайт ёки илова орқали ишлайди.";
+      return;
+    }
+    if (!user) {
+      gate.hidden = false; tool.hidden = true;
+      gate.innerHTML = `🔒 Эко-кўз 18 ёшдан катталар учун: ҳисобингизга киринг. Болалар ота-онаси ёки ўқитувчиси билан бирга фойдаланиши мумкин. <button class="btn btn-primary" id="eyeLogin">Кириш</button>`;
+      $("#eyeLogin").onclick = () => $("#authBtn").click();
+      return;
+    }
+    if (!user.adult) {
+      gate.hidden = false; tool.hidden = true;
+      gate.innerHTML = "🔒 Эко-кўз 18 ёшдан катталар учун. Ота-онангиз ёки ўқитувчингиз ўз ҳисоби орқали сиз билан бирга фойдаланиши мумкин. Ўйинлар ва дарслар эса сиз учун очиқ! 🎮";
+      return;
+    }
+    gate.hidden = true; tool.hidden = false;
+  }
+  window.addEventListener("eko:user", (e) => { online = e.detail.online; state(e.detail.user); });
+  state(null);
+
+  try { consent.checked = localStorage.getItem(CONSENT_KEY) === "1"; } catch (e) { /* ignore */ }
+  consent.addEventListener("change", () => {
+    try { localStorage.setItem(CONSENT_KEY, consent.checked ? "1" : "0"); } catch (e) { /* ignore */ }
+    update();
+  });
+  function update() { go.disabled = !image || !consent.checked || busy; }
+
+  /* Расмни энг узун томони 1280 px бўлгунча кичрайтириш ва JPEG га айлантириш */
+  async function shrink(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = new Image();
+      img.src = url;
+      await img.decode();
+      const k = Math.min(1, 1280 / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      return c.toDataURL("image/jpeg", 0.82);
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+  async function pick(e) {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!file) return;
+    out.innerHTML = "";
+    try {
+      image = await shrink(file);
+      preview.innerHTML = `<img src="${image}" alt="Танланган расм">`;
+      preview.hidden = false;
+    } catch (err) {
+      image = null; preview.hidden = true;
+      out.innerHTML = `<p class="auth-error">Расмни очиб бўлмади. Бошқа расм танланг.</p>`;
+    }
+    update();
+  }
+  $("#eyeCamera").addEventListener("change", pick);
+  $("#eyeGallery").addEventListener("change", pick);
+
+  const RISK = {
+    none: ["risk-none", "Хавф йўқ"],
+    low: ["risk-low", "Паст хавф"],
+    medium: ["risk-med", "Ўртача хавф"],
+    high: ["risk-high", "Юқори хавф"]
+  };
+  function list(title, items) {
+    return items && items.length ? `<h4>${title}</h4><ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : "";
+  }
+  function show(r, left) {
+    const [cls, label] = RISK[r.risk] || RISK.none;
+    const icon = { ok: "🔎", not_eco: "🤔", people: "🙈", unclear: "🌫️" }[r.status] || "🔎";
+    out.innerHTML = `
+      <article class="eye-card">
+        <div class="eye-head"><span class="eye-icon">${icon}</span><h3>${esc(r.title)}</h3>${r.status === "ok" ? `<span class="risk ${cls}">${label}</span>` : ""}</div>
+        <p>${esc(r.summary)}</p>
+        ${r.findings && r.findings.length ? `<h4>Нима топилди</h4><ul>${r.findings.map((f) => `<li><b>${esc(f.item)}</b> — ${esc(f.impact)}</li>`).join("")}</ul>` : ""}
+        ${list("Нима қилиш мумкин", r.advice)}
+        ${list("Қаерга хабар бериш", r.report)}
+        ${r.fact ? `<p class="eye-fact">💡 ${esc(r.fact)}</p>` : ""}
+        <p class="muted small">Жавобни сунъий интеллект тайёрлади ва у хато қилиши мумкин. Муҳим қарорлардан олдин мутахассисга мурожаат қилинг.${typeof left === "number" ? ` Бугун яна ${left} та расм юбориш мумкин.` : ""}</p>
+      </article>`;
+    if (r.status === "ok" && window.EkoApp) window.EkoApp.addXp(5, "Эко-кўз");
+  }
+
+  go.addEventListener("click", async () => {
+    if (!image || busy) return;
+    busy = true; update();
+    out.innerHTML = `<p class="eye-wait">🔄 Расм таҳлил қилинмоқда… бу бир неча сония олади.</p>`;
+    try {
+      const res = await fetch("/api/analyze", {
+        method: "POST", credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Хатолик юз берди");
+      show(data.result, data.left);
+    } catch (err) {
+      out.innerHTML = `<p class="auth-error">${esc(navigator.onLine ? err.message : "Интернет йўқ. Уланишни текшириб, қайта уриниб кўринг.")}</p>`;
+    } finally {
+      busy = false; update();
+    }
+  });
 })();
 </script>
 </body>
