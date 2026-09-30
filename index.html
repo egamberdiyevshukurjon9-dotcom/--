@@ -9,9 +9,6 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxNTgwM2QiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZWE1ZTkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0idXJsKCNnKSIvPgogIDxwYXRoIGQ9Ik0zODAgMTMyYy0xNTAgMC0yNDggNzgtMjQ4IDE5NiAwIDIyIDQgNDIgMTEgNTggMjYtNzQgODYtMTMyIDE3MC0xNjAtNzAgNDAtMTIyIDk4LTE0NiAxNzYgMTQgNiAzMCAxMCA0OCAxMCAxMTggMCAxNjUtMTIwIDE2NS0yODB6IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo=" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
 :root {
   --bg: #f7faf7;
@@ -282,6 +279,69 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .danger-zone summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
 .btn-danger { background: #dc2626; color: #fff; }
 
+/* Games */
+.game-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
+.game-card { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-align: left; border: 0; border-radius: 22px; padding: 20px; cursor: pointer; font: inherit; color: #13261a; box-shadow: var(--shadow); transition: transform .15s; min-width: 0; }
+.game-card:hover, .game-card:focus-visible { transform: translateY(-3px) rotate(-.5deg); }
+.game-card b { font-size: 1.2rem; }
+.game-ic { font-size: 3rem; line-height: 1; }
+.game-desc { font-size: .92rem; opacity: .85; }
+.game-best { font-size: .8rem; font-weight: 600; background: rgba(255,255,255,.6); padding: 3px 10px; border-radius: 999px; }
+.game-play { margin-top: auto; font-weight: 700; background: #13261a; color: #fff; padding: 8px 16px; border-radius: 999px; }
+.g-yellow { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+.g-blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.g-pink { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+.g-green { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+#gameModal { width: min(640px, calc(100% - 20px)); }
+#gameModal .modal-inner { padding: 22px; }
+.g-top { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 8px; }
+.g-progress { height: 10px; background: var(--bg-alt); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
+.g-progress div { height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-2)); transition: width .3s; }
+.g-progress.timer div { transition: width .1s linear; background: linear-gradient(90deg, #f59e0b, #ef4444); }
+.g-fact { min-height: 3em; margin: 14px 0 0; font-size: .95rem; }
+.g-finish { text-align: center; padding: 12px 0; }
+.g-finish h3 { font-size: 1.5rem; margin: 8px 0; }
+.g-big { font-size: 4.5rem; line-height: 1.1; }
+.g-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+.sort-item { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 6px 0 16px; text-align: center; }
+.sort-emoji { font-size: 4.5rem; line-height: 1.1; animation: pop .35s ease-out; }
+.bins { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.bin { display: flex; flex-direction: column; align-items: center; gap: 4px; border: 3px solid transparent; border-radius: 16px; padding: 12px 4px; font: 600 .8rem Inter, system-ui, sans-serif; cursor: pointer; color: #13261a; min-width: 0; overflow-wrap: anywhere; }
+.bin span { font-size: 1.9rem; }
+.b-blue { background: #bfdbfe; } .b-yellow { background: #fde68a; } .b-green { background: #bbf7d0; } .b-brown { background: #e7d3b5; } .b-red { background: #fecaca; }
+.bin.right, .tf-btn.right { border-color: #16a34a; box-shadow: 0 0 0 3px #86efac; }
+.bin.wrong, .tf-btn.wrong { border-color: #dc2626; animation: shake .4s; }
+.mem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.mem { aspect-ratio: 1; border: 0; border-radius: 16px; font-size: 2.2rem; cursor: pointer; position: relative; background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; transition: transform .25s; }
+.mem .mem-front { display: none; }
+.mem.open { background: var(--card); border: 2px solid var(--line); transform: rotateY(180deg); }
+.mem.open .mem-front { display: inline; transform: rotateY(180deg); }
+.mem.open .mem-back { display: none; }
+.mem.done { background: var(--primary-soft); border-color: var(--primary); }
+.quiz-q { font-size: 1.25rem; font-weight: 600; text-align: center; margin: 18px 0; min-height: 3.2em; }
+.tf { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tf-btn { border: 3px solid transparent; border-radius: 18px; padding: 18px 10px; font: 700 1.1rem Inter, system-ui, sans-serif; cursor: pointer; color: #13261a; }
+.tf-btn.yes { background: #bbf7d0; } .tf-btn.no { background: #fecaca; }
+.tf-btn:disabled { cursor: default; }
+.tree-scene { position: relative; height: 220px; border-radius: 20px; background: linear-gradient(#bae6fd, #e0f2fe 70%); overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+.tree-sun { position: absolute; top: 12px; right: 18px; font-size: 2.4rem; }
+.tree-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 36px; background: #a3e635; border-top: 6px solid #65a30d; }
+.tree { position: relative; z-index: 1; margin-bottom: 22px; border: 0; background: none; font-size: 6rem; line-height: 1; cursor: pointer; transform-origin: bottom center; }
+.tree.grow { animation: grow .8s ease-out; }
+.tree.wiggle { animation: wiggle .6s; }
+.tree-name { text-align: center; margin: 12px 0 2px; font-size: 1.3rem; }
+.tree-water { width: 100%; margin-top: 4px; }
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden; }
+.confetti span { position: absolute; top: -40px; animation: fall 2.6s ease-in forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }
+@keyframes pop { from { transform: scale(.4); opacity: 0; } }
+@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes grow { from { transform: scale(.5); } 60% { transform: scale(1.15); } }
+@keyframes wiggle { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+@media (prefers-reduced-motion: reduce) { .sort-emoji, .tree.grow, .tree.wiggle, .bin.wrong, .tf-btn.wrong { animation: none; } }
+.age-row select { font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.guest-note { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: var(--primary-soft); font-size: .88rem; }
+
 /* Responsive */
 .topbar .wrap { max-width: 1320px; }
 @media (max-width: 1319px) {
@@ -290,6 +350,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
   .nav.open { display: flex; }
 }
 @media (max-width: 960px) {
+  .game-grid { grid-template-columns: repeat(2, 1fr); }
   .aud-grid, .course-grid, .news-grid { grid-template-columns: repeat(2, 1fr); }
   .ch-grid { grid-template-columns: repeat(2, 1fr); }
   .hero-grid { grid-template-columns: 1fr; }
@@ -301,6 +362,9 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 }
 @media (max-width: 620px) {
   .aud-grid, .course-grid, .news-grid, .ch-grid { grid-template-columns: 1fr; }
+  .bins { grid-template-columns: repeat(3, 1fr); }
+  .game-card { padding: 16px; }
+  .game-ic { font-size: 2.4rem; }
   .user-chip span:last-child { display: none; }
   .auth-btn.signed .auth-name { display: none; }
   .topbar-inner { gap: 8px; }
@@ -320,7 +384,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
   .user-chip { padding: 6px 8px; }
   .lang-btn { padding: 0 8px; }
 }
-@media (max-width: 379px) {
+@media (max-width: 479px) {
   .brand-name { display: none; }
 }
 </style>
@@ -331,6 +395,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
       <a class="brand" href="#bosh"><span class="brand-logo">🌿</span><span class="brand-name">ЭкоТаълим</span></a>
       <button class="menu-btn" id="menuBtn" aria-label="Меню" aria-expanded="false">☰</button>
       <nav class="nav" id="nav">
+        <a href="#oyinlar">Ўйинлар</a>
         <a href="#kurslar">Курслар</a>
         <a href="#yangiliklar">Янгиликлар</a>
         <a href="#kutubxona">Кутубхона</a>
@@ -359,6 +424,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
           <p class="lead">Аҳоли, корхоналар ва таълим муассасалари учун замонавий экологик таълим платформаси. Интерактив курслар, тестлар, ҳаво сифатини реал вақтда кузатиш, углерод калькулятори ва энг сўнгги экологик янгиликлар.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#kurslar">Ўқишни бошлаш</a>
+            <a class="btn btn-ghost" href="#oyinlar">🎮 Ўйнаш</a>
             <a class="btn btn-ghost" href="#kalkulyator">Углерод изимни ҳисоблаш</a>
           </div>
           <div class="tip-card">
@@ -404,6 +470,15 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
             <p>Барқарор ривожланиш мақсадлари, Орол муаммоси, яшил технологиялар ва тадқиқот лойиҳалари. Якунида — сертификат.</p>
           </article>
         </div>
+      </div>
+    </section>
+
+    <!-- GAMES -->
+    <section class="section" id="oyinlar">
+      <div class="wrap">
+        <h2 class="section-title">🎮 Эко-ўйинлар</h2>
+        <p class="muted">Ўйнаб ўрган! Ҳар бир ўйин учун XP ва нишонлар оласиз. Ҳисоб очиш шарт эмас — натижалар шу қурилмада сақланади.</p>
+        <div class="game-grid" id="gameGrid"></div>
       </div>
     </section>
 
@@ -584,6 +659,15 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
     </div>
   </dialog>
 
+  <!-- GAME MODAL -->
+  <dialog class="modal" id="gameModal">
+    <div class="modal-inner">
+      <button class="modal-close" id="gameClose" aria-label="Ёпиш">✕</button>
+      <h2 id="gameTitle" style="margin:0 44px 14px 0"></h2>
+      <div id="gameBody"></div>
+    </div>
+  </dialog>
+
   <!-- AUTH MODAL -->
   <dialog class="modal" id="authModal">
     <div class="modal-inner">
@@ -593,8 +677,12 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
         <button class="chip" data-mode="register" role="tab">Рўйхатдан ўтиш</button>
       </div>
       <form class="auth-form" id="authForm" novalidate>
+        <p class="guest-note" id="guestNote">Ҳисоб очиш шарт эмас: дарслар ва ўйинлар ҳисобсиз ҳам ишлайди, натижалар шу қурилмада сақланади.</p>
         <label id="authNameRow" hidden>Исм Фамилия
           <input name="name" maxlength="60" autocomplete="name">
+        </label>
+        <label class="age-row" id="authAgeRow" hidden>Туғилган йилингиз
+          <select name="birthYear"><option value="">Танланг</option></select>
         </label>
         <label>Электрон почта
           <input name="email" type="email" maxlength="254" autocomplete="email" required>
@@ -1489,7 +1577,7 @@ const LIBRARY = {
 
   /* ---------- Ҳолат (браузерда сақланади) ---------- */
   const KEY = "ekotalim:v1";
-  const fresh = () => ({ xp: 0, correct: {}, perfect: {}, challenges: {}, flags: {}, read: {}, name: "" });
+  const fresh = () => ({ xp: 0, correct: {}, perfect: {}, challenges: {}, flags: {}, read: {}, name: "", games: {} });
   let state = fresh();
   try { state = Object.assign(fresh(), JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { /* хотира йўқ — сақламасдан ишлайди */ }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } };
@@ -1997,7 +2085,11 @@ const LIBRARY = {
     { id: "air", icon: "🛰️", name: "Ҳаво кузатувчиси", test: () => state.flags.air },
     { id: "reader", icon: "📚", name: "Китобхон", test: () => Object.keys(state.read).length >= 10 },
     { id: "animals", icon: "🐾", name: "Ҳайвонлар дўсти", test: () => LIBRARY.animals.every((_, i) => state.read[readKey("animals", i)]) },
-    { id: "law", icon: "⚖️", name: "Эко-ҳуқуқшунос", test: () => LIBRARY.laws.every((_, i) => state.read[readKey("laws", i)]) }
+    { id: "law", icon: "⚖️", name: "Эко-ҳуқуқшунос", test: () => LIBRARY.laws.every((_, i) => state.read[readKey("laws", i)]) },
+    { id: "g_sort", icon: "♻️", name: "Саралаш устаси", test: () => state.flags.game_sort10 },
+    { id: "g_mem", icon: "🧠", name: "Хотира чемпиони", test: () => state.flags.game_memory10 },
+    { id: "g_quiz", icon: "⚡", name: "Тезкор билимдон", test: () => state.flags.game_quiz8 },
+    { id: "g_tree", icon: "🌳", name: "Боғбон", test: () => state.flags.game_tree7 }
   ];
 
   function renderGamification() {
@@ -2067,9 +2159,10 @@ const LIBRARY = {
   });
 
   $("#resetBtn").addEventListener("click", () => {
-    if (!confirm(T("Барча натижалар (XP, дарслар, челленжлар) ўчирилади. Давом этасизми?"))) return;
+    if (!confirm(T("Барча натижалар (XP, дарслар, челленжлар, ўйинлар) ўчирилади. Давом этасизми?"))) return;
     state = fresh(); save();
     renderCourses(); renderChallenges(); renderLibrary(); renderGamification();
+    window.dispatchEvent(new Event("eko:reset"));
     toast("Натижалар тозаланди");
   });
 
@@ -2081,6 +2174,9 @@ const LIBRARY = {
   renderChallenges();
   renderGamification();
   loadAir();
+
+  /* Ўйинлар скрипти учун кўприк */
+  window.EkoApp = { addXp, flag, save, toast, renderGamification, get state() { return state; } };
 
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
@@ -2133,6 +2229,7 @@ const LIBRARY = {
     mode = m;
     modal.querySelectorAll("[data-mode]").forEach((b) => b.classList.toggle("active", b.dataset.mode === m));
     nameRow.hidden = m !== "register";
+    $("#authAgeRow").hidden = m !== "register";
     form.password.autocomplete = m === "register" ? "new-password" : "current-password";
     submit.textContent = T(m === "register" ? "Рўйхатдан ўтиш" : "Кириш");
     $("#authPrivacy").hidden = m !== "register";
@@ -2147,6 +2244,10 @@ const LIBRARY = {
     }, 60 * 1000);
   }
 
+  (() => {
+    const y = new Date().getFullYear(), sel = form.birthYear;
+    for (let i = y; i >= y - 100; i--) sel.add(new Option(String(i), String(i)));
+  })();
   const account = $("#accountModal"), delForm = $("#deleteForm");
   btn.addEventListener("click", () => {
     if (!user) { setMode("login"); modal.showModal(); form.email.focus(); return; }
@@ -2181,7 +2282,15 @@ const LIBRARY = {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const body = { email: form.email.value.trim(), password: form.password.value };
-    if (mode === "register") body.name = form.name.value.trim();
+    if (mode === "register") {
+      body.name = form.name.value.trim();
+      body.birthYear = Number(form.birthYear.value) || 0;
+      if (!body.birthYear) { errEl.textContent = T("Туғилган йилингизни танланг"); return; }
+      if (new Date().getFullYear() - body.birthYear < 14) {
+        errEl.textContent = T("Ҳисоб очиш учун 13 ёш тўлган бўлиши керак. Ташвишланманг — барча дарслар ва ўйинлар ҳисобсиз ҳам ишлайди!");
+        return;
+      }
+    }
     submit.disabled = true; errEl.textContent = "";
     try {
       const data = await call(mode === "register" ? "/api/register" : "/api/login", body);
@@ -2203,6 +2312,373 @@ const LIBRARY = {
       .then((data) => { user = data.user; render(); startPing(); })
       .catch(() => { /* сервер йўқ — кириш тугмаси яширин қолади */ });
   }
+})();
+</script>
+  <script>
+/* ЭкоТаълим — болалар учун эко-ўйинлар.
+   Ҳаммаси қурилмада ишлайди: интернет ва ҳисоб шарт эмас. XP ва нишонлар асосий
+   тизимга (EkoApp) қўшилади. Бир ўйиндан кунига 3 мартагача XP берилади. */
+(() => {
+  "use strict";
+  const App = window.EkoApp;
+  if (!App) return;
+  const $ = (s, el = document) => el.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const T = (s) => s; // лотин режими MutationObserver орқали ўзи ўгиради
+  const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function G() {
+    const st = App.state;
+    if (!st.games) st.games = {};
+    const g = st.games;
+    g.best = g.best || {};
+    g.plays = g.plays || {};
+    g.tree = g.tree || { water: 0, last: "" };
+    return g;
+  }
+  /* Кунига 3 мартагача XP — ўйнаш чекланмайди, фақат XP */
+  function reward(game, xp, why) {
+    const g = G(), k = dayKey();
+    if (!g.plays[k]) g.plays = { [k]: {} };
+    const n = g.plays[k][game] || 0;
+    g.plays[k][game] = n + 1;
+    if (n < 3 && xp > 0) App.addXp(xp, why);
+    else { App.save(); App.renderGamification(); if (xp > 0) App.toast(T("Бугунги XP олинди — эртага яна келинг! 🌙")); }
+  }
+  function setBest(game, score, higherIsBetter = true) {
+    const g = G(), old = g.best[game];
+    const better = old === undefined || (higherIsBetter ? score > old : score < old);
+    if (better) { g.best[game] = score; App.save(); }
+    return better;
+  }
+
+  function confetti() {
+    if (reduceMotion) return;
+    const box = document.createElement("div");
+    box.className = "confetti";
+    const E = ["🌿", "🍃", "🌸", "⭐", "💧", "🌻", "🦋"];
+    for (let i = 0; i < 28; i++) {
+      const s = document.createElement("span");
+      s.textContent = E[i % E.length];
+      s.style.left = Math.random() * 100 + "%";
+      s.style.animationDelay = Math.random() * .6 + "s";
+      s.style.fontSize = 18 + Math.random() * 18 + "px";
+      box.appendChild(s);
+    }
+    document.body.appendChild(box);
+    setTimeout(() => box.remove(), 3200);
+  }
+
+  /* ---------- Маълумотлар ---------- */
+  const BINS = [
+    { id: "paper", icon: "📦", name: "Қоғоз", cls: "b-blue" },
+    { id: "plastic", icon: "🧴", name: "Пластик ва металл", cls: "b-yellow" },
+    { id: "glass", icon: "🍾", name: "Шиша", cls: "b-green" },
+    { id: "organic", icon: "🍂", name: "Органик", cls: "b-brown" },
+    { id: "danger", icon: "⚠️", name: "Хавфли", cls: "b-red" }
+  ];
+  const ITEMS = [
+    { i: "📰", n: "Эски газета", b: "paper", f: "Бир тонна қоғозни қайта ишлаш 17 та дарахтни асраб қолади." },
+    { i: "📦", n: "Картон қути", b: "paper", f: "Картонни топширишдан олдин уни букиб, ясси қилинг — жой тежалади." },
+    { i: "📚", n: "Эски дафтар", b: "paper", f: "Дафтар қоғозидан янги қоғоз ва картон ясалади." },
+    { i: "🧻", n: "Туалет қоғози ўрами", b: "paper", f: "Картон ўрамлар ҳам қоғоз чиқиндиси — уларни алоҳида йиғинг." },
+    { i: "🥤", n: "Пластик бутилка", b: "plastic", f: "Пластик бутилка табиатда 400 йилдан кўпроқ парчаланади." },
+    { i: "🧴", n: "Шампунь идиши", b: "plastic", f: "Идишни чайиб, қуруқ ҳолда топширинг." },
+    { i: "🛍️", n: "Пластик пакет", b: "plastic", f: "Мато сумка юзлаб пакетнинг ўрнини босади." },
+    { i: "🥫", n: "Консерва банкаси", b: "plastic", f: "Металл банкалар чексиз марта қайта ишланиши мумкин." },
+    { i: "🍾", n: "Шиша бутилка", b: "glass", f: "Шиша сифатини йўқотмасдан қайта-қайта эритилади." },
+    { i: "🫙", n: "Мураббо банкаси", b: "glass", f: "Шиша банкани уйда қайта ишлатиш ҳам мумкин — масалан, уруғлар учун." },
+    { i: "🍶", n: "Шиша кўза", b: "glass", f: "Шишани рангига қараб ажратиш уни қайта ишлашни осонлаштиради." },
+    { i: "🍌", n: "Банан пўсти", b: "organic", f: "Органик чиқиндидан компост — ўсимликлар учун ажойиб ўғит тайёрланади." },
+    { i: "🍎", n: "Олма қолдиғи", b: "organic", f: "Мева қолдиқлари компостда 2–3 ойда тупроққа айланади." },
+    { i: "🥕", n: "Сабзи пўсти", b: "organic", f: "Сабзавот пўстлари — компостнинг энг яхши таркиби." },
+    { i: "🍂", n: "Хазон", b: "organic", f: "Хазонни ёқманг! У ҳавони ифлослантиради. Компост қилинг." },
+    { i: "🥚", n: "Тухум пўчоғи", b: "organic", f: "Майдаланган тухум пўчоғи тупроққа кальций беради." },
+    { i: "🔋", n: "Батарейка", b: "danger", f: "Битта батарейка кўп литр сувни заҳарлаши мумкин. Махсус қутига ташланг." },
+    { i: "💡", n: "Энергия тежовчи лампа", b: "danger", f: "Бундай лампаларда симоб бор — уни синдирманг, махсус пунктга топширинг." },
+    { i: "💊", n: "Муддати ўтган дорилар", b: "danger", f: "Дориларни ҳожатхонага ташламанг — улар сувга тушади." },
+    { i: "📱", n: "Эски телефон", b: "danger", f: "Телефонда олтин ва мис каби қимматли металлар бор — уни қайта ишлаш мумкин." },
+    { i: "🌡️", n: "Симобли термометр", b: "danger", f: "Симоб жуда заҳарли. Синган термометрни катталарга айтинг." }
+  ];
+  const PAIRS = [
+    { i: "🌳", n: "Дарахт", f: "Дарахтлар кислород беради ва ҳавони тозалайди." },
+    { i: "💧", n: "Сув", f: "Ердаги сувнинг атиги 1 фоизга яқини ичишга яроқли." },
+    { i: "☀️", n: "Қуёш", f: "Қуёш панеллари қуёш нурини электрга айлантиради." },
+    { i: "♻️", n: "Қайта ишлаш", f: "Қайта ишлаш янги хомашё ва энергияни тежайди." },
+    { i: "🐝", n: "Ари", f: "Арилар гулларни чанглатади — усиз кўп мевалар бўлмасди." },
+    { i: "🦋", n: "Капалак", f: "Капалаклар кўп бўлса, табиат соғлом деганидир." },
+    { i: "🐢", n: "Тошбақа", f: "Денгиз тошбақалари пакетни медуза деб ўйлаб ютиб юборади." },
+    { i: "🌻", n: "Кунгабоқар", f: "Кунгабоқар доим қуёшга қараб бурилади." }
+  ];
+  const QUIZ = [
+    { q: "Пластик бутилка табиатда 400 йилдан кўпроқ парчаланади.", a: true, e: "Тўғри! Шунинг учун пластикни камайтириш муҳим." },
+    { q: "Батарейкани оддий ахлат қутисига ташлаш мумкин.", a: false, e: "Нотўғри. Батарейка заҳарли — махсус қутига ташланг." },
+    { q: "Орол денгизи ўтган аср ўрталаридан бери кичрайиб бормоқда.", a: true, e: "Тўғри. Бу дунёдаги энг катта экологик фожиалардан бири." },
+    { q: "Тиш ювганда жўмракни ёпиб қўйиш сувни тежайди.", a: true, e: "Тўғри! Шу билан кунига бир неча литр сув тежалади." },
+    { q: "Шиша фақат бир марта қайта ишланади.", a: false, e: "Нотўғри. Шиша чексиз марта қайта ишланиши мумкин." },
+    { q: "Қуёш ва шамол — тугаб қоладиган энергия манбалари.", a: false, e: "Нотўғри. Улар тикланадиган, яъни тугамайдиган манбалар." },
+    { q: "Арилар озиқ-овқат етиштиришга ёрдам беради.", a: true, e: "Тўғри! Улар гулларни чанглатади." },
+    { q: "Хазонни ёқиш ҳаво учун фойдали.", a: false, e: "Нотўғри. Тутун ҳавони ифлослантиради, хазондан компост қилинг." },
+    { q: "Велосипедда юриш ҳавони ифлослантирмайди.", a: true, e: "Тўғри! Велосипед — энг тоза транспорт." },
+    { q: "Қоғоз дарахтлардан тайёрланади.", a: true, e: "Тўғри. Қоғозни тежасак, дарахтларни асраймиз." },
+    { q: "Ердаги сувнинг кўп қисми ичишга яроқли.", a: false, e: "Нотўғри. Кўп қисми денгизлардаги шўр сув." },
+    { q: "Мато сумкани кўп марта ишлатиш мумкин.", a: true, e: "Тўғри! Бир мато сумка юзлаб пакетнинг ўрнини босади." },
+    { q: "Хонадан чиқаётганда чироқни ўчириш энергияни тежайди.", a: true, e: "Тўғри! Кичик одат — катта фойда." },
+    { q: "Микропластик балиқларнинг ичида ҳам топилган.", a: true, e: "Тўғри. Пластик денгиз орқали овқатимизга қайтади." },
+    { q: "Дарахт экишнинг энг яхши вақти — ёзнинг энг иссиқ кунлари.", a: false, e: "Нотўғри. Баҳор ва куз энг қулай вақт." },
+    { q: "Автомобиллар ҳавога зарарли газлар чиқаради.", a: true, e: "Тўғри. Шунинг учун пиёда юриш ва жамоат транспорти яхши." },
+    { q: "Ёввойи ҳайвонни уйда боқиш табиат учун яхши.", a: false, e: "Нотўғри. Ёввойи ҳайвонлар табиатда яшаши керак." },
+    { q: "Органик чиқиндидан ўғит тайёрлаш мумкин.", a: true, e: "Тўғри! Бу компост дейилади." },
+    { q: "Оқаётган жўмрак бир йилда минглаб литр сувни исроф қилади.", a: true, e: "Тўғри. Уни тузатиш жуда муҳим." },
+    { q: "Ахлатни дарёга ташласа, сув уни олиб кетади ва муаммо йўқолади.", a: false, e: "Нотўғри. Ахлат денгизга етиб, ҳайвонларга зарар беради." }
+  ];
+  const TREE_STAGES = [
+    { min: 0, icon: "🌰", name: "Уруғ" },
+    { min: 1, icon: "🌱", name: "Ниҳол" },
+    { min: 3, icon: "🌿", name: "Кўчат" },
+    { min: 7, icon: "🪴", name: "Ёш дарахт" },
+    { min: 14, icon: "🌳", name: "Катта дарахт" },
+    { min: 30, icon: "🌳🌲🌳", name: "Кичик ўрмон" }
+  ];
+  const TREE_TIPS = [
+    "Битта катта дарахт йилига 100 кг гача чангни ушлаб қолади.",
+    "Дарахт соясида ҳаво 5–7 даража салқинроқ бўлади.",
+    "Кўчатни баҳорда ёки кузда экинг.",
+    "Ёш дарахтни эрталаб ёки кечқурун суғоринг — сув камроқ буғланади.",
+    "Дарахт илдизлари тупроқни шамол ва сувдан ҳимоя қилади.",
+    "Қушлар ва ҳашаротлар дарахтда уй топади.",
+    "Бир гектар ўрмон йилига ўнлаб одам учун кислород беради."
+  ];
+
+  const GAMES = [
+    { id: "sort", icon: "♻️", name: "Чиқиндини сарала", desc: "Ҳар бир нарсани тўғри қутига ташла!", cls: "g-yellow" },
+    { id: "memory", icon: "🧠", name: "Эко-хотира", desc: "Бир хил карталарни топ ва табиат ҳақида билиб ол.", cls: "g-blue" },
+    { id: "quiz", icon: "⚡", name: "Тўғри ёки нотўғри?", desc: "10 та савол, ҳар бирига 10 сония. Тез бўл!", cls: "g-pink" },
+    { id: "tree", icon: "🌳", name: "Менинг дарахтим", desc: "Ҳар куни сув бер ва дарахтингни ўстир.", cls: "g-green" }
+  ];
+
+  /* ---------- Ўйинлар рўйхати ---------- */
+  const hub = $("#gameGrid");
+  const modal = $("#gameModal"), body = $("#gameBody"), title = $("#gameTitle");
+  let cleanup = null, session = 0;
+  /* Ўйин ёпилганда ёки алмашганда кечиктирилган қадамлар ишламаслиги учун */
+  function later(fn, ms) {
+    const sid = session;
+    setTimeout(() => { if (sid === session) fn(); }, ms);
+  }
+
+  function bestText(id) {
+    const g = G();
+    if (id === "sort") return g.best.sort !== undefined ? `Энг яхши: ${g.best.sort}/10` : "Ҳали ўйналмаган";
+    if (id === "memory") return g.best.memory !== undefined ? `Энг яхши: ${g.best.memory} ҳаракат` : "Ҳали ўйналмаган";
+    if (id === "quiz") return g.best.quiz !== undefined ? `Энг яхши: ${g.best.quiz}/10` : "Ҳали ўйналмаган";
+    const s = treeStage(g.tree.water);
+    return `${s.icon} ${s.name}${g.tree.last === dayKey() ? " · бугун сув берилди" : " · сув кутяпти 💧"}`;
+  }
+  function renderHub() {
+    hub.innerHTML = GAMES.map((g) => `
+      <button class="game-card ${g.cls}" data-game="${g.id}">
+        <span class="game-ic">${g.icon}</span>
+        <b>${esc(g.name)}</b>
+        <span class="game-desc">${esc(g.desc)}</span>
+        <span class="game-best">${esc(bestText(g.id))}</span>
+        <span class="game-play">Ўйнаш ▶</span>
+      </button>`).join("");
+  }
+  hub.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-game]");
+    if (b) open(b.dataset.game);
+  });
+  function open(id) {
+    const game = GAMES.find((g) => g.id === id);
+    title.textContent = `${game.icon} ${game.name}`;
+    if (cleanup) cleanup();
+    cleanup = null; session++;
+    ({ sort: startSort, memory: startMemory, quiz: startQuiz, tree: startTree })[id]();
+    if (!modal.open) modal.showModal();
+  }
+  function close() { if (cleanup) cleanup(); cleanup = null; session++; modal.close(); }
+  $("#gameClose").addEventListener("click", close);
+  modal.addEventListener("close", () => { if (cleanup) cleanup(); cleanup = null; session++; renderHub(); });
+  function finish(html, again) {
+    body.innerHTML = `<div class="g-finish">${html}<div class="g-actions"><button class="btn btn-primary" data-again>Яна ўйнаш</button><button class="btn btn-ghost" data-close>Ўйинлар рўйхати</button></div></div>`;
+    $("[data-again]", body).onclick = () => { if (cleanup) cleanup(); session++; again(); };
+    $("[data-close]", body).onclick = close;
+  }
+
+  /* ---------- 1. Чиқиндини сарала ---------- */
+  function startSort() {
+    const items = shuffle(ITEMS).slice(0, 10);
+    let i = 0, score = 0, locked = false;
+    function show() {
+      const it = items[i];
+      body.innerHTML = `
+        <div class="g-top"><span>${i + 1} / 10</span><span>⭐ ${score}</span></div>
+        <div class="g-progress"><div style="width:${i * 10}%"></div></div>
+        <div class="sort-item"><span class="sort-emoji">${it.i}</span><b>${esc(it.n)}</b><span class="muted small">Қайси қутига ташлаймиз?</span></div>
+        <div class="bins">${BINS.map((b) => `<button class="bin ${b.cls}" data-bin="${b.id}"><span>${b.icon}</span>${esc(b.name)}</button>`).join("")}</div>
+        <p class="g-fact" id="sortFact" aria-live="polite"></p>`;
+      locked = false;
+    }
+    body.onclick = (e) => {
+      const btn = e.target.closest("[data-bin]");
+      if (!btn || locked) return;
+      locked = true;
+      const it = items[i], ok = btn.dataset.bin === it.b;
+      if (ok) score++;
+      btn.classList.add(ok ? "right" : "wrong");
+      if (!ok) body.querySelector(`[data-bin="${it.b}"]`).classList.add("right");
+      $("#sortFact").innerHTML = `${ok ? "✅ Баракалла!" : "❌ Бу " + esc(BINS.find((b) => b.id === it.b).name) + " қутисига."} ${esc(it.f)}`;
+      later(() => { i++; i < 10 ? show() : done(); }, ok ? 1400 : 2300);
+    };
+    function done() {
+      body.onclick = null;
+      const rec = setBest("sort", score);
+      if (score >= 7) confetti();
+      reward("sort", score * 2, "чиқинди саралаш");
+      if (score === 10) App.flag("game_sort10");
+      finish(`<div class="g-big">${score >= 8 ? "🏆" : score >= 5 ? "🌟" : "💪"}</div>
+        <h3>${score} / 10 тўғри!</h3>
+        <p class="muted">${rec ? "Янги рекорд! " : ""}${score === 10 ? "Сиз ҳақиқий саралаш устасисиз!" : "Яна уриниб кўринг — ҳар сафар кўпроқ биласиз."}</p>`, startSort);
+    }
+    show();
+    cleanup = () => { body.onclick = null; };
+  }
+
+  /* ---------- 2. Эко-хотира ---------- */
+  function startMemory() {
+    const pairs = shuffle(PAIRS).slice(0, 6);
+    const cards = shuffle([...pairs, ...pairs].map((p, k) => ({ ...p, k })));
+    let first = null, busy = false, moves = 0, found = 0;
+    body.innerHTML = `
+      <div class="g-top"><span>Ҳаракатлар: <b id="memMoves">0</b></span><span>Топилди: <b id="memFound">0</b> / 6</span></div>
+      <div class="mem-grid">${cards.map((c, idx) => `<button class="mem" data-idx="${idx}" aria-label="Карта"><span class="mem-back">🌿</span><span class="mem-front">${c.i}</span></button>`).join("")}</div>
+      <p class="g-fact" id="memFact" aria-live="polite">Карталарни очиб, бир хил жуфтликни топинг.</p>`;
+    body.onclick = (e) => {
+      const b = e.target.closest(".mem");
+      if (!b || busy || b.classList.contains("open")) return;
+      b.classList.add("open");
+      const c = cards[b.dataset.idx];
+      if (!first) { first = { b, c }; return; }
+      moves++; $("#memMoves").textContent = moves;
+      if (first.c.i === c.i) {
+        first.b.classList.add("done"); b.classList.add("done");
+        found++; $("#memFound").textContent = found;
+        $("#memFact").textContent = `${c.i} ${T(c.n)}: ${T(c.f)}`;
+        first = null;
+        if (found === 6) later(done, 900);
+      } else {
+        busy = true;
+        const f = first; first = null;
+        later(() => { f.b.classList.remove("open"); b.classList.remove("open"); busy = false; }, 900);
+      }
+    };
+    function done() {
+      body.onclick = null;
+      const rec = setBest("memory", moves, false);
+      confetti();
+      reward("memory", moves <= 10 ? 20 : 12, "эко-хотира");
+      App.flag("game_memory");
+      if (moves <= 10) App.flag("game_memory10");
+      finish(`<div class="g-big">🧠</div><h3>${moves} та ҳаракатда топдингиз!</h3>
+        <p class="muted">${rec ? "Янги рекорд! " : ""}${moves <= 10 ? "Ажойиб хотира!" : "10 та ҳаракатда топишга ҳаракат қилинг."}</p>`, startMemory);
+    }
+    cleanup = () => { body.onclick = null; };
+  }
+
+  /* ---------- 3. Тўғри ёки нотўғри? ---------- */
+  function startQuiz() {
+    const qs = shuffle(QUIZ).slice(0, 10);
+    let i = 0, score = 0, timer = null, left = 10, locked = false;
+    function show() {
+      const q = qs[i];
+      left = 10; locked = false;
+      body.innerHTML = `
+        <div class="g-top"><span>${i + 1} / 10</span><span>⭐ ${score}</span></div>
+        <div class="g-progress timer"><div id="qBar" style="width:100%"></div></div>
+        <p class="quiz-q">${esc(q.q)}</p>
+        <div class="tf">
+          <button class="tf-btn yes" data-a="1">👍 Тўғри</button>
+          <button class="tf-btn no" data-a="0">👎 Нотўғри</button>
+        </div>
+        <p class="g-fact" id="qFact" aria-live="polite"></p>`;
+      clearInterval(timer);
+      timer = setInterval(() => {
+        left -= .1;
+        const bar = $("#qBar");
+        if (bar) bar.style.width = Math.max(0, left * 10) + "%";
+        if (left <= 0) answer(null);
+      }, 100);
+    }
+    function answer(val) {
+      if (locked) return;
+      locked = true; clearInterval(timer);
+      const q = qs[i], ok = val === q.a;
+      if (ok) score++;
+      body.querySelectorAll(".tf-btn").forEach((b) => {
+        const v = b.dataset.a === "1";
+        if (v === q.a) b.classList.add("right"); else if (v === val) b.classList.add("wrong");
+        b.disabled = true;
+      });
+      $("#qFact").textContent = (val === null ? "⏰ Вақт тугади! " : ok ? "✅ " : "❌ ") + T(q.e);
+      later(() => { i++; i < 10 ? show() : done(); }, 2200);
+    }
+    body.onclick = (e) => { const b = e.target.closest(".tf-btn"); if (b) answer(b.dataset.a === "1"); };
+    function done() {
+      body.onclick = null;
+      const rec = setBest("quiz", score);
+      if (score >= 7) confetti();
+      reward("quiz", score * 2, "эко-викторина");
+      if (score >= 8) App.flag("game_quiz8");
+      finish(`<div class="g-big">${score >= 8 ? "⚡" : "📘"}</div><h3>${score} / 10 тўғри жавоб</h3>
+        <p class="muted">${rec ? "Янги рекорд! " : ""}${score >= 8 ? "Сиз тезкор билимдонсиз!" : "Курслар бўлимида кўпроқ ўрганинг ва қайта уриниб кўринг."}</p>`, startQuiz);
+    }
+    show();
+    cleanup = () => { clearInterval(timer); body.onclick = null; };
+  }
+
+  /* ---------- 4. Менинг дарахтим ---------- */
+  const treeStage = (w) => [...TREE_STAGES].reverse().find((s) => w >= s.min);
+  function startTree() {
+    function render(anim) {
+      const t = G().tree, s = treeStage(t.water), next = TREE_STAGES[TREE_STAGES.indexOf(s) + 1];
+      const today = t.last === dayKey();
+      body.innerHTML = `
+        <div class="tree-scene">
+          <div class="tree-sun">☀️</div>
+          <button class="tree ${anim ? "grow" : ""}" id="treeBtn" aria-label="Дарахт">${s.icon}</button>
+          <div class="tree-ground"></div>
+        </div>
+        <h3 class="tree-name">${esc(s.name)}</h3>
+        <p class="muted small">Сув берилган кунлар: <b>${t.water}</b>${next ? ` · «${esc(next.name)}» учун яна ${next.min - t.water} кун` : " · энг катта босқич!"}</p>
+        <div class="g-progress"><div style="width:${next ? ((t.water - s.min) / (next.min - s.min)) * 100 : 100}%"></div></div>
+        <button class="btn btn-primary tree-water" id="waterBtn" ${today ? "disabled" : ""}>${today ? "✓ Бугун сув берилди — эртага келинг" : "💧 Сув бериш (+5 XP)"}</button>
+        <p class="g-fact" id="treeFact" aria-live="polite">Дарахтни босинг — у сизга бир сир айтади 🌳</p>`;
+      $("#waterBtn").onclick = water;
+      $("#treeBtn").onclick = () => {
+        $("#treeFact").textContent = "💡 " + T(TREE_TIPS[Math.floor(Math.random() * TREE_TIPS.length)]);
+        const tb = $("#treeBtn"); tb.classList.remove("wiggle"); void tb.offsetWidth; tb.classList.add("wiggle");
+      };
+    }
+    function water() {
+      const t = G().tree;
+      if (t.last === dayKey()) return;
+      const before = treeStage(t.water);
+      t.water++; t.last = dayKey();
+      const after = treeStage(t.water);
+      App.save();
+      if (after !== before) { confetti(); App.toast(`${after.icon} ${T("Дарахтингиз ўсди:")} ${T(after.name)}!`); }
+      App.addXp(5, "дарахтга сув берилди");
+      if (t.water >= 7) App.flag("game_tree7");
+      render(true);
+    }
+    render(false);
+  }
+
+  window.addEventListener("eko:reset", renderHub);
+  renderHub();
 })();
 </script>
 </body>

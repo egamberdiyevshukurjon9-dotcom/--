@@ -234,6 +234,11 @@ async function api(req, res, pathname) {
     if (name.length < 2) return send(res, 400, { error: "Исмингизни киритинг" });
     if (!EMAIL_RE.test(email)) return send(res, 400, { error: "Электрон почта нотўғри" });
     if (password.length < 6) return send(res, 400, { error: "Парол камида 6 белгидан иборат бўлсин" });
+    /* Ёш текшируви: 13 ёшгача болалардан шахсий маълумот йиғилмайди. Туғилган йил сақланмайди. */
+    const birthYear = Number(body.birthYear) || 0;
+    const thisYear = new Date().getFullYear();
+    if (!birthYear || birthYear > thisYear || birthYear < thisYear - 120) return send(res, 400, { error: "Туғилган йилингизни танланг" });
+    if (thisYear - birthYear < 14) return send(res, 403, { error: "Ҳисоб очиш учун 13 ёш тўлган бўлиши керак. Барча дарслар ва ўйинлар ҳисобсиз ҳам ишлайди!" });
     if (db.users.some((u) => u.email === email)) return send(res, 409, { error: "Бу почта билан аллақачон рўйхатдан ўтилган" });
     const user = { id: newId(), name, email, password: hashPassword(password), createdAt: now(), lastLogin: null, loginCount: 0 };
     db.users.push(user);
