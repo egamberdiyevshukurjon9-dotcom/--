@@ -1,0 +1,2016 @@
+<!doctype html>
+<html lang="uz-Cyrl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ЭкоТаълим — экологик таълим платформаси</title>
+  <meta name="description" content="Аҳоли, корхоналар ва таълим муассасалари учун бепул экологик таълим платформаси: курслар, тестлар, янгиликлар, ҳаво сифати ва углерод калькулятори.">
+  <meta name="theme-color" content="#15803d">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxNTgwM2QiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZWE1ZTkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0idXJsKCNnKSIvPgogIDxwYXRoIGQ9Ik0zODAgMTMyYy0xNTAgMC0yNDggNzgtMjQ4IDE5NiAwIDIyIDQgNDIgMTEgNTggMjYtNzQgODYtMTMyIDE3MC0xNjAtNzAgNDAtMTIyIDk4LTE0NiAxNzYgMTQgNiAzMCAxMCA0OCAxMCAxMTggMCAxNjUtMTIwIDE2NS0yODB6IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo=" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #f7faf7;
+  --bg-alt: #eef5ef;
+  --card: #ffffff;
+  --text: #13261a;
+  --muted: #5b6f61;
+  --line: #dbe7dd;
+  --primary: #15803d;
+  --primary-2: #0ea5e9;
+  --primary-soft: #dcfce7;
+  --shadow: 0 6px 24px rgba(20, 60, 30, .08);
+  --radius: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1510; --bg-alt: #111c15; --card: #16241b; --text: #e6f2e9;
+    --muted: #9bb3a2; --line: #24382b; --primary: #22c55e; --primary-2: #38bdf8;
+    --primary-soft: #183b24; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1510; --bg-alt: #111c15; --card: #16241b; --text: #e6f2e9;
+  --muted: #9bb3a2; --line: #24382b; --primary: #22c55e; --primary-2: #38bdf8;
+  --primary-soft: #183b24; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6; overflow-x: hidden;
+}
+a { color: var(--primary); }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
+.muted { color: var(--muted); }
+.small { font-size: .875rem; }
+
+/* Topbar */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+}
+.topbar-inner { display: flex; align-items: center; gap: 16px; height: 64px; }
+.brand { font-weight: 800; font-size: 1.2rem; text-decoration: none; color: var(--text); display: flex; gap: 8px; align-items: center; }
+.brand-logo { font-size: 1.4rem; }
+.nav { display: flex; gap: 4px; margin-left: auto; }
+.nav a { white-space: nowrap; text-decoration: none; color: var(--muted); padding: 8px 10px; border-radius: 10px; font-weight: 500; }
+.nav a:hover { background: var(--primary-soft); color: var(--text); }
+.user-chip { display: flex; gap: 6px; align-items: center; background: var(--primary-soft); padding: 6px 12px; border-radius: 999px; font-size: .9rem; white-space: nowrap; }
+.theme-btn, .menu-btn { background: none; border: 1px solid var(--line); border-radius: 10px; height: 38px; width: 38px; cursor: pointer; color: var(--text); font-size: 1.1rem; }
+.menu-btn { display: none; }
+.lang-btn { background: none; border: 1px solid var(--line); border-radius: 10px; height: 38px; padding: 0 10px; cursor: pointer; color: var(--text); font: 600 .85rem Inter, system-ui, sans-serif; }
+.lang-btn:hover, .theme-btn:hover { border-color: var(--primary); }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 12px; font-weight: 600; text-decoration: none; border: 1px solid transparent; cursor: pointer; font-size: 1rem; font-family: inherit; transition: transform .15s, box-shadow .15s; }
+.btn:hover { transform: translateY(-1px); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 35%, transparent); }
+.btn-ghost { background: var(--card); color: var(--text); border-color: var(--line); }
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.chip { border: 1px solid var(--line); background: var(--card); color: var(--text); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-family: inherit; font-size: .9rem; }
+.chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.pill { display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: .85rem; }
+.linklike { background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; font: inherit; }
+
+/* Hero */
+.hero { padding: 56px 0 32px; background: radial-gradient(1000px 400px at 80% 0%, color-mix(in srgb, var(--primary-2) 14%, transparent), transparent), radial-gradient(800px 400px at 0% 20%, color-mix(in srgb, var(--primary) 14%, transparent), transparent); }
+.hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; letter-spacing: -.02em; }
+.grad { background: linear-gradient(90deg, var(--primary), var(--primary-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { font-size: 1.1rem; color: var(--muted); max-width: 60ch; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0; }
+.tip-card { display: flex; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); max-width: 560px; }
+.tip-icon { font-size: 1.5rem; }
+.hero-visual { position: relative; height: 340px; display: grid; place-items: center; }
+.globe { font-size: 150px; animation: float 6s ease-in-out infinite; filter: drop-shadow(0 20px 30px rgba(0, 0, 0, .15)); }
+.orbit { position: absolute; font-size: 2.4rem; background: var(--card); border-radius: 50%; width: 68px; height: 68px; display: grid; place-items: center; box-shadow: var(--shadow); animation: float 5s ease-in-out infinite; }
+.o1 { top: 10%; left: 12%; } .o2 { top: 6%; right: 12%; animation-delay: -1s; }
+.o3 { bottom: 10%; left: 18%; animation-delay: -2s; } .o4 { bottom: 14%; right: 10%; animation-delay: -3s; }
+@keyframes float { 50% { transform: translateY(-12px); } }
+@media (prefers-reduced-motion: reduce) { .globe, .orbit { animation: none; } html { scroll-behavior: auto; } }
+
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 40px; }
+.stat { min-width: 0; overflow-wrap: anywhere; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+.stat b { display: block; font-size: 1.8rem; color: var(--primary); }
+.stat span { color: var(--muted); font-size: .9rem; }
+
+/* Sections */
+.section { padding: 64px 0; }
+.section.alt { background: var(--bg-alt); }
+.section-title { font-size: clamp(1.5rem, 3vw, 2.1rem); margin: 0 0 8px; letter-spacing: -.01em; }
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.sub { margin: 32px 0 12px; }
+
+.aud-grid, .course-grid, .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+.aud, .course, .news { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+.aud-icon { font-size: 2.2rem; }
+.aud h3 { margin: 8px 0; }
+.aud p { color: var(--muted); margin: 0; }
+
+/* Courses */
+.course { display: flex; flex-direction: column; gap: 12px; }
+.course-top { display: flex; justify-content: space-between; align-items: center; }
+.course-icon { font-size: 2.2rem; width: 60px; height: 60px; display: grid; place-items: center; background: var(--primary-soft); border-radius: 14px; }
+.course h3 { margin: 0; }
+.course p { margin: 0; color: var(--muted); }
+.lesson-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.lesson-list button { width: 100%; text-align: left; display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 10px; cursor: pointer; font: inherit; font-size: .95rem; }
+.lesson-list button:hover { border-color: var(--primary); }
+.lesson-list .done { color: var(--primary); font-weight: 700; }
+.lesson-list .mins { margin-left: auto; color: var(--muted); font-size: .8rem; white-space: nowrap; }
+.progress { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.progress > div { height: 100%; width: 0; background: linear-gradient(90deg, var(--primary), var(--primary-2)); transition: width .5s; }
+.course .btn { margin-top: auto; }
+
+/* News */
+.search { padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); min-width: 260px; font: inherit; }
+.news { display: flex; flex-direction: column; gap: 8px; }
+.news-img { font-size: 2.6rem; height: 110px; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(135deg, var(--primary-soft), color-mix(in srgb, var(--primary-2) 18%, var(--card))); }
+.news-meta { display: flex; gap: 8px; font-size: .8rem; color: var(--muted); align-items: center; }
+.news-meta .tag { background: var(--primary-soft); color: var(--primary); padding: 2px 10px; border-radius: 99px; font-weight: 600; }
+.news h3 { margin: 0; font-size: 1.1rem; line-height: 1.35; }
+.news p { margin: 0; color: var(--muted); font-size: .95rem; }
+.news .new { background: #ef4444; color: #fff; border-radius: 99px; padding: 1px 8px; font-weight: 700; }
+
+/* Library */
+.lib-feature { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; background: linear-gradient(120deg, var(--primary-soft), color-mix(in srgb, var(--primary-2) 16%, var(--card))); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 22px; }
+.lib-feature .big { font-size: 3.6rem; line-height: 1; }
+.lib-feature .kicker { font-size: .8rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .04em; }
+.lib-feature h3 { margin: 2px 0 6px; font-size: 1.3rem; }
+.lib-feature p { margin: 0; }
+.lib-tabs { display: flex; gap: 6px; border-bottom: 2px solid var(--line); margin-bottom: 16px; overflow-x: auto; }
+.lib-tab { background: none; border: 0; border-bottom: 3px solid transparent; margin-bottom: -2px; padding: 10px 16px; font: 600 1rem Inter, system-ui, sans-serif; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.lib-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+.lib-card { position: relative; display: flex; flex-direction: column; gap: 8px; text-align: left; background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); cursor: pointer; font: inherit; transition: transform .15s, border-color .15s; }
+.lib-card:hover { transform: translateY(-3px); border-color: var(--primary); }
+.lib-card h3 { margin: 0; font-size: 1.05rem; line-height: 1.35; }
+.lib-card p { margin: 0; color: var(--muted); font-size: .92rem; }
+.lib-card .em { font-size: 2.6rem; line-height: 1; }
+.lib-card .cover { height: 120px; border-radius: 12px; display: grid; place-items: center; font-size: 3rem; background: linear-gradient(135deg, var(--primary-soft), color-mix(in srgb, var(--primary-2) 22%, var(--card))); }
+.lib-card .meta { font-size: .82rem; color: var(--muted); }
+.lib-card .latin { font-style: italic; font-size: .85rem; color: var(--muted); }
+.lib-card .read { position: absolute; top: 12px; right: 12px; background: var(--primary); color: #fff; border-radius: 99px; font-size: .75rem; font-weight: 700; padding: 2px 9px; }
+.status { display: inline-block; align-self: flex-start; color: #fff; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
+.ok-tag { display: inline-block; align-self: flex-start; background: var(--primary-soft); color: var(--primary); font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
+.iucn { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 4px; }
+.iucn span { text-align: center; font-size: .72rem; font-weight: 700; padding: 6px 2px; border-radius: 6px; background: var(--bg-alt); color: var(--muted); }
+.iucn span.on { color: #fff; transform: scale(1.08); box-shadow: var(--shadow); }
+.facts { list-style: none; padding: 0; margin: 8px 0 16px; display: grid; gap: 8px; }
+.facts li { background: var(--primary-soft); border-radius: 12px; padding: 10px 14px 10px 40px; position: relative; }
+.facts li::before { content: "💡"; position: absolute; left: 12px; top: 10px; }
+.kv { display: grid; grid-template-columns: minmax(120px, 190px) 1fr; gap: 6px 14px; margin: 12px 0; }
+.kv dt { font-weight: 700; }
+.kv dd { margin: 0; color: var(--muted); }
+.note { font-size: .85rem; color: var(--muted); border-left: 3px solid var(--line); padding-left: 12px; margin-top: 16px; }
+
+/* Air quality */
+.aq-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .85rem; color: var(--muted); margin-bottom: 16px; }
+.aq-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.aq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.aq { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; border-top: 5px solid var(--aq, #999); }
+.aq h4 { margin: 0 0 6px; }
+.aq .aqi { font-size: 2rem; font-weight: 800; color: var(--aq); line-height: 1; }
+.aq .lbl { font-size: .85rem; font-weight: 600; }
+.aq dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; margin: 10px 0 0; font-size: .85rem; color: var(--muted); }
+.aq dd { margin: 0; text-align: right; color: var(--text); }
+
+/* Calculator */
+.calc { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+.calc-form, .calc-result { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+.calc-form { display: grid; gap: 18px; }
+.calc-form label { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; font-weight: 500; }
+.calc-form input[type=range] { grid-column: 1; width: 100%; accent-color: var(--primary); }
+.calc-form output { font-weight: 700; color: var(--primary); min-width: 3ch; text-align: right; }
+.calc-form select { grid-column: 1 / -1; padding: 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; }
+.calc-form .check { display: flex; gap: 10px; align-items: center; }
+.calc-form .check input { width: 18px; height: 18px; accent-color: var(--primary); }
+.gauge { position: relative; max-width: 280px; margin: 0 auto; }
+.gauge svg { width: 100%; }
+.gauge-bg, .gauge-val { fill: none; stroke-width: 18; stroke-linecap: round; }
+.gauge-bg { stroke: var(--line); }
+.gauge-val { stroke: var(--primary); transition: stroke-dashoffset .5s, stroke .5s; }
+.gauge-num { position: absolute; inset: auto 0 0; text-align: center; }
+.gauge-num b { font-size: 2.4rem; display: block; line-height: 1; }
+.gauge-num span { color: var(--muted); font-size: .85rem; }
+.bars { display: grid; gap: 8px; margin: 20px 0 8px; }
+.bar-row { display: grid; grid-template-columns: 110px 1fr 56px; gap: 10px; align-items: center; font-size: .9rem; }
+.bar-row .progress { height: 10px; }
+.bar-row span:last-child { text-align: right; color: var(--muted); }
+.recs { padding-left: 20px; margin: 12px 0 0; }
+.recs li { margin-bottom: 6px; }
+
+/* Challenge */
+.streak { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-size: 1.05rem; }
+.ch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ch { display: flex; gap: 12px; align-items: center; background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; text-align: left; font: inherit; color: var(--text); transition: border-color .2s, background .2s; }
+.ch:hover { border-color: var(--primary); }
+.ch.on { border-color: var(--primary); background: var(--primary-soft); }
+.ch .ic { font-size: 1.6rem; }
+.ch .xp { margin-left: auto; font-weight: 700; color: var(--primary); white-space: nowrap; }
+.badges { display: flex; flex-wrap: wrap; gap: 12px; }
+.badge { width: 128px; text-align: center; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 8px; font-size: .8rem; }
+.badge .bi { font-size: 2rem; display: block; }
+.badge.locked { opacity: .4; filter: grayscale(1); }
+.level-box { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; max-width: 560px; }
+.level-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+
+/* Chat */
+.chat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); max-width: 820px; margin-top: 20px; overflow: hidden; }
+.chat-log { height: 360px; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 85%; padding: 10px 14px; border-radius: 14px; white-space: pre-wrap; }
+.msg.bot { background: var(--bg-alt); border: 1px solid var(--line); align-self: flex-start; border-bottom-left-radius: 4px; }
+.msg.me { background: var(--primary); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-suggest { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 18px 12px; }
+.chat-form { display: flex; gap: 10px; padding: 12px; border-top: 1px solid var(--line); }
+.chat-form input { flex: 1; min-width: 0; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; }
+
+/* Modal */
+.modal { border: 0; padding: 0; border-radius: 20px; width: min(760px, calc(100% - 32px)); max-height: calc(100% - 32px); background: var(--card); color: var(--text); box-shadow: 0 30px 80px rgba(0, 0, 0, .35); }
+.modal::backdrop { background: rgba(5, 20, 10, .55); backdrop-filter: blur(3px); }
+.modal-inner { padding: 28px; position: relative; }
+.modal-close { position: absolute; top: 14px; right: 14px; border: 0; background: var(--bg-alt); color: var(--text); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1rem; }
+.modal h2 { margin: 4px 40px 12px 0; }
+.lesson-body p { margin: 0 0 12px; }
+.lesson-tip { background: var(--primary-soft); border-radius: 12px; padding: 12px 16px; margin: 16px 0; }
+.quiz { border-top: 1px solid var(--line); margin-top: 20px; padding-top: 16px; }
+.q { margin-bottom: 16px; }
+.q p { font-weight: 600; margin: 0 0 8px; }
+.opts { display: grid; gap: 8px; }
+.opt { text-align: left; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); cursor: pointer; font: inherit; }
+.opt:hover:not(:disabled) { border-color: var(--primary); }
+.opt.right { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+.opt.wrong { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
+.modal-actions { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; margin-top: 16px; }
+.cert-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.cert-form input { flex: 1; min-width: 200px; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; }
+
+/* Toast */
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, 120px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 12px; font-weight: 600; transition: transform .3s; z-index: 100; max-width: calc(100% - 32px); text-align: center; }
+.toast.show { transform: translate(-50%, 0); }
+
+/* Footer */
+.footer { border-top: 1px solid var(--line); padding: 28px 0; }
+.footer-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+.footer p { margin: 4px 0 0; }
+
+/* Responsive */
+.topbar .wrap { max-width: 1320px; }
+@media (max-width: 1239px) {
+  .menu-btn { display: block; margin-left: auto; }
+  .nav { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; background: var(--card); border-bottom: 1px solid var(--line); padding: 8px 16px 16px; box-shadow: var(--shadow); }
+  .nav.open { display: flex; }
+}
+@media (max-width: 960px) {
+  .aud-grid, .course-grid, .news-grid { grid-template-columns: repeat(2, 1fr); }
+  .ch-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-visual { height: 240px; order: -1; }
+  .globe { font-size: 110px; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stats .stat:last-child { grid-column: 1 / -1; }
+  .calc { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .aud-grid, .course-grid, .news-grid, .ch-grid { grid-template-columns: 1fr; }
+  .user-chip span:last-child { display: none; }
+  .topbar-inner { gap: 8px; }
+  .search { min-width: 0; width: 100%; }
+  .section { padding: 48px 0; }
+  .modal-inner { padding: 22px 18px; }
+  .bar-row { grid-template-columns: 90px 1fr 48px; }
+  .lib-feature { grid-template-columns: auto 1fr; padding: 16px; }
+  .lib-feature .btn { grid-column: 1 / -1; }
+  .lib-feature .big { font-size: 2.8rem; }
+  .kv { grid-template-columns: 1fr; gap: 2px; }
+  .kv dd { margin-bottom: 8px; }
+}
+@media (max-width: 420px) {
+  .brand { font-size: 1rem; gap: 6px; }
+  .user-chip { padding: 6px 8px; }
+  .lang-btn { padding: 0 8px; }
+}
+@media (max-width: 379px) {
+  .brand-name { display: none; }
+}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#bosh"><span class="brand-logo">🌿</span><span class="brand-name">ЭкоТаълим</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Меню" aria-expanded="false">☰</button>
+      <nav class="nav" id="nav">
+        <a href="#kurslar">Курслар</a>
+        <a href="#yangiliklar">Янгиликлар</a>
+        <a href="#kutubxona">Кутубхона</a>
+        <a href="#havo">Ҳаво</a>
+        <a href="#kalkulyator">Калькулятор</a>
+        <a href="#chellenj">Челленж</a>
+        <a href="#yordamchi">Ёрдамчи</a>
+      </nav>
+      <div class="user-chip" id="userChip" title="Сизнинг даражангиз">
+        <span id="levelIcon">🌰</span>
+        <span><b id="xpVal">0</b> XP</span>
+      </div>
+      <button class="lang-btn" id="langBtn" data-notr aria-label="Lotin alifbosiga oʻtish">Lotin</button>
+      <button class="theme-btn" id="themeBtn" aria-label="Мавзуни алмаштириш">🌓</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="bosh">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="pill">Бепул · Онлайн · Ҳамма учун</span>
+          <h1>Табиатни асраш <span class="grad">билимдан</span> бошланади</h1>
+          <p class="lead">Аҳоли, корхоналар ва таълим муассасалари учун замонавий экологик таълим платформаси. Интерактив курслар, тестлар, ҳаво сифатини реал вақтда кузатиш, углерод калькулятори ва энг сўнгги экологик янгиликлар.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#kurslar">Ўқишни бошлаш</a>
+            <a class="btn btn-ghost" href="#kalkulyator">Углерод изимни ҳисоблаш</a>
+          </div>
+          <div class="tip-card">
+            <span class="tip-icon">💡</span>
+            <div><b>Кун маслаҳати:</b> <span id="dailyTip"></span></div>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="globe">🌍</div>
+          <div class="orbit o1">🌳</div>
+          <div class="orbit o2">☀️</div>
+          <div class="orbit o3">💧</div>
+          <div class="orbit o4">♻️</div>
+        </div>
+      </div>
+      <div class="wrap stats">
+        <div class="stat"><b>3</b><span>йўналиш: аҳоли, корхона, таълим</span></div>
+        <div class="stat"><b id="lessonCount">12</b><span>интерактив дарс ва тест</span></div>
+        <div class="stat"><b id="libCount">30</b><span>кутубхона материали</span></div>
+        <div class="stat"><b>13</b><span>шаҳар ҳаво сифати, жонли</span></div>
+        <div class="stat"><b id="progressPct">0%</b><span>сизнинг умумий ўзлаштиришингиз</span></div>
+      </div>
+    </section>
+
+    <!-- AUDIENCES -->
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section-title">Ким учун?</h2>
+        <div class="aud-grid">
+          <article class="aud">
+            <div class="aud-icon">👨‍👩‍👧</div>
+            <h3>Аҳоли учун</h3>
+            <p>Кундалик ҳаётда сув, энергияни тежаш, чиқиндиларни саралаш ва соғлом муҳит яратиш бўйича оддий ва тушунарли дарслар.</p>
+          </article>
+          <article class="aud">
+            <div class="aud-icon">🏭</div>
+            <h3>Корхоналар учун</h3>
+            <p>Ходимларни ўқитиш: экологик менежмент (ISO 14001), энергия самарадорлиги, айланма иқтисодиёт ва ESG ҳисоботлари.</p>
+          </article>
+          <article class="aud">
+            <div class="aud-icon">🎓</div>
+            <h3>Мактаб ва олийгоҳлар учун</h3>
+            <p>Барқарор ривожланиш мақсадлари, Орол муаммоси, яшил технологиялар ва тадқиқот лойиҳалари. Якунида — сертификат.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSES -->
+    <section class="section alt" id="kurslar">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="section-title">Курслар</h2>
+          <div class="filters" id="courseFilters">
+            <button class="chip active" data-f="all">Барчаси</button>
+            <button class="chip" data-f="aholi">Аҳоли</button>
+            <button class="chip" data-f="korxona">Корхона</button>
+            <button class="chip" data-f="talaba">Таълим</button>
+          </div>
+        </div>
+        <div class="course-grid" id="courseGrid"></div>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="section" id="yangiliklar">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="section-title">Энг сўнгги янгиликлар</h2>
+          <input class="search" id="newsSearch" type="search" placeholder="🔍 Янгиликлардан излаш…">
+        </div>
+        <div class="filters" id="newsFilters"></div>
+        <div class="news-grid" id="newsGrid"></div>
+      </div>
+    </section>
+
+    <!-- LIBRARY -->
+    <section class="section alt" id="kutubxona">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">📚 Эко-кутубхона</h2>
+            <p class="muted">Йўқолиб бораётган ҳайвонлар, экологияга оид машҳур китоблар ва қонунлар ҳақида қизиқарли маълумотлар. Ҳар бир янги материал учун +5 XP.</p>
+          </div>
+          <input class="search" id="libSearch" type="search" placeholder="🔍 Кутубхонадан излаш…">
+        </div>
+        <div class="lib-feature" id="libFeature"></div>
+        <div class="lib-tabs" role="tablist" id="libTabs">
+          <button class="lib-tab active" role="tab" aria-selected="true" data-t="animals">🐾 Ноёб ҳайвонлар</button>
+          <button class="lib-tab" role="tab" aria-selected="false" data-t="books">📖 Китоблар</button>
+          <button class="lib-tab" role="tab" aria-selected="false" data-t="laws">⚖️ Қонунлар</button>
+        </div>
+        <div class="filters" id="libFilters"></div>
+        <div class="lib-grid" id="libGrid"></div>
+        <p class="muted small" id="libProgress"></p>
+      </div>
+    </section>
+
+    <!-- AIR QUALITY -->
+    <section class="section" id="havo">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Ҳаво сифати — жонли</h2>
+            <p class="muted">Ўзбекистон шаҳарлари бўйича PM2.5, PM10 ва AQI индекси. Маълумот манбаи: Open-Meteo / Copernicus (CAMS), ҳар соатда янгиланади.</p>
+          </div>
+          <button class="btn btn-ghost" id="aqRefresh">↻ Янгилаш</button>
+        </div>
+        <div class="aq-legend">
+          <span><i style="background:#22c55e"></i>Яхши (0–50)</span>
+          <span><i style="background:#eab308"></i>Ўртача (51–100)</span>
+          <span><i style="background:#f97316"></i>Сезгирлар учун зарарли (101–150)</span>
+          <span><i style="background:#ef4444"></i>Зарарли (151–200)</span>
+          <span><i style="background:#a855f7"></i>Жуда зарарли (201+)</span>
+        </div>
+        <div class="aq-grid" id="aqGrid"><p class="muted">Юкланмоқда…</p></div>
+        <p class="muted small" id="aqTime"></p>
+      </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section class="section alt" id="kalkulyator">
+      <div class="wrap">
+        <h2 class="section-title">Углерод изи калькулятори</h2>
+        <p class="muted">Йиллик шахсий CO₂ чиқиндингизни тахминий ҳисобланг ва уни камайтириш бўйича шахсий тавсиялар олинг.</p>
+        <div class="calc">
+          <form id="calcForm" class="calc-form">
+            <label>Ойлик электр сарфи (кВт·соат)
+              <input type="range" name="elec" min="0" max="800" step="10" value="200"><output>200</output>
+            </label>
+            <label>Ойлик табиий газ сарфи (м³)
+              <input type="range" name="gas" min="0" max="500" step="10" value="100"><output>100</output>
+            </label>
+            <label>Ҳафталик автомобилда юриш (км)
+              <input type="range" name="car" min="0" max="1000" step="10" value="100"><output>100</output>
+            </label>
+            <label>Йилига самолётда парвозлар сони
+              <input type="range" name="fly" min="0" max="20" step="1" value="1"><output>1</output>
+            </label>
+            <label>Овқатланиш тури
+              <select name="diet">
+                <option value="2500">Гўшт кўп</option>
+                <option value="1900" selected>Аралаш</option>
+                <option value="1500">Гўшт кам</option>
+                <option value="1100">Вегетариан</option>
+              </select>
+            </label>
+            <label class="check"><input type="checkbox" name="recycle"> Чиқиндиларни саралайман</label>
+          </form>
+          <div class="calc-result">
+            <div class="gauge">
+              <svg viewBox="0 0 200 120" aria-hidden="true">
+                <path d="M20 110 A80 80 0 0 1 180 110" class="gauge-bg"/>
+                <path d="M20 110 A80 80 0 0 1 180 110" class="gauge-val" id="gaugeVal"/>
+              </svg>
+              <div class="gauge-num"><b id="calcTotal">0</b><span>тонна CO₂ / йил</span></div>
+            </div>
+            <div class="bars" id="calcBars"></div>
+            <p class="muted small">Таққослаш учун: дунё бўйича ўртача ≈ 4,7 т; Париж келишуви мақсадларига мос даража ≈ 2 т. Коэффициентлар тахминий.</p>
+            <ul class="recs" id="calcRecs"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHALLENGE -->
+    <section class="section" id="chellenj">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Кунлик эко-челленж</h2>
+            <p class="muted">Ҳар куни яшил одатларни белгиланг, XP тўпланг ва кетма-кет кунлар сериясини узайтиринг.</p>
+          </div>
+          <div class="streak"><span>🔥</span><b id="streakVal">0</b> кун серия</div>
+        </div>
+        <div class="ch-grid" id="chGrid"></div>
+        <h3 class="sub">Нишонлар</h3>
+        <div class="badges" id="badges"></div>
+        <h3 class="sub">Даражангиз</h3>
+        <div class="level-box">
+          <div class="level-name" id="levelName"></div>
+          <div class="progress"><div id="levelBar"></div></div>
+          <p class="muted small" id="levelNext"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASSISTANT -->
+    <section class="section alt" id="yordamchi">
+      <div class="wrap">
+        <h2 class="section-title">Эко-ёрдамчи</h2>
+        <p class="muted">Экология бўйича саволингизни ёзинг: пластик, сув, ҳаво, чиқиндилар, корхона, ISO 14001, дарахт экиш ва бошқалар.</p>
+        <div class="chat">
+          <div class="chat-log" id="chatLog" aria-live="polite"></div>
+          <div class="chat-suggest" id="chatSuggest"></div>
+          <form class="chat-form" id="chatForm">
+            <input id="chatInput" placeholder="Саволингизни ёзинг…" autocomplete="off">
+            <button class="btn btn-primary" type="submit">Юбориш</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        <b>🌿 ЭкоТаълим</b>
+        <p class="muted small">Экологик маданиятни ошириш учун очиқ таълим платформаси. Барча материаллар бепул.</p>
+      </div>
+      <div class="small muted">
+        <button class="linklike" id="resetBtn">Натижаларимни тозалаш</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LESSON MODAL -->
+  <dialog class="modal" id="lessonModal">
+    <div class="modal-inner">
+      <button class="modal-close" id="modalClose" aria-label="Ёпиш">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+/* ЭкоТаълим — кирилл ↔ лотин алифбоси.
+   Контент кириллда ёзилади; лотин режимида саҳифадаги матн расмий ўзбек лотин
+   алифбоси қоидалари бўйича автоматик ўгирилади. */
+const EkoLang = (() => {
+  "use strict";
+
+  const BASE = {
+    а: "a", б: "b", в: "v", г: "g", д: "d", ж: "j", з: "z", и: "i", й: "y", к: "k",
+    л: "l", м: "m", н: "n", о: "o", п: "p", р: "r", с: "s", т: "t", у: "u", ф: "f",
+    х: "x", ч: "ch", ш: "sh", щ: "sh", ы: "i", э: "e", ё: "yo", ю: "yu", я: "ya",
+    ў: "oʻ", қ: "q", ғ: "gʻ", ҳ: "h", ь: ""
+  };
+  const VOWELS = "аеёиоуэюяў";
+  const isCyr = (c) => !!c && /[Ѐ-ӿ]/.test(c);
+  const isLetter = (c) => !!c && /[\p{L}]/u.test(c);
+  const isUpper = (c) => !!c && c !== c.toLowerCase();
+
+  function tr(s) {
+    if (!s || !/[Ѐ-ӿ]/.test(s)) return s;
+    let out = "";
+    for (let i = 0; i < s.length; i++) {
+      const ch = s[i];
+      const lo = ch.toLowerCase();
+      const prev = s[i - 1], next = s[i + 1];
+      const pl = prev ? prev.toLowerCase() : "";
+      let r;
+      if (lo === "е") {
+        r = !isLetter(prev) || VOWELS.includes(pl) || pl === "ъ" || pl === "ь" ? "ye" : "e";
+      } else if (lo === "ц") {
+        r = isLetter(prev) && VOWELS.includes(pl) ? "ts" : "s";
+      } else if (lo === "ъ") {
+        r = next && "еёюя".includes(next.toLowerCase()) ? "" : "ʼ";
+      } else if (lo in BASE) {
+        r = BASE[lo];
+      } else {
+        out += ch;
+        continue;
+      }
+      if (r && isUpper(ch)) {
+        // ЯНГИ → YANGI, Янги → Yangi
+        const caps = (isCyr(next) && isUpper(next)) || (isCyr(prev) && isUpper(prev) && !isLetter(next));
+        r = caps ? r.toUpperCase() : r[0].toUpperCase() + r.slice(1);
+      }
+      out += r;
+    }
+    return out;
+  }
+
+  const KEY = "ekotalim:lang";
+  const ATTRS = ["placeholder", "title", "aria-label"];
+  const orig = new WeakMap();
+  let lang = "cyr";
+  let origTitle = document.title;
+
+  function eachText(root, fn) {
+    const skip = (n) => n.parentElement && n.parentElement.closest("script,style,[data-notr]");
+    if (root.nodeType === 3) return skip(root) ? undefined : fn(root);
+    if (root.nodeType !== 1) return;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => (skip(n) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT)
+    });
+    for (let n = w.nextNode(); n; n = w.nextNode()) fn(n);
+  }
+  function eachAttrEl(root, fn) {
+    if (root.nodeType !== 1) return;
+    [root, ...root.querySelectorAll("*")].forEach((el) => {
+      if (!el.closest("[data-notr]")) ATTRS.forEach((a) => el.hasAttribute(a) && fn(el, a));
+    });
+  }
+
+  function apply(root) {
+    const toLat = lang === "lat";
+    eachText(root, (n) => {
+      if (toLat) {
+        if (!orig.has(n)) orig.set(n, n.nodeValue);
+        const v = tr(orig.get(n));
+        if (n.nodeValue !== v) n.nodeValue = v;
+      } else if (orig.has(n)) {
+        n.nodeValue = orig.get(n);
+        orig.delete(n);
+      }
+    });
+    eachAttrEl(root, (el, a) => {
+      const k = "orig" + a.replace(/-./g, (m) => m[1].toUpperCase()).replace(/^./, (m) => m.toUpperCase());
+      if (toLat) {
+        if (!(k in el.dataset)) el.dataset[k] = el.getAttribute(a);
+        el.setAttribute(a, tr(el.dataset[k]));
+      } else if (k in el.dataset) {
+        el.setAttribute(a, el.dataset[k]);
+        delete el.dataset[k];
+      }
+    });
+  }
+
+  function set(l, persist = true) {
+    lang = l === "lat" ? "lat" : "cyr";
+    document.documentElement.lang = lang === "lat" ? "uz-Latn" : "uz-Cyrl";
+    document.title = lang === "lat" ? tr(origTitle) : origTitle;
+    apply(document.body);
+    const btn = document.getElementById("langBtn");
+    if (btn) {
+      btn.textContent = lang === "lat" ? "Кирилл" : "Lotin";
+      btn.setAttribute("aria-label", lang === "lat" ? "Кирилл алифбосига ўтиш" : "Lotin alifbosiga oʻtish");
+    }
+    if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) { /* ignore */ } }
+  }
+
+  // Янги қўшилган элементларни (рендер, тост, чат) ҳам ўгириш
+  new MutationObserver((muts) => {
+    if (lang !== "lat") return;
+    muts.forEach((m) => m.addedNodes.forEach((n) => apply(n)));
+  }).observe(document.documentElement, { childList: true, subtree: true });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    origTitle = document.title;
+    let l = new URLSearchParams(location.search).get("lang");
+    const fromUrl = l === "lat" || l === "cyr";
+    if (!fromUrl) { try { l = localStorage.getItem(KEY); } catch (e) { l = null; } }
+    set(l || "cyr", false);
+    const btn = document.getElementById("langBtn");
+    if (btn) btn.addEventListener("click", () => set(lang === "lat" ? "cyr" : "lat"));
+  });
+
+  /* Қидирув учун: матн ва сўров қайси алифбода бўлса ҳам солиштириш */
+  const norm = (s) => s.toLowerCase().replace(/[ʻʼ'`’‘]/g, "'");
+  const matches = (hay, q) => norm(hay).includes(norm(q)) || norm(tr(hay)).includes(norm(tr(q)));
+
+  return { tr, t: (s) => (lang === "lat" ? tr(s) : s), set, get lang() { return lang; }, matches };
+})();
+</script>
+  <script>
+/* ЭкоТаълим — платформа контенти.
+   Курслар, янгиликлар ва маслаҳатларни шу файлда таҳрирлаш мумкин. */
+
+const COURSES = [
+  {
+    id: "asoslar",
+    audience: "aholi",
+    audienceLabel: "Аҳоли учун",
+    icon: "🌱",
+    title: "Экология асослари",
+    desc: "Ҳар бир фуқаро билиши керак бўлган экологик билимлар: табиат, иқлим, сув ва чиқиндилар.",
+    lessons: [
+      {
+        title: "Экотизим нима?",
+        minutes: 6,
+        body: [
+          "Экотизим — тирик организмлар (ўсимликлар, ҳайвонлар, микроорганизмлар) ва уларни ўраб турган жонсиз муҳит (ҳаво, сув, тупроқ, қуёш нури)нинг ўзаро боғлиқ бирлигидир.",
+          "Экотизимда ҳар бир бўғин муҳим: ўсимликлар қуёш энергиясини озиқага айлантиради, ҳайвонлар уни истеъмол қилади, микроорганизмлар эса қолдиқларни парчалаб, тупроққа қайтаради.",
+          "Бир бўғиннинг йўқолиши бутун занжирни издан чиқаради. Масалан, асаларилар камайса, кўплаб экинларнинг чангланиши ва ҳосилдорлиги пасаяди.",
+          "Инсон ҳам экотизимнинг бир қисми. Биз нафас олаётган ҳаво, ичаётган сув ва еяётган озиқ-овқат соғлом табиатга боғлиқ."
+        ],
+        tip: "Ҳовлингизда ёки деразангизда гул ўстиринг — бу асаларилар ва капалаклар учун кичик «ошхона» бўлади.",
+        quiz: [
+          { q: "Экотизимда ўлик организмларни парчалаб, тупроққа қайтарадиганлар ким?", a: ["Йиртқичлар", "Микроорганизмлар", "Ўсимликлар"], c: 1 },
+          { q: "Асаларилар камайса нима бўлади?", a: ["Ҳосилдорлик пасаяди", "Ҳеч нарса ўзгармайди", "Ҳаво тозаланади"], c: 0 }
+        ]
+      },
+      {
+        title: "Иқлим ўзгариши",
+        minutes: 8,
+        body: [
+          "Иқлим ўзгариши — Ер сайёраси ўртача ҳароратининг узоқ муддатли ошиши ва об-ҳаво режимларининг ўзгаришидир.",
+          "Асосий сабаб — кўмир, нефть ва газ ёқилганда атмосферага чиқадиган иссиқхона газлари (CO₂, метан). Улар иссиқликни ушлаб қолиб, «иссиқхона эффекти»ни кучайтиради.",
+          "Марказий Осиё иқлим ўзгаришига айниқса сезгир ҳудуд: музликлар эрийди, сув танқислиги кучаяди, ёзги иссиқ кунлар ва чанг бўронлари кўпаяди.",
+          "Ҳар биримиз ҳисса қўша оламиз: электр ва газни тежаш, жамоат транспорти ёки велосипеддан фойдаланиш, дарахт экиш."
+        ],
+        tip: "Хонадан чиқаётганда чироқни ўчиринг — бу энг оддий иқлим ҳаракати.",
+        quiz: [
+          { q: "Қайси газ иссиқхона гази ҳисобланади?", a: ["Кислород", "Азот", "Карбонат ангидрид (CO₂)"], c: 2 },
+          { q: "Иқлим ўзгаришининг асосий сабаби нима?", a: ["Қазилма ёқилғиларни ёқиш", "Ой фазалари", "Вулқонлар"], c: 0 }
+        ]
+      },
+      {
+        title: "Сув — ҳаёт манбаи",
+        minutes: 7,
+        body: [
+          "Ердаги сувнинг атиги тахминан 2,5 фоизи чучук сув, унинг ҳам катта қисми музликларда. Шунинг учун ичимлик суви жуда қимматли бойлик.",
+          "Ўзбекистонда сувнинг асосий қисми қишлоқ хўжалигида, суғоришга сарфланади. Томчилатиб суғориш каби технологиялар сув сарфини сезиларли камайтиради.",
+          "Орол денгизи фожиаси сувдан нотўғри фойдаланиш оқибатлари қанчалик оғир бўлишини кўрсатади.",
+          "Уйда сувни тежаш: жўмракни тишни ювиш пайтида ёпиш, оқаётган жўмракларни тузатиш, идишни оқар сувда эмас, тоғорада ювиш."
+        ],
+        tip: "Бир секундда бир томчи оқаётган жўмрак йилига минглаб литр сувни исроф қилади — уни тузатинг!",
+        quiz: [
+          { q: "Ердаги сувнинг қанча қисми чучук сув?", a: ["Тахминан 50%", "Тахминан 2,5%", "Тахминан 25%"], c: 1 },
+          { q: "Суғоришда сувни тежайдиган технология қайси?", a: ["Томчилатиб суғориш", "Бостириб суғориш", "Ариқни кенгайтириш"], c: 0 }
+        ]
+      },
+      {
+        title: "Чиқиндиларни саралаш",
+        minutes: 6,
+        body: [
+          "Чиқиндиларни саралаш — уларни турига қараб (қоғоз, пластик, шиша, металл, органик) алоҳида йиғиш. Бу қайта ишлашни осонлаштиради.",
+          "Пластик бутилка табиатда юзлаб йил парчаланмайди. Уни қайта ишлаш орқали янги маҳсулот олиш мумкин.",
+          "Алюминий банкани қайта ишлаш янги алюминий ишлаб чиқаришга нисбатан энергиянинг катта қисмини (тахминан 90% дан кўпроғини) тежайди.",
+          "«3R» тамойили: Reduce (камайтир), Reuse (қайта фойдалан), Recycle (қайта ишла). Энг яхши чиқинди — умуман пайдо бўлмаган чиқинди."
+        ],
+        tip: "Бозорга мато сумка билан боринг — бир йилда юзлаб полиэтилен пакетдан воз кечасиз.",
+        quiz: [
+          { q: "«3R» тамойилидаги биринчи ва энг муҳим қадам қайси?", a: ["Қайта ишлаш", "Камайтириш", "Ёқиб юбориш"], c: 1 },
+          { q: "Алюминийни қайта ишлаш қанча энергия тежайди?", a: ["Деярли тежамайди", "Тахминан 10%", "Тахминан 90% дан кўп"], c: 2 }
+        ]
+      }
+    ]
+  },
+  {
+    id: "korxona",
+    audience: "korxona",
+    audienceLabel: "Корхоналар учун",
+    icon: "🏭",
+    title: "Корхонада экологик менежмент",
+    desc: "Ходимлар ва раҳбарлар учун: экологик стандартлар, энергия тежаш, чиқиндилар ва ESG ҳисоботлари.",
+    lessons: [
+      {
+        title: "ISO 14001 ва экологик менежмент тизими",
+        minutes: 9,
+        body: [
+          "ISO 14001 — экологик менежмент тизими (ЭМТ) бўйича халқаро стандарт. У корхонага атроф-муҳитга таъсирини тизимли бошқаришга ёрдам беради.",
+          "Стандарт «Режалаштир — Бажар — Текшир — Такомиллаштир» (PDCA) циклига асосланади.",
+          "Асосий қадамлар: экологик жиҳатларни аниқлаш, қонунчилик талабларини ўрганиш, мақсадлар белгилаш, ходимларни ўқитиш, мониторинг ва ички аудит.",
+          "Фойдаси: ресурс харажатлари камаяди, жарима хавфи пасаяди, халқаро бозорга чиқиш ва инвестор ишончи ортади."
+        ],
+        tip: "Корхонангизда «экологик жиҳатлар реестри»ни тузишдан бошланг: қаерда сув, энергия, хомашё сарфланади ва қандай чиқинди ҳосил бўлади?",
+        quiz: [
+          { q: "ISO 14001 нима ҳақида?", a: ["Сифат менежменти", "Экологик менежмент тизими", "Ахборот хавфсизлиги"], c: 1 },
+          { q: "PDCA циклидаги «C» нимани англатади?", a: ["Текшириш (Check)", "Ҳисоблаш (Calculate)", "Назорат (Control)"], c: 0 }
+        ]
+      },
+      {
+        title: "Энергия самарадорлиги",
+        minutes: 8,
+        body: [
+          "Энергия харажатлари кўплаб корхоналар учун энг катта харажат моддаларидан бири. Энергия тежаш ҳам экологик, ҳам иқтисодий фойда беради.",
+          "Тезкор натижалар: LED ёритгичлар, ҳаракат сенсорлари, компрессорли ҳаво тизимларидаги сизиб чиқишларни бартараф этиш, биноларни иссиқлик изоляцияси.",
+          "Ўрта муддатли чоралар: частотали ростлагичлар (ЧРП), самарадор электр двигателлар, иссиқликни қайта ишлатиш (рекуперация).",
+          "Узоқ муддатли: томга қуёш панеллари ўрнатиш, энергия мониторинги учун «ақлли» ҳисоблагичлар (IoT) жорий этиш."
+        ],
+        tip: "Энергия аудитини ўтказинг: «ўлчанмаган нарсани бошқариб бўлмайди».",
+        quiz: [
+          { q: "Қайси чора энг тез ва арзон натижа беради?", a: ["Янги завод қуриш", "LED ёритгичларга ўтиш", "Ишлаб чиқаришни тўхтатиш"], c: 1 },
+          { q: "Энергия сарфини реал вақтда кузатиш учун нима ишлатилади?", a: ["Ақлли ҳисоблагичлар (IoT)", "Қоғоз журнал", "Ҳеч нарса"], c: 0 }
+        ]
+      },
+      {
+        title: "Чиқиндиларни бошқариш ва айланма иқтисодиёт",
+        minutes: 8,
+        body: [
+          "Айланма (циркуляр) иқтисодиёт — «ол-ишлат-ташла» моделидан воз кечиб, материалларни иложи борича узоқ муддат айланмада сақлашдир.",
+          "Бир корхонанинг чиқиндиси бошқасининг хомашёси бўлиши мумкин: картон, металл қириндилари, органик қолдиқлар (компост, биогаз).",
+          "Чиқиндилар иерархияси: олдини олиш → қайта фойдаланиш → қайта ишлаш → энергия олиш → кўмиш (энг охирги вариант).",
+          "Хавфли чиқиндилар (кимёвий моддалар, аккумуляторлар, люминесцент лампалар) алоҳида ҳисобга олиниши ва лицензияга эга ташкилотларга топширилиши шарт."
+        ],
+        tip: "Ишлаб чиқариш қолдиқларини қайта ишловчи корхоналар билан шартнома тузинг — бу чиқиндини даромадга айлантиради.",
+        quiz: [
+          { q: "Чиқиндилар иерархиясида энг устувор қадам қайси?", a: ["Кўмиш", "Олдини олиш", "Ёқиш"], c: 1 },
+          { q: "Хавфли чиқиндига мисол:", a: ["Картон қути", "Мева пўчоғи", "Эски аккумулятор"], c: 2 }
+        ]
+      },
+      {
+        title: "ESG ва барқарорлик ҳисоботи",
+        minutes: 7,
+        body: [
+          "ESG — Environmental (экология), Social (ижтимоий), Governance (корпоратив бошқарув). Инвесторлар ва банклар компанияларни шу мезонлар бўйича баҳолайди.",
+          "Экологик кўрсаткичлар: иссиқхона газлари чиқиндиси (Scope 1, 2, 3), сув ва энергия сарфи, чиқиндилар ҳажми.",
+          "Scope 1 — корхонанинг ўз манбаларидан тўғридан-тўғри чиқиндилар; Scope 2 — сотиб олинган электр ва иссиқлик; Scope 3 — таъминот занжиридаги бошқа билвосита чиқиндилар.",
+          "Шаффоф ҳисобот халқаро ҳамкорлар ва «яшил» молиялаштиришга йўл очади."
+        ],
+        tip: "Бошланишига йиллик энергия, сув ва чиқинди кўрсаткичларини бир жадвалда йиғишдан бошланг.",
+        quiz: [
+          { q: "ESG даги «E» нимани англатади?", a: ["Иқтисодиёт", "Экология", "Таълим"], c: 1 },
+          { q: "Сотиб олинган электр энергиясидан чиқиндилар қайси тоифага киради?", a: ["Scope 1", "Scope 2", "Scope 3"], c: 1 }
+        ]
+      }
+    ]
+  },
+  {
+    id: "talaba",
+    audience: "talaba",
+    audienceLabel: "Ўқувчи ва талабалар учун",
+    icon: "🎓",
+    title: "Барқарор ривожланиш ва яшил технологиялар",
+    desc: "Мактаб, коллеж ва олийгоҳлар учун: БМТ мақсадлари, Орол муаммоси, яшил технологиялар ва тадқиқот лойиҳалари.",
+    lessons: [
+      {
+        title: "Барқарор ривожланиш мақсадлари",
+        minutes: 7,
+        body: [
+          "2015 йилда БМТ аъзо давлатлари 2030 йилгача эришиш кўзда тутилган 17 та Барқарор ривожланиш мақсадини (БРМ) қабул қилди.",
+          "Улар орасида бевосита экологик мақсадлар бор: тоза сув (6), арзон ва тоза энергия (7), масъулиятли истеъмол (12), иқлим ҳаракати (13), сув ости ҳаёти (14), қуруқликдаги ҳаёт (15).",
+          "Барқарор ривожланиш — келажак авлодларнинг эҳтиёжларига зарар етказмасдан, бугунги эҳтиёжларни қондиришдир.",
+          "Ўзбекистон ҳам миллий БРМларни қабул қилган ва уларни давлат дастурларига киритган."
+        ],
+        tip: "Ўзингизга энг яқин БРМни танланг ва у бўйича мактаб ёки курсдошларингиз билан кичик лойиҳа бошланг.",
+        quiz: [
+          { q: "БМТ нечта Барқарор ривожланиш мақсадини қабул қилган?", a: ["10", "17", "25"], c: 1 },
+          { q: "13-мақсад нимага бағишланган?", a: ["Иқлим ҳаракати", "Таълим", "Соғлиқни сақлаш"], c: 0 }
+        ]
+      },
+      {
+        title: "Орол денгизи: фожиа ва сабоқлар",
+        minutes: 9,
+        body: [
+          "Бир вақтлар дунёдаги энг катта кўллардан бири бўлган Орол денгизи XX аср иккинчи ярмидан бошлаб тез қурий бошлади.",
+          "Асосий сабаб — Амударё ва Сирдарё сувларининг суғориш учун ҳаддан ташқари олиниши. Денгиз ҳажмининг жуда катта қисми (тахминан 90%) йўқолди.",
+          "Оқибатлари: балиқчилик тармоғининг йўқолиши, қуриган тубдан туз ва чанг бўронлари, аҳоли саломатлигига салбий таъсир, маҳаллий иқлимнинг кескинлашуви.",
+          "Бугун Орол бўйида саксовул ва бошқа чўл ўсимликлари экилиб, «яшил қопламалар» барпо этилмоқда. Бу туз ва чанг кўчишини камайтиришга қаратилган."
+        ],
+        tip: "Орол ҳақидаги ҳужжатли фильмларни курсдошларингиз билан кўриб, муҳокама қилинг.",
+        quiz: [
+          { q: "Орол денгизи қуришининг асосий сабаби нима?", a: ["Дарё сувларининг суғоришга ҳаддан ташқари олиниши", "Зилзила", "Метеорит"], c: 0 },
+          { q: "Орол бўйида туз ва чангни ушлаш учун қайси ўсимлик экилмоқда?", a: ["Пахта", "Саксовул", "Шоли"], c: 1 }
+        ]
+      },
+      {
+        title: "Яшил технологиялар",
+        minutes: 8,
+        body: [
+          "Қуёш ва шамол энергияси — энг тез ривожланаётган энергия манбалари. Ўзбекистон йилига кўп қуёшли кунларга эга, бу қуёш энергетикаси учун катта салоҳият.",
+          "Сунъий интеллект ва сунъий йўлдош маълумотлари ўрмонлар кесилиши, ёнғинлар ва ҳаво ифлосланишини реал вақтда кузатишга ёрдам беради.",
+          "Интернет нарсалари (IoT) датчиклари сув ва энергия сарфини ўлчайди, «ақлли» суғориш тизимлари тупроқ намлигига қараб сув беради.",
+          "Электромобиллар, энергия тежамкор бинолар ва биопластик — келажак касблари ҳам шу соҳаларда шаклланмоқда."
+        ],
+        tip: "Ушбу платформадаги «Ҳаво сифати» бўлими сунъий йўлдош ва модел маълумотларидан фойдаланади — уни кузатиб боринг!",
+        quiz: [
+          { q: "Тупроқ намлигига қараб сув берувчи тизим қайси технологияга асосланади?", a: ["IoT датчиклари", "Бўёқ", "Радио"], c: 0 },
+          { q: "Қайси энергия манбаи қайта тикланувчи?", a: ["Кўмир", "Қуёш", "Нефть"], c: 1 }
+        ]
+      },
+      {
+        title: "Экологик тадқиқот лойиҳаси",
+        minutes: 6,
+        body: [
+          "Экологик лойиҳа — муаммони аниқлаш, маълумот йиғиш, таҳлил қилиш ва ечим таклиф қилишдир.",
+          "Мисол мавзулар: мактаб ёки университетдаги чиқиндилар таркиби, маҳалладаги дарахтлар хатлови, уйдаги сув сарфи, ҳаво сифатининг кунлик ўзгариши.",
+          "Маълумот йиғиш учун смартфон етарли: фото, GPS, жадваллар, очиқ маълумот манбалари (масалан, Open-Meteo ҳаво сифати маълумотлари).",
+          "Натижаларни плакат, инфографика ёки қисқа видео шаклида тақдим этинг — бу бошқаларни ҳам ҳаракатга ундайди."
+        ],
+        tip: "Лойиҳа натижаларини ижтимоий тармоқларда #ЭкоТаълим ҳештеги билан улашинг.",
+        quiz: [
+          { q: "Тадқиқот лойиҳасининг биринчи қадами нима?", a: ["Ечим эълон қилиш", "Муаммони аниқлаш", "Видео тасвирга олиш"], c: 1 },
+          { q: "Маълумот йиғиш учун қайси восита етарли бўлиши мумкин?", a: ["Смартфон", "Фақат лаборатория", "Ҳеч қайси"], c: 0 }
+        ]
+      }
+    ]
+  }
+];
+
+/* Янгиликлар: янгисини рўйхат бошига қўшинг. Сана формати: ЙЙЙЙ-ОО-КК */
+const NEWS = [
+  {
+    date: "2026-09-26",
+    cat: "platforma",
+    title: "ЭкоТаълим платформаси ишга туширилди",
+    text: "Аҳоли, корхоналар ва таълим муассасалари учун бепул экологик таълим платформаси фаолият бошлади: курслар, тестлар, углерод калькулятори ва ҳаво сифати мониторинги.",
+    img: "🚀"
+  },
+  {
+    date: "2026-09-20",
+    cat: "ozbekiston",
+    title: "«Яшил макон»: кузги дарахт экиш мавсумига тайёргарлик",
+    text: "Умуммиллий «Яшил макон» лойиҳаси доирасида маҳаллалар, корхоналар ва таълим муассасалари кузги кўчат экиш тадбирларига тайёргарлик кўрмоқда. Маҳаллангиздаги тадбирлар ҳақида ҳокимият ва маҳалла фаолларидан маълумот олинг.",
+    img: "🌳"
+  },
+  {
+    date: "2026-09-15",
+    cat: "texnologiya",
+    title: "Сунъий йўлдошлар ва сунъий интеллект ҳаво ифлосланишини кузатмоқда",
+    text: "Copernicus (Европа) каби дастурлар маълумотлари асосида бутун дунё бўйлаб PM2.5, PM10, азот диоксиди ва озон даражаси ҳар соатда ҳисобланмоқда. Платформамиздаги «Ҳаво сифати» бўлими ҳам шу очиқ маълумотларга таянади.",
+    img: "🛰️"
+  },
+  {
+    date: "2026-09-10",
+    cat: "dunyo",
+    title: "Қайта тикланувчи энергия улуши ўсишда давом этмоқда",
+    text: "Халқаро энергетика ташкилотлари маълумотларига кўра, дунёда янги қувватлар орасида қуёш ва шамол электр станциялари етакчилик қилмоқда. Қуёшли ҳудудлар учун бу катта имконият.",
+    img: "☀️"
+  },
+  {
+    date: "2026-09-05",
+    cat: "ozbekiston",
+    title: "Орол бўйида яшил қопламалар кенгаймоқда",
+    text: "Орол денгизининг қуриган тубида саксовул ва бошқа чўлга чидамли ўсимликлар экиш ишлари давом этмоқда. Бу туз ва чанг бўронларини камайтиришга хизмат қилади.",
+    img: "🏜️"
+  },
+  {
+    date: "2026-08-28",
+    cat: "maslahat",
+    title: "Ёзги иссиқда сувни қандай тежаш мумкин?",
+    text: "Томорқани эрта тонгда ёки кечқурун суғоринг, мульча (сомон, барг) билан тупроқни ёпинг, ёмғир сувини йиғинг. Бу сув сарфини сезиларли камайтиради.",
+    img: "💧"
+  },
+  {
+    date: "2026-08-20",
+    cat: "dunyo",
+    title: "Пластик ифлосланишга қарши халқаро келишув бўйича музокаралар",
+    text: "Дунё давлатлари пластик чиқиндилар бўйича ҳуқуқий мажбурий халқаро келишув устида ишламоқда. Мақсад — пластикнинг бутун ҳаёт циклини: ишлаб чиқаришдан тортиб утилизациясигача тартибга солиш.",
+    img: "🌊"
+  },
+  {
+    date: "2026-08-12",
+    cat: "maslahat",
+    title: "Корхоналар учун: энергия аудитидан бошланг",
+    text: "Энергия аудити қаерда энергия исроф бўлаётганини кўрсатади. Кўп ҳолларда LED ёритгичлар ва сизиб чиқишларни бартараф этиш биринчи йилдаёқ харажатларни қоплайди.",
+    img: "⚡"
+  }
+];
+
+const NEWS_CATS = {
+  all: "Барчаси",
+  ozbekiston: "Ўзбекистон",
+  dunyo: "Дунё",
+  texnologiya: "Технология",
+  maslahat: "Маслаҳат",
+  platforma: "Платформа"
+};
+
+const DAILY_TIPS = [
+  "Тишингизни ювишда жўмракни ёпинг — дақиқасига бир неча литр сув тежалади.",
+  "Бозорга мато сумка олиб боринг.",
+  "Қисқа масофага пиёда ёки велосипедда боринг.",
+  "Қоғознинг икки томонидан фойдаланинг.",
+  "Ишламаётган зарядлагични розеткадан узинг.",
+  "Пластик бутилка ўрнига қайта ишлатиладиган идиш олинг.",
+  "Батарейкаларни оддий чиқиндига ташламанг — махсус йиғиш жойларига топширинг.",
+  "Мева-сабзавот пўчоқларидан компост тайёрланг.",
+  "Кондиционерни 24–26°C да ишлатинг — энергия анча тежалади.",
+  "Эски кийимларни ташламанг: хайрия қилинг ёки қайта фойдаланинг.",
+  "Ҳар йили камида битта дарахт экинг ва уни парвариш қилинг.",
+  "Маҳаллий маҳсулотларни танланг — улар узоқ йўл босиб келмайди.",
+  "Кир ювиш машинасини тўла юклаб ишлатинг.",
+  "Чироқ ўрнига кундузи табиий ёруғликдан фойдаланинг."
+];
+
+const CHALLENGES = [
+  { id: "plastik", icon: "🛍️", text: "Бугун бир марталик пластикдан фойдаланмадим", xp: 10 },
+  { id: "suv", icon: "💧", text: "Сувни тежадим (жўмракни ёпдим, қисқа душ)", xp: 10 },
+  { id: "transport", icon: "🚲", text: "Пиёда, велосипед ёки жамоат транспортида юрдим", xp: 15 },
+  { id: "energiya", icon: "💡", text: "Керакмас чироқ ва қурилмаларни ўчирдим", xp: 10 },
+  { id: "saralash", icon: "♻️", text: "Чиқиндиларни саралаб ташладим", xp: 15 },
+  { id: "ulashish", icon: "📣", text: "Экологик билимни оила ёки ҳамкасбим билан бўлишдим", xp: 20 }
+];
+
+const LEVELS = [
+  { min: 0, name: "Уруғ", icon: "🌰" },
+  { min: 50, name: "Ниҳол", icon: "🌱" },
+  { min: 150, name: "Кўчат", icon: "🌿" },
+  { min: 300, name: "Дарахт", icon: "🌳" },
+  { min: 600, name: "Ўрмон", icon: "🌲" },
+  { min: 1000, name: "Табиат ҳимоячиси", icon: "🌍" }
+];
+
+/* Эко-ёрдамчи билимлар базаси: калит сўзлар → жавоб */
+const ASSISTANT_KB = [
+  { k: ["пластик", "бутилка", "пакет", "полиэтилен"], a: "Пластик табиатда юзлаб йил парчаланмайди ва микропластикка айланиб, сув ва озиқ-овқатга ўтади. Тавсия: мато сумка ва қайта ишлатиладиган идишлардан фойдаланинг, пластик бутилкаларни эзиб, алоҳида йиғинг ва қайта ишлаш пунктларига топширинг." },
+  { k: ["саралаш", "чиқинди", "ахлат", "мусор"], a: "Чиқиндиларни камида 3 гуруҳга ажратинг: 1) органик (озиқ-овқат қолдиқлари — компостга), 2) қайта ишланадиган (қоғоз, пластик, шиша, металл — тоза ва қуруқ ҳолда), 3) қолган чиқиндилар. Батарейка, лампа ва дорилар — хавфли, уларни махсус пунктларга топширинг." },
+  { k: ["сув", "жўмрак", "суғориш", "тежаш"], a: "Сувни тежаш: жўмракни тиш ювишда ёпинг, оқаётган жўмракни тузатинг, қисқа душ қабул қилинг, томорқани эрталаб ёки кечқурун суғоринг, мульчадан фойдаланинг. Қишлоқ хўжалигида томчилатиб суғориш сув сарфини кескин камайтиради." },
+  { k: ["иқлим", "исиш", "иссиқхона", "co2", "карбон", "углерод"], a: "Иқлим ўзгаришининг асосий сабаби — қазилма ёқилғилар (кўмир, нефть, газ) ёқилганда чиқадиган CO₂. Шахсий углерод изингизни ҳисоблаш учун платформадаги «Калькулятор» бўлимидан фойдаланинг — у сизга энг самарали чораларни кўрсатади." },
+  { k: ["ҳаво", "чанг", "pm2", "pm10", "смог", "ифлос"], a: "PM2.5 — диаметри 2,5 микрондан кичик заррачалар, улар ўпкага чуқур киради. Ҳаво ифлос кунларда: очиқ ҳавода жисмоний машқни камайтиринг, деразаларни ёпинг, зарур бўлса ниқоб (N95/FFP2) тақинг. Шаҳрингиздаги ҳаво сифатини «Ҳаво сифати» бўлимида кузатинг." },
+  { k: ["дарахт", "кўчат", "экиш", "яшил макон", "ўрмон"], a: "Дарахт экишнинг энг яхши вақти — куз (октябрь–ноябрь) ва эрта баҳор. Маҳаллий иқлимга мос, қурғоқчиликка чидамли турларни танланг (масалан, қайрағоч, чинор, писта, бодом, тут). Энг муҳими — экилгандан кейинги 2–3 йил мунтазам суғориш ва парвариш." },
+  { k: ["энергия", "электр", "свет", "чироқ", "газ", "қуёш"], a: "Энергия тежаш: LED лампалар, А+ синфли маиший техника, ишламаётган қурилмаларни розеткадан узиш, уйни изоляция қилиш. Қуёш панеллари ҳам уй хўжаликлари учун тобора арзонлашмоқда." },
+  { k: ["iso", "14001", "менежмент", "корхона", "завод", "ташкилот"], a: "Корхона учун бошланғич қадамлар: 1) экологик жиҳатлар реестрини тузинг (сув, энергия, хомашё сарфи, чиқиндилар, ҳавога ташламалар), 2) масъул шахс тайинланг, 3) ходимларни ўқитинг (бу платформадаги «Корхонада экологик менежмент» курси), 4) йиллик мақсадлар ва кўрсаткичлар белгиланг. Келажакда ISO 14001 сертификатига тайёрланиш мумкин." },
+  { k: ["esg", "ҳисобот", "scope", "инвестор"], a: "ESG — экологик, ижтимоий ва бошқарув кўрсаткичлари. Экологик қисмда одатда иссиқхона газлари (Scope 1, 2, 3), энергия, сув ва чиқиндилар ҳисобга олинади. Бошланиш учун ушбу кўрсаткичларни ойлик жадвалда йиғишни йўлга қўйинг." },
+  { k: ["орол", "арал", "денгиз"], a: "Орол денгизи асосан Амударё ва Сирдарё сувлари суғоришга ҳаддан ташқари олинганлиги сабабли қуриди. Бугун унинг қуриган тубида саксовул экиш орқали туз ва чанг кўчишини камайтириш ишлари олиб борилмоқда. Батафсил — «Барқарор ривожланиш» курсида." },
+  { k: ["компост", "органик", "пўчоқ"], a: "Компост тайёрлаш: мева-сабзавот пўчоғи, барглар ва ўтларни идиш ёки чуқурга солинг, вақти-вақти билан аралаштириб, намлаб туринг. 2–4 ойда тупроқ учун бебаҳо ўғит тайёр бўлади. Гўшт ва ёғли қолдиқларни қўшманг." },
+  { k: ["батарейка", "аккумулятор", "лампа", "симоб", "хавфли"], a: "Батарейка, аккумулятор ва люминесцент лампаларда оғир металлар ва симоб бор. Уларни оддий чиқиндига ташламанг — алоҳида йиғиб, махсус қабул пунктларига ёки йиғиш қутиларига топширинг." },
+  { k: ["транспорт", "машина", "автомобиль", "велосипед", "метро"], a: "Шахсий автомобиль — углерод изининг катта манбаи. Қисқа масофага пиёда ёки велосипедда юринг, метро ва автобусдан фойдаланинг, ҳамкасблар билан бир машинада қатнанг. Двигателни бекорга ишлатиб турманг." },
+  { k: ["қор барс", "ирбис", "сайғоқ", "жайрон", "мархўр", "буғу", "йўлбарс", "панда", "каркидон"], a: "Бу ҳайвон ҳақида «Эко-кутубхона» → «Ноёб ҳайвонлар» бўлимида батафсил маълумот, қизиқарли фактлар ва уни қандай асраш мумкинлиги ёзилган. Масалан, қор барси ўкира олмайди, сайғоқнинг катта бурни эса ёзда чангни фильтрлайди, қишда совуқ ҳавони иситади." },
+  { k: ["қизил китоб", "йўқолиб", "ноёб", "iucn"], a: "Қизил китоб — йўқолиб кетиш хавфи остидаги ҳайвон ва ўсимликлар рўйхати. Халқаро миқёсда IUCN Қизил рўйхати юритилади, Ўзбекистоннинг ҳам ўз Қизил китоби бор. Бундай турларни овлаш ва сотиш қонун билан тақиқланган. «Эко-кутубхона» бўлимида Ўзбекистон ва дунёнинг ноёб ҳайвонлари ҳақида ўқинг." },
+  { k: ["қонун", "жарима", "жавобгарлик", "ҳуқуқ", "конституция"], a: "Ўзбекистонда табиатни муҳофаза қилиш, атмосфера ҳавоси, сув, чиқиндилар, ҳайвонот ва ўсимлик дунёси тўғрисида қонунлар амал қилади. Уларнинг оммабоп мазмунини «Эко-кутубхона» → «Қонунлар» бўлимида ўқинг. Расмий ва амалдаги матн — lex.uz сайтида." },
+  { k: ["китоб", "ўқиш", "адабиёт", "айтматов"], a: "«Эко-кутубхона» → «Китоблар» бўлимида экологияга оид машҳур китоблар бор: Рейчел Карсоннинг «Сокин баҳор»и, Чингиз Айтматовнинг «Қиёмат» ва «Оқ кема» асарлари, Дэвид Аттенборонинг «Сайёрамиздаги ҳаётим» китоби ва бошқалар." },
+  { k: ["сертификат", "курс", "тест", "балл", "даража"], a: "Ҳар бир дарсни ўқиб, тестдан ўтсангиз балл (XP) оласиз ва даражангиз ошади. Курснинг барча дарсларини тугатгач, исмингиз ёзилган сертификатни юклаб олишингиз мумкин." }
+];
+</script>
+  <script>
+/* ЭкоТаълим — Эко-кутубхона контенти: китоблар, қонунлар, йўқолиб бораётган ҳайвонлар.
+   Янги материал қўшиш учун тегишли рўйхатга янги объект қўшинг. */
+
+/* IUCN (Халқаро табиатни муҳофаза қилиш иттифоқи) Қизил рўйхати тоифалари */
+const IUCN = {
+  EX: { label: "Йўқолиб кетган", color: "#111827" },
+  CR: { label: "Йўқолиш арафасида", color: "#dc2626" },
+  EN: { label: "Йўқолиб бормоқда", color: "#ea580c" },
+  VU: { label: "Заиф ҳолатда", color: "#ca8a04" },
+  NT: { label: "Хавф остига яқин", color: "#65a30d" },
+  LC: { label: "Хавф кам", color: "#16a34a" },
+  RB: { label: "Ўзбекистон Қизил китобида", color: "#b91c1c" }
+};
+
+const LIBRARY = {
+  books: [
+    {
+      icon: "🌸", title: "Сокин баҳор", orig: "Silent Spring", author: "Рейчел Карсон", year: 1962, tag: "Классика",
+      short: "Замонавий экологик ҳаракатни бошлаб берган китоб.",
+      body: [
+        "Биолог Рейчел Карсон пестицидлар, айниқса ДДТ қушлар, балиқлар ва инсон саломатлигига қандай зарар етказишини илмий далиллар билан кўрсатиб берди.",
+        "Китоб номи қушлар сайрамай қолган «сокин» баҳор ҳақидаги огоҳлантиришдир.",
+        "Китоб жамоатчиликда катта акс-садо берди ва кўплаб мамлакатларда ДДТ фойдаланишни чеклашга ҳамда атроф-муҳитни муҳофаза қилиш идораларининг ташкил этилишига туртки бўлди."
+      ],
+      fact: "Китоб чиққанда кимё компаниялари Карсонга қарши кенг кампания олиб борган, аммо кейинчалик унинг хулосалари тасдиқланган.",
+      who: "Барча ўқувчилар, айниқса қишлоқ хўжалиги ходимлари"
+    },
+    {
+      icon: "🐺", title: "Қиёмат", orig: "Плаха", author: "Чингиз Айтматов", year: 1986, tag: "Бадиий",
+      short: "Бўрилар оиласи ва инсоннинг табиатга шафқатсизлиги ҳақидаги роман.",
+      body: [
+        "Роман Мўйинқум даштларида яшовчи Акбара ва Тошчайнар бўрилари тақдири орқали инсоннинг табиатга ва ўз-ўзига қилаётган зулмини кўрсатади.",
+        "Сайғоқларнинг вертолётлар ёрдамида оммавий қирилиши саҳнаси китобхонни ларзага солади.",
+        "Айтматов табиатни асраш — инсон виждонини асраш билан тенг эканини бадиий тилда ифодалайди."
+      ],
+      fact: "Асар кўплаб тилларга, жумладан ўзбек тилига ҳам таржима қилинган ва мактабларда ўқитилади.",
+      who: "Ўқувчилар, талабалар, бадиий адабиёт мухлислари"
+    },
+    {
+      icon: "🦌", title: "Оқ кема", orig: "Белый пароход", author: "Чингиз Айтматов", year: 1970, tag: "Бадиий",
+      short: "Шохдор она буғу афсонаси ва табиатга садоқат ҳақида қисса.",
+      body: [
+        "Қиссада тоғ қишлоғида яшовчи етим бола ва унинг бобоси Мўмин чол ҳикоя қилган Шохдор она буғу афсонаси марказда туради.",
+        "Катталарнинг табиатга, муқаддас деб билинган буғуларга хиёнати боланинг покиза дунёсига фожиали таъсир қилади.",
+        "Асар экологик ва маънавий масалаларни бир-бирига чамбарчас боғлайди."
+      ],
+      fact: "Қисса асосида фильм ҳам суратга олинган.",
+      who: "Мактаб ўқувчилари ва оилавий ўқиш учун"
+    },
+    {
+      icon: "🦤", title: "Олтинчи йўқолиш", orig: "The Sixth Extinction", author: "Элизабет Колберт", year: 2014, tag: "Илмий-оммабоп",
+      short: "Инсон фаолияти туфайли бошланган оммавий йўқолиш ҳақида.",
+      body: [
+        "Ер тарихида беш марта турларнинг оммавий йўқолиши бўлган, энг машҳури — динозаврларнинг қирилиб кетиши.",
+        "Муаллиф бугун олтинчи оммавий йўқолиш кечаётгани ва унинг асосий сабаби инсон эканлигини дунё бўйлаб саёҳатлари ва олимлар билан суҳбатлари орқали кўрсатади.",
+        "Амфибиялар, маржон рифлари, йирик сутэмизувчилар мисолида жараён тушунарли ҳикоя қилинади."
+      ],
+      fact: "Китоб 2015 йилда Пулитцер мукофотига сазовор бўлган.",
+      who: "Талабалар ва биология, экология қизиқувчилари"
+    },
+    {
+      icon: "🌍", title: "Сайёрамиздаги ҳаётим", orig: "A Life on Our Planet", author: "Дэвид Аттенборо", year: 2020, tag: "Илмий-оммабоп",
+      short: "Машҳур табиатшуноснинг гувоҳлиги ва келажак учун режа.",
+      body: [
+        "Дэвид Аттенборо ўз ҳаёти давомида ёввойи табиат қанчалик қисқариб кетганини шахсий кузатувлари асосида ҳикоя қилади.",
+        "Китобнинг иккинчи қисмида инқирозни қандай тўхтатиш мумкинлиги ҳақида аниқ таклифлар берилади: қайта тикланувчи энергия, денгиз қўриқхоналари, ўсимликка асосланган озиқланиш.",
+        "Китоб асосида шу номдаги ҳужжатли фильм ҳам яратилган."
+      ],
+      fact: "Аттенборо ярим асрдан ортиқ вақт давомида табиат ҳақидаги ҳужжатли фильмлар яратиб келган.",
+      who: "Ҳамма учун — оиладаги барча ёшдагилар"
+    },
+    {
+      icon: "🌳", title: "Дарахтларнинг яширин ҳаёти", orig: "Das geheime Leben der Bäume", author: "Петер Воллебен", year: 2015, tag: "Илмий-оммабоп",
+      short: "Дарахтлар қандай «муомала» қилиши ҳақида ҳайратланарли китоб.",
+      body: [
+        "Немис ўрмончиси дарахтлар илдиз ва замбуруғ тармоқлари орқали бир-бири билан озиқ моддалар алмашиши ҳақидаги илмий кузатувларни содда тилда ҳикоя қилади.",
+        "Ўрмон — алоҳида дарахтлар йиғиндиси эмас, балки ўзаро боғланган бир бутун тизим экани тушунтирилади.",
+        "Китоб дарахт экиш ва ўрмонларни асрашга бўлган қарашимизни ўзгартиради."
+      ],
+      fact: "Китоб дунё бўйлаб бестселлер бўлиб, кўплаб тилларга таржима қилинган.",
+      who: "Боғбонлар, ўқувчилар, «Яшил макон» фаоллари"
+    },
+    {
+      icon: "⚡", title: "Иқлим фалокатидан қандай қочиш мумкин", orig: "How to Avoid a Climate Disaster", author: "Билл Гейтс", year: 2021, tag: "Технология",
+      short: "Иссиқхона газларини нолга тушириш учун технологик режа.",
+      body: [
+        "Муаллиф дунё бўйича чиқариладиган иссиқхона газларини соҳалар бўйича таҳлил қилади: электр энергияси, саноат (пўлат, цемент), қишлоқ хўжалиги, транспорт ва бинолар.",
+        "Ҳар бир соҳа учун «яшил қўшимча нарх» тушунчаси киритилади — тоза технологиянинг анъанавийсидан қанча қиммат экани.",
+        "Китоб ҳукуматлар, бизнес ва оддий фуқаролар учун амалий тавсиялар билан якунланади."
+      ],
+      fact: "Китобда цемент ва пўлат ишлаб чиқариш ҳам иқлимга катта таъсир кўрсатиши алоҳида таъкидланади.",
+      who: "Корхона раҳбарлари, муҳандислар, талабалар"
+    },
+    {
+      icon: "🍩", title: "Донут иқтисодиёти", orig: "Doughnut Economics", author: "Кейт Роуорт", year: 2017, tag: "Иқтисодиёт",
+      short: "Сайёра имкониятлари доирасида фаровонликка эришиш модели.",
+      body: [
+        "Муаллиф иқтисодиётни «донут» шаклида тасаввур қилишни таклиф этади: ички ҳалқа — инсоннинг асосий эҳтиёжлари, ташқи ҳалқа — сайёранинг экологик чегаралари.",
+        "Мақсад — ҳеч ким ички ҳалқадан пастга тушмаслиги ва жамият ташқи ҳалқадан чиқиб кетмаслиги.",
+        "Бу модель айрим шаҳарлар томонидан ривожланиш режаларида қўлланилмоқда."
+      ],
+      fact: "Амстердам шаҳри 2020 йилда ўз стратегиясини «донут» модели асосида ишлаб чиққан.",
+      who: "Иқтисодчилар, давлат хизматчилари, корхона раҳбарлари"
+    }
+  ],
+
+  laws: [
+    {
+      icon: "📜", title: "Ўзбекистон Республикаси Конституцияси", kind: "Ўзбекистон", year: 2023,
+      short: "Қулай атроф-муҳитга бўлган ҳуқуқ конституциявий даражада.",
+      body: [
+        "2023 йилда умумхалқ референдуми орқали қабул қилинган янги таҳрирдаги Конституция ҳар кимнинг қулай атроф-муҳитга ва унинг ҳолати тўғрисида ишончли ахборот олишга бўлган ҳуқуқини мустаҳкамлади.",
+        "Конституцияда фуқароларнинг атроф табиий муҳитга эҳтиёткорона муносабатда бўлиш мажбурияти ҳам белгиланган.",
+        "Давлат атроф-муҳитни муҳофаза қилиш ва экологик мувозанатни сақлаш чораларини кўради."
+      ],
+      matter: "Экологик ҳуқуқларингиз бузилса, давлат органларига мурожаат қилишга ҳаққингиз бор."
+    },
+    {
+      icon: "🌿", title: "«Табиатни муҳофаза қилиш тўғрисида»ги Қонун", kind: "Ўзбекистон", year: 1992,
+      short: "Ўзбекистон экологик қонунчилигининг асосий ҳужжати.",
+      body: [
+        "Қонун табиатни муҳофаза қилишнинг асосий тамойилларини, давлат органлари, корхоналар ва фуқароларнинг ҳуқуқ ва мажбуриятларини белгилайди.",
+        "Табиий ресурслардан оқилона фойдаланиш, экологик мониторинг ва атроф-муҳитга етказилган зарарни қоплаш масалаларини тартибга солади.",
+        "Кейинги йилларда қонунга бир неча марта ўзгартириш ва қўшимчалар киритилган."
+      ],
+      matter: "Корхоналар атроф-муҳитга етказган зарарни қоплаши шарт."
+    },
+    {
+      icon: "💨", title: "«Атмосфера ҳавосини муҳофаза қилиш тўғрисида»ги Қонун", kind: "Ўзбекистон", year: 1996,
+      short: "Ҳавога ифлослантирувчи моддалар чиқарилишини тартибга солади.",
+      body: [
+        "Қонун атмосфера ҳавоси сифати нормативларини, ифлослантирувчи моддаларни чиқариш учун рухсатномалар ва назорат тартибини белгилайди.",
+        "Корхоналар ҳавога чиқараётган моддалар ҳажмини ҳисобга олиши ва белгиланган меъёрлардан оширмаслиги керак.",
+        "Автотранспорт воситаларининг чиқинди газлари ҳам назорат қилинади."
+      ],
+      matter: "Ҳаво сифати ёмонлашганда корхоналар фаолиятини вақтинча чеклаш мумкин."
+    },
+    {
+      icon: "💧", title: "«Сув ва сувдан фойдаланиш тўғрисида»ги Қонун", kind: "Ўзбекистон", year: 1993,
+      short: "Сув ресурсларини муҳофаза қилиш ва улардан фойдаланиш тартиби.",
+      body: [
+        "Қонун сув объектлари давлат мулки экани, сувдан фойдаланиш тартиби, сув муҳофаза зоналари ва сувни ифлосланишдан сақлаш қоидаларини белгилайди.",
+        "Сув ҳавзалари ва қирғоқлари бўйида сув муҳофаза зоналари белгиланади, у ерда айрим фаолият турлари чекланади.",
+        "Сувдан исрофгарчилик билан фойдаланиш ва уни ифлослантириш учун жавобгарлик назарда тутилган."
+      ],
+      matter: "Ариқ ва каналларга чиқинди ташлаш қонунга хилоф."
+    },
+    {
+      icon: "🗑️", title: "«Чиқиндилар тўғрисида»ги Қонун", kind: "Ўзбекистон", year: 2002,
+      short: "Чиқиндиларни йиғиш, ташиш, қайта ишлаш ва кўмиш тартиби.",
+      body: [
+        "Қонун маиший ва саноат чиқиндилари билан ишлашнинг асосий талабларини белгилайди: уларни ҳосил бўлишини камайтириш, йиғиш, сақлаш, ташиш, қайта ишлаш ва зарарсизлантириш.",
+        "Хавфли чиқиндилар билан ишлаш алоҳида талаблар ва рухсатномалар асосида амалга оширилади.",
+        "Чиқиндиларни рухсат этилмаган жойларга ташлаш учун маъмурий жавобгарлик назарда тутилган."
+      ],
+      matter: "Кўчага ёки табиатга ахлат ташлаш жаримага сабаб бўлади."
+    },
+    {
+      icon: "🐾", title: "«Ҳайвонот дунёсини муҳофаза қилиш ва ундан фойдаланиш тўғрисида»ги Қонун", kind: "Ўзбекистон", year: 2016,
+      short: "Ёввойи ҳайвонларни ва уларнинг яшаш жойларини ҳимоя қилади.",
+      body: [
+        "Қонун ёввойи ҳайвонларни муҳофаза қилиш, овчилик ва балиқчилик тартиби, ноёб турларни асраш масалаларини тартибга солади.",
+        "Ўзбекистон Қизил китобига киритилган ҳайвонларни овлаш, тутиш ва сотиш тақиқланади.",
+        "Ноқонуний ов учун маъмурий ва жиноий жавобгарлик белгиланган."
+      ],
+      matter: "Қизил китобдаги ҳайвонни овлаш — жиноят."
+    },
+    {
+      icon: "🌱", title: "«Ўсимлик дунёсини муҳофаза қилиш ва ундан фойдаланиш тўғрисида»ги Қонун", kind: "Ўзбекистон", year: 2016,
+      short: "Ёввойи ўсимликлар, ўрмонлар ва яшил ҳудудларни ҳимоя қилиш.",
+      body: [
+        "Қонун ёввойи ўсимликлардан фойдаланиш, уларни йиғиш ва муҳофаза қилиш тартибини белгилайди.",
+        "Ноёб ва йўқолиб бораётган ўсимлик турлари Қизил китобга киритилади ва махсус муҳофаза остига олинади.",
+        "Дарахтларни рухсатсиз кесиш учун жавобгарлик назарда тутилган."
+      ],
+      matter: "Дарахтни рухсатсиз кесиш катта жарималарга олиб келади."
+    },
+    {
+      icon: "🔎", title: "«Экологик экспертиза тўғрисида»ги Қонун", kind: "Ўзбекистон", year: 2000,
+      short: "Янги лойиҳаларнинг атроф-муҳитга таъсирини олдиндан баҳолаш.",
+      body: [
+        "Завод, йўл, кон каби лойиҳалар қурилишидан олдин уларнинг атроф-муҳитга таъсири баҳоланиши шарт.",
+        "Экологик экспертизанинг ижобий хулосасисиз лойиҳани амалга ошириш мумкин эмас.",
+        "Жамоатчилик ҳам экологик экспертизада иштирок этиши мумкин."
+      ],
+      matter: "Корхона қуришдан олдин экологик экспертизадан ўтиш мажбурий."
+    },
+    {
+      icon: "🌐", title: "Париж келишуви", kind: "Халқаро", year: 2015,
+      short: "Иқлим ўзгаришига қарши глобал келишув.",
+      body: [
+        "БМТнинг Иқлим ўзгариши бўйича доиравий конвенцияси доирасида қабул қилинган.",
+        "Асосий мақсад — глобал исишни саноатлашувдан олдинги даражага нисбатан 2°C дан анча паст ушлаб туриш ва уни 1,5°C билан чеклашга интилиш.",
+        "Ҳар бир давлат ўзи учун миллий мақсадларни белгилайди ва уларни мунтазам янгилаб боради. Ўзбекистон ҳам келишувни ратификация қилган."
+      ],
+      matter: "Давлатлар ҳар 5 йилда иқлим мақсадларини кучайтириб бориши керак."
+    },
+    {
+      icon: "🐘", title: "CITES конвенцияси", kind: "Халқаро", year: 1973,
+      short: "Йўқолиб бораётган ҳайвон ва ўсимликлар савдосини назорат қилади.",
+      body: [
+        "Конвенция ёввойи ҳайвон ва ўсимликларнинг халқаро савдоси уларнинг яшаб қолишига хавф солмаслигини таъминлайди.",
+        "Турлар уч иловага бўлинади: I-иловадагилар (масалан, қор барси) билан тижорат савдоси деярли тўлиқ тақиқланган.",
+        "Фил суяги, каркидон шохи ва ноёб ҳайвонлар терисининг ноқонуний савдосига қарши курашда муҳим восита ҳисобланади."
+      ],
+      matter: "Саёҳатдан ноёб ҳайвон маҳсулотларини олиб келиш тақиқланган бўлиши мумкин."
+    },
+    {
+      icon: "🦋", title: "Биологик хилма-хиллик тўғрисидаги конвенция", kind: "Халқаро", year: 1992,
+      short: "Сайёрамиздаги ҳаёт хилма-хиллигини асраш.",
+      body: [
+        "Рио-де-Жанейродаги Ер саммитида имзога очилган.",
+        "Уч асосий мақсади бор: биологик хилма-хилликни сақлаш, унинг таркибий қисмларидан барқарор фойдаланиш ва генетик ресурслардан олинадиган фойдани адолатли тақсимлаш.",
+        "2022 йилда қабул қилинган Кунминг–Монреаль доиравий дастури 2030 йилгача қуруқлик ва денгизларнинг 30 фоизини муҳофаза остига олишни мақсад қилган."
+      ],
+      matter: "«30×30» мақсади — 2030 йилгача сайёранинг 30% қисмини муҳофаза қилиш."
+    },
+    {
+      icon: "🦩", title: "Рамсар конвенцияси", kind: "Халқаро", year: 1971,
+      short: "Сув-ботқоқ ерлари ва сув қушларини муҳофаза қилиш.",
+      body: [
+        "Эроннинг Рамсар шаҳрида имзоланган, энг қадимий халқаро экологик келишувлардан бири.",
+        "Сув-ботқоқ ерлари — кўллар, ботқоқликлар, дарё дельталари — сувни тозалайди, тошқинларни юмшатади ва миллионлаб қушлар учун бошпана.",
+        "Ўзбекистонда ҳам халқаро аҳамиятга эга сув-ботқоқ ерлари Рамсар рўйхатига киритилган."
+      ],
+      matter: "Кўллар ва дельталарни қуритиш бутун минтақа экологиясига таъсир қилади."
+    }
+  ],
+
+  animals: [
+    {
+      icon: "🐆", name: "Қор барси (ирбис)", latin: "Panthera uncia", status: "VU", region: "uz",
+      where: "Ўзбекистонда — Чотқол, Ҳисор ва Помир-Олой тоғлари. Жами 12 та Осиё давлатида.",
+      pop: "Ёввойи табиатда бир неча минг бош қолган.",
+      facts: [
+        "Бошқа йирик мушуксимонлардан фарқли равишда ўкира олмайди.",
+        "Узун ва қалин думи (қарийб 1 метр) қояларда мувозанат сақлашга ва совуқда юзини ўраб олишга ёрдам беради.",
+        "Кенг ва тукли панжалари қорда «қор чанғиси» вазифасини бажаради."
+      ],
+      threats: "Браконьерлик (тери ва суяклари учун), ов ҳайвонларининг камайиши, чорвадорлар билан зиддият, иқлим ўзгариши.",
+      help: "Ҳисор ва Чотқол қўриқхоналарида фотоқопқонлар ёрдамида кузатув олиб борилади. Қор барси маҳсулотларини сотиб олманг ва ноқонуний ов ҳақида хабар беринг."
+    },
+    {
+      icon: "🦌", name: "Бухоро буғуси", latin: "Cervus hanglu bactrianus", status: "RB", region: "uz", success: true,
+      where: "Амударё, Зарафшон ва Сирдарё водийларидаги тўқайзорлар.",
+      pop: "1990-йиллар охирида бир неча юз бошгина қолган эди, муҳофаза туфайли сони бир неча баробар ошди.",
+      facts: [
+        "Бу — муваффақиятли муҳофаза тарихи: қўриқхоналар ва қайта кўпайтириш дастурлари турни сақлаб қолди.",
+        "Фақат тўқай ўрмонларида — дарё бўйидаги қалин буталар ва тераклар орасида яшайди.",
+        "Эркак буғулар шохини ҳар йили ташлаб, янгидан ўстиради."
+      ],
+      threats: "Тўқайзорларнинг кесилиши ва қуриши, браконьерлик.",
+      help: "Тўқайзорларни асраш — буғуларни асраш. Зарафшон ва Бадай-тўқай қўриқхоналари турни тиклашда катта роль ўйнади."
+    },
+    {
+      icon: "🐐", name: "Мархўр (винтшохли эчки)", latin: "Capra falconeri", status: "NT", region: "uz",
+      where: "Ўзбекистонда — Сурхондарёнинг Кўҳитанг ва Бобатоғ тоғлари.",
+      pop: "Муҳофаза чоралари туфайли дунё бўйича сони барқарорлашмоқда, лекин Ўзбекистонда кам сонли.",
+      facts: [
+        "Эркакларининг бурама шохлари бир метрдан узун бўлиши мумкин.",
+        "Номи форс тилидан «илон еювчи» деб таржима қилинади — бу халқ афсоналари билан боғлиқ.",
+        "Тик қояларда ҳайратланарли даражада эпчил ҳаракатланади."
+      ],
+      threats: "Браконьерлик, чорва билан яйлов учун рақобат, яшаш жойларининг бузилиши.",
+      help: "Сурхон қўриқхонаси мархўрни муҳофаза қилишда муҳим ҳудуд ҳисобланади."
+    },
+    {
+      icon: "🐑", name: "Сайғоқ", latin: "Saiga tatarica", status: "NT", region: "uz",
+      where: "Ўзбекистонда — Устюрт платоси (Қорақалпоғистон). Қозоғистон ва Мўғулистонда ҳам учрайди.",
+      pop: "Қозоғистонда сони кескин тикланди, аммо Устюрт популяцияси ҳали жуда кам.",
+      facts: [
+        "Катта, осилиб турган бурни ёзда чангни фильтрлайди, қишда совуқ ҳавони иситади.",
+        "2015 йилда бактериал касаллик туфайли бир неча ҳафта ичида 200 мингдан ортиқ сайғоқ нобуд бўлган.",
+        "Мамонтлар билан бир даврда яшаган муз даври ҳайвонларидан бири."
+      ],
+      threats: "Шохи учун браконьерлик, кўчиш йўлларини тўсувчи панжаралар ва йўллар, касалликлар.",
+      help: "Сайғоқ шохидан тайёрланган «дори»ларни сотиб олманг. Устюртда қўриқлаш ва кузатув ишлари олиб борилмоқда."
+    },
+    {
+      icon: "🦌", name: "Жайрон", latin: "Gazella subgutturosa", status: "VU", region: "uz",
+      where: "Қизилқум ва Устюрт чўллари, Бухоро вилояти.",
+      pop: "Кўплаб ҳудудларда камайган, муҳофаза этиладиган ҳудудларда кўпайтирилади.",
+      facts: [
+        "Бухоро яқинидаги «Жайрон» экомаркази 1977 йилдан буён жайронларни кўпайтириб келади.",
+        "Соатига 60 км дан ортиқ тезликда югура олади.",
+        "Жуфтлашиш мавсумида эркакларининг бўйни шишиб чиқади — лотинча номи ҳам шундан."
+      ],
+      threats: "Браконьерлик (айниқса машинада қувиб овлаш), яйловларнинг ўзлаштирилиши.",
+      help: "«Жайрон» экомарказига экскурсияга боринг — бу муҳофаза ишларини қўллаб-қувватлайди."
+    },
+    {
+      icon: "🦅", name: "Йўрға тувалоқ", latin: "Chlamydotis macqueenii", status: "VU", region: "uz",
+      where: "Қизилқум ва Устюрт чўллари.",
+      pop: "Ов ва тутиш туфайли сони камаймоқда.",
+      facts: [
+        "Эркаклари жуфтлашиш пайтида бўйин патларини ҳурпайтириб, «рақс» қилиб югуради.",
+        "Кўпинча сув ичмасдан, озиқасидаги намлик билан кифояланади.",
+        "Лочин ва бургут билан ов қилиш анъанаси туфайли кўп тутилади."
+      ],
+      threats: "Ноқонуний ов ва тутиб сотиш, яшаш жойларининг бузилиши.",
+      help: "Йўрға тувалоқни овлаш ва сотиш тақиқланган — бундай ҳолатлар ҳақида экология инспекциясига хабар беринг."
+    },
+    {
+      icon: "🐟", name: "Амударё куракбурни", latin: "Pseudoscaphirhynchus kaufmanni", status: "CR", region: "uz",
+      where: "Фақат Амударёда учрайди (эндемик).",
+      pop: "Жуда кам сонли, сони аниқ маълум эмас.",
+      facts: [
+        "Бекирасимонлар оиласига мансуб — «тирик қазилма» деб аталадиган қадимий балиқлар.",
+        "Думининг учида ипсимон узун ўсимтаси бор.",
+        "Унинг қариндоши — Сирдарё куракбурни — узоқ вақтдан бери учрамаяпти ва йўқолиб кетган бўлиши мумкин."
+      ],
+      threats: "Дарё сувининг суғоришга олиниши, тўғонлар, сувнинг ифлосланиши.",
+      help: "Сувни тежаш ва дарёларни ифлослантирмаслик — бу балиқни асрашнинг энг яхши йўли."
+    },
+    {
+      icon: "🐅", name: "Туран йўлбарси", latin: "Panthera tigris virgata", status: "EX", region: "uz",
+      where: "Илгари Амударё, Сирдарё ва Каспий бўйидаги тўқайзорларда яшаган.",
+      pop: "XX асрнинг иккинчи ярмида йўқолиб кетган.",
+      facts: [
+        "Бир вақтлар Ўзбекистон тўқайзорларининг энг йирик йиртқичи бўлган.",
+        "Генетик тадқиқотлар уни Амур йўлбарсига жуда яқин эканини кўрсатган.",
+        "Қўшни Қозоғистонда йўлбарсларни қайта тиклаш лойиҳаси амалга оширилмоқда."
+      ],
+      threats: "Тўқайзорларнинг ўзлаштирилиши, оммавий ов — бу турнинг йўқолишига олиб келди.",
+      help: "Бу — тўқайзорларни асраш нега муҳимлигини кўрсатувчи аччиқ сабоқ."
+    },
+    {
+      icon: "🐼", name: "Катта панда", latin: "Ailuropoda melanoleuca", status: "VU", region: "world", success: true,
+      where: "Хитойнинг тоғли бамбук ўрмонлари.",
+      pop: "Муҳофаза туфайли сони ошди ва 2016 йилда «йўқолиб бормоқда» тоифасидан «заиф» тоифасига ўтказилди.",
+      facts: [
+        "Кунига 10 соатдан ортиқ вақтини бамбук ейишга сарфлайди.",
+        "Олд панжасидаги махсус суяк ўсимтаси «олтинчи бармоқ» вазифасини бажаради.",
+        "Бутунжаҳон ёввойи табиат фонди (WWF) рамзи."
+      ],
+      threats: "Бамбук ўрмонларининг парчаланиши, иқлим ўзгариши.",
+      help: "Қўриқхоналар тармоғи ва ўрмонлар орасидаги «яшил йўлаклар» пандаларни сақлаб қолмоқда."
+    },
+    {
+      icon: "🐬", name: "Вакита (Калифорния чўчқа дельфини)", latin: "Phocoena sinus", status: "CR", region: "world",
+      where: "Фақат Мексиканинг Калифорния қўлтиғи шимолида.",
+      pop: "Бор-йўғи ўнга яқин бош қолган — дунёдаги энг кам сонли денгиз сутэмизувчиси.",
+      facts: [
+        "Энг кичик дельфинсимон сутэмизувчи — узунлиги тахминан 1,5 метр.",
+        "Кўзлари атрофида қора ҳалқалар бор.",
+        "Бошқа балиқни ноқонуний овлаш учун қўйилган тўрларга тушиб нобуд бўлади."
+      ],
+      threats: "Ноқонуний балиқ тўрлари.",
+      help: "Хавфсиз балиқ овлаш усуллари ва тўрсиз ҳудудлар ягона умид."
+    },
+    {
+      icon: "🦏", name: "Шимолий оқ каркидон", latin: "Ceratotherium simum cottoni", status: "CR", region: "world",
+      where: "Кенияда, қуролли қўриқчилар муҳофазасида.",
+      pop: "Фақат иккита урғочи қолган, охирги эркак 2018 йилда нобуд бўлган.",
+      facts: [
+        "Табиий кўпайиш имконсиз, шунинг учун олимлар сақланган ҳужайралар ёрдамида сунъий уруғлантириш усулларини синамоқда.",
+        "Каркидон шохи инсон тирноғи моддаси — кератиндан иборат, унинг ҳеч қандай шифобахш хусусияти йўқ.",
+        "Турни браконьерлик йўқ қилиш арафасига олиб келди."
+      ],
+      threats: "Шохи учун браконьерлик.",
+      help: "Каркидон шохи ва фил суягидан тайёрланган маҳсулотлардан воз кечинг."
+    }
+  ]
+};
+</script>
+  <script>
+/* ЭкоТаълим — асосий мантиқ */
+(() => {
+  "use strict";
+
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const T = (s) => EkoLang.t(s);
+  const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+  /* ---------- Ҳолат (браузерда сақланади) ---------- */
+  const KEY = "ekotalim:v1";
+  const fresh = () => ({ xp: 0, correct: {}, perfect: {}, challenges: {}, flags: {}, read: {}, name: "" });
+  let state = fresh();
+  try { state = Object.assign(fresh(), JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { /* хотира йўқ — сақламасдан ишлайди */ }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } };
+
+  const toastEl = $("#toast");
+  let toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2600);
+  }
+
+  function addXp(n, why) {
+    const before = levelOf(state.xp);
+    state.xp += n;
+    save();
+    const after = levelOf(state.xp);
+    if (after !== before) toast(`🎉 Янги даража: ${after.icon} ${after.name}!`);
+    else if (why) toast(`+${n} XP · ${why}`);
+    renderGamification();
+  }
+
+  function flag(name) {
+    if (state.flags[name]) return;
+    state.flags[name] = true;
+    save();
+    renderGamification();
+  }
+
+  /* ---------- Курслар ---------- */
+  const qKey = (c, l, q) => `${c}:${l}:${q}`;
+  const lessonDone = (c, li) => COURSES.find((x) => x.id === c).lessons[li].quiz.every((_, qi) => state.correct[qKey(c, li, qi)]);
+  const courseProgress = (c) => {
+    const course = COURSES.find((x) => x.id === c);
+    const done = course.lessons.filter((_, i) => lessonDone(c, i)).length;
+    return { done, total: course.lessons.length };
+  };
+  const totalLessons = COURSES.reduce((s, c) => s + c.lessons.length, 0);
+
+  let courseFilter = "all";
+  function renderCourses() {
+    $("#courseGrid").innerHTML = COURSES.filter((c) => courseFilter === "all" || c.audience === courseFilter).map((c) => {
+      const p = courseProgress(c.id);
+      const pct = Math.round((p.done / p.total) * 100);
+      const complete = p.done === p.total;
+      return `<article class="course">
+        <div class="course-top"><div class="course-icon">${c.icon}</div><span class="pill">${esc(c.audienceLabel)}</span></div>
+        <h3>${esc(c.title)}</h3>
+        <p>${esc(c.desc)}</p>
+        <div class="progress" title="${pct}%"><div style="width:${pct}%"></div></div>
+        <span class="small muted">${p.done} / ${p.total} дарс тугатилди</span>
+        <ul class="lesson-list">${c.lessons.map((l, i) => `
+          <li><button data-c="${c.id}" data-l="${i}">
+            <span class="${lessonDone(c.id, i) ? "done" : ""}">${lessonDone(c.id, i) ? "✓" : i + 1}</span>
+            ${esc(l.title)}<span class="mins">${l.minutes} дақ</span>
+          </button></li>`).join("")}
+        </ul>
+        ${complete
+          ? `<button class="btn btn-primary" data-cert="${c.id}">🏆 Сертификат олиш</button>`
+          : `<button class="btn btn-ghost" data-c="${c.id}" data-l="${c.lessons.findIndex((_, i) => !lessonDone(c.id, i))}">${p.done ? "Давом эттириш" : "Бошлаш"} →</button>`}
+      </article>`;
+    }).join("");
+
+    const all = COURSES.reduce((s, c) => s + courseProgress(c.id).done, 0);
+    $("#progressPct").textContent = Math.round((all / totalLessons) * 100) + "%";
+    $("#lessonCount").textContent = totalLessons;
+  }
+
+  $("#courseFilters").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-f]");
+    if (!b) return;
+    courseFilter = b.dataset.f;
+    $$("#courseFilters .chip").forEach((x) => x.classList.toggle("active", x === b));
+    renderCourses();
+  });
+
+  $("#courseGrid").addEventListener("click", (e) => {
+    const cert = e.target.closest("[data-cert]");
+    if (cert) return openCertificate(cert.dataset.cert);
+    const b = e.target.closest("[data-c]");
+    if (b) openLesson(b.dataset.c, +b.dataset.l);
+  });
+
+  const modal = $("#lessonModal");
+  const modalBody = $("#modalBody");
+  $("#modalClose").addEventListener("click", () => modal.close());
+  modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
+  modal.addEventListener("close", () => { renderCourses(); renderLibrary(); });
+
+  function openLesson(cid, li) {
+    const course = COURSES.find((c) => c.id === cid);
+    const lesson = course.lessons[li];
+    const answered = {};
+    modalBody.innerHTML = `
+      <span class="pill">${course.icon} ${esc(course.title)} · ${li + 1}/${course.lessons.length}-дарс</span>
+      <h2>${esc(lesson.title)}</h2>
+      <div class="lesson-body">${lesson.body.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+      <div class="lesson-tip">💡 <b>Амалий маслаҳат:</b> ${esc(lesson.tip)}</div>
+      <div class="quiz">
+        <h3>📝 Билимингизни синанг</h3>
+        ${lesson.quiz.map((q, qi) => `
+          <div class="q" data-q="${qi}">
+            <p>${qi + 1}. ${esc(q.q)}</p>
+            <div class="opts">${q.a.map((a, ai) => `<button class="opt" data-a="${ai}">${esc(a)}</button>`).join("")}</div>
+          </div>`).join("")}
+        <p id="quizResult" class="muted"></p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="prevL" ${li === 0 ? "disabled" : ""}>← Олдинги</button>
+        <button class="btn btn-primary" id="nextL">${li === course.lessons.length - 1 ? "Курсни якунлаш" : "Кейинги дарс →"}</button>
+      </div>`;
+
+    $$(".q", modalBody).forEach((qEl) => {
+      qEl.addEventListener("click", (e) => {
+        const opt = e.target.closest(".opt");
+        if (!opt) return;
+        const qi = +qEl.dataset.q;
+        const ai = +opt.dataset.a;
+        const q = lesson.quiz[qi];
+        $$(".opt", qEl).forEach((o, i) => {
+          o.disabled = true;
+          if (i === q.c) o.classList.add("right");
+        });
+        answered[qi] = ai === q.c;
+        if (ai === q.c) {
+          const k = qKey(cid, li, qi);
+          if (!state.correct[k]) { state.correct[k] = true; addXp(10, "тўғри жавоб"); }
+        } else {
+          opt.classList.add("wrong");
+        }
+        if (Object.keys(answered).length === lesson.quiz.length) finishQuiz();
+      });
+    });
+
+    function finishQuiz() {
+      const right = Object.values(answered).filter(Boolean).length;
+      const res = $("#quizResult", modalBody);
+      if (right === lesson.quiz.length) {
+        res.innerHTML = `✅ Аъло! ${right}/${lesson.quiz.length} тўғри. Дарс тугатилди.`;
+        const pk = `${cid}:${li}`;
+        if (!state.perfect[pk]) { state.perfect[pk] = true; addXp(20, "дарс тугатилди"); }
+        const p = courseProgress(cid);
+        if (p.done === p.total) flag(`course_${cid}`);
+      } else {
+        res.innerHTML = `${right}/${lesson.quiz.length} тўғри. Дарсни яна бир бор ўқиб, қайта уриниб кўринг. <button class="linklike" id="retry">Қайта топшириш</button>`;
+        $("#retry", modalBody).addEventListener("click", () => openLesson(cid, li));
+      }
+    }
+
+    $("#prevL", modalBody).addEventListener("click", () => openLesson(cid, li - 1));
+    $("#nextL", modalBody).addEventListener("click", () => {
+      if (li < course.lessons.length - 1) return openLesson(cid, li + 1);
+      const p = courseProgress(cid);
+      if (p.done === p.total) openCertificate(cid);
+      else { modal.close(); toast(`Сертификат учун барча дарс тестларидан ўтинг (${p.done}/${p.total})`); }
+    });
+
+    if (!modal.open) modal.showModal();
+    modal.scrollTop = 0;
+  }
+
+  /* ---------- Сертификат ---------- */
+  function openCertificate(cid) {
+    const course = COURSES.find((c) => c.id === cid);
+    modalBody.innerHTML = `
+      <span class="pill">🏆 Табриклаймиз!</span>
+      <h2>«${esc(course.title)}» курси муваффақиятли тугатилди</h2>
+      <p class="muted">Сертификатга ёзиладиган исм-шарифингизни киритинг ва уни PNG шаклида юклаб олинг.</p>
+      <form class="cert-form" id="certForm">
+        <input id="certName" required maxlength="60" placeholder="Исм Фамилия" value="${esc(state.name)}">
+        <button class="btn btn-primary">⬇ Юклаб олиш</button>
+      </form>`;
+    $("#certForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = $("#certName").value.trim();
+      if (!name) return;
+      state.name = name; save();
+      downloadCertificate(name, course);
+    });
+    if (!modal.open) modal.showModal();
+  }
+
+  function downloadCertificate(name, course) {
+    const W = 1600, H = 1130;
+    const cv = document.createElement("canvas");
+    cv.width = W; cv.height = H;
+    const g = cv.getContext("2d");
+    const bg = g.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, "#f0fdf4"); bg.addColorStop(1, "#e0f2fe");
+    g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    g.strokeStyle = "#15803d"; g.lineWidth = 14; g.strokeRect(40, 40, W - 80, H - 80);
+    g.strokeStyle = "#86efac"; g.lineWidth = 3; g.strokeRect(70, 70, W - 140, H - 140);
+    g.textAlign = "center";
+    g.fillStyle = "#15803d"; g.font = "700 44px Inter, sans-serif";
+    g.fillText(T("🌿 ЭкоТаълим"), W / 2, 180);
+    g.fillStyle = "#13261a"; g.font = "800 96px Inter, sans-serif";
+    g.fillText(T("СЕРТИФИКАТ"), W / 2, 320);
+    g.fillStyle = "#5b6f61"; g.font = "400 36px Inter, sans-serif";
+    g.fillText(T("Ушбу сертификат"), W / 2, 420);
+    g.fillStyle = "#0c4a6e"; g.font = "700 76px Inter, sans-serif";
+    g.fillText(name, W / 2, 530, W - 240);
+    g.fillStyle = "#15803d"; g.fillRect(W / 2 - 300, 560, 600, 4);
+    g.fillStyle = "#5b6f61"; g.font = "400 36px Inter, sans-serif";
+    g.fillText(T("га қуйидаги экологик таълим курсини муваффақиятли"), W / 2, 640);
+    g.fillText(T("тугатганлиги учун берилди:"), W / 2, 690);
+    g.fillStyle = "#13261a"; g.font = "700 50px Inter, sans-serif";
+    g.fillText(T(`«${course.title}»`), W / 2, 790, W - 240);
+    g.fillStyle = "#5b6f61"; g.font = "400 30px Inter, sans-serif";
+    g.fillText(T(`${course.lessons.length} та дарс · барча тестлар топширилган`), W / 2, 850);
+    const d = new Date();
+    g.textAlign = "left"; g.fillText(T(`Сана: ${dayKey(d).split("-").reverse().join(".")}`), 160, 990);
+    const id = "ET-" + course.id.toUpperCase() + "-" + d.getTime().toString(36).toUpperCase();
+    g.textAlign = "right"; g.fillText(`№ ${id}`, W - 160, 990);
+    g.font = "120px sans-serif"; g.textAlign = "center"; g.fillText("🌍", W / 2, 1010);
+
+    const a = document.createElement("a");
+    a.download = `EkoTalim-sertifikat-${course.id}.png`;
+    a.href = cv.toDataURL("image/png");
+    a.click();
+    toast("🏆 Сертификат юклаб олинди!");
+  }
+
+  /* ---------- Янгиликлар ---------- */
+  let newsCat = "all";
+  let newsQ = "";
+  $("#newsFilters").innerHTML = Object.entries(NEWS_CATS).map(([k, v]) =>
+    `<button class="chip ${k === "all" ? "active" : ""}" data-n="${k}">${v}</button>`).join("");
+  $("#newsFilters").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-n]");
+    if (!b) return;
+    newsCat = b.dataset.n;
+    $$("#newsFilters .chip").forEach((x) => x.classList.toggle("active", x === b));
+    renderNews();
+  });
+  $("#newsSearch").addEventListener("input", (e) => { newsQ = e.target.value.trim(); renderNews(); });
+
+  function renderNews() {
+    const now = Date.now();
+    const items = [...NEWS]
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .filter((n) => newsCat === "all" || n.cat === newsCat)
+      .filter((n) => !newsQ || EkoLang.matches(n.title + " " + n.text, newsQ));
+    $("#newsGrid").innerHTML = items.length ? items.map((n) => {
+      const age = (now - new Date(n.date + "T00:00:00").getTime()) / 864e5;
+      return `<article class="news">
+        <div class="news-img">${n.img}</div>
+        <div class="news-meta"><span class="tag">${esc(NEWS_CATS[n.cat] || n.cat)}</span>
+          <span>${n.date.split("-").reverse().join(".")}</span>${age >= 0 && age <= 7 ? '<span class="new">ЯНГИ</span>' : ""}</div>
+        <h3>${esc(n.title)}</h3>
+        <p>${esc(n.text)}</p>
+      </article>`;
+    }).join("") : `<p class="muted">Ҳеч нарса топилмади.</p>`;
+  }
+
+  /* ---------- Эко-кутубхона ---------- */
+  const LIB_FILTERS = {
+    animals: { all: "Барчаси", uz: "Ўзбекистон", world: "Дунё" },
+    books: Object.assign({ all: "Барчаси" }, ...LIBRARY.books.map((b) => ({ [b.tag]: b.tag }))),
+    laws: { all: "Барчаси", "Ўзбекистон": "Ўзбекистон", "Халқаро": "Халқаро" }
+  };
+  const libTotal = LIBRARY.animals.length + LIBRARY.books.length + LIBRARY.laws.length;
+  let libTab = "animals", libFilter = "all", libQ = "";
+  const readKey = (t, i) => `${t}:${i}`;
+  const statusBadge = (st) => `<span class="status" style="background:${IUCN[st].color}">${esc(IUCN[st].label)}</span>`;
+  const libText = (t, x) => t === "animals" ? [x.name, x.latin, x.where, ...x.facts].join(" ")
+    : t === "books" ? [x.title, x.orig, x.author, x.short, ...x.body].join(" ")
+    : [x.title, x.short, ...x.body].join(" ");
+  const libGroup = (t, x) => t === "animals" ? x.region : t === "books" ? x.tag : x.kind;
+
+  function renderLibFeature() {
+    const n = LIBRARY.animals.length;
+    const i = Math.floor(Date.now() / 864e5) % n;
+    const a = LIBRARY.animals[i];
+    const fact = a.facts[Math.floor(Date.now() / 864e5 / n) % a.facts.length];
+    $("#libFeature").innerHTML = `
+      <div class="big">${a.icon}</div>
+      <div><div class="kicker">🐾 Кун ҳайвони</div><h3>${esc(a.name)}</h3><p><b>Биласизми?</b> ${esc(fact)}</p></div>
+      <button class="btn btn-primary" data-lib="animals" data-i="${i}">Батафсил</button>`;
+  }
+
+  function renderLibrary() {
+    $$("#libTabs .lib-tab").forEach((b) => { const on = b.dataset.t === libTab; b.classList.toggle("active", on); b.setAttribute("aria-selected", on); });
+    $("#libFilters").innerHTML = Object.entries(LIB_FILTERS[libTab]).map(([k, v]) =>
+      `<button class="chip ${k === libFilter ? "active" : ""}" data-lf="${esc(k)}">${esc(v)}</button>`).join("");
+    const items = LIBRARY[libTab].map((x, i) => ({ x, i }))
+      .filter(({ x }) => libFilter === "all" || libGroup(libTab, x) === libFilter)
+      .filter(({ x }) => !libQ || EkoLang.matches(libText(libTab, x), libQ));
+    $("#libGrid").innerHTML = items.length ? items.map(({ x, i }) => {
+      const read = state.read[readKey(libTab, i)] ? `<span class="read">✓ Ўқилди</span>` : "";
+      if (libTab === "animals") return `<button class="lib-card" data-lib="animals" data-i="${i}">${read}
+        <div class="em">${x.icon}</div>${statusBadge(x.status)}${x.success ? '<span class="ok-tag">🌱 Муваффақият тарихи</span>' : ""}
+        <h3>${esc(x.name)}</h3><div class="latin">${esc(x.latin)}</div><p>${esc(x.facts[0])}</p></button>`;
+      if (libTab === "books") return `<button class="lib-card" data-lib="books" data-i="${i}">${read}
+        <div class="cover">${x.icon}</div><span class="ok-tag">${esc(x.tag)}</span>
+        <h3>${esc(x.title)}</h3><div class="meta">${esc(x.author)} · ${x.year}</div><p>${esc(x.short)}</p></button>`;
+      return `<button class="lib-card" data-lib="laws" data-i="${i}">${read}
+        <div class="em">${x.icon}</div><span class="ok-tag">${esc(x.kind)} · ${x.year}</span>
+        <h3>${esc(x.title)}</h3><p>${esc(x.short)}</p></button>`;
+    }).join("") : `<p class="muted">Ҳеч нарса топилмади.</p>`;
+    const readN = Object.keys(state.read).length;
+    $("#libProgress").textContent = `Сиз кутубхонадаги ${libTotal} та материалдан ${readN} тасини ўқидингиз.`;
+    $("#libCount").textContent = libTotal;
+  }
+
+  function openLibItem(t, i) {
+    const x = LIBRARY[t][i];
+    let html;
+    if (t === "animals") {
+      const scale = ["LC", "NT", "VU", "EN", "CR", "EX"];
+      html = `
+        <span class="pill">🐾 Ноёб ҳайвонлар</span>
+        <h2>${x.icon} ${esc(x.name)}</h2>
+        <div class="latin muted"><i>${esc(x.latin)}</i></div>
+        ${x.status === "RB" ? `<p>${statusBadge("RB")}</p>` : `<div class="iucn" aria-label="IUCN мақоми">${scale.map((k) =>
+          `<span class="${k === x.status ? "on" : ""}" style="${k === x.status ? `background:${IUCN[k].color}` : ""}" title="${esc(IUCN[k].label)}">${k}</span>`).join("")}</div>
+          <p class="small muted">IUCN Қизил рўйхати мақоми: <b style="color:${IUCN[x.status].color}">${esc(IUCN[x.status].label)}</b></p>`}
+        ${x.success ? '<p><span class="ok-tag">🌱 Муваффақият тарихи — муҳофаза натижа берди</span></p>' : ""}
+        <dl class="kv"><dt>📍 Қаерда яшайди</dt><dd>${esc(x.where)}</dd><dt>📊 Сони</dt><dd>${esc(x.pop)}</dd></dl>
+        <h3>Биласизми?</h3>
+        <ul class="facts">${x.facts.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+        <dl class="kv"><dt>⚠️ Хавфлар</dt><dd>${esc(x.threats)}</dd><dt>🤝 Қандай ёрдам бериш мумкин</dt><dd>${esc(x.help)}</dd></dl>`;
+    } else if (t === "books") {
+      html = `
+        <span class="pill">📖 ${esc(x.tag)}</span>
+        <h2>${x.icon} ${esc(x.title)}</h2>
+        <p class="muted">${esc(x.author)} · ${x.year} · асл номи: <i>${esc(x.orig)}</i></p>
+        <div class="lesson-body">${x.body.map((b) => `<p>${esc(b)}</p>`).join("")}</div>
+        <div class="lesson-tip">💡 <b>Қизиқарли факт:</b> ${esc(x.fact)}</div>
+        <dl class="kv"><dt>👥 Кимлар учун</dt><dd>${esc(x.who)}</dd></dl>`;
+    } else {
+      html = `
+        <span class="pill">⚖️ ${esc(x.kind)} · ${x.year}</span>
+        <h2>${x.icon} ${esc(x.title)}</h2>
+        <div class="lesson-body">${x.body.map((b) => `<p>${esc(b)}</p>`).join("")}</div>
+        <div class="lesson-tip">📌 <b>Бу нимани англатади:</b> ${esc(x.matter)}</div>
+        <p class="note">Бу — қонуннинг оммабоп қисқача мазмуни, юридик маслаҳат эмас. Қонунларга вақти-вақти билан ўзгартиришлар киритилади; расмий ва амалдаги матнни Ўзбекистон қонунчилик маълумотлари миллий базаси — <a href="https://lex.uz" target="_blank" rel="noopener">lex.uz</a> сайтидан топинг.</p>`;
+    }
+    const n = LIBRARY[t].length;
+    modalBody.innerHTML = html + `
+      <div class="modal-actions">
+        <button class="btn btn-ghost" data-lib="${t}" data-i="${(i - 1 + n) % n}">← Олдинги</button>
+        <button class="btn btn-primary" data-lib="${t}" data-i="${(i + 1) % n}">Кейинги →</button>
+      </div>`;
+    const k = readKey(t, i);
+    if (!state.read[k]) {
+      state.read[k] = true;
+      addXp(5, "янги билим");
+    }
+    if (!modal.open) modal.showModal();
+    modal.scrollTop = 0;
+  }
+
+  $("#libTabs").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-t]");
+    if (!b) return;
+    libTab = b.dataset.t; libFilter = "all";
+    renderLibrary();
+  });
+  $("#libFilters").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-lf]");
+    if (!b) return;
+    libFilter = b.dataset.lf;
+    renderLibrary();
+  });
+  $("#libSearch").addEventListener("input", (e) => { libQ = e.target.value.trim(); renderLibrary(); });
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-lib]");
+    if (b) openLibItem(b.dataset.lib, +b.dataset.i);
+  });
+
+  /* ---------- Ҳаво сифати (Open-Meteo, жонли) ---------- */
+  const CITIES = [
+    ["Тошкент", 41.31, 69.28], ["Самарқанд", 39.65, 66.96], ["Бухоро", 39.77, 64.42],
+    ["Нукус", 42.46, 59.6], ["Фарғона", 40.39, 71.78], ["Наманган", 41.0, 71.67],
+    ["Андижон", 40.78, 72.34], ["Қарши", 38.86, 65.79], ["Термиз", 37.22, 67.28],
+    ["Урганч", 41.55, 60.63], ["Навоий", 40.1, 65.38], ["Жиззах", 40.12, 67.84], ["Гулистон", 40.49, 68.78]
+  ];
+  function aqiInfo(v) {
+    if (v == null) return ["#999", "Маълумот йўқ"];
+    if (v <= 50) return ["#22c55e", "Яхши"];
+    if (v <= 100) return ["#eab308", "Ўртача"];
+    if (v <= 150) return ["#f97316", "Сезгирлар учун зарарли"];
+    if (v <= 200) return ["#ef4444", "Зарарли"];
+    return ["#a855f7", "Жуда зарарли"];
+  }
+  async function loadAir() {
+    const grid = $("#aqGrid");
+    grid.innerHTML = `<p class="muted">Юкланмоқда…</p>`;
+    const url = "https://air-quality-api.open-meteo.com/v1/air-quality?" + new URLSearchParams({
+      latitude: CITIES.map((c) => c[1]).join(","),
+      longitude: CITIES.map((c) => c[2]).join(","),
+      current: "us_aqi,pm2_5,pm10,nitrogen_dioxide",
+      timezone: "Asia/Tashkent"
+    });
+    try {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error(r.status);
+      let data = await r.json();
+      if (!Array.isArray(data)) data = [data];
+      const rows = CITIES.map((c, i) => ({ name: c[0], cur: (data[i] || {}).current || {} }))
+        .sort((a, b) => (b.cur.us_aqi ?? -1) - (a.cur.us_aqi ?? -1));
+      grid.innerHTML = rows.map(({ name, cur }) => {
+        const [col, lbl] = aqiInfo(cur.us_aqi);
+        const f = (v) => (v == null ? "—" : Math.round(v));
+        return `<div class="aq" style="--aq:${col}">
+          <h4>${esc(name)}</h4>
+          <div class="aqi">${f(cur.us_aqi)}</div><div class="lbl" style="color:${col}">${lbl}</div>
+          <dl><dt>PM2.5</dt><dd>${f(cur.pm2_5)} мкг/м³</dd><dt>PM10</dt><dd>${f(cur.pm10)} мкг/м³</dd><dt>NO₂</dt><dd>${f(cur.nitrogen_dioxide)} мкг/м³</dd></dl>
+        </div>`;
+      }).join("");
+      const t = rows[0] && rows[0].cur.time;
+      $("#aqTime").textContent = t ? `Охирги янгиланиш: ${t.replace("T", " ")} (Тошкент вақти). Бу модел асосидаги баҳо, расмий станция ўлчови эмас.` : "";
+      flag("air");
+    } catch (e) {
+      grid.innerHTML = `<p class="muted">Ҳаво сифати маълумотларини юклаб бўлмади. Интернет алоқасини текширинг ва «Янгилаш» тугмасини босинг.</p>`;
+    }
+  }
+  $("#aqRefresh").addEventListener("click", loadAir);
+
+  /* ---------- Углерод калькулятори ---------- */
+  const form = $("#calcForm");
+  function calc() {
+    const v = Object.fromEntries(new FormData(form));
+    $$("input[type=range]", form).forEach((r) => { r.nextElementSibling.value = r.value; });
+    const parts = {
+      "⚡ Электр": (+v.elec) * 12 * 0.45,
+      "🔥 Газ": (+v.gas) * 12 * 1.9,
+      "🚗 Автомобиль": (+v.car) * 52 * 0.17,
+      "✈️ Парвозлар": (+v.fly) * 250,
+      "🍽️ Овқат": +v.diet,
+      "🗑️ Чиқинди": v.recycle ? 150 : 350
+    };
+    const total = Object.values(parts).reduce((a, b) => a + b, 0) / 1000;
+    $("#calcTotal").textContent = total.toFixed(1);
+    const max = 12;
+    const path = $("#gaugeVal");
+    const len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len * (1 - Math.min(total / max, 1));
+    path.style.stroke = total <= 2.5 ? "#22c55e" : total <= 5 ? "#eab308" : total <= 8 ? "#f97316" : "#ef4444";
+
+    const biggest = Math.max(...Object.values(parts));
+    $("#calcBars").innerHTML = Object.entries(parts).map(([k, val]) => `
+      <div class="bar-row"><span>${k}</span><div class="progress"><div style="width:${(val / biggest) * 100}%"></div></div><span>${(val / 1000).toFixed(2)} т</span></div>`).join("");
+
+    const recs = [];
+    const sorted = Object.entries(parts).sort((a, b) => b[1] - a[1]);
+    for (const [k] of sorted.slice(0, 3)) {
+      if (k.includes("Электр")) recs.push("LED лампаларга ўтинг ва ишламаётган қурилмаларни розеткадан узинг — электр сарфини 10–20% камайтириш мумкин.");
+      if (k.includes("Газ")) recs.push("Уйни иссиқлик изоляция қилинг, деразалардаги тирқишларни ёпинг ва термостатни 1–2°C пасайтиринг.");
+      if (k.includes("Автомобиль")) recs.push("Ҳафтасига бир неча сафарни жамоат транспорти, велосипед ёки пиёда юриш билан алмаштиринг.");
+      if (k.includes("Парвоз")) recs.push("Яқин масофаларга поезддан фойдаланинг — у самолётга нисбатан анча кам CO₂ чиқаради.");
+      if (k.includes("Овқат")) recs.push("Ҳафтада 2–3 кун гўштсиз овқатланинг ва маҳаллий, мавсумий маҳсулотларни танланг.");
+      if (k.includes("Чиқинди")) recs.push(v.recycle ? "Саралашни давом эттиринг ва органик чиқиндилардан компост тайёрланг." : "Чиқиндиларни саралашни бошланг — бу оддий ва самарали қадам.");
+    }
+    $("#calcRecs").innerHTML = recs.map((r) => `<li>${esc(r)}</li>`).join("");
+  }
+  let calcTouched = false;
+  form.addEventListener("input", () => { calc(); if (!calcTouched) { calcTouched = true; flag("calc"); } });
+
+  /* ---------- Челленж, нишонлар, даражалар ---------- */
+  function levelOf(xp) { return [...LEVELS].reverse().find((l) => xp >= l.min); }
+  function streak() {
+    let n = 0;
+    const d = new Date();
+    if (!(state.challenges[dayKey(d)] || []).length) d.setDate(d.getDate() - 1);
+    while ((state.challenges[dayKey(d)] || []).length) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function renderChallenges() {
+    const today = state.challenges[dayKey()] || [];
+    $("#chGrid").innerHTML = CHALLENGES.map((c) => `
+      <button class="ch ${today.includes(c.id) ? "on" : ""}" data-ch="${c.id}" aria-pressed="${today.includes(c.id)}">
+        <span class="ic">${c.icon}</span><span>${esc(c.text)}</span><span class="xp">${today.includes(c.id) ? "✓" : "+" + c.xp}</span>
+      </button>`).join("");
+    $("#streakVal").textContent = streak();
+  }
+  $("#chGrid").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-ch]");
+    if (!b) return;
+    const k = dayKey();
+    const list = state.challenges[k] || (state.challenges[k] = []);
+    const c = CHALLENGES.find((x) => x.id === b.dataset.ch);
+    if (list.includes(c.id)) {
+      list.splice(list.indexOf(c.id), 1);
+      state.xp = Math.max(0, state.xp - c.xp);
+      save(); renderGamification();
+    } else {
+      list.push(c.id);
+      addXp(c.xp, "яшил одат");
+    }
+    renderChallenges();
+  });
+
+  const BADGES = [
+    { id: "first", icon: "👣", name: "Биринчи қадам", test: () => Object.keys(state.perfect).length >= 1 },
+    { id: "c1", icon: "🌱", name: "Экология асослари", test: () => state.flags.course_asoslar },
+    { id: "c2", icon: "🏭", name: "Эко-менежер", test: () => state.flags.course_korxona },
+    { id: "c3", icon: "🎓", name: "Барқарорлик элчиси", test: () => state.flags.course_talaba },
+    { id: "s3", icon: "🔥", name: "3 кун серия", test: () => streak() >= 3 },
+    { id: "s7", icon: "⚡", name: "7 кун серия", test: () => streak() >= 7 },
+    { id: "calc", icon: "🧮", name: "Углерод ҳисобчиси", test: () => state.flags.calc },
+    { id: "chat", icon: "💬", name: "Қизиқувчан", test: () => state.flags.chat },
+    { id: "air", icon: "🛰️", name: "Ҳаво кузатувчиси", test: () => state.flags.air },
+    { id: "reader", icon: "📚", name: "Китобхон", test: () => Object.keys(state.read).length >= 10 },
+    { id: "animals", icon: "🐾", name: "Ҳайвонлар дўсти", test: () => LIBRARY.animals.every((_, i) => state.read[readKey("animals", i)]) },
+    { id: "law", icon: "⚖️", name: "Эко-ҳуқуқшунос", test: () => LIBRARY.laws.every((_, i) => state.read[readKey("laws", i)]) }
+  ];
+
+  function renderGamification() {
+    const lv = levelOf(state.xp);
+    const next = LEVELS[LEVELS.indexOf(lv) + 1];
+    $("#xpVal").textContent = state.xp;
+    $("#levelIcon").textContent = lv.icon;
+    $("#levelName").textContent = `${lv.icon} ${lv.name} · ${state.xp} XP`;
+    $("#levelBar").style.width = next ? `${((state.xp - lv.min) / (next.min - lv.min)) * 100}%` : "100%";
+    $("#levelNext").textContent = next ? `Кейинги даража «${next.name}» учун яна ${next.min - state.xp} XP керак.` : "Сиз энг юқори даражага етдингиз! 🌍";
+    $("#badges").innerHTML = BADGES.map((b) => {
+      const ok = b.test();
+      return `<div class="badge ${ok ? "" : "locked"}" title="${ok ? "Олинган" : "Ҳали олинмаган"}"><span class="bi">${b.icon}</span>${esc(b.name)}</div>`;
+    }).join("");
+  }
+
+  /* ---------- Эко-ёрдамчи ---------- */
+  const log = $("#chatLog");
+  function say(text, who) {
+    const m = document.createElement("div");
+    m.className = "msg " + who;
+    m.textContent = text;
+    log.appendChild(m);
+    log.scrollTop = log.scrollHeight;
+  }
+  function answer(q) {
+    const scored = ASSISTANT_KB.map((e) => ({ e, s: e.k.filter((k) => EkoLang.matches(q, k)).length }))
+      .filter((x) => x.s > 0).sort((a, b) => b.s - a.s);
+    if (!scored.length) {
+      return "Кечирасиз, бу саволга ҳозирча аниқ жавобим йўқ. Мен пластик, сув, ҳаво сифати, чиқиндиларни саралаш, иқлим, энергия, дарахт экиш, Орол, ISO 14001 ва ESG мавзуларида ёрдам бера оламан. Саволни шу калит сўзлар билан бериб кўринг.";
+    }
+    return scored.slice(0, 2).map((x) => x.e.a).join("\n\n");
+  }
+  const SUGG = ["Пластикни қандай камайтираман?", "Чиқиндини қандай саралайман?", "Корхонада нимадан бошлаш керак?", "Қачон дарахт экиш керак?", "PM2.5 нима?"];
+  $("#chatSuggest").innerHTML = SUGG.map((s) => `<button class="chip" type="button">${esc(s)}</button>`).join("");
+  $("#chatSuggest").addEventListener("click", (e) => { if (e.target.matches(".chip")) ask(e.target.textContent); });
+  $("#chatForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = $("#chatInput").value.trim();
+    if (v) { ask(v); $("#chatInput").value = ""; }
+  });
+  function ask(q) {
+    say(q, "me");
+    setTimeout(() => say(answer(q), "bot"), 350);
+    flag("chat");
+  }
+  say("Салом! 👋 Мен Эко-ёрдамчиман. Экология бўйича саволингизни беринг ёки қуйидаги мавзулардан бирини танланг.", "bot");
+
+  /* ---------- Умумий ---------- */
+  const tipIdx = Math.floor(Date.now() / 864e5) % DAILY_TIPS.length;
+  $("#dailyTip").textContent = DAILY_TIPS[tipIdx];
+
+  const nav = $("#nav"), menuBtn = $("#menuBtn");
+  menuBtn.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", open);
+  });
+  nav.addEventListener("click", (e) => { if (e.target.matches("a")) nav.classList.remove("open"); });
+
+  try { const t = localStorage.getItem("ekotalim:theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) { /* ignore */ }
+  $("#themeBtn").addEventListener("click", () => {
+    const cur = document.documentElement.dataset.theme ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const t = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem("ekotalim:theme", t); } catch (e) { /* ignore */ }
+  });
+
+  $("#resetBtn").addEventListener("click", () => {
+    if (!confirm(T("Барча натижалар (XP, дарслар, челленжлар) ўчирилади. Давом этасизми?"))) return;
+    state = fresh(); save();
+    renderCourses(); renderChallenges(); renderLibrary(); renderGamification();
+    toast("Натижалар тозаланди");
+  });
+
+  renderCourses();
+  renderNews();
+  renderLibFeature();
+  renderLibrary();
+  calc();
+  renderChallenges();
+  renderGamification();
+  loadAir();
+
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+})();
+</script>
+</body>
+</html>
