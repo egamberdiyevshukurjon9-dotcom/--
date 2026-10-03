@@ -11,6 +11,8 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "22"
+      - key: TRUST_PROXY
+        value: "1" # Render прокси ортида: мижоз IP си X-Forwarded-For дан олинади
       - key: ADMIN_PASSWORD
         sync: false # Render сиздан паролни сўрайди, у репозиторийга ёзилмайди
       - key: CONTACT_EMAIL

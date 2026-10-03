@@ -17,6 +17,7 @@
      AI_USER_DAILY_LIMIT   — бир фойдаланувчи кунига нечта расм юбора олади (асл қиймат 10)
      AI_GLOBAL_DAILY_LIMIT — бутун сайт бўйича кунлик чеклов (асл қиймат 300)
      REPORTS_DAILY_LIMIT   — бир фойдаланувчи кунига нечта харита хабари юбора олади (асл қиймат 5)
+     TRUST_PROXY           — 1 бўлса, мижоз IP си X-Forwarded-For дан олинади (Render каби прокси ортида)
 */
 "use strict";
 
@@ -42,6 +43,7 @@ const AI_USER_DAILY = Number(process.env.AI_USER_DAILY_LIMIT) || 10;
 const AI_GLOBAL_DAILY = Number(process.env.AI_GLOBAL_DAILY_LIMIT) || 300;
 const AI_MAX_IMAGE_BYTES = 3 * 1024 * 1024;
 const REPORTS_DAILY = Number(process.env.REPORTS_DAILY_LIMIT) || 5;
+const TRUST_PROXY = process.env.TRUST_PROXY === "1";
 const ai = process.env.ANTHROPIC_API_KEY ? new Anthropic({ timeout: 90 * 1000, maxRetries: 1 }) : null;
 
 if (!ADMIN_PASSWORD) {
@@ -63,9 +65,15 @@ function save() {
   if (saveTimer) return;
   saveTimer = setTimeout(() => {
     saveTimer = null;
-    const tmp = DB_FILE + ".tmp";
-    fs.writeFileSync(tmp, JSON.stringify(db));
-    fs.renameSync(tmp, DB_FILE);
+    try {
+      const tmp = DB_FILE + ".tmp";
+      fs.writeFileSync(tmp, JSON.stringify(db));
+      fs.renameSync(tmp, DB_FILE);
+    } catch (e) {
+      /* Диск тўлган ёки рухсат йўқ — сервер тўхтамасин, кейинроқ яна уринади */
+      console.error("DB save failed:", e.message);
+      setTimeout(save, 5000);
+    }
   }, 200);
 }
 function flush() {
@@ -82,14 +90,18 @@ const now = () => Date.now();
 const newId = () => crypto.randomBytes(8).toString("hex");
 const newToken = () => crypto.randomBytes(32).toString("base64url");
 
-function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
-  const hash = crypto.scryptSync(password, salt, 64).toString("hex");
-  return `${salt}:${hash}`;
+/* scrypt асинхрон — хэшлаш бошқа сўровларни тўхтатиб қўймайди */
+const scrypt = (password, salt) => new Promise((resolve, reject) =>
+  crypto.scrypt(password, salt, 64, (err, key) => (err ? reject(err) : resolve(key))));
+async function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
+  return `${salt}:${(await scrypt(password, salt)).toString("hex")}`;
 }
-function checkPassword(password, stored) {
+/* Фойдаланувчи топилмаганда ҳам бир хил вақт кетсин */
+const DUMMY_HASH = "00000000000000000000000000000000:" + "0".repeat(128);
+async function checkPassword(password, stored = DUMMY_HASH) {
   const [salt, hash] = stored.split(":");
   const a = Buffer.from(hash, "hex");
-  const b = crypto.scryptSync(password, salt, 64);
+  const b = await scrypt(password, salt);
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 function safeEqual(a, b) {
@@ -102,7 +114,9 @@ function parseCookies(req) {
   const out = {};
   (req.headers.cookie || "").split(";").forEach((part) => {
     const i = part.indexOf("=");
-    if (i > 0) out[part.slice(0, i).trim()] = decodeURIComponent(part.slice(i + 1).trim());
+    if (i <= 0) return;
+    const v = part.slice(i + 1).trim();
+    try { out[part.slice(0, i).trim()] = decodeURIComponent(v); } catch (e) { out[part.slice(0, i).trim()] = v; }
   });
   return out;
 }
@@ -111,9 +125,12 @@ function cookie(name, value, maxAgeMs, req) {
   return `${name}=${encodeURIComponent(value)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.floor(maxAgeMs / 1000)}${secure}`;
 }
 
+/* X-Forwarded-For фақат ишончли прокси ортида (TRUST_PROXY=1, масалан Render) ишлатилади.
+   Бунда энг охирги манзил олинади — уни прокси ўзи қўшади, мижоз сохталаштира олмайди. */
 function clientIp(req) {
-  const fwd = req.headers["x-forwarded-for"];
-  return (fwd ? String(fwd).split(",")[0] : req.socket.remoteAddress || "").trim().replace(/^::ffff:/, "");
+  const fwd = TRUST_PROXY && req.headers["x-forwarded-for"];
+  const ip = fwd ? String(fwd).split(",").pop() : req.socket.remoteAddress || "";
+  return ip.trim().replace(/^::ffff:/, "");
 }
 
 function describeDevice(ua = "") {
@@ -137,7 +154,7 @@ function logEvent(type, user, req, extra = {}) {
     device: req ? describeDevice(req.headers["user-agent"]) : "",
     ...extra
   });
-  if (db.events.length > MAX_EVENTS) db.events.splice(0, db.events.length - MAX_EVENTS);
+  trimEvents();
   save();
 }
 
@@ -161,8 +178,11 @@ function readBody(req, limit = 64 * 1024) {
       chunks.push(c);
     });
     req.on("end", () => {
-      try { resolve(chunks.length ? JSON.parse(Buffer.concat(chunks).toString("utf8")) : {}); }
-      catch (e) { reject(new Error("bad_json")); }
+      let v;
+      try { v = chunks.length ? JSON.parse(Buffer.concat(chunks).toString("utf8")) : {}; }
+      catch (e) { return reject(new Error("bad_json")); }
+      /* Фақат JSON объект қабул қилинади (null, рақам, рўйхат — йўқ) */
+      resolve(v && typeof v === "object" && !Array.isArray(v) ? v : {});
     });
     req.on("error", reject);
   });
@@ -179,6 +199,16 @@ function noteFailure(ip) {
   const f = failures.get(ip);
   if (!f || now() - f.first > 15 * 60 * 1000) failures.set(ip, { first: now(), count: 1 });
   else f.count++;
+}
+/* Бир IP дан соатига 10 тадан ортиқ ҳисоб очилмасин */
+const registrations = new Map();
+function tooManyRegistrations(ip) {
+  const r = registrations.get(ip);
+  if (!r || now() - r.first > 60 * 60 * 1000) { registrations.set(ip, { first: now(), count: 1 }); return false; }
+  return ++r.count > 10;
+}
+function trimEvents() {
+  if (db.events.length > MAX_EVENTS) db.events.splice(0, db.events.length - MAX_EVENTS);
 }
 
 /* ---------- Сессиялар ---------- */
@@ -214,7 +244,13 @@ function sweep() {
     if (!user || t - s.createdAt > SESSION_MS) { delete db.sessions[token]; changed = true; }
   }
   for (const [token, exp] of adminSessions) if (exp < t) adminSessions.delete(token);
-  if (changed) save();
+  for (const [ip, f] of failures) if (t - f.first > 15 * 60 * 1000) failures.delete(ip);
+  for (const [ip, r] of registrations) if (t - r.first > 60 * 60 * 1000) registrations.delete(ip);
+  /* Рад этилган харита хабарлари 90 кундан сўнг ўчирилади */
+  const before = db.reports.length;
+  db.reports = db.reports.filter((r) => !(r.status === "rejected" && t - (r.reviewedAt || r.createdAt) > 90 * 24 * 60 * 60 * 1000));
+  if (db.reports.length !== before) changed = true;
+  if (changed) { trimEvents(); save(); }
 }
 setInterval(sweep, 30 * 1000).unref();
 
@@ -423,6 +459,7 @@ async function api(req, res, pathname) {
   }
 
   if (pathname === "/api/register" && method === "POST") {
+    if (tooManyRegistrations(ip)) return send(res, 429, { error: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг" });
     const body = await readBody(req);
     const name = String(body.name || "").trim().slice(0, 60);
     const email = String(body.email || "").trim().toLowerCase().slice(0, 254);
@@ -431,14 +468,20 @@ async function api(req, res, pathname) {
     if (!EMAIL_RE.test(email)) return send(res, 400, { error: "Электрон почта нотўғри" });
     if (password.length < 6) return send(res, 400, { error: "Парол камида 6 белгидан иборат бўлсин" });
     /* Ёш текшируви: 13 ёшгача болалардан шахсий маълумот йиғилмайди. Туғилган йил сақланмайди. */
-    const birthYear = Number(body.birthYear) || 0;
-    const thisYear = new Date().getFullYear();
-    if (!birthYear || birthYear > thisYear || birthYear < thisYear - 120) return send(res, 400, { error: "Туғилган йилингизни танланг" });
-    if (thisYear - birthYear < 14) return send(res, 403, { error: "Ҳисоб очиш учун 13 ёш тўлган бўлиши керак. Барча дарслар ва ўйинлар ҳисобсиз ҳам ишлайди!" });
+    const birthYear = Math.floor(Number(body.birthYear) || 0);
+    const birthMonth = Math.floor(Number(body.birthMonth) || 0);
+    const today = new Date(), thisYear = today.getFullYear();
+    if (!birthYear || birthYear > thisYear || birthYear < thisYear - 120 || birthMonth < 1 || birthMonth > 12) return send(res, 400, { error: "Туғилган йил ва ойингизни танланг" });
+    /* Туғилган ой ҳали тугамаган деб ҳисобланади (эҳтиёткор баҳо) */
+    const age = thisYear - birthYear - (today.getMonth() + 1 <= birthMonth ? 1 : 0);
+    if (age < 13) return send(res, 403, { error: "Ҳисоб очиш учун 13 ёш тўлган бўлиши керак. Барча дарслар ва ўйинлар ҳисобсиз ҳам ишлайди!" });
     if (db.users.some((u) => u.email === email)) return send(res, 409, { error: "Бу почта билан аллақачон рўйхатдан ўтилган" });
     /* Фақат «18 ёшдан катта»ми — шу белги сақланади (Эко-кўз учун), йилнинг ўзи эмас */
-    const adult = thisYear - birthYear >= 19;
-    const user = { id: newId(), name, email, password: hashPassword(password), adult, createdAt: now(), lastLogin: null, loginCount: 0 };
+    const adult = age >= 18;
+    const hashed = await hashPassword(password);
+    /* Хэшлаш вақтида шу почта билан бошқа сўров рўйхатдан ўтган бўлиши мумкин */
+    if (db.users.some((u) => u.email === email)) return send(res, 409, { error: "Бу почта билан аллақачон рўйхатдан ўтилган" });
+    const user = { id: newId(), name, email, password: hashed, adult, createdAt: now(), lastLogin: null, loginCount: 0 };
     db.users.push(user);
     logEvent("register", user, req);
     startSession(user, req, res);
@@ -451,7 +494,8 @@ async function api(req, res, pathname) {
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
     const user = db.users.find((u) => u.email === email);
-    if (!user || !checkPassword(password, user.password)) {
+    const ok = await checkPassword(password, user ? user.password : undefined);
+    if (!user || !ok) {
       noteFailure(ip);
       logEvent("login_failed", null, req, { email: email.slice(0, 254) });
       return send(res, 401, { error: "Почта ёки парол нотўғри" });
@@ -474,15 +518,17 @@ async function api(req, res, pathname) {
   if (pathname === "/api/account/delete" && method === "POST") {
     const cur = currentUser(req);
     if (!cur) return send(res, 401, { error: "Аввал ҳисобга киринг" });
+    if (tooManyFailures(ip)) return send(res, 429, { error: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг" });
     const body = await readBody(req);
-    if (!checkPassword(String(body.password || ""), cur.user.password)) {
+    if (!(await checkPassword(String(body.password || ""), cur.user.password))) {
       noteFailure(ip);
       return send(res, 401, { error: "Парол нотўғри" });
     }
-    const id = cur.user.id;
+    const id = cur.user.id, email = cur.user.email;
     db.users = db.users.filter((u) => u.id !== id);
     for (const [token, s] of Object.entries(db.sessions)) if (s.userId === id) delete db.sessions[token];
-    db.events = db.events.filter((e) => e.userId !== id);
+    /* Хато парол уринишлари ҳам (уларда фақат почта сақланган) */
+    db.events = db.events.filter((e) => e.userId !== id && e.email !== email);
     db.reports = db.reports.filter((r) => r.userId !== id);
     db.classes = db.classes.filter((c) => c.teacherId !== id);
     db.events.push({ id: newId(), at: now(), type: "deleted", userId: null, name: "", email: "", ip: "", device: "" });
@@ -500,13 +546,15 @@ async function api(req, res, pathname) {
     if (!ai) return send(res, 503, { error: "Эко-кўз ҳали созланмаган. Админ серверга ANTHROPIC_API_KEY ни қўшиши керак" });
     const limitErr = aiQuota(cur.user.id);
     if (limitErr) return send(res, 429, { error: limitErr });
+    /* Ўрин дарҳол банд қилинади — параллел сўровлар чекловни айланиб ўта олмасин */
+    aiCount(cur.user.id);
+    const fail = (status, error) => { aiRefund(cur.user.id); return send(res, status, { error }); };
     let body;
     try { body = await readBody(req, AI_MAX_IMAGE_BYTES * 1.4); }
-    catch (e) { return send(res, 413, { error: "Расм жуда катта. Кичикроқ расм танланг" }); }
+    catch (e) { return fail(413, "Расм жуда катта. Кичикроқ расм танланг"); }
     const m = /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/.exec(String(body.image || ""));
-    if (!m) return send(res, 400, { error: "Расм формати нотўғри (JPEG, PNG ёки WebP бўлсин)" });
-    if (m[2].length * 0.75 > AI_MAX_IMAGE_BYTES) return send(res, 413, { error: "Расм жуда катта. Кичикроқ расм танланг" });
-    aiCount(cur.user.id);
+    if (!m) return fail(400, "Расм формати нотўғри (JPEG, PNG ёки WebP бўлсин)");
+    if (m[2].length * 0.75 > AI_MAX_IMAGE_BYTES) return fail(413, "Расм жуда катта. Кичикроқ расм танланг");
     try {
       const result = await analyzeImage(m[1], m[2]);
       logEvent("ai", cur.user, req, { note: result.status });
@@ -527,8 +575,10 @@ async function api(req, res, pathname) {
     if (!ai) return send(res, 503, { error: "СИ ҳали созланмаган. Админ серверга ANTHROPIC_API_KEY ни қўшиши керак" });
     const limitErr = aiQuota(cur.user.id);
     if (limitErr) return send(res, 429, { error: limitErr });
-    const body = await readBody(req);
-    const a = body.analysis || {};
+    aiCount(cur.user.id);
+    let body;
+    try { body = await readBody(req); } catch (e) { aiRefund(cur.user.id); return send(res, 400, { error: "Нотўғри сўров" }); }
+    const a = body.analysis && typeof body.analysis === "object" ? body.analysis : {};
     const input = {
       title: cleanText(a.title, 200),
       summary: cleanText(a.summary, 1200),
@@ -537,8 +587,7 @@ async function api(req, res, pathname) {
       place: cleanText(body.place, 200),
       note: cleanText(body.note, 600)
     };
-    if (!input.title && !input.summary) return send(res, 400, { error: "Аввал расмни таҳлил қилинг" });
-    aiCount(cur.user.id);
+    if (!input.title && !input.summary) { aiRefund(cur.user.id); return send(res, 400, { error: "Аввал расмни таҳлил қилинг" }); }
     try {
       const appeal = await writeAppeal(input);
       logEvent("ai", cur.user, req, { note: "appeal" });
@@ -746,8 +795,10 @@ async function api(req, res, pathname) {
   if (pathname === "/api/admin/reports" && method === "GET") {
     if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
     const order = { pending: 0, approved: 1, rejected: 2 };
-    const list = db.reports.slice(-1000)
+    /* Аввал кутаётганлар — 1000 тадан кўп бўлса ҳам улар йўқолмасин */
+    const list = db.reports.slice()
       .sort((a, b) => order[a.status] - order[b.status] || b.createdAt - a.createdAt)
+      .slice(0, 1000)
       .map((r) => {
         const u = db.users.find((x) => x.id === r.userId);
         return { ...r, userId: undefined, name: u ? u.name : "—", email: u ? u.email : "" };

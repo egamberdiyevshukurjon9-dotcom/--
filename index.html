@@ -20,6 +20,7 @@
   --primary: #15803d;
   --primary-2: #0ea5e9;
   --primary-soft: #dcfce7;
+  --on-primary: #ffffff;
   --shadow: 0 6px 24px rgba(20, 60, 30, .08);
   --radius: 16px;
 }
@@ -27,13 +28,13 @@
   :root:not([data-theme="light"]) {
     --bg: #0d1510; --bg-alt: #111c15; --card: #16241b; --text: #e6f2e9;
     --muted: #9bb3a2; --line: #24382b; --primary: #22c55e; --primary-2: #38bdf8;
-    --primary-soft: #183b24; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+    --primary-soft: #183b24; --on-primary: #052e16; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
   }
 }
 :root[data-theme="dark"] {
   --bg: #0d1510; --bg-alt: #111c15; --card: #16241b; --text: #e6f2e9;
   --muted: #9bb3a2; --line: #24382b; --primary: #22c55e; --primary-2: #38bdf8;
-  --primary-soft: #183b24; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+  --primary-soft: #183b24; --on-primary: #052e16; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
 }
 
 * { box-sizing: border-box; }
@@ -70,11 +71,11 @@ a { color: var(--primary); }
 /* Buttons */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 12px; font-weight: 600; text-decoration: none; border: 1px solid transparent; cursor: pointer; font-size: 1rem; font-family: inherit; transition: transform .15s, box-shadow .15s; }
 .btn:hover { transform: translateY(-1px); }
-.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 35%, transparent); }
+.btn-primary { background: var(--primary); color: var(--on-primary); box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 35%, transparent); }
 .btn-ghost { background: var(--card); color: var(--text); border-color: var(--line); }
 .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 .chip { border: 1px solid var(--line); background: var(--card); color: var(--text); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-family: inherit; font-size: .9rem; }
-.chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.chip.active { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
 .pill { display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: .85rem; }
 .linklike { background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; font: inherit; }
 
@@ -157,7 +158,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .lib-card .cover { height: 120px; border-radius: 12px; display: grid; place-items: center; font-size: 3rem; background: linear-gradient(135deg, var(--primary-soft), color-mix(in srgb, var(--primary-2) 22%, var(--card))); }
 .lib-card .meta { font-size: .82rem; color: var(--muted); }
 .lib-card .latin { font-style: italic; font-size: .85rem; color: var(--muted); }
-.lib-card .read { position: absolute; top: 12px; right: 12px; background: var(--primary); color: #fff; border-radius: 99px; font-size: .75rem; font-weight: 700; padding: 2px 9px; }
+.lib-card .read { position: absolute; top: 12px; right: 12px; background: var(--primary); color: var(--on-primary); border-radius: 99px; font-size: .75rem; font-weight: 700; padding: 2px 9px; }
 .status { display: inline-block; align-self: flex-start; color: #fff; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
 .ok-tag { display: inline-block; align-self: flex-start; background: var(--primary-soft); color: var(--primary); font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
 .iucn { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 4px; }
@@ -218,7 +219,8 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .badges { display: flex; flex-wrap: wrap; gap: 12px; }
 .badge { width: 128px; text-align: center; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 8px; font-size: .8rem; }
 .badge .bi { font-size: 2rem; display: block; }
-.badge.locked { opacity: .4; filter: grayscale(1); }
+.badge.locked { color: var(--muted); border-style: dashed; }
+.badge.locked .bi { opacity: .35; filter: grayscale(1); }
 .level-box { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; max-width: 560px; }
 .level-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
 
@@ -227,7 +229,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .chat-log { height: 360px; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
 .msg { max-width: 85%; padding: 10px 14px; border-radius: 14px; white-space: pre-wrap; }
 .msg.bot { background: var(--bg-alt); border: 1px solid var(--line); align-self: flex-start; border-bottom-left-radius: 4px; }
-.msg.me { background: var(--primary); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.msg.me { background: var(--primary); color: var(--on-primary); align-self: flex-end; border-bottom-right-radius: 4px; }
 .chat-suggest { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 18px 12px; }
 .chat-form { display: flex; gap: 10px; padding: 12px; border-top: 1px solid var(--line); }
 .chat-form input { flex: 1; min-width: 0; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; }
@@ -253,8 +255,8 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .cert-form input { flex: 1; min-width: 200px; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; }
 
 /* Toast */
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, 120px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 12px; font-weight: 600; transition: transform .3s; z-index: 100; max-width: calc(100% - 32px); text-align: center; }
-.toast.show { transform: translate(-50%, 0); }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, 120px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 12px; font-weight: 600; transition: transform .3s, visibility .3s; z-index: 100; max-width: calc(100% - 32px); text-align: center; visibility: hidden; }
+.toast.show { transform: translate(-50%, 0); visibility: visible; }
 
 /* Footer */
 .footer { border-top: 1px solid var(--line); padding: 28px 0; }
@@ -262,7 +264,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .footer p { margin: 4px 0 0; }
 
 /* Кириш / рўйхатдан ўтиш */
-.auth-btn { background: var(--primary); color: #fff; border: 0; border-radius: 10px; height: 38px; padding: 0 14px; cursor: pointer; font: 600 .9rem Inter, system-ui, sans-serif; white-space: nowrap; flex-shrink: 0; }
+.auth-btn { background: var(--primary); color: var(--on-primary); border: 0; border-radius: 10px; height: 38px; padding: 0 14px; cursor: pointer; font: 600 .9rem Inter, system-ui, sans-serif; white-space: nowrap; flex-shrink: 0; }
 .auth-btn.signed { background: var(--card); color: var(--text); border: 1px solid var(--line); max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
 .auth-btn[hidden] { display: none; }
 .auth-tabs { display: flex; gap: 8px; margin: 4px 40px 16px 0; }
@@ -340,7 +342,9 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 @keyframes grow { from { transform: scale(.5); } 60% { transform: scale(1.15); } }
 @keyframes wiggle { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
 @media (prefers-reduced-motion: reduce) { .sort-emoji, .tree.grow, .tree.wiggle, .bin.wrong, .tf-btn.wrong { animation: none; } }
-.age-row select { font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
+.age-row { display: grid; gap: 4px; font-weight: 600; font-size: .9rem; }
+.age-pick { display: grid; grid-template-columns: 1fr 1.3fr; gap: 8px; }
+.age-row select { font: inherit; min-width: 0; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); }
 .guest-note { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: var(--primary-soft); font-size: .88rem; }
 
 /* Эко-кўз */
@@ -527,7 +531,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
         <div>
           <span class="pill">Бепул · Онлайн · Ҳамма учун</span>
           <h1>Табиатни асраш <span class="grad">билимдан</span> бошланади</h1>
-          <p class="lead">Аҳоли, корхоналар ва таълим муассасалари учун замонавий экологик таълим платформаси. Интерактив курслар, тестлар, ҳаво сифатини реал вақтда кузатиш, углерод калькулятори ва энг сўнгги экологик янгиликлар.</p>
+          <p class="lead">Аҳоли, корхоналар ва мактаблар учун замонавий экологик таълим платформаси. Эко-ўйинлар, интерактив курслар ва тестлар, сунъий интеллект билан расм таҳлили, эко-харита, ҳаво сифатини кузатиш ва углерод калькулятори.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#kurslar">Ўқишни бошлаш</a>
             <a class="btn btn-ghost" href="#oyinlar">🎮 Ўйнаш</a>
@@ -731,7 +735,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
       <div class="wrap">
         <div class="section-head">
           <h2 class="section-title">Энг сўнгги янгиликлар</h2>
-          <input class="search" id="newsSearch" type="search" placeholder="🔍 Янгиликлардан излаш…">
+          <input class="search" id="newsSearch" type="search" aria-label="Янгиликлардан излаш" placeholder="🔍 Янгиликлардан излаш…">
         </div>
         <div class="filters" id="newsFilters"></div>
         <div class="news-grid" id="newsGrid"></div>
@@ -746,7 +750,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
             <h2 class="section-title">📚 Эко-кутубхона</h2>
             <p class="muted">Йўқолиб бораётган ҳайвонлар, экологияга оид машҳур китоблар ва қонунлар ҳақида қизиқарли маълумотлар. Ҳар бир янги материал учун +5 XP.</p>
           </div>
-          <input class="search" id="libSearch" type="search" placeholder="🔍 Кутубхонадан излаш…">
+          <input class="search" id="libSearch" type="search" aria-label="Кутубхонадан излаш" placeholder="🔍 Кутубхонадан излаш…">
         </div>
         <div class="lib-feature" id="libFeature"></div>
         <div class="lib-tabs" role="tablist" id="libTabs">
@@ -858,7 +862,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
           <div class="chat-log" id="chatLog" aria-live="polite"></div>
           <div class="chat-suggest" id="chatSuggest"></div>
           <form class="chat-form" id="chatForm">
-            <input id="chatInput" placeholder="Саволингизни ёзинг…" autocomplete="off">
+            <input id="chatInput" aria-label="Саволингиз" placeholder="Саволингизни ёзинг…" autocomplete="off">
             <button class="btn btn-primary" type="submit">Юбориш</button>
           </form>
         </div>
@@ -909,9 +913,13 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
         <label id="authNameRow" hidden>Исм Фамилия
           <input name="name" maxlength="60" autocomplete="name">
         </label>
-        <label class="age-row" id="authAgeRow" hidden>Туғилган йилингиз
-          <select name="birthYear"><option value="">Танланг</option></select>
-        </label>
+        <div class="age-row" id="authAgeRow" hidden>
+          <span class="age-label">Туғилган йил ва ойингиз</span>
+          <div class="age-pick">
+            <select name="birthYear" aria-label="Туғилган йил"><option value="">Йил</option></select>
+            <select name="birthMonth" aria-label="Туғилган ой"><option value="">Ой</option></select>
+          </div>
+        </div>
         <label>Электрон почта
           <input name="email" type="email" maxlength="254" autocomplete="email" required>
         </label>
@@ -1435,8 +1443,8 @@ const IUCN = {
   EX: { label: "Йўқолиб кетган", color: "#111827" },
   CR: { label: "Йўқолиш арафасида", color: "#dc2626" },
   EN: { label: "Йўқолиб бормоқда", color: "#ea580c" },
-  VU: { label: "Заиф ҳолатда", color: "#ca8a04" },
-  NT: { label: "Хавф остига яқин", color: "#65a30d" },
+  VU: { label: "Заиф ҳолатда", color: "#a16207" },
+  NT: { label: "Хавф остига яқин", color: "#4d7c0f" },
   LC: { label: "Хавф кам", color: "#16a34a" },
   RB: { label: "Ўзбекистон Қизил китобида", color: "#b91c1c" }
 };
@@ -1976,7 +1984,7 @@ const LIBRARY = {
       <h2>«${esc(course.title)}» курси муваффақиятли тугатилди</h2>
       <p class="muted">Сертификатга ёзиладиган исм-шарифингизни киритинг ва уни PNG шаклида юклаб олинг.</p>
       <form class="cert-form" id="certForm">
-        <input id="certName" required maxlength="60" placeholder="Исм Фамилия" value="${esc(state.name)}">
+        <input id="certName" aria-label="Исм ва фамилия" required maxlength="60" placeholder="Исм Фамилия" value="${esc(state.name)}">
         <button class="btn btn-primary">⬇ Юклаб олиш</button>
       </form>`;
     $("#certForm").addEventListener("submit", (e) => {
@@ -2422,7 +2430,8 @@ const LIBRARY = {
 (() => {
   "use strict";
   const $ = (s) => document.querySelector(s);
-  const T = (s) => EkoLang.t(s);
+  /* DOM га кирилл ёзилади — лотин режимида MutationObserver ўзи ўгиради (тил қайтарилганда ҳам тўғри қолади) */
+  const T = (s) => s;
   const btn = $("#authBtn"), modal = $("#authModal"), form = $("#authForm");
   const errEl = $("#authError"), nameRow = $("#authNameRow"), submit = $("#authSubmit");
   let user = null, mode = "login", pingTimer = null;
@@ -2484,7 +2493,11 @@ const LIBRARY = {
   (() => {
     const y = new Date().getFullYear(), sel = form.birthYear;
     for (let i = y; i >= y - 100; i--) sel.add(new Option(String(i), String(i)));
+    ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
+      .forEach((m, i) => form.birthMonth.add(new Option(m, String(i + 1))));
   })();
+  /* Ёш (ой аниқлигида, туғилган ой ҳали тугамаган деб ҳисобланади) */
+  const ageOf = (y, m) => { const d = new Date(); return d.getFullYear() - y - (d.getMonth() + 1 <= m ? 1 : 0); };
   const account = $("#accountModal"), delForm = $("#deleteForm");
   btn.addEventListener("click", () => {
     if (!user) { setMode("login"); modal.showModal(); form.email.focus(); return; }
@@ -2522,8 +2535,9 @@ const LIBRARY = {
     if (mode === "register") {
       body.name = form.name.value.trim();
       body.birthYear = Number(form.birthYear.value) || 0;
-      if (!body.birthYear) { errEl.textContent = T("Туғилган йилингизни танланг"); return; }
-      if (new Date().getFullYear() - body.birthYear < 14) {
+      body.birthMonth = Number(form.birthMonth.value) || 0;
+      if (!body.birthYear || !body.birthMonth) { errEl.textContent = T("Туғилган йил ва ойингизни танланг"); return; }
+      if (ageOf(body.birthYear, body.birthMonth) < 13) {
         errEl.textContent = T("Ҳисоб очиш учун 13 ёш тўлган бўлиши керак. Ташвишланманг — барча дарслар ва ўйинлар ҳисобсиз ҳам ишлайди!");
         return;
       }
@@ -2791,13 +2805,14 @@ const LIBRARY = {
     let first = null, busy = false, moves = 0, found = 0;
     body.innerHTML = `
       <div class="g-top"><span>Ҳаракатлар: <b id="memMoves">0</b></span><span>Топилди: <b id="memFound">0</b> / 6</span></div>
-      <div class="mem-grid">${cards.map((c, idx) => `<button class="mem" data-idx="${idx}" aria-label="Карта"><span class="mem-back">🌿</span><span class="mem-front">${c.i}</span></button>`).join("")}</div>
+      <div class="mem-grid">${cards.map((c, idx) => `<button class="mem" data-idx="${idx}" aria-label="Ёпиқ карта ${idx + 1}"><span class="mem-back">🌿</span><span class="mem-front">${c.i}</span></button>`).join("")}</div>
       <p class="g-fact" id="memFact" aria-live="polite">Карталарни очиб, бир хил жуфтликни топинг.</p>`;
     body.onclick = (e) => {
       const b = e.target.closest(".mem");
       if (!b || busy || b.classList.contains("open")) return;
       b.classList.add("open");
       const c = cards[b.dataset.idx];
+      b.setAttribute("aria-label", c.n);
       if (!first) { first = { b, c }; return; }
       moves++; $("#memMoves").textContent = moves;
       if (first.c.i === c.i) {
@@ -2809,7 +2824,10 @@ const LIBRARY = {
       } else {
         busy = true;
         const f = first; first = null;
-        later(() => { f.b.classList.remove("open"); b.classList.remove("open"); busy = false; }, 900);
+        later(() => {
+          [f.b, b].forEach((x) => { x.classList.remove("open"); x.setAttribute("aria-label", `Ёпиқ карта ${+x.dataset.idx + 1}`); });
+          busy = false;
+        }, 900);
       }
     };
     function done() {
@@ -2929,7 +2947,7 @@ const LIBRARY = {
   const box = $("#ekoEye"), gate = $("#eyeGate"), tool = $("#eyeTool");
   const consent = $("#eyeConsent"), preview = $("#eyePreview"), go = $("#eyeGo"), out = $("#eyeResult");
   const CONSENT_KEY = "ekotalim:eye-consent";
-  let image = null, busy = false, online = false;
+  let image = null, lastResult = null, busy = false, online = false;
 
   function state(user) {
     if (!online) {
@@ -2950,7 +2968,20 @@ const LIBRARY = {
     }
     gate.hidden = true; tool.hidden = false;
   }
-  window.addEventListener("eko:user", (e) => { online = e.detail.online; state(e.detail.user); });
+  let lastUserId = null;
+  window.addEventListener("eko:user", (e) => {
+    online = e.detail.online;
+    const id = e.detail.user ? e.detail.user.id : null;
+    /* Бошқа фойдаланувчи кирса ёки чиқса, олдинги расм ва натижа кўринмасин (умумий телефон) */
+    if (id !== lastUserId) {
+      lastUserId = id;
+      image = null; lastResult = null;
+      preview.innerHTML = ""; preview.hidden = true;
+      out.innerHTML = "";
+      update();
+    }
+    state(e.detail.user);
+  });
   state(null);
 
   try { consent.checked = localStorage.getItem(CONSENT_KEY) === "1"; } catch (e) { /* ignore */ }
@@ -3033,7 +3064,6 @@ const LIBRARY = {
   }
 
   /* Мурожаат матни ва харитага ўтиш */
-  let lastResult = null;
   function guessCategory(r) {
     const s = [r.title, r.summary, ...(r.findings || []).map((f) => f.item)].join(" ").toLowerCase();
     if (/ёқ|ёнғин|олов/.test(s)) return "burning";
@@ -3110,7 +3140,8 @@ const LIBRARY = {
   "use strict";
   const $ = (s, el = document) => el.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const T = (s) => EkoLang.t(s);
+  /* DOM га кирилл ёзилади — лотин режимида MutationObserver ўзи ўгиради (тил қайтарилганда ҳам тўғри қолади) */
+  const T = (s) => s;
   const App = window.EkoApp;
   const CATS = {
     dump: ["🗑️", "Ноқонуний ахлатхона", "#b45309"],
@@ -3342,7 +3373,9 @@ const LIBRARY = {
     ctx.font = "800 44px Inter, system-ui, sans-serif";
     const w = ctx.measureText(text).width + 44;
     ctx.fillStyle = color;
-    ctx.beginPath(); ctx.roundRect(x, y, w, 70, 35); ctx.fill();
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x, y, w, 70, 35); else ctx.rect(x, y, w, 70); /* эски браузерлар */
+    ctx.fill();
     ctx.fillStyle = "#fff"; ctx.textBaseline = "middle";
     ctx.fillText(text, x + 22, y + 37);
   }
@@ -3404,7 +3437,9 @@ const LIBRARY = {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const T = (s) => EkoLang.t(s);
+  /* DOM га кирилл ёзилади — лотин режимида MutationObserver ўзи ўгиради (тил қайтарилганда ҳам тўғри қолади) */
+  const T = (s) => s;
+  const TT = (s) => EkoLang.t(s);
   const App = window.EkoApp;
   const KEY = "ekotalim:class";
   const sv = $("#studentView"), tv = $("#teacherView");
@@ -3541,7 +3576,7 @@ const LIBRARY = {
     finally { btn.disabled = false; }
   }
   async function leave() {
-    if (!confirm(T("Синфдан чиқасизми? Лақабингиз ва натижаларингиз синфдан ўчирилади."))) return;
+    if (!confirm(TT("Синфдан чиқасизми? Лақабингиз ва натижаларингиз синфдан ўчирилади."))) return;
     try { await call("/api/class/leave", { token }); } catch (e) { /* ignore */ }
     forget();
   }
@@ -3625,8 +3660,8 @@ const LIBRARY = {
     if (!b) return;
     try {
       if (b.dataset.delTask) await call(`/api/class/teacher/${b.dataset.class}/task-delete`, { taskId: b.dataset.delTask });
-      else if (b.dataset.delStudent) { if (!confirm(T("Ўқувчини синфдан чиқарасизми?"))) return; await call(`/api/class/teacher/${b.dataset.class}/student-remove`, { studentId: b.dataset.delStudent }); }
-      else if (b.dataset.delClass) { if (!confirm(T("Синф ва унинг барча натижалари ўчирилади. Давом этасизми?"))) return; await call(`/api/class/teacher/${b.dataset.delClass}/delete`, {}); }
+      else if (b.dataset.delStudent) { if (!confirm(TT("Ўқувчини синфдан чиқарасизми?"))) return; await call(`/api/class/teacher/${b.dataset.class}/student-remove`, { studentId: b.dataset.delStudent }); }
+      else if (b.dataset.delClass) { if (!confirm(TT("Синф ва унинг барча натижалари ўчирилади. Давом этасизми?"))) return; await call(`/api/class/teacher/${b.dataset.delClass}/delete`, {}); }
       else if (!("refresh" in b.dataset)) return;
       await loadTeacher();
     } catch (ex) { App.toast(T(ex.message)); }
@@ -3647,8 +3682,10 @@ const LIBRARY = {
     if (!tv.hidden) loadTeacher(); else sync();
   });
   window.addEventListener("eko:user", (e) => {
-    const was = online;
+    const was = online, prevId = user ? user.id : null;
     online = e.detail.online; user = e.detail.user;
+    /* Бошқа ўқитувчи кирса, олдингисининг синфлари кўринмасин */
+    if ((user ? user.id : null) !== prevId) classes = [];
     if (!was && online) sync();
     renderStudent();
     if (!tv.hidden) loadTeacher(); else renderTeacher();
