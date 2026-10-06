@@ -6,6 +6,7 @@
 #
 # Ишлатиш:
 #   KEYSTORE=/йўл/ekotalim.jks KS_PASS=парол ./android/build.sh
+# Сўнг: cp android/build/EkoTalim-<версия>.apk app/ && node tools/build-update.js
 # KEYSTORE берилмаса ёки файл йўқ бўлса, янги калит яратилади. Илованинг кейинги
 # версияларини ўрнатилган илова устидан янгилаш учун ҳар доим ШУ калит билан имзоланг.
 set -euo pipefail
@@ -13,8 +14,13 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(dirname "$HERE")"
 OUT="${OUT:-$HERE/build}"
-VERSION_CODE="${VERSION_CODE:-1}"
-VERSION_NAME="${VERSION_NAME:-1.0}"
+# Версия android/version.properties дан олинади (муҳит ўзгарувчиси билан алмаштириш мумкин)
+PROP_CODE="$(sed -n 's/^VERSION_CODE=//p' "$HERE/version.properties")"
+PROP_NAME="$(sed -n 's/^VERSION_NAME=//p' "$HERE/version.properties")"
+VERSION_CODE="${VERSION_CODE:-$PROP_CODE}"
+VERSION_NAME="${VERSION_NAME:-$PROP_NAME}"
+# Янгиланишлар манзили (app/update.json main тармоғида)
+UPDATE_URL="${UPDATE_URL:-https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/update.json}"
 ANDROID_JAR="${ANDROID_JAR:-/usr/lib/android-sdk/platforms/android-23/android.jar}"
 KEYSTORE="${KEYSTORE:-$OUT/ekotalim-release.jks}"
 KS_ALIAS="${KS_ALIAS:-ekotalim}"
@@ -23,15 +29,22 @@ KS_PASS="${KS_PASS:-}"
 rm -rf "$OUT/stage" "$OUT/gen" "$OUT/classes"
 mkdir -p "$OUT/stage/assets/www" "$OUT/gen" "$OUT/classes"
 
-# 1. Платформа файллари илова ичига
-cp "$ROOT/index.html" "$ROOT/orol.html" "$ROOT/privacy.html" "$ROOT/manifest.webmanifest" "$OUT/stage/assets/www/"
-cp -r "$ROOT/icons" "$ROOT/vendor" "$OUT/stage/assets/www/"
+# 1. Платформа файллари илова ичига (рўйхат: android/content-files.txt)
+grep -v -e '^#' -e '^[[:space:]]*$' "$HERE/content-files.txt" | while read -r f; do
+  cp -r "$ROOT/$f" "$OUT/stage/assets/www/"
+done
 cp "$HERE/android-helper.js" "$OUT/stage/assets/"
+# Ичидаги файллар хэши: янгиланишда фақат ўзгарган файллар юклаб олинади
+(cd "$OUT/stage/assets/www" && find . -type f | sed 's|^\./||' | LC_ALL=C sort | xargs sha256sum) > "$OUT/stage/assets/www.sha256"
 
 # 2. Ресурслар ва R.java
 cat > "$OUT/gen/BuildConfig.java" <<EOF
 package uz.ekotalim.app;
-final class BuildConfig { static final String VERSION = "$VERSION_NAME"; }
+final class BuildConfig {
+    static final String VERSION = "$VERSION_NAME";
+    static final int VERSION_CODE = $VERSION_CODE;
+    static final String UPDATE_URL = "$UPDATE_URL";
+}
 EOF
 aapt package -f -m --auto-add-overlay \
   --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" \

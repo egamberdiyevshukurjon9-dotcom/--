@@ -1,0 +1,37 @@
+# Платформа ўзгарганда app/update.json ни янгилайди: телефонлардаги ЭкоТаълим иловаси
+# шу файлни ўқиб, ўзгарган файлларни ўзи юклаб олади (янги APK шарт эмас).
+name: Илова янгиланиши
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: app-update
+  cancel-in-progress: false
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: app/update.json ни йиғиш
+        run: node tools/build-update.js
+      - name: Ўзгарган бўлса сақлаш
+        run: |
+          if git diff --quiet -- app/update.json; then
+            echo "Ўзгариш йўқ"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add app/update.json
+          git commit -m "app/update.json: платформа янгиланиши"
+          git push
