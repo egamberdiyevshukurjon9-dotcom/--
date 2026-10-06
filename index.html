@@ -1,44 +1,59 @@
 <!doctype html>
-<html lang="uz-Cyrl">
+<html lang="uz-Cyrl" class="eko-aurora">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>ЭкоТаълим — экологик таълим платформаси</title>
   <meta name="description" content="Аҳоли, корхоналар ва таълим муассасалари учун бепул экологик таълим платформаси: курслар, тестлар, янгиликлар, ҳаво сифати ва углерод калькулятори.">
-  <meta name="theme-color" content="#15803d">
+  <meta name="theme-color" content="#eef6f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#06110d" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
     <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxNTgwM2QiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZWE1ZTkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0idXJsKCNnKSIvPgogIDxwYXRoIGQ9Ik0zODAgMTMyYy0xNTAgMC0yNDggNzgtMjQ4IDE5NiAwIDIyIDQgNDIgMTEgNTggMjYtNzQgODYtMTMyIDE3MC0xNjAtNzAgNDAtMTIyIDk4LTE0NiAxNzYgMTQgNiAzMCAxMCA0OCAxMCAxMTggMCAxNjUtMTIwIDE2NS0yODB6IiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPgo=" type="image/svg+xml">
   <script>
     /* Бўлимлар алоҳида экранда очилади (pageNav). Скрипт ишламаса, ҳаммаси битта саҳифада қолади. */
-    (function () { var d = document.documentElement, h = location.hash.slice(1); d.classList.add("spa"); if (h && h !== "bosh") d.classList.add("in-page"); })();
+    (function () { var d = document.documentElement, h = location.hash.slice(1); d.classList.add("spa"); if (h && h !== "bosh") d.classList.add("in-page");
+      try { var t = localStorage.getItem("ekotalim:theme"); if (t) d.dataset.theme = t; } catch (e) { /* ignore */ } })();
   </script>
+  <link rel="preload" href="/vendor/fonts/onest-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/vendor/eko-ui.css">
   <style>
+/* Дизайн 2.0 токенлари: ёруғ ва тунги режим (WCAG AA контраст) */
 :root {
-  --bg: #f7faf7;
-  --bg-alt: #eef5ef;
+  --bg: #f6faf8;
+  --bg-alt: #ecf5f0;
   --card: #ffffff;
-  --text: #13261a;
-  --muted: #5b6f61;
-  --line: #dbe7dd;
-  --primary: #15803d;
-  --primary-2: #0ea5e9;
-  --primary-soft: #dcfce7;
+  --glass: rgba(255, 255, 255, .74);
+  --glass-strong: rgba(255, 255, 255, .88);
+  --glass-line: rgba(255, 255, 255, .9);
+  --text: #0b1f17;
+  --muted: #4a5f56;
+  --line: #d5e6dd;
+  --primary: #047857;
+  --primary-2: #0284c7;
+  --primary-soft: #d1fae5;
   --on-primary: #ffffff;
-  --shadow: 0 6px 24px rgba(20, 60, 30, .08);
-  --radius: 16px;
+  --grad: linear-gradient(135deg, #059669 0%, #0d9488 45%, #0284c7 100%);
+  --btn-grad: linear-gradient(135deg, #047857, #0f766e);
+  --shadow: 0 1px 2px rgba(6, 40, 28, .05), 0 10px 30px -10px rgba(6, 40, 28, .16);
+  --shadow-lg: 0 24px 60px -20px rgba(6, 40, 28, .35);
+  --radius: 20px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0d1510; --bg-alt: #111c15; --card: #16241b; --text: #e6f2e9;
-    --muted: #9bb3a2; --line: #24382b; --primary: #22c55e; --primary-2: #38bdf8;
-    --primary-soft: #183b24; --on-primary: #052e16; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+    --bg: #0b1814; --bg-alt: #0e1f19; --card: #10221b; --glass: rgba(16, 34, 27, .72); --glass-strong: rgba(16, 34, 27, .9);
+    --glass-line: rgba(167, 243, 208, .10); --text: #e8f5ef; --muted: #9fbbaf; --line: #1f3a30; --primary: #34d399; --primary-2: #38bdf8;
+    --primary-soft: rgba(52, 211, 153, .15); --on-primary: #022c22; --btn-grad: linear-gradient(135deg, #34d399, #2dd4bf);
+    --grad: linear-gradient(135deg, #34d399 0%, #2dd4bf 45%, #38bdf8 100%);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px -10px rgba(0, 0, 0, .55); --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, .7);
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0d1510; --bg-alt: #111c15; --card: #16241b; --text: #e6f2e9;
-  --muted: #9bb3a2; --line: #24382b; --primary: #22c55e; --primary-2: #38bdf8;
-  --primary-soft: #183b24; --on-primary: #052e16; --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+  --bg: #0b1814; --bg-alt: #0e1f19; --card: #10221b; --glass: rgba(16, 34, 27, .72); --glass-strong: rgba(16, 34, 27, .9);
+  --glass-line: rgba(167, 243, 208, .10); --text: #e8f5ef; --muted: #9fbbaf; --line: #1f3a30; --primary: #34d399; --primary-2: #38bdf8;
+  --primary-soft: rgba(52, 211, 153, .15); --on-primary: #022c22; --btn-grad: linear-gradient(135deg, #34d399, #2dd4bf);
+  --grad: linear-gradient(135deg, #34d399 0%, #2dd4bf 45%, #38bdf8 100%);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px -10px rgba(0, 0, 0, .55); --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, .7);
 }
 
 * { box-sizing: border-box; }
@@ -621,13 +636,159 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
   .app small { display: none; }
   .spa.in-page main > section.page-on { padding-top: 20px; }
 }
+/* =====================================================================
+   Дизайн 2.0 — шиша (glass) юзалар, жонли фон, замонавий типография.
+   Юқоридаги қоидаларни устидан ёзади; функциялар ва хэш-ҳаволалар ўзгармайди.
+   ===================================================================== */
+body { font-family: var(--eko-font); font-feature-settings: "ss01", "cv11"; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+h1, h2, h3, h4, .section-title, .apps-title { font-family: var(--eko-font); letter-spacing: -.022em; text-wrap: balance; }
+h1 { font-weight: 800; }
+.section-title { font-weight: 800; font-size: clamp(1.6rem, 3.2vw, 2.3rem); }
+.lead, p { text-wrap: pretty; }
+.lang-btn, .auth-btn, .lib-tab, .bin, .tf-btn, .appeal textarea, .leaflet-popup-content, .leaflet-container, .city-label { font-family: var(--eko-font); }
+.lang-btn, .auth-btn { font-weight: 650; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+a { text-underline-offset: 3px; }
+
+/* Шиша юзалар: карта ва панеллар фон устида сузиб туради */
+.aud, .course, .news, .lib-card, .calc-form, .calc-result, .chat, .eye-panel, .mono-panel, .mstat, .stat, .tip-card,
+.aq, .ch, .badge, .level-box, .tl, .myth, .gl, .water-form, .map-box, .streak, .lib-feature, .step, .school-grid > *, .class-card {
+  background-color: var(--glass); border-color: var(--glass-line); box-shadow: var(--shadow);
+}
+.ch.on, .mstat.open { background: color-mix(in srgb, var(--primary) 14%, var(--glass-strong)); border-color: var(--primary); }
+.lib-feature { background: linear-gradient(120deg, color-mix(in srgb, var(--primary) 16%, var(--glass-strong)), color-mix(in srgb, var(--primary-2) 16%, var(--glass-strong))); }
+.aud, .course, .news, .lib-card, .mstat, .aq, .tl, .myth { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.aud:hover, .course:hover, .news:hover, .lib-card:hover, .mstat:hover, .aq:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.section.alt { background: color-mix(in srgb, var(--card) 35%, transparent); border-block: 1px solid var(--glass-line); }
+.course-icon, .aud-icon { border-radius: 16px; }
+.course-icon { background: linear-gradient(145deg, var(--primary-soft), color-mix(in srgb, var(--primary-2) 18%, var(--card))); }
+.stat b, .mstat b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; letter-spacing: -.02em; }
+
+/* Топ панел */
+.topbar { padding-top: env(safe-area-inset-top); background: color-mix(in srgb, var(--eko-base) 70%, transparent); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); border-bottom: 1px solid var(--glass-line); }
+.brand { font-weight: 800; letter-spacing: -.02em; gap: 10px; min-height: 44px; }
+.brand-mark { width: 34px; height: 34px; flex: none; filter: drop-shadow(0 4px 10px rgba(4, 120, 87, .35)); }
+.nav a { padding: 10px 10px; border-radius: 12px; font-weight: 550; min-height: 44px; display: inline-flex; align-items: center; transition: background .15s, color .15s; }
+.nav a:hover { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.nav a[aria-current="page"] { background: var(--primary-soft); color: var(--primary); }
+.theme-btn, .menu-btn, .lang-btn { height: 44px; min-width: 44px; border-radius: 14px; background: var(--glass); border: 1px solid var(--glass-line); box-shadow: 0 1px 2px rgba(0, 0, 0, .04); display: inline-grid; place-items: center; transition: border-color .15s, background .15s; }
+.theme-btn:hover, .menu-btn:hover, .lang-btn:hover { border-color: var(--primary); }
+.theme-btn svg, .menu-btn svg { width: 22px; height: 22px; }
+.theme-btn .i-sun { display: none; }
+:root[data-theme="dark"] .theme-btn .i-sun { display: block; }
+:root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-btn .i-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-btn .i-moon { display: none; }
+}
+.user-chip { min-height: 44px; padding: 6px 14px; background: var(--glass); border: 1px solid var(--glass-line); font-weight: 600; }
+.auth-btn { height: 44px; border-radius: 14px; padding: 0 18px; background: var(--btn-grad); box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--primary) 70%, transparent); }
+.auth-btn.signed { background: var(--glass); box-shadow: none; }
+@media (max-width: 1439px) {
+  .nav { top: calc(100% + 8px); left: 12px; right: 12px; border-radius: 22px; padding: 10px; gap: 2px; background: var(--glass-strong); -webkit-backdrop-filter: blur(20px) saturate(170%); backdrop-filter: blur(20px) saturate(170%); border: 1px solid var(--glass-line); box-shadow: var(--shadow-lg); max-height: calc(100vh - 96px); overflow-y: auto; }
+  .nav.open { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); animation: eko-in .2s ease both; }
+}
+
+/* Тугмалар (тегиш майдони ≥ 44px) */
+.btn { min-height: 48px; padding: 12px 22px; border-radius: 16px; font-weight: 650; letter-spacing: -.005em; transition: transform .15s, box-shadow .2s, background .2s, border-color .2s; }
+.btn-primary { background: var(--btn-grad); color: var(--on-primary); box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--primary) 80%, transparent), inset 0 1px 0 rgba(255, 255, 255, .18); }
+.btn-primary:hover { box-shadow: 0 16px 30px -12px color-mix(in srgb, var(--primary) 85%, transparent), inset 0 1px 0 rgba(255, 255, 255, .18); }
+.btn-ghost { background: var(--glass); border-color: var(--glass-line); box-shadow: var(--shadow); }
+.btn-ghost:hover { border-color: var(--primary); }
+.btn-sm { min-height: 40px; padding: 8px 14px; border-radius: 12px; }
+.chip { min-height: 40px; padding: 8px 16px; background: var(--glass); border-color: var(--glass-line); font-weight: 550; transition: background .15s, border-color .15s; }
+.chip:hover { border-color: var(--primary); }
+.chip.active { background: var(--btn-grad); border-color: transparent; color: var(--on-primary); }
+.pill { display: inline-flex; align-items: center; gap: 8px; background: var(--glass); border: 1px solid var(--glass-line); color: var(--primary); padding: 7px 14px 7px 12px; box-shadow: var(--shadow); }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, .2); }
+.search, .chat-form input, .cert-form input, .auth-form input, .auth-form select, .auth-form textarea, .calc-form select, .age-row select, .water-form input, .water-form select, .irr-input input, .appeal textarea {
+  min-height: 46px; border-radius: 14px; background: var(--glass-strong); border-color: var(--line); transition: border-color .15s, box-shadow .15s;
+}
+.search:focus, .chat-form input:focus, .cert-form input:focus, .auth-form input:focus, .auth-form select:focus, .auth-form textarea:focus, .water-form input:focus, .irr-input input:focus {
+  outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+.lesson-list button, .opt, .steps button { min-height: 44px; border-radius: 12px; background: var(--glass-strong); }
+.progress, .g-progress, .mq-bar { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.progress > div, .g-progress div, .irr-bar > div { background: var(--grad); }
+
+/* Бош саҳифа */
+.hero { background: none; padding: 48px 0 40px; }
+.hero h1 { font-size: clamp(2.2rem, 5.6vw, 4rem); line-height: 1.04; letter-spacing: -.035em; margin: 18px 0 16px; }
+.grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { font-size: 1.12rem; }
+.tip-card { border-radius: 20px; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); align-items: center; }
+.tip-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(145deg, #fef9c3, #fde68a); flex: none; font-size: 1.35rem; }
+.hero-visual::before { content: ""; position: absolute; width: 300px; height: 300px; border-radius: 50%; background: conic-gradient(from 200deg, #34d399, #38bdf8, #a7f3d0, #34d399); filter: blur(42px); opacity: .55; }
+.hero-visual::after { content: ""; position: absolute; width: 260px; height: 260px; border-radius: 50%; border: 1.5px dashed color-mix(in srgb, var(--primary) 35%, transparent); }
+.globe { position: relative; z-index: 1; }
+.orbit { z-index: 2; background: var(--glass-strong); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); width: 72px; height: 72px; border-radius: 24px; font-size: 2.1rem; }
+
+.apps { margin-top: 40px; }
+.apps-title { font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+.apps-title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+.app-grid { grid-template-columns: repeat(auto-fill, minmax(156px, 1fr)); gap: 14px; }
+.app { gap: 8px; padding: 18px 10px 16px; border-radius: 24px; background: var(--glass); border: 1px solid var(--glass-line); box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.app:hover, .app:focus-visible { transform: translateY(-4px); box-shadow: 0 18px 36px -16px color-mix(in srgb, var(--c, var(--primary)) 60%, transparent); border-color: color-mix(in srgb, var(--c, var(--primary)) 45%, transparent); }
+.app-ic { width: 64px; height: 64px; border-radius: 20px; font-size: 2rem; border: 0;
+  background: linear-gradient(150deg, color-mix(in srgb, var(--c, var(--primary)) 45%, #fff) 0%, var(--c, var(--primary)) 100%);
+  box-shadow: 0 10px 20px -8px color-mix(in srgb, var(--c, var(--primary)) 75%, transparent), inset 0 1px 0 rgba(255, 255, 255, .45), inset 0 -2px 6px rgba(0, 0, 0, .12); }
+.app-ic { filter: saturate(1.05); text-shadow: 0 2px 6px rgba(0, 0, 0, .18); }
+.app b { font-weight: 700; font-size: .96rem; }
+.stats { gap: 14px; }
+.stat { border-radius: 20px; padding: 18px 18px 16px; }
+
+/* Ички саҳифалар */
+.page-bar { top: calc(64px + env(safe-area-inset-top)); background: color-mix(in srgb, var(--eko-base) 62%, transparent); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); border-bottom: 1px solid var(--glass-line); }
+.page-bar-in { height: 58px; }
+.back-btn { min-height: 42px; padding: 8px 16px 8px 12px; background: var(--glass-strong); border: 1px solid var(--glass-line); box-shadow: var(--shadow); color: var(--text); transition: background .15s, color .15s; }
+.back-btn:hover { background: var(--btn-grad); color: var(--on-primary); }
+.page-name { color: var(--text); font-weight: 750; letter-spacing: -.01em; }
+.spa.in-page main > section.page-on { animation: eko-in .35s ease both; }
+.spa:not(.in-page) .app { animation: eko-in .45s ease both; }
+.app:nth-child(2) { animation-delay: .03s; } .app:nth-child(3) { animation-delay: .06s; } .app:nth-child(4) { animation-delay: .09s; }
+.app:nth-child(5) { animation-delay: .12s; } .app:nth-child(6) { animation-delay: .15s; } .app:nth-child(7) { animation-delay: .18s; }
+.app:nth-child(8) { animation-delay: .21s; } .app:nth-child(9) { animation-delay: .24s; } .app:nth-child(10) { animation-delay: .27s; }
+.app:nth-child(11) { animation-delay: .3s; } .app:nth-child(12) { animation-delay: .33s; } .app:nth-child(13) { animation-delay: .36s; } .app:nth-child(14) { animation-delay: .39s; }
+.spa.in-page { scroll-padding-top: calc(130px + env(safe-area-inset-top)); }
+
+/* Ўйинлар, модал ойна, хабарлар */
+.game-card { border-radius: 26px; border: 1px solid rgba(255, 255, 255, .6); box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease; }
+.game-card:hover, .game-card:focus-visible { box-shadow: var(--shadow-lg); }
+.game-play { background: #0b1f17; }
+.modal { border-radius: 28px; background: var(--card); border: 1px solid var(--glass-line); box-shadow: var(--shadow-lg); }
+.modal[open] { animation: eko-in .25s ease both; }
+.modal::backdrop { background: rgba(3, 20, 14, .5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.modal-close { width: 44px; height: 44px; top: 12px; right: 12px; }
+.toast { bottom: calc(20px + env(safe-area-inset-bottom)); border-radius: 16px; box-shadow: var(--shadow-lg); }
+.msg { border-radius: 18px; }
+.msg.me { background: var(--btn-grad); }
+.chat-log { background: transparent; }
+.mem { background: var(--grad); border-radius: 18px; }
+.footer { border-top: 1px solid var(--glass-line); background: color-mix(in srgb, var(--card) 45%, transparent); padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+.linklike { min-height: 44px; }
+
+@media (max-width: 620px) {
+  .hero { padding: 22px 0 28px; }
+  .spa .hero h1 { font-size: 2.05rem; }
+  .apps-title { font-size: 1.15rem; }
+  .app-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 6px; }
+  .app { padding: 4px 0 2px; gap: 6px; background: none; border: 0; box-shadow: none; border-radius: 18px; }
+  .app:hover, .app:focus-visible { box-shadow: none; transform: translateY(-2px); }
+  .app-ic { width: 60px; height: 60px; border-radius: 19px; font-size: 1.85rem; }
+  .app b { font-size: .76rem; font-weight: 650; line-height: 1.2; }
+  .stats { gap: 10px; }
+  .page-bar-in { height: 54px; }
+}
+@media (max-width: 359px) {
+  .app-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 </style>
 </head>
 <body>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="#bosh"><span class="brand-logo">🌿</span><span class="brand-name">ЭкоТаълим</span></a>
-      <button class="menu-btn" id="menuBtn" aria-label="Меню" aria-expanded="false">☰</button>
+      <a class="brand" href="#bosh" aria-label="ЭкоТаълим — бош саҳифа"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#10b981"/><stop offset="1" stop-color="#0284c7"/></linearGradient></defs><rect width="32" height="32" rx="10" fill="url(#bm)"/><path d="M23.5 8.5c-9.4 0-15.5 4.9-15.5 12.3 0 1.4.3 2.6.7 3.6 1.6-4.6 5.4-8.2 10.6-10-4.4 2.5-7.6 6.1-9.1 11 .9.4 1.9.6 3 .6 7.4 0 10.3-7.5 10.3-17.5z" fill="#fff"/></svg><span class="brand-name">ЭкоТаълим</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Меню" aria-expanded="false" aria-controls="nav"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <nav class="nav" id="nav">
         <a href="#monografiya">Сув ва ҳаво</a>
         <a href="orol.html">Орол</a>
@@ -650,7 +811,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
       </div>
       <button class="auth-btn" id="authBtn" hidden>Кириш</button>
       <button class="lang-btn" id="langBtn" data-notr aria-label="Lotin alifbosiga oʻtish">Lotin</button>
-      <button class="theme-btn" id="themeBtn" aria-label="Мавзуни алмаштириш">🌓</button>
+      <button class="theme-btn" id="themeBtn" aria-label="Мавзуни алмаштириш"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
   </header>
 
@@ -2789,12 +2950,14 @@ const LIBRARY = {
   });
   nav.addEventListener("click", (e) => { if (e.target.matches("a")) nav.classList.remove("open"); });
 
-  try { const t = localStorage.getItem("ekotalim:theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) { /* ignore */ }
+  const paintBar = (t) => document.querySelectorAll('meta[name="theme-color"]').forEach((m) => { m.content = t === "dark" ? "#06110d" : "#eef6f1"; });
+  try { const t = localStorage.getItem("ekotalim:theme"); if (t) { document.documentElement.dataset.theme = t; paintBar(t); } } catch (e) { /* ignore */ }
   $("#themeBtn").addEventListener("click", () => {
     const cur = document.documentElement.dataset.theme ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     const t = cur === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = t;
+    paintBar(t);
     try { localStorage.setItem("ekotalim:theme", t); } catch (e) { /* ignore */ }
   });
 

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{lang}}">
+<html lang="{{lang}}" class="eko-aurora">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,7 +7,7 @@
 <meta name="description" content="ЭкоТаълим — аҳоли, мактаб ва корхоналар учун бепул онлайн экологик таълим: эко-ўйинлар, курслар ва сертификат, «Сув ва ҳаво» бўлими, эко-харита, ҳаво сифати ва углерод изи калькулятори.">
 <meta name="keywords" content="экология, экологик таълим, ЭкоТаълим, eko talim, ekologiya, Ўзбекистон, сув, ҳаво сифати, эко-ўйинлар, мактаб, Орол">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#17803d">
+<meta name="theme-color" content="#eef6f1">
 <link rel="canonical" href="{{url}}">
 <link rel="alternate" hreflang="uz-Latn" href="{{base}}">
 <link rel="alternate" hreflang="uz-Cyrl" href="{{base}}kirill/">
@@ -24,9 +24,8 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{{jsonld}}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="{{root}}assets/eko-ui.css">
+<script>try { var t = localStorage.getItem("ekotalim:theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) { /* ignore */ }</script>
 <style>
 /* Layout: one long scroll — hero with a phone, a feature field, a water band for the monograph, three real steps, install, closing call. */
 :root {
@@ -35,25 +34,30 @@
   --ink: #102318;
   --muted: #536758;
   --line: #d7e3d9;
-  --leaf: #17803d;        /* saksovul green, main accent */
+  --leaf: #047857;        /* saksovul green, main accent */
   --leaf-ink: #ffffff;
   --water: #0b6e8a;       /* Amu daryo teal */
   --sand: #e9dcc0;        /* Qizilqum sand */
   --band: #0b3b4c;        /* deep water band */
   --band-ink: #e8f6f8;
   --band-muted: #a6cbd3;
-  --display: "Unbounded", "Golos Text", system-ui, sans-serif;
-  --body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --r: 18px;
+  --display: var(--eko-font);
+  --body: var(--eko-font);
+  --glass: rgba(255, 255, 255, .74);
+  --glass-line: rgba(255, 255, 255, .9);
+  --shadow: 0 1px 2px rgba(6, 40, 28, .05), 0 10px 30px -10px rgba(6, 40, 28, .16);
+  --r: 22px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0c1611; --surface: #13211a; --ink: #e6f1e9; --muted: #9db3a4; --line: #23382c;
-  --leaf: #34c76a; --leaf-ink: #06240f; --water: #4cc0dc; --sand: #3a3322; --band: #0a2a35; --band-ink: #e3f4f7; --band-muted: #8fb8c1;
+  --bg: #06110d; --surface: #10221b; --ink: #e6f1e9; --muted: #9db3a4; --line: #23382c;
+  --leaf: #34d399; --leaf-ink: #06240f; --water: #4cc0dc; --sand: #3a3322; --band: #0a2a35; --band-ink: #e3f4f7; --band-muted: #8fb8c1;
+  --glass: rgba(16, 34, 27, .74); --glass-line: rgba(167, 243, 208, .10); --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -10px rgba(0,0,0,.55);
   color-scheme: dark; } }
 :root[data-theme="dark"] {
-  --bg: #0c1611; --surface: #13211a; --ink: #e6f1e9; --muted: #9db3a4; --line: #23382c;
-  --leaf: #34c76a; --leaf-ink: #06240f; --water: #4cc0dc; --sand: #3a3322; --band: #0a2a35; --band-ink: #e3f4f7; --band-muted: #8fb8c1;
+  --bg: #06110d; --surface: #10221b; --ink: #e6f1e9; --muted: #9db3a4; --line: #23382c;
+  --leaf: #34d399; --leaf-ink: #06240f; --water: #4cc0dc; --sand: #3a3322; --band: #0a2a35; --band-ink: #e3f4f7; --band-muted: #8fb8c1;
+  --glass: rgba(16, 34, 27, .74); --glass-line: rgba(167, 243, 208, .10); --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -10px rgba(0,0,0,.55);
   color-scheme: dark; }
 
 * { box-sizing: border-box; }
@@ -173,6 +177,25 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   body { font-size: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+
+/* Дизайн 2.0: шиша юзалар ва жонли фон (платформа билан бир хил) */
+h1 { letter-spacing: -.035em; line-height: 1.04; }
+h2 { letter-spacing: -.025em; font-weight: 800; }
+.hero h1 em { background: linear-gradient(135deg, #059669, #0d9488 45%, #0284c7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.bar { padding-top: env(safe-area-inset-top); top: 0; background: color-mix(in srgb, var(--bg) 62%, transparent); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); border-bottom-color: var(--glass-line); }
+.wrap { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
+.btn { min-height: 48px; border-radius: 16px; font-weight: 650; }
+.btn-go { background: linear-gradient(135deg, #047857, #0f766e); color: #fff; box-shadow: 0 10px 24px -10px rgba(4, 120, 87, .8); }
+:root[data-theme="dark"] .btn-go { background: linear-gradient(135deg, #34d399, #2dd4bf); color: #022c22; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-go { background: linear-gradient(135deg, #34d399, #2dd4bf); color: #022c22; } }
+.btn-line, .lang { background: var(--glass); border-color: var(--glass-line); box-shadow: var(--shadow); min-height: 44px; }
+.features { background: transparent; border: 0; gap: 14px; overflow: visible; }
+.feat, .step, .inst, .safe span, .addr { background: var(--glass); border: 1px solid var(--glass-line); box-shadow: var(--shadow); }
+.feat { border-radius: var(--r); }
+.feat .ic { border-radius: 14px; background: linear-gradient(145deg, color-mix(in srgb, var(--leaf) 22%, transparent), color-mix(in srgb, var(--water) 18%, transparent)); }
+.hero-art::before { background: radial-gradient(closest-side, color-mix(in srgb, #34d399 45%, transparent), transparent), radial-gradient(closest-side at 70% 30%, color-mix(in srgb, #38bdf8 40%, transparent), transparent); filter: blur(10px); }
+.band { background: linear-gradient(135deg, #052e2b 0%, #0b3b4c 55%, #0c4a6e 100%); }
+footer { padding-bottom: calc(26px + env(safe-area-inset-bottom)); }
 </style>
 </head>
 <body>

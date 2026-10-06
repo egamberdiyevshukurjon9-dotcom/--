@@ -67,6 +67,10 @@ fs.mkdirSync(path.join(OUT, "kirill"), { recursive: true });
 fs.writeFileSync(path.join(OUT, "index.html"), page(true));
 fs.writeFileSync(path.join(OUT, "kirill", "index.html"), page(false));
 fs.writeFileSync(path.join(OUT, ".nojekyll"), "");
+/* Дизайн тизими ва шрифт (CDN'сиз) — docs/assets ичига нусха */
+fs.mkdirSync(path.join(OUT, "assets", "fonts"), { recursive: true });
+fs.copyFileSync(path.join(ROOT, "vendor", "eko-ui.css"), path.join(OUT, "assets", "eko-ui.css"));
+for (const f of fs.readdirSync(path.join(ROOT, "vendor", "fonts"))) fs.copyFileSync(path.join(ROOT, "vendor", "fonts", f), path.join(OUT, "assets", "fonts", f));
 fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${BASE}sitemap.xml\n`);
 const alt = `\n    <xhtml:link rel="alternate" hreflang="uz-Latn" href="${BASE}"/>\n    <xhtml:link rel="alternate" hreflang="uz-Cyrl" href="${BASE}kirill/"/>`;
 fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
