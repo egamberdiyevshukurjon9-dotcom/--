@@ -841,6 +841,9 @@ const STATIC = {
   "/admin.html": { file: "admin.html", type: HTML },
   "/privacy": { file: "privacy.html", type: HTML },
   "/privacy.html": { file: "privacy.html", type: HTML },
+  /* «Яшил белбоғ» — Орол ва ҳудудлар экологик мониторинги (алоҳида саҳифа) */
+  "/orol": { file: "orol.html", type: HTML },
+  "/orol.html": { file: "orol.html", type: HTML },
   "/manifest.webmanifest": { file: "manifest.webmanifest", type: "application/manifest+json; charset=utf-8" },
   "/sw.js": { file: "sw.js", type: "text/javascript; charset=utf-8" },
   "/icons/icon.svg": { file: "icons/icon.svg", type: "image/svg+xml", cache: true },
@@ -856,7 +859,11 @@ const STATIC = {
   "/vendor/leaflet/images/marker-shadow.png": { file: "vendor/leaflet/images/marker-shadow.png", type: "image/png", cache: true },
   "/vendor/leaflet/images/layers.png": { file: "vendor/leaflet/images/layers.png", type: "image/png", cache: true },
   "/vendor/leaflet/images/layers-2x.png": { file: "vendor/leaflet/images/layers-2x.png", type: "image/png", cache: true },
-  "/vendor/uz-border.json": { file: "vendor/uz-border.json", type: "application/json; charset=utf-8", cache: true }
+  "/vendor/uz-border.json": { file: "vendor/uz-border.json", type: "application/json; charset=utf-8", cache: true },
+  /* Иконкалар шрифти (Font Awesome Free, OFL/MIT) — CDN'сиз, оффлайн ҳам ишлайди */
+  "/vendor/fontawesome/css/fa.min.css": { file: "vendor/fontawesome/css/fa.min.css", type: "text/css; charset=utf-8", cache: true },
+  "/vendor/fontawesome/webfonts/fa-solid-900.woff2": { file: "vendor/fontawesome/webfonts/fa-solid-900.woff2", type: "font/woff2", cache: true },
+  "/vendor/fontawesome/webfonts/fa-regular-400.woff2": { file: "vendor/fontawesome/webfonts/fa-regular-400.woff2", type: "font/woff2", cache: true }
 };
 
 /* Android иловаси сайтни манзил сатрисиз очиши учун (Trusted Web Activity) */
