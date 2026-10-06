@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ЭкоТаълим</string>
+    <!-- Платформа серверда ишга тушгач, манзилини шу ерга ёзинг (масалан https://ekotalim.onrender.com/).
+         Бўш бўлса, илова ичидаги оффлайн нусха очилади. -->
+    <string name="server_url" translatable="false"></string>
+</resources>
