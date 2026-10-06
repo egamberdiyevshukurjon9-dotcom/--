@@ -12,11 +12,26 @@
   `VERSION_CODE` ни ошириб қайта йиғинг: интернет бўлса илова сервердаги платформани очади,
   бўлмаса ичидаги нусхани.
 
+## Автоматик янгиланиш (1.2 дан бошлаб)
+
+Илова интернет бўлганда `app/update.json` ни (GitHub, `main` тармоғи) текширади:
+
+- **Платформа ўзгарса** (HTML, CSS, расмлар — `content-files.txt` рўйхати): илова фақат
+  ўзгарган файлларни фонда юклаб олади, SHA-256 хэшини текширади ва «Янги маълумотлар тайёр»
+  ойнасини кўрсатади. Интернет бўлмаса, охирги юклаб олинган нусха ишлайди. Янги APK шарт эмас.
+  `main` га push бўлганда `.github/workflows/app-update.yml` `app/update.json` ни ўзи янгилайди.
+- **Java коди ўзгарса**: `version.properties` даги `VERSION_CODE` ни оширинг, APK'ни йиғиб
+  `app/` га қўйинг (эскисини ўчиринг), `app/notes.txt` га янгиликларни ёзинг ва
+  `node tools/build-update.js` ни ишга туширинг. Илова «ЭкоТаълим X чиқди → Янгилаш» ойнасини
+  кўрсатади, APK'ни юклаб, ўрнатишни очади. Play'дан ташқари ўрнатилган иловани Android жимгина
+  янгилашга рухсат бермайди: ўрнатишни фойдаланувчи бир марта тасдиқлайди.
+
 ## Йиғиш
 
 ```sh
 sudo apt-get install -y openjdk-17-jdk android-sdk-platform-23 aapt zipalign apksigner dalvik-exchange
-KEYSTORE=/йўл/ekotalim-release.jks KS_PASS=парол VERSION_CODE=2 VERSION_NAME=1.1 ./android/build.sh
+KEYSTORE=/йўл/ekotalim-release.jks KS_PASS=парол ./android/build.sh   # версия: version.properties
+cp android/build/EkoTalim-1.2.apk app/ && node tools/build-update.js
 ```
 
 Тайёр файл: `android/build/EkoTalim-<версия>.apk`. Янгилаш ўрнатилган илова устидан

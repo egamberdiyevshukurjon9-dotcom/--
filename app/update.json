@@ -1,0 +1,39 @@
+{
+ "apk": null,
+ "content": {
+  "version": "5283f89c6bcb11b9",
+  "minApk": 3,
+  "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
+  "files": {
+   "icons/apple-touch-icon.png": "d11d9f535875566f3763fdc3fcbb920c3085fb614e571e73dda0480bf9fea77d",
+   "icons/icon-192.png": "0955b089e710207dc482bd3f6c01375ae28142b8a8894226e7a63558fe2ca2bf",
+   "icons/icon-512.png": "05462dc33339bce4517ec6f22165b74411d600ce8b9ae9410794a868cfec0f1c",
+   "icons/icon-maskable-512.png": "3a174bcac2c25674d619d6ffc7b269684aa9fb8432621171ae7a55a2034c94b8",
+   "icons/icon-maskable.svg": "1d5e677de2e6e48d183221bce174707bec92ead88488ad9d4b29c394e7d0aa32",
+   "icons/icon.svg": "0c37b15d2bafdf1eb7847eda50445696e0406395308a995cd80a0e5535d4a303",
+   "index.html": "0b0cd21b33e082cfd7109ed55a85e3069a6edf1aaef7f30169c26eb4ea7761f9",
+   "manifest.webmanifest": "1742854f8308e88c06de2d4f094740b8e773509a1a85c250d679bf7ce626e813",
+   "orol.html": "84bf7c65c08529070971e09cfd0d486ce245192a36cc7b0caea34a472bc5aee6",
+   "privacy.html": "efd3cf74d27bd0923995293b7362ce04077ad3c608bced2e20bdf72c0e9f143e",
+   "vendor/eko-ui.css": "9412a016799009750bc3a90b7ac5fe5275e8bcab7b1dbbb6b249994cfeaa8aeb",
+   "vendor/fontawesome/LICENSE.txt": "0aa8f86525273b2efa4f40f4272a188e187704252170e979dc06879adf68d43c",
+   "vendor/fontawesome/css/fa.min.css": "f77802297b39b74a3f8dbbba71041c45dc9f522870e4015d6523c04c24c93185",
+   "vendor/fontawesome/webfonts/fa-regular-400.woff2": "8e7e5ea1b15f62ab14dbd41768e8fbcd21cc859a4ea5da812457ee714299fb35",
+   "vendor/fontawesome/webfonts/fa-solid-900.woff2": "7152a6933ee3d690ec2af3d09da9d701723d16aa3410a6d80f28ff8866f3b880",
+   "vendor/fonts/OFL.txt": "a2a09da98a3d0d1ec79fc2d6deeac748b20a8153e26699552e7b59b5a40b63a3",
+   "vendor/fonts/onest-cyrillic-ext-wght-normal.woff2": "268f03691b3d06e57abcf20f9277e314ea8784298983aab5b40c1b91965027e1",
+   "vendor/fonts/onest-cyrillic-wght-normal.woff2": "68e5e01d6265bd68967746d4f5a9d18d0e6cbb5d15583c7082d6384ab1229b27",
+   "vendor/fonts/onest-latin-ext-wght-normal.woff2": "14e7d3079b75860e2ab50efc6c318c398fdb46ede9b56e625f12ae70a3c5d9a4",
+   "vendor/fonts/onest-latin-wght-normal.woff2": "052df74533250c2e0ca0c4bdd32de594e107d99c1648e63820ef9c6142067828",
+   "vendor/leaflet/LICENSE": "53e8dc25862014e4324741ca18fbe3611e11d42ef69f59f86ea8c5389647d4cb",
+   "vendor/leaflet/images/layers-2x.png": "066daca850d8ffbef007af00b06eac0015728dee279c51f3cb6c716df7c42edf",
+   "vendor/leaflet/images/layers.png": "1dbbe9d028e292f36fcba8f8b3a28d5e8932754fc2215b9ac69e4cdecf5107c6",
+   "vendor/leaflet/images/marker-icon-2x.png": "00179c4c1ee830d3a108412ae0d294f55776cfeb085c60129a39aa6fc4ae2528",
+   "vendor/leaflet/images/marker-icon.png": "574c3a5cca85f4114085b6841596d62f00d7c892c7b03f28cbfa301deb1dc437",
+   "vendor/leaflet/images/marker-shadow.png": "264f5c640339f042dd729062cfc04c17f8ea0f29882b538e3848ed8f10edb4da",
+   "vendor/leaflet/leaflet.css": "a7837102824184820dfa198d1ebcd109ff6d0ff9a2672a074b9a1b4d147d04c6",
+   "vendor/leaflet/leaflet.js": "db49d009c841f5ca34a888c96511ae936fd9f5533e90d8b2c4d57596f4e5641a",
+   "vendor/uz-border.json": "0692604f7f8902975abc9ade3735993b09c2e7516da243b210b75acf858e61e2"
+  }
+ }
+}

@@ -12,7 +12,7 @@ import android.provider.OpenableColumns;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-/** Камера олган расмни ёзиш учун кичик провайдер (кеш папкасидаги shared/ ичида). */
+/** Камера олган расм ва янги APK учун кичик провайдер (кеш папкасидаги shared/ ичида). */
 public class SharedFiles extends ContentProvider {
     static final String AUTHORITY = "uz.ekotalim.app.files";
     static final String DIR = "shared";
@@ -54,7 +54,8 @@ public class SharedFiles extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return "image/jpeg";
+        String p = uri.getPath() == null ? "" : uri.getPath();
+        return p.endsWith(".apk") ? "application/vnd.android.package-archive" : "image/jpeg";
     }
 
     @Override

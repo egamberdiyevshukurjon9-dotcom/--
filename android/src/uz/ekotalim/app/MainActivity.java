@@ -30,12 +30,15 @@ import android.widget.Toast;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 /**
  * ЭкоТаълим — Android илова.
@@ -44,6 +47,7 @@ import java.util.Map;
  * йўқ, фақат илова ичида), шунинг учун localStorage, fetch ва харита одатдагидек ишлайди.
  * res/values/strings.xml даги server_url тўлдирилса, интернет бўлганда сервердаги
  * платформа очилади (ҳисоб, Эко-кўз, харита), уланмаса — ичидаги нусха.
+ * Updater: платформа ўзгарса, янги файлларни ўзи юклаб олади; янги APK бўлса, «Янгилаш» тугмаси чиқади.
  */
 public class MainActivity extends Activity {
     static final String LOCAL_HOST = "appassets.androidplatform.net";
@@ -60,6 +64,12 @@ public class MainActivity extends Activity {
     private byte[] pendingSave;
     private String pendingGeoOrigin;
     private GeolocationPermissions.Callback pendingGeoCallback;
+
+    /* Автоматик янгиланиш */
+    private static final long CHECK_EVERY = 3 * 60 * 60 * 1000L;
+    private Updater updater;
+    private JSONObject newApk;
+    private boolean contentReady, apkDismissed, contentDismissed, checking, installing;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -86,6 +96,10 @@ public class MainActivity extends Activity {
         web.addJavascriptInterface(new Bridge(), "EkoAndroid");
         web.setWebViewClient(new Client());
         web.setWebChromeClient(new Chrome());
+
+        updater = new Updater(this);
+        updater.prepare();
+        checkForUpdates(true);
 
         if (state != null && web.restoreState(state) != null) return;
         if (!serverUrl.isEmpty() && isOnline()) {
@@ -118,6 +132,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         web.onResume();
+        checkForUpdates(false);
     }
 
     @Override
@@ -130,6 +145,109 @@ public class MainActivity extends Activity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo n = cm == null ? null : cm.getActiveNetworkInfo();
         return n != null && n.isConnected();
+    }
+
+    /* ---------- Автоматик янгиланиш ---------- */
+
+    private void checkForUpdates(boolean force) {
+        if (checking || !isOnline()) return;
+        if (!force && System.currentTimeMillis() - updater.lastCheck() < CHECK_EVERY) return;
+        checking = true;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject apk = null;
+                boolean content = false;
+                try {
+                    JSONObject m = updater.fetchManifest();
+                    apk = Updater.newerApk(m);
+                    content = updater.downloadContent(m);
+                } catch (Exception ignored) {
+                    /* Интернет йўқ ёки сервер жавоб бермади — кейинги сафар */
+                }
+                final JSONObject a = apk;
+                final boolean c = content;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        checking = false;
+                        if (a != null) newApk = a;
+                        if (c) contentReady = true;
+                        showUpdate();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    /** Саҳифада янгиланиш ойнасини кўрсатади (дизайн android-helper.js да). */
+    private void showUpdate() {
+        if (web == null || installing) return;
+        if (newApk != null && !apkDismissed) {
+            web.evaluateJavascript("window.EkoUpdate&&EkoUpdate.apk(" + newApk.toString() + ")", null);
+        } else if (contentReady && !contentDismissed && onLocal) {
+            web.evaluateJavascript("window.EkoUpdate&&EkoUpdate.content()", null);
+        }
+    }
+
+    private void js(final String code) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                web.evaluateJavascript(code, null);
+            }
+        });
+    }
+
+    private void installApk() {
+        final JSONObject apk = newApk;
+        if (apk == null || installing) return;
+        installing = true;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    /* Android 7+ файлни провайдер орқали, эскиларида ташқи папкадан беради */
+                    boolean provider = Build.VERSION.SDK_INT >= 24;
+                    File dir = provider ? new File(getCacheDir(), SharedFiles.DIR) : getExternalFilesDir(null);
+                    if (dir == null) throw new IOException("no storage");
+                    File out = new File(dir, "EkoTalim-update.apk");
+                    updater.downloadApk(apk, out, new Updater.Progress() {
+                        @Override
+                        public void on(int percent) {
+                            js("window.EkoUpdate&&EkoUpdate.progress(" + percent + ")");
+                        }
+                    });
+                    final Uri uri = provider ? SharedFiles.uriFor(out.getName()) : Uri.fromFile(out);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            installing = false;
+                            js("window.EkoUpdate&&EkoUpdate.downloaded()");
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setDataAndType(uri, "application/vnd.android.package-archive");
+                            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            try {
+                                startActivity(i);
+                            } catch (ActivityNotFoundException e) {
+                                openInBrowser(apk.optString("url"));
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    installing = false;
+                    js("window.EkoUpdate&&EkoUpdate.failed()");
+                }
+            }
+        }).start();
+    }
+
+    private void openInBrowser(String url) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } catch (ActivityNotFoundException e) {
+            toast("Браузер топилмади");
+        }
     }
 
     private void toast(String msg) {
@@ -202,7 +320,9 @@ public class MainActivity extends Activity {
         String ext = path.substring(path.lastIndexOf('.') + 1).toLowerCase(Locale.ROOT);
         String mime = MIME.containsKey(ext) ? MIME.get(ext) : "application/octet-stream";
         try {
-            InputStream in = getAssets().open(file);
+            /* Юклаб олинган янги нусха бўлса — уни, бўлмаса илова ичидагисини берамиз */
+            File fresh = updater.find(path.substring(1));
+            InputStream in = fresh != null ? new FileInputStream(fresh) : getAssets().open(file);
             if (path.endsWith(".html")) {
                 /* Юклаб олиш тугмалари WebView'да ишлаши учун кичик ёрдамчи қўшилади */
                 String html = readAll(in);
@@ -251,6 +371,7 @@ public class MainActivity extends Activity {
                 } catch (IOException ignored) {
                 }
             }
+            showUpdate();
         }
 
         @Override
@@ -402,6 +523,46 @@ public class MainActivity extends Activity {
                     }
                 }
             });
+        }
+
+        /* Янгиланиш ойнасидаги тугмалар */
+        @JavascriptInterface
+        public void installUpdate() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    installApk();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void applyContent() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    contentReady = false;
+                    if (updater.applyStaged()) web.reload();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void dismissUpdate(final boolean apk) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (apk) apkDismissed = true;
+                    else contentDismissed = true;
+                    /* APK рад этилса, тайёр контент янгиланишини кўрсатамиз */
+                    if (apk) showUpdate();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public String version() {
+            return BuildConfig.VERSION;
         }
 
         @JavascriptInterface
