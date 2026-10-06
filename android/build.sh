@@ -24,7 +24,7 @@ rm -rf "$OUT/stage" "$OUT/gen" "$OUT/classes"
 mkdir -p "$OUT/stage/assets/www" "$OUT/gen" "$OUT/classes"
 
 # 1. Платформа файллари илова ичига
-cp "$ROOT/index.html" "$ROOT/privacy.html" "$ROOT/manifest.webmanifest" "$OUT/stage/assets/www/"
+cp "$ROOT/index.html" "$ROOT/orol.html" "$ROOT/privacy.html" "$ROOT/manifest.webmanifest" "$OUT/stage/assets/www/"
 cp -r "$ROOT/icons" "$ROOT/vendor" "$OUT/stage/assets/www/"
 cp "$HERE/android-helper.js" "$OUT/stage/assets/"
 

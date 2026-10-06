@@ -196,13 +196,14 @@ public class MainActivity extends Activity {
         }
         if (path.equals("/") || path.equals("/index.html")) path = "/index.html";
         else if (path.equals("/privacy")) path = "/privacy.html";
+        else if (path.equals("/orol")) path = "/orol.html";
         if (path.contains("..")) return json(404, "Not Found", "{}");
         String file = "www" + path;
         String ext = path.substring(path.lastIndexOf('.') + 1).toLowerCase(Locale.ROOT);
         String mime = MIME.containsKey(ext) ? MIME.get(ext) : "application/octet-stream";
         try {
             InputStream in = getAssets().open(file);
-            if (path.equals("/index.html")) {
+            if (path.endsWith(".html")) {
                 /* Юклаб олиш тугмалари WebView'да ишлаши учун кичик ёрдамчи қўшилади */
                 String html = readAll(in);
                 String helper = readAll(getAssets().open("android-helper.js"));
