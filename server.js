@@ -863,7 +863,13 @@ const STATIC = {
   /* Иконкалар шрифти (Font Awesome Free, OFL/MIT) — CDN'сиз, оффлайн ҳам ишлайди */
   "/vendor/fontawesome/css/fa.min.css": { file: "vendor/fontawesome/css/fa.min.css", type: "text/css; charset=utf-8", cache: true },
   "/vendor/fontawesome/webfonts/fa-solid-900.woff2": { file: "vendor/fontawesome/webfonts/fa-solid-900.woff2", type: "font/woff2", cache: true },
-  "/vendor/fontawesome/webfonts/fa-regular-400.woff2": { file: "vendor/fontawesome/webfonts/fa-regular-400.woff2", type: "font/woff2", cache: true }
+  "/vendor/fontawesome/webfonts/fa-regular-400.woff2": { file: "vendor/fontawesome/webfonts/fa-regular-400.woff2", type: "font/woff2", cache: true },
+  /* Дизайн тизими ва Onest шрифти (SIL OFL) — ҳамма саҳифалар учун умумий */
+  "/vendor/eko-ui.css": { file: "vendor/eko-ui.css", type: "text/css; charset=utf-8" },
+  "/vendor/fonts/onest-cyrillic-wght-normal.woff2": { file: "vendor/fonts/onest-cyrillic-wght-normal.woff2", type: "font/woff2", cache: true },
+  "/vendor/fonts/onest-cyrillic-ext-wght-normal.woff2": { file: "vendor/fonts/onest-cyrillic-ext-wght-normal.woff2", type: "font/woff2", cache: true },
+  "/vendor/fonts/onest-latin-wght-normal.woff2": { file: "vendor/fonts/onest-latin-wght-normal.woff2", type: "font/woff2", cache: true },
+  "/vendor/fonts/onest-latin-ext-wght-normal.woff2": { file: "vendor/fonts/onest-latin-ext-wght-normal.woff2", type: "font/woff2", cache: true }
 };
 
 /* Android иловаси сайтни манзил сатрисиз очиши учун (Trusted Web Activity) */

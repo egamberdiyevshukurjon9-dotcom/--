@@ -3,7 +3,7 @@
    /api/ ва /admin ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekotalim-v8";
+const CACHE = "ekotalim-v9";
 const SHELL = [
   "/",
   "/privacy",
@@ -18,7 +18,12 @@ const SHELL = [
   "/orol.html",
   "/vendor/fontawesome/css/fa.min.css",
   "/vendor/fontawesome/webfonts/fa-solid-900.woff2",
-  "/vendor/fontawesome/webfonts/fa-regular-400.woff2"
+  "/vendor/fontawesome/webfonts/fa-regular-400.woff2",
+  "/vendor/eko-ui.css",
+  "/vendor/fonts/onest-cyrillic-wght-normal.woff2",
+  "/vendor/fonts/onest-cyrillic-ext-wght-normal.woff2",
+  "/vendor/fonts/onest-latin-wght-normal.woff2",
+  "/vendor/fonts/onest-latin-ext-wght-normal.woff2"
 ];
 
 self.addEventListener("install", (e) => {

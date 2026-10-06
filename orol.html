@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="uz-Cyrl" data-theme="light">
+<html lang="uz-Cyrl" data-theme="light" class="eko-aurora">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Орол — «Яшил белбоғ» | ЭкоТаълим</title>
 <meta name="description" content="Ўзбекистон ҳудудлари бўйича яшил қоплама, тупроқ, ҳаво сифати ва дрон мониторинги платформаси">
-<meta name="theme-color" content="#2E7D32">
+<meta name="theme-color" content="#064e3b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232E7D32'/%3E%3Cpath d='M46 14C26 14 16 26 18 46c16 2 30-8 28-32z' fill='%23A5D6A7'/%3E%3Cpath d='M18 46l16-16' stroke='%231B5E20' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="vendor/fontawesome/css/fa.min.css">
+<link rel="stylesheet" href="vendor/eko-ui.css">
 <style>
 /* ================= ТОКЕНЛАР (ёруғ / тунги) ================= */
 :root, [data-theme="light"] {
@@ -467,6 +468,46 @@ button { cursor: pointer; }
   .card, .stat { break-inside: avoid; box-shadow: none; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+/* ================= ДИЗАЙН 2.0 (ЭкоТаълим билан бир хил тил) ================= */
+:root, [data-theme="light"] {
+  --primary: #047857; --primary-600: #065f46; --primary-soft: #d1fae5;
+  --info: #0369a1; --info-soft: #e0f2fe;
+  --bg: #eef6f1; --surface: #ffffff; --surface-2: #f3f9f6;
+  --text: #0b1f17; --text-2: #4a5f56; --text-3: #6b7f76;
+  --border: #d5e6dd; --grid: #e4efe9;
+  --glass: rgba(255, 255, 255, .76); --glass-line: rgba(255, 255, 255, .9);
+  --shadow: 0 1px 2px rgba(6, 40, 28, .05), 0 10px 30px -10px rgba(6, 40, 28, .16);
+  --shadow-lg: 0 24px 60px -20px rgba(6, 40, 28, .35);
+  --header-grad: linear-gradient(120deg, #064e3b 0%, #047857 55%, #0e7490 100%);
+  --radius: 20px; --radius-sm: 12px;
+}
+[data-theme="dark"] {
+  --primary: #34d399; --primary-600: #10b981; --primary-soft: rgba(52, 211, 153, .15);
+  --info: #7dd3fc; --info-soft: rgba(125, 211, 252, .14);
+  --bg: #06110d; --surface: #10221b; --surface-2: #13291f;
+  --text: #e8f5ef; --text-2: #9fbbaf; --text-3: #7f9a8e;
+  --border: #1f3a30; --grid: #183026;
+  --glass: rgba(16, 34, 27, .74); --glass-line: rgba(167, 243, 208, .10);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px -10px rgba(0, 0, 0, .55);
+  --shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, .7);
+  --header-grad: linear-gradient(120deg, #03241b 0%, #064e3b 55%, #083344 100%);
+}
+body { font-family: var(--eko-font); -webkit-font-smoothing: antialiased; font-size: 15.5px; }
+.section-title, .logo, h1, h2, h3 { letter-spacing: -.02em; }
+.app-header { padding-top: env(safe-area-inset-top); box-shadow: 0 18px 40px -24px rgba(4, 47, 36, .8); }
+.hbar, .tabs, .main { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }
+.logo { font-weight: 800; }
+.logo i { color: #6ee7b7; }
+.back-eko, .pill-btn { min-height: 44px; border-radius: 14px; }
+.tab { min-height: 48px; font-weight: 600; border-bottom-width: 3px; }
+.tab.active { border-bottom-color: #6ee7b7; }
+.card { background: var(--glass); border-color: var(--glass-line); border-radius: var(--radius); }
+.card-h { border-bottom-color: var(--border); font-weight: 700; }
+.card-f { background: color-mix(in srgb, var(--surface-2) 70%, transparent); }
+.main { padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
+@media (max-width: 720px) {
+  .hbar, .tabs, .main { padding-left: max(14px, env(safe-area-inset-left)); padding-right: max(14px, env(safe-area-inset-right)); }
+}
 </style>
 </head>
 <body>
