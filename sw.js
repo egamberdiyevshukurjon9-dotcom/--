@@ -3,7 +3,7 @@
    /api/ ва /admin ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekotalim-v5";
+const CACHE = "ekotalim-v6";
 const SHELL = [
   "/",
   "/privacy",

@@ -493,6 +493,90 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 @media (max-width: 479px) {
   .brand-name { display: none; }
 }
+/* ---------- Сув ва ҳаво (монография) ---------- */
+.mono-hero { display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: center; margin-bottom: 8px; }
+.mono-book { aspect-ratio: 3 / 4.2; border-radius: 6px 14px 14px 6px; padding: 18px 16px; color: #f0fdf4; display: flex; flex-direction: column; justify-content: space-between;
+  background: linear-gradient(160deg, #0c4a6e 0%, #0f766e 55%, #15803d 100%); box-shadow: inset 6px 0 0 rgba(0,0,0,.18), 0 18px 40px rgba(12, 74, 110, .3); transform: rotate(-2deg); }
+.mono-book-top { font-size: .72rem; letter-spacing: .12em; opacity: .85; }
+.mono-book-title { font-weight: 800; font-size: 2rem; line-height: 1.05; }
+.mono-book-sub { font-size: .78rem; opacity: .9; }
+.mono-book-author { font-weight: 700; font-size: .85rem; border-top: 1px solid rgba(255,255,255,.35); padding-top: 8px; }
+.mono-lead { color: var(--muted); max-width: 70ch; }
+.mono-block { margin-top: 40px; }
+.mono-block h3 { margin: 0 0 4px; font-size: 1.25rem; }
+.mono-block .section-head { margin-bottom: 8px; }
+.mono-panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+.mono-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-top: 12px; }
+.mono-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-top: 12px; }
+.mstat { text-align: left; font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; cursor: pointer; min-height: 132px; display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow); transition: transform .15s, border-color .15s; }
+.mstat:hover { transform: translateY(-2px); border-color: var(--primary); }
+.mstat b { font-size: 1.7rem; color: var(--primary); line-height: 1.1; }
+.mstat .more { color: var(--text); font-size: .92rem; }
+.mstat.open { background: var(--primary-soft); border-color: var(--primary); }
+.mono-chain { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 24px; align-items: center; margin-top: 12px; }
+.chain-svg { width: 100%; height: auto; color: var(--muted); }
+.chain-svg .node circle { fill: var(--card); stroke: var(--primary); stroke-width: 2.5; }
+.chain-svg text { text-anchor: middle; font-size: 22px; fill: var(--text); }
+.chain-svg text.lbl { font-size: 13px; font-weight: 700; }
+.chain-svg .edge { fill: none; stroke: currentColor; stroke-width: 2.5; opacity: .45; transition: opacity .2s, stroke .2s; }
+.chain-svg .edge.on { stroke: var(--primary-2); color: var(--primary-2); opacity: 1; stroke-width: 4; }
+#chainBtns { margin-bottom: 12px; }
+.water-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+.water-form label, .irr-input { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: .9rem; }
+.water-form input, .water-form select, .irr-input input { font: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); }
+.water-actions { grid-column: 1 / -1; display: flex; gap: 10px; flex-wrap: wrap; }
+.wrow { display: grid; grid-template-columns: 28px 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.wrow:last-child { border-bottom: 0; }
+.wsum { font-weight: 700; margin: 0 0 8px; }
+.steps { list-style: none; padding: 0; margin: 0 0 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+.steps button { font: inherit; display: flex; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; }
+.steps button[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.steps button.past { border-color: var(--primary); }
+.glass-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.glass { width: 150px; height: 200px; border: 4px solid var(--muted); border-top: 0; border-radius: 0 0 26px 26px; position: relative; overflow: hidden; background: var(--bg); }
+.glass-water { position: absolute; left: 0; right: 0; bottom: 0; height: 82%; transition: background .6s, filter .6s; }
+.glass-cap { font-weight: 700; text-align: center; }
+.irr-input { max-width: 280px; margin: 12px 0; }
+.irr-list { display: grid; gap: 10px; }
+.irr-row { display: grid; grid-template-columns: minmax(150px, 230px) 1fr minmax(120px, auto); gap: 12px; align-items: center; }
+.irr-bar { height: 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.irr-bar > div { height: 100%; background: linear-gradient(90deg, var(--primary-2), var(--primary)); border-radius: 999px; transition: width .4s; }
+.irr-row .v { font-weight: 700; text-align: right; }
+.timeline { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 12px; }
+.tl { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; border-top: 4px solid #b45309; }
+.tl.home { border-top-color: var(--primary-2); }
+.tl .yr { font-weight: 800; color: var(--muted); font-size: .85rem; }
+.tl h4 { margin: 4px 0 6px; }
+.tl p { margin: 6px 0; font-size: .92rem; }
+.myth-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 12px; }
+.myth { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.myth q { font-weight: 600; quotes: "«" "»"; }
+.myth .opts { display: flex; gap: 8px; }
+.myth .ans { font-size: .92rem; margin: 0; }
+.myth.ok { border-color: var(--primary); }
+.myth.bad { border-color: #b45309; }
+.mq-q { font-weight: 600; margin: 6px 0 12px; }
+.mq-bar { height: 6px; background: var(--bg); border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
+.mq-bar > div { height: 100%; background: var(--primary); transition: width .3s; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.gl { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.gl b { display: block; }
+.gl span { display: block; color: var(--muted); font-size: .88rem; }
+.mono-cite { margin-top: 40px; display: flex; gap: 16px; align-items: center; justify-content: space-between; background: var(--primary-soft); border-radius: var(--radius); padding: 18px 20px; }
+.mono-cite p { margin: 6px 0; }
+.lesson-src { margin-top: 10px; }
+.gloss-more { margin-top: 12px; }
+@media (max-width: 860px) {
+  .mono-hero, .mono-two, .mono-chain { grid-template-columns: 1fr; }
+  .mono-book { width: 170px; }
+  .chain-svg { max-width: 320px; margin: 0 auto; display: block; }
+  .mono-cite { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 520px) {
+  .water-form { grid-template-columns: 1fr; }
+  .irr-row { grid-template-columns: 1fr auto; }
+  .irr-row .irr-bar { grid-column: 1 / -1; grid-row: 2; }
+}
 </style>
 </head>
 <body>
@@ -501,6 +585,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
       <a class="brand" href="#bosh"><span class="brand-logo">🌿</span><span class="brand-name">ЭкоТаълим</span></a>
       <button class="menu-btn" id="menuBtn" aria-label="Меню" aria-expanded="false">☰</button>
       <nav class="nav" id="nav">
+        <a href="#monografiya">Сув ва ҳаво</a>
         <a href="#oyinlar">Ўйинлар</a>
         <a href="#ekokoz">Эко-кўз</a>
         <a href="#xarita">Харита</a>
@@ -511,7 +596,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
         <a href="#kutubxona">Кутубхона</a>
         <a href="#havo">Ҳаво</a>
         <a class="nav-x" href="#kalkulyator">Калькулятор</a>
-        <a href="#chellenj">Челленж</a>
+        <a class="nav-x" href="#chellenj">Челленж</a>
         <a class="nav-x" href="#yordamchi">Ёрдамчи</a>
       </nav>
       <div class="user-chip" id="userChip" title="Сизнинг даражангиз">
@@ -535,6 +620,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
           <div class="hero-actions">
             <a class="btn btn-primary" href="#kurslar">Ўқишни бошлаш</a>
             <a class="btn btn-ghost" href="#oyinlar">🎮 Ўйнаш</a>
+            <a class="btn btn-ghost" href="#monografiya">📘 Сув ва ҳаво</a>
             <a class="btn btn-ghost" href="#kalkulyator">Углерод изимни ҳисоблаш</a>
           </div>
           <div class="tip-card">
@@ -579,6 +665,136 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
             <h3>Мактаб ва олийгоҳлар учун</h3>
             <p>Барқарор ривожланиш мақсадлари, Орол муаммоси, яшил технологиялар ва тадқиқот лойиҳалари. Якунида — сертификат.</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- MONOGRAPH: SUV VA HAVO -->
+    <section class="section alt" id="monografiya">
+      <div class="wrap">
+        <div class="mono-hero">
+          <div class="mono-book" aria-hidden="true">
+            <div class="mono-book-top">ТКТИ · 2026</div>
+            <div class="mono-book-title">СУВ ВА<br>ҲАВО</div>
+            <div class="mono-book-sub">тозалаш технологиялари ва экологик мониторинг</div>
+            <div class="mono-book-author">Ш.Р. Эгамбердиев</div>
+          </div>
+          <div>
+            <span class="pill">📘 Илмий монография асосида</span>
+            <h2 class="section-title">Сув ва ҳаво: олим нигоҳида</h2>
+            <p class="mono-lead">Бу бўлим Тошкент кимё-технология институти Саноат экологияси кафедраси олими <b>Ш.Р. Эгамбердиев</b>нинг «Сув ва атмосфера ҳавосини ифлосланишдан тозалашнинг замонавий технологиялари ва экологик мониторинг» монографияси асосида оммабоп тилда тайёрланди. Рақамлар, интерактив воситалар ва синов орқали ўрганинг.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" id="monoCourseBtn" type="button">📖 Курсни бошлаш</button>
+              <a class="btn btn-ghost" href="#monoQuizBox">🧪 Синовдан ўтиш</a>
+              <a class="btn btn-ghost" href="#monoCite">📋 Манба</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mono-block">
+          <h3>📊 Рақамларда</h3>
+          <p class="muted small">Картани босинг — рақам ортидаги маънони билиб оласиз.</p>
+          <div class="mono-stats" id="monoStats"></div>
+        </div>
+
+        <div class="mono-block">
+          <h3>🔗 Учта муаммо — битта занжир</h3>
+          <p class="muted small">Ҳаво ифлосланиши, глобал исиш ва сув танқислиги бир-бирини кучайтиради. Боғланишни танланг.</p>
+          <div class="mono-chain">
+            <svg class="chain-svg" viewBox="0 0 320 270" aria-hidden="true">
+              <defs><marker id="mArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+              <path class="edge" data-e="0" d="M135 72 L72 170" marker-end="url(#mArrow)"/>
+              <path class="edge" data-e="1" d="M95 212 L222 212" marker-end="url(#mArrow)"/>
+              <path class="edge" data-e="2" d="M100 196 Q160 170 225 196" marker-end="url(#mArrow)"/>
+              <path class="edge" data-e="3" d="M178 70 L240 168" marker-end="url(#mArrow)"/>
+              <path class="edge" data-e="4" d="M262 172 Q280 100 192 54" marker-end="url(#mArrow)"/>
+              <g class="node"><circle cx="160" cy="45" r="38"/><text x="160" y="40">🏭</text><text class="lbl" x="160" y="62">Ҳаво</text></g>
+              <g class="node"><circle cx="62" cy="212" r="38"/><text x="62" y="207">🌡️</text><text class="lbl" x="62" y="229">Исиш</text></g>
+              <g class="node"><circle cx="258" cy="212" r="38"/><text x="258" y="207">💧</text><text class="lbl" x="258" y="229">Сув</text></g>
+            </svg>
+            <div>
+              <div class="filters" id="chainBtns" role="group" aria-label="Боғланишлар"></div>
+              <div class="mono-panel" id="chainText" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mono-block">
+          <h3>💧 Сувингизни текшириб кўринг</h3>
+          <p class="muted small">Лаборатория натижасини киритинг ва ЖССТ тавсиялари билан солиштиринг. Маълумот ҳеч қаерга юборилмайди.</p>
+          <div class="mono-two">
+            <form class="water-form" id="waterForm" autocomplete="off">
+              <label>pH<input name="ph" type="number" step="0.1" min="0" max="14" inputmode="decimal" placeholder="масалан 7.2"></label>
+              <label>Нитрат, мг/л<input name="no3" type="number" step="0.1" min="0" inputmode="decimal" placeholder="масалан 20"></label>
+              <label>Лойқалик, NTU<input name="ntu" type="number" step="0.1" min="0" inputmode="decimal" placeholder="масалан 0.5"></label>
+              <label>Фторид, мг/л<input name="f" type="number" step="0.01" min="0" inputmode="decimal" placeholder="масалан 0.7"></label>
+              <label>Ичак таёқчаси (E. coli)
+                <select name="ecoli"><option value="">Текширилмаган</option><option value="no">Аниқланмади</option><option value="yes">Аниқланди</option></select>
+              </label>
+              <div class="water-actions">
+                <button class="btn btn-ghost" type="button" id="waterSample">Намуна: қудуқ суви</button>
+                <button class="btn btn-ghost" type="reset">Тозалаш</button>
+              </div>
+            </form>
+            <div class="mono-panel" id="waterOut" aria-live="polite"></div>
+          </div>
+          <p class="muted small">⚠️ Бу ўқув воситаси, тиббий ёки расмий хулоса эмас. Ичимлик суви сифати бўйича аниқ хулоса учун аккредитланган лабораторияга мурожаат қилинг.</p>
+        </div>
+
+        <div class="mono-block">
+          <h3>🚰 Сув қандай тозаланади?</h3>
+          <p class="muted small">Босқичларни кетма-кет босинг ва стакандаги сув қандай тиниқлашишини кузатинг.</p>
+          <div class="mono-two">
+            <div>
+              <ol class="steps" id="treatSteps"></ol>
+              <div class="mono-panel" id="treatText" aria-live="polite"></div>
+            </div>
+            <div class="glass-wrap" aria-hidden="true"><div class="glass"><div class="glass-water" id="glassWater"></div></div><div class="glass-cap" id="glassCap"></div></div>
+          </div>
+        </div>
+
+        <div class="mono-block">
+          <h3>🌾 Суғориш: қанча сув ўсимликка етади?</h3>
+          <label class="irr-input">Далага бериладиган сув, м³
+            <input id="irrWater" type="number" min="100" max="1000000" step="100" value="10000" inputmode="numeric">
+          </label>
+          <div class="irr-list" id="irrList"></div>
+          <p class="muted small">Майдондаги фойдали иш коэффициентининг типик қийматлари (ўртача). Ҳақиқий натижа тупроқ, экин ва тизим сифатига боғлиқ.</p>
+        </div>
+
+        <div class="mono-block">
+          <h3>🕰️ Тарих сабоқлари</h3>
+          <div class="timeline" id="monoTimeline"></div>
+        </div>
+
+        <div class="mono-block">
+          <h3>🌳 Афсона ёки ҳақиқат?</h3>
+          <p class="muted small">Ҳар бир тўғри жавоб учун +5 XP.</p>
+          <div class="myth-grid" id="mythGrid"></div>
+        </div>
+
+        <div class="mono-block" id="monoQuizBox">
+          <h3>🧪 Монография бўйича синов</h3>
+          <p class="muted small">10 та савол. 8 тадан ортиқ тўғри жавоб — «Олим шогирди» нишони ва +30 XP.</p>
+          <div class="mono-panel" id="monoQuiz"></div>
+        </div>
+
+        <div class="mono-block">
+          <div class="section-head">
+            <h3>📖 Атамалар луғати <span class="muted small">ўзбекча – русча – инглизча</span></h3>
+            <input class="search" id="glossSearch" type="search" aria-label="Луғатдан излаш" placeholder="🔍 Атама излаш…">
+          </div>
+          <div class="gloss" id="glossList"></div>
+          <button class="btn btn-ghost gloss-more" type="button" id="glossMore">Барча атамаларни кўрсатиш (30) ↓</button>
+        </div>
+
+        <div class="mono-cite" id="monoCite">
+          <div>
+            <b>📘 Манба</b>
+            <p id="citeText">Эгамбердиев Ш.Р. Сув ва атмосфера ҳавосини ифлосланишдан тозалашнинг замонавий технологиялари ва экологик мониторинг: монография. — Тошкент: Тошкент кимё-технология институти, 2026.</p>
+            <p class="muted small">Бўлимдаги рақамлар монографияда келтирилган халқаро манбаларга (ЖССТ, IPCC, БМТ ва бошқалар) асосланган. Матн оммабоп шаклда қисқартирилган.</p>
+          </div>
+          <button class="btn btn-ghost" type="button" id="citeCopy">📋 Нусхалаш</button>
         </div>
       </div>
     </section>
@@ -1305,6 +1521,101 @@ const COURSES = [
         ]
       }
     ]
+  },
+  {
+    id: "suvhavo",
+    audience: "aholi",
+    audienceLabel: "📘 Монография асосида",
+    icon: "💧",
+    title: "Сув ва ҳаво: билимдан амалга",
+    desc: "Сув ва ҳавони ифлосланишдан тозалаш, сув сифати ва Ўзбекистон учун ечимлар. Ш.Р. Эгамбердиев монографияси асосида оммабоп тилда.",
+    source: "Эгамбердиев Ш.Р. Сув ва атмосфера ҳавосини ифлосланишдан тозалашнинг замонавий технологиялари ва экологик мониторинг: монография. — Тошкент: ТКТИ, 2026.",
+    lessons: [
+      {
+        title: "Учта муаммо — битта занжир",
+        minutes: 7,
+        body: [
+          "Ҳаво ифлосланиши, глобал исиш ва сув танқислиги одатда алоҳида ўрганилади. Аслида улар бир-бирини кучайтирадиган битта тизимнинг қисмлари.",
+          "Кўмир, нефть ва газ ёқилганда бир вақтнинг ўзида CO₂ ва бошқа ифлословчилар (SO₂, NOx, қурум) чиқади. Шунинг учун ҳавони тозалаш ва иқлимни асраш чоралари кўпинча бир-бирини тўлдиради.",
+          "Исиш сувга бир неча йўл билан таъсир қилади: буғланиш кучаяди, тоғ музликлари қисқаради. Амударё ва Сирдарё сувининг катта қисми Помир ва Тянь-Шань музликлари ҳамда қор эришидан ҳосил бўлади.",
+          "Тескари боғланиш ҳам бор: сув камайганда уни тозалаш ва узоққа ташиш учун кўпроқ энергия сарфланади, қуриган сув ҳавзаларидан эса туз ва чанг кўтарилади. Оролбўйи бунинг яққол мисоли.",
+          "Хулоса: сув ва ҳавони муҳофаза қилиш чоралари бир-бирига боғлаб режалаштирилиши керак."
+        ],
+        tip: "Энергияни тежаш — бир вақтда ҳам ҳавони, ҳам иқлимни, ҳам сувни асраш демакдир.",
+        quiz: [
+          { q: "Нега ҳаво ифлосланиши ва иқлим ўзгаришига қарши чоралар бир-бирини тўлдиради?", a: ["Иккаласининг манбаи кўпинча битта — қазилма ёқилғи", "Улар ҳеч қандай боғлиқ эмас", "Фақат вулқонлар туфайли"], c: 0 },
+          { q: "Амударё ва Сирдарё суви асосан қаердан ҳосил бўлади?", a: ["Денгиз сувидан", "Тоғ музликлари ва қор эришидан", "Ер ости нефтидан"], c: 1 },
+          { q: "Қуриган Орол тубидан нима кўтарилмоқда?", a: ["Туз ва чанг", "Кислород", "Тоза буғ"], c: 0 }
+        ]
+      },
+      {
+        title: "Сув сифати: нимага қараш керак?",
+        minutes: 8,
+        body: [
+          "Сувнинг яроқлилиги битта кўрсаткич билан эмас, физик, кимёвий ва микробиологик кўрсаткичлар мажмуи билан баҳоланади.",
+          "Ичимлик суви учун pH одатда 6,5–8,5 оралиғида бўлиши мақсадга мувофиқ. Лойқалик 1 NTU дан, имкон қадар 0,2 NTU дан паст бўлиши тавсия этилади, чунки лойқа заррачалар микробларни зарарсизлантиришдан «яширади».",
+          "ЖССТ тавсиялари: нитрат 50 мг/л гача (кўпи гўдакларда метгемоглобинемияга сабаб бўлади), фторид 1,5 мг/л гача, маргимуш (мишьяк) ва қўрғошин 0,01 мг/л гача. Ичак таёқчаси (E. coli) 100 мл сувда умуман бўлмаслиги керак.",
+          "Ифлосланган сув ич терлама, вабо, дизентерия, гепатит А каби касалликларни тарқатади. Азот ва фосфор кўпайса, сув ҳавзаси «гуллайди»: сувўтлар кўпаяди, кислород камаяди, балиқлар нобуд бўлади.",
+          "Ўзбекистонда ичимлик суви сифати O‘zDSt 950:2011 стандарти билан белгиланади."
+        ],
+        tip: "Қудуқ ёки булоқ сувини ичишдан олдин уни лабораторияда текширтиринг ва зарур бўлса қайнатиб ичинг.",
+        quiz: [
+          { q: "Ичимлик суви учун мақбул pH оралиғи қайси?", a: ["2–4", "6,5–8,5", "10–12"], c: 1 },
+          { q: "100 мл ичимлик сувида E. coli бактерияси қанча бўлиши мумкин?", a: ["Умуман бўлмаслиги керак", "100 тагача", "Аҳамияти йўқ"], c: 0 },
+          { q: "Нима учун лойқалик паст бўлиши керак?", a: ["Сув чиройли кўриниши учун", "Лойқа заррачалар микробларни зарарсизлантиришдан ҳимоя қилади", "Сув тезроқ қайнаши учун"], c: 1 }
+        ]
+      },
+      {
+        title: "Сув қандай тозаланади?",
+        minutes: 8,
+        body: [
+          "Тозалаш «йирикдан майдага» тамойили бўйича босқичма-босқич боради. Ҳар бир босқич кейингисининг ишончли ишлашини таъминлайди.",
+          "1) Механик босқич: панжаралар, қум ушлагичлар ва тиндиргичлар йирик чиқинди ва муаллақ заррачаларни ажратади. 2) Коагуляция: махсус модда майда заррачаларни йириклаштиради, улар чўкади ёки филтрда қолади.",
+          "3) Биологик босқич: фаол лойдаги бактериялар органик моддаларни «еб», сувни тозалайди. Яхши иншоот органик ифлосланишни (БКС) 90–95 % га камайтиради. Кислородсиз (анаэроб) усулда эса қўшимча биогаз олинади.",
+          "4) Зарарсизлантириш (дезинфекция) — мажбурий якуний босқич: хлорлаш, озонлаш ёки ултрабинафша нур. Энг ишончлиси — УБ ёки озон билан асосий тозалаш ва қувурларни ҳимоя қилиш учун оз миқдорда хлор.",
+          "Шўртоб сувларни чучуклаштириш учун тескари осмос ва электродиализ қўлланади. Уларни қуёш энергияси билан бирга ишлатиш Оролбўйи учун истиқболли йўналиш."
+        ],
+        tip: "Оқава сувга ёғ ва кимёвий воситаларни тўкманг: улар тозалаш иншоотидаги фойдали бактерияларни ўлдиради.",
+        quiz: [
+          { q: "Сувни тозалашда қайси тамойилга амал қилинади?", a: ["Майдадан йирикка", "Йирикдан майдага", "Тасодифий тартибда"], c: 1 },
+          { q: "Биологик тозалашда органик моддаларни ким парчалайди?", a: ["Фаол лойдаги микроорганизмлар", "Қум", "Хлор"], c: 0 },
+          { q: "Шўр сувни чучуклаштиришнинг замонавий усули қайси?", a: ["Тиндириш", "Тескари осмос", "Панжара"], c: 1 }
+        ]
+      },
+      {
+        title: "Ҳаво: чанг, газлар ва меъёрлар",
+        minutes: 7,
+        body: [
+          "Чанг — ҳавода муаллақ турган қаттиқ заррачалар. Диаметри 10 мкм дан (PM10) ва 2,5 мкм дан (PM2.5) кичиклари нафас йўлларига чуқур киради, шунинг учун алоҳида назорат қилинади.",
+          "ЖССТнинг 2021 йилги тавсияси: PM2.5 — суткада 15 мкг/м³, йиллик ўртача 5 мкг/м³; PM10 — суткада 45, йиллик 15 мкг/м³. Бу кўп миллий меъёрлардан қатъийроқ.",
+          "Цемент ишлаб чиқариш чангнинг энг кучли манбаларидан бири: чангнинг 80 % дан ортиғи клинкер печларидан чиқади. PTFE мембранали шиша толали енгли филтрлар 260 °C гача ҳароратда чангнинг 99,99 % гачасини ушлаб қолади.",
+          "Шаҳарларда куз-қиш мавсумида иситиш, транспорт ва шамолсиз кунлар туфайли майда заррачалар кўпаяди. ЖССТ маълумотига кўра, ифлос ҳаво билан боғлиқ бевақт ўлимлар йилига 7 миллионга яқин."
+        ],
+        tip: "Ҳаво ифлос кунларда очиқ ҳавода оғир машқ қилманг, хонани эрталаб эрта шамоллатинг.",
+        quiz: [
+          { q: "Нега PM2.5 заррачалари хавфли?", a: ["Улар нафас йўлларига чуқур киради", "Улар кўзга кўринади", "Улар ширин"], c: 0 },
+          { q: "ЖССТ бўйича PM2.5 нинг йиллик тавсия этилган қиймати қанча?", a: ["5 мкг/м³", "500 мкг/м³", "50 мг/м³"], c: 0 },
+          { q: "Цемент заводида чангнинг асосий манбаи қайси?", a: ["Офис", "Клинкер печлари", "Автотураргоҳ"], c: 1 }
+        ]
+      },
+      {
+        title: "Ўзбекистон учун ечимлар",
+        minutes: 8,
+        body: [
+          "Сувни тежашнинг энг катта захираси қишлоқ хўжалигида: мамлакатда сувнинг 90 % га яқини суғоришга сарфланади. Томчилатиб суғориш анъанавий эгатли усулга нисбатан сувни 30–50 % тежайди ва дарёларга қайтадиган туз миқдорини камайтиради.",
+          "Ўзбекистонда йилига 300 га яқин қуёшли кун бор. Қайта тикланувчи энергияга ўтиш ҳаво ифлосланиши ва иқлим ўзгаришини бир вақтда камайтиради.",
+          "«Яшил макон» лойиҳасида дарахт экишда маҳаллий турларни (саксовул, черкез, қандим, жузғун, туранғил, жийда) танлаш, кўп турли экиш ва сув балансини ҳисобга олиш керак. Ҳисобланадиган нарса — экилган кўчат сони эмас, яшаб қолгани.",
+          "Айланма иқтисодиёт: тутилган чанг, кул, гипс, лой ва тозаланган оқава сув — чиқинди эмас, ресурс. Масалан, оқава лойидан биогаз, тозаланган сувдан эса кўкаламзорлаштиришда фойдаланиш мумкин.",
+          "Ҳар бир фуқаронинг ҳиссаси: дарахт экиш ва парвариш қилиш, чиқиндиларни саралаш, сув ва электрни тежаш, жамоат транспорти ва велосипед."
+        ],
+        tip: "Томорқангизда томчилатиб суғоришни синаб кўринг: сув кам кетади, ҳосил эса ошади.",
+        quiz: [
+          { q: "Томчилатиб суғориш эгатли усулга нисбатан сувни қанча тежайди?", a: ["1–2 %", "30–50 %", "100 %"], c: 1 },
+          { q: "Қурғоқчил ҳудудда кўкаламзорлаштириш учун қандай турларни танлаш яхши?", a: ["Кўп сув талаб қиладиган тез ўсувчи турларни", "Маҳаллий, қурғоқчиликка чидамли турларни", "Фақат битта турни"], c: 1 },
+          { q: "Айланма иқтисодиётда чиқинди нима деб қаралади?", a: ["Ресурс", "Фақат ахлат", "Солиқ"], c: 0 }
+        ]
+      }
+    ]
   }
 ];
 
@@ -1422,6 +1733,9 @@ const ASSISTANT_KB = [
   { k: ["дарахт", "кўчат", "экиш", "яшил макон", "ўрмон"], a: "Дарахт экишнинг энг яхши вақти — куз (октябрь–ноябрь) ва эрта баҳор. Маҳаллий иқлимга мос, қурғоқчиликка чидамли турларни танланг (масалан, қайрағоч, чинор, писта, бодом, тут). Энг муҳими — экилгандан кейинги 2–3 йил мунтазам суғориш ва парвариш." },
   { k: ["энергия", "электр", "свет", "чироқ", "газ", "қуёш"], a: "Энергия тежаш: LED лампалар, А+ синфли маиший техника, ишламаётган қурилмаларни розеткадан узиш, уйни изоляция қилиш. Қуёш панеллари ҳам уй хўжаликлари учун тобора арзонлашмоқда." },
   { k: ["iso", "14001", "менежмент", "корхона", "завод", "ташкилот"], a: "Корхона учун бошланғич қадамлар: 1) экологик жиҳатлар реестрини тузинг (сув, энергия, хомашё сарфи, чиқиндилар, ҳавога ташламалар), 2) масъул шахс тайинланг, 3) ходимларни ўқитинг (бу платформадаги «Корхонада экологик менежмент» курси), 4) йиллик мақсадлар ва кўрсаткичлар белгиланг. Келажакда ISO 14001 сертификатига тайёрланиш мумкин." },
+  { k: ["тозалаш", "оқава", "фильтр", "филтр", "коагуляция", "осмос", "хлор"], a: "Сув «йирикдан майдага» тамойили бўйича тозаланади: механик босқич (панжара, тиндиргич), коагуляция ва филтрлаш, биологик тозалаш (фаол лой), сўнг зарарсизлантириш (УБ нур, озон ёки хлор). Шўр сув тескари осмос ёки электродиализ билан чучуклаштирилади. Батафсил — «Сув ва ҳаво» бўлимида (Ш.Р. Эгамбердиев монографияси асосида)." },
+  { k: ["сифат", "ph", "нитрат", "лойқа", "ичимлик", "қудуқ", "e. coli"], a: "Ичимлик суви учун ЖССТ тавсиялари: pH 6,5–8,5, нитрат 50 мг/л гача, фторид 1,5 мг/л гача, лойқалик 1 NTU дан паст, E. coli 100 мл да бўлмаслиги керак. Ўзбекистонда O‘zDSt 950:2011 стандарти амал қилади. Қудуқ сувини лабораторияда текширтиринг. «Сув ва ҳаво» бўлимидаги сув текширгичда ўз натижаларингизни солиштиринг." },
+  { k: ["монография", "эгамбердиев", "олим", "ткти"], a: "«Сув ва ҳаво» бўлими ва «Сув ва ҳаво: билимдан амалга» курси Ш.Р. Эгамбердиевнинг «Сув ва атмосфера ҳавосини ифлосланишдан тозалашнинг замонавий технологиялари ва экологик мониторинг» монографияси (ТКТИ, 2026) асосида тайёрланган." },
   { k: ["esg", "ҳисобот", "scope", "инвестор"], a: "ESG — экологик, ижтимоий ва бошқарув кўрсаткичлари. Экологик қисмда одатда иссиқхона газлари (Scope 1, 2, 3), энергия, сув ва чиқиндилар ҳисобга олинади. Бошланиш учун ушбу кўрсаткичларни ойлик жадвалда йиғишни йўлга қўйинг." },
   { k: ["орол", "арал", "денгиз"], a: "Орол денгизи асосан Амударё ва Сирдарё сувлари суғоришга ҳаддан ташқари олинганлиги сабабли қуриди. Бугун унинг қуриган тубида саксовул экиш орқали туз ва чанг кўчишини камайтириш ишлари олиб борилмоқда. Батафсил — «Барқарор ривожланиш» курсида." },
   { k: ["компост", "органик", "пўчоқ"], a: "Компост тайёрлаш: мева-сабзавот пўчоғи, барглар ва ўтларни идиш ёки чуқурга солинг, вақти-вақти билан аралаштириб, намлаб туринг. 2–4 ойда тупроқ учун бебаҳо ўғит тайёр бўлади. Гўшт ва ёғли қолдиқларни қўшманг." },
@@ -1451,6 +1765,18 @@ const IUCN = {
 
 const LIBRARY = {
   books: [
+    {
+      icon: "📘", title: "Сув ва атмосфера ҳавосини ифлосланишдан тозалашнинг замонавий технологиялари ва экологик мониторинг", orig: "Монография", author: "Ш.Р. Эгамбердиев", year: 2026, tag: "Маҳаллий тадқиқот",
+      short: "Тошкент кимё-технология институти олимининг сув ва ҳаво тозалиги ҳақидаги монографияси.",
+      body: [
+        "Монография Тошкент кимё-технология институти Саноат экологияси кафедрасида олиб борилган тадқиқотлар асосида ёзилган. У саккиз боб, хулоса, адабиётлар рўйхати ва иловалардан иборат.",
+        "Китобда иқлим ўзгариши, ҳаво ифлосланиши ва сув танқислиги ўртасидаги боғлиқлик, сув сифати кўрсаткичлари, сувни тозалашнинг механик, физик-кимёвий ва биологик усуллари, саноат чангидан тозалаш ва экологик мониторинг ёритилган.",
+        "Алоҳида боблар Ўзбекистон учун тавсияларга (томчилатиб суғориш, қайта тикланувчи энергия, «Яшил макон», айланма иқтисодиёт) ва табиатга асосланган иқлим ечимларига бағишланган.",
+        "ЭкоТаълимдаги «Сув ва ҳаво» бўлими ва шу номдаги курс ушбу монография асосида оммабоп тилда тайёрланди."
+      ],
+      fact: "Муаллиф цемент заводи қуйиш бўлимида ўлчовлар ўтказиб, ҳавода чанг чўкишининг ўртача коэффициентини аниқлаган: k₀ ≈ 2,0 м/соат.",
+      who: "Талабалар, ўқитувчилар, саноат экологлари ва сув ҳамда ҳаво тозалигига қизиқувчи ҳар бир киши"
+    },
     {
       icon: "🌸", title: "Сокин баҳор", orig: "Silent Spring", author: "Рейчел Карсон", year: 1962, tag: "Классика",
       short: "Замонавий экологик ҳаракатни бошлаб берган китоб.",
@@ -1913,6 +2239,7 @@ const LIBRARY = {
       <h2>${esc(lesson.title)}</h2>
       <div class="lesson-body">${lesson.body.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
       <div class="lesson-tip">💡 <b>Амалий маслаҳат:</b> ${esc(lesson.tip)}</div>
+      ${course.source ? `<p class="small muted lesson-src">📘 Манба: ${esc(course.source)}</p>` : ""}
       <div class="quiz">
         <h3>📝 Билимингизни синанг</h3>
         ${lesson.quiz.map((q, qi) => `
@@ -2314,6 +2641,8 @@ const LIBRARY = {
     { id: "c1", icon: "🌱", name: "Экология асослари", test: () => state.flags.course_asoslar },
     { id: "c2", icon: "🏭", name: "Эко-менежер", test: () => state.flags.course_korxona },
     { id: "c3", icon: "🎓", name: "Барқарорлик элчиси", test: () => state.flags.course_talaba },
+    { id: "c4", icon: "💧", name: "Сув ва ҳаво билимдони", test: () => state.flags.course_suvhavo },
+    { id: "mono", icon: "📘", name: "Олим шогирди", test: () => state.flags.mono_quiz },
     { id: "s3", icon: "🔥", name: "3 кун серия", test: () => streak() >= 3 },
     { id: "s7", icon: "⚡", name: "7 кун серия", test: () => streak() >= 7 },
     { id: "calc", icon: "🧮", name: "Углерод ҳисобчиси", test: () => state.flags.calc },
@@ -2416,13 +2745,294 @@ const LIBRARY = {
   loadAir();
 
   /* Ўйинлар скрипти учун кўприк */
-  window.EkoApp = { addXp, flag, save, toast, renderGamification, streak, cities: CITIES, courses: COURSES, get state() { return state; } };
+  window.EkoApp = { addXp, flag, save, toast, renderGamification, streak, openLesson, cities: CITIES, courses: COURSES, get state() { return state; } };
 
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 })();
 </script>
+  <script>
+/* Сув ва ҳаво — Ш.Р. Эгамбердиев монографияси асосидаги интерактив бўлим */
+(() => {
+  "use strict";
+  const $ = (s, el = document) => el.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const App = window.EkoApp;
+  const flags = () => (App && App.state.flags) || {};
+  const once = (name, xp, why) => { if (!App || flags()[name]) return; App.flag(name); if (xp) App.addXp(xp, why); };
+  const num = (n) => Math.round(n).toLocaleString("ru-RU");
+
+  $("#monoCourseBtn").addEventListener("click", () => App && App.openLesson("suvhavo", 0));
+
+  /* ---------- Рақамларда ---------- */
+  const STATS = [
+    { n: "7 млн", t: "бевақт ўлим йилига ифлос ҳаво билан боғлиқ", m: "ЖССТ маълумоти. Ер аҳолисининг қарийб 99 фоизи ЖССТ тавсиясидан ифлосроқ ҳаводан нафас олади." },
+    { n: "2,2 млрд", t: "киши хавфсиз ичимлик сувидан фойдалана олмайди", m: "2022 йил ҳолати. Яна 3,5 миллиард кишида хавфсиз санитария шароити йўқ." },
+    { n: "420+ ppm", t: "атмосферадаги CO₂ миқдори", m: "Саноатлашувдан олдин тахминан 280 ppm эди. Иссиқхона эффекти бўлмаганда Ернинг ўртача ҳарорати –18 °C бўларди, муаммо эса эффектнинг ортиқча кучайишида." },
+    { n: "1,55 °C", t: "2024 йил — кузатувлар тарихидаги энг иссиқ йил", m: "Ҳарорат саноатлашувгача бўлган даражадан шунча юқори бўлди. Марказий Осиё музликлари қисқармоқда." },
+    { n: "80 %", t: "Ўзбекистон сувининг мамлакат ташқарисида ҳосил бўлади", m: "Амударё ва Сирдарё ҳавзаларининг юқори оқимида. Шунинг учун сувни тежаш ва минтақавий ҳамкорлик ҳаётий муҳим." },
+    { n: "90 %", t: "сувдан фойдаланиш суғоришга тўғри келади", m: "Демак, сувни тежашнинг энг катта захираси қишлоқ хўжалигида: томчилатиб суғориш сувни 30–50 % тежайди." },
+    { n: "≈ 90 %", t: "Орол денгизи сув ҳажмининг йўқотилиши", m: "1960 йилларгача Орол майдони 68 минг км² эди. Қуриган тубида Оролқум чўли пайдо бўлди, ундан туз ва чанг кўтарилмоқда." },
+    { n: "4 млрд", t: "киши йилда камида бир ой жиддий сув танқислигини бошдан кечиради", m: "Аҳоли ўсиши, истеъмол ва иқлим ўзгариши туфайли танқислик кучайиши кутилмоқда." }
+  ];
+  $("#monoStats").innerHTML = STATS.map((s, i) => `<button class="mstat" type="button" aria-expanded="false" data-i="${i}"><b>${esc(s.n)}</b><span>${esc(s.t)}</span><span class="more" hidden>${esc(s.m)}</span></button>`).join("");
+  $("#monoStats").addEventListener("click", (e) => {
+    const b = e.target.closest(".mstat");
+    if (!b) return;
+    const open = b.getAttribute("aria-expanded") !== "true";
+    b.setAttribute("aria-expanded", String(open));
+    b.classList.toggle("open", open);
+    $(".more", b).hidden = !open;
+  });
+
+  /* ---------- Боғланишлар занжири ---------- */
+  const CHAIN = [
+    { b: "🏭 → 🌡️ Иссиқхона газлари", t: "Қазилма ёқилғи ёқилганда CO₂ билан бирга SO₂, NOx ва қурум ҳам чиқади. Иссиқхона газлари исишнинг асосий сабаби. Шунинг учун ҳавони тозалаш ва иқлимни асраш чоралари бир-бирини тўлдиради." },
+    { b: "🌡️ → 💧 Музликлар эрийди", t: "Исиш буғланишни кучайтиради, ёғинлар тартибини ўзгартиради ва тоғ музликларини қисқартиради. Амударё ва Сирдарё суви асосан Помир ва Тянь-Шань музликларидан ҳосил бўлгани учун бу минтақа сув хавфсизлигига бевосита таҳдид." },
+    { b: "🌡️ → 💧 Сув сифати ёмонлашади", t: "Иссиқ сувда кислород камроқ эрийди, сув ҳавзалари «гуллайди». Сув камайганда ифлословчилар суюлмайди. Масалан, 10 мг/л нитратли дарёга (50 м³/с) 60 мг/л ли коллектор суви (5 м³/с) қуйилса, аралашмада 14,5 мг/л бўлади, қурғоқ йилда эса ундан ҳам кўп. Демак, сув танқислиги сифат танқислиги ҳамдир." },
+    { b: "🏭 → 💧 Кислотали ёмғир", t: "Олтингугурт ва азот оксидлари сув буғи билан кислотали ёмғир ҳосил қилади ва сув ҳавзалари ҳамда тупроқни кислоталантиради. Атмосферадан тушган оғир металлар ҳам охир-оқибат сувда тўпланади." },
+    { b: "💧 → 🏭 Тескари боғланиш", t: "Сув танқислигида чучуклаштириш, чуқур қудуқлардан сув чиқариш ва узоққа ташиш учун энергия сарфи ортади, бу эса чиқиндиларни кўпайтиради. Қуриган сув ҳавзалари тубидан кўтарилган туз ва чанг (Оролбўйи) ҳавони ифлослантиради." }
+  ];
+  let chainCur = -1;
+  function showChain(i) {
+    chainCur = i;
+    $("#chainBtns").innerHTML = CHAIN.map((c, k) => `<button class="chip${k === i ? " active" : ""}" type="button" aria-pressed="${k === i}" data-k="${k}">${esc(c.b)}</button>`).join("");
+    document.querySelectorAll("#monografiya .edge").forEach((p) => p.classList.toggle("on", +p.dataset.e === i));
+    $("#chainText").innerHTML = i < 0
+      ? "<p class=\"muted\">Юқоридаги боғланишлардан бирини танланг.</p>"
+      : `<p><b>${esc(CHAIN[i].b)}</b></p><p>${esc(CHAIN[i].t)}</p><p class="muted small">Хулоса: сув ва ҳавони муҳофаза қилиш чоралари бир-бирига боғлаб режалаштирилиши керак.</p>`;
+  }
+  $("#chainBtns").addEventListener("click", (e) => { const b = e.target.closest("[data-k]"); if (b) showChain(+b.dataset.k); });
+  showChain(0);
+
+  /* ---------- Сув текширгич ---------- */
+  const wf = $("#waterForm");
+  const val = (n) => { const v = wf.elements[n].value.trim(); return v === "" ? null : Number(v); };
+  function checkWater() {
+    const rows = [];
+    const ph = val("ph"), no3 = val("no3"), ntu = val("ntu"), f = val("f"), ec = wf.elements.ecoli.value;
+    if (ph !== null) rows.push(ph >= 6.5 && ph <= 8.5 ? ["✅", 0, `pH ${ph} — меъёрда (6,5–8,5).`] : ["⚠️", 1, `pH ${ph} — 6,5–8,5 оралиғидан ташқарида. ${ph < 6.5 ? "Нордон сув қувурларни емиради." : "Ишқорий сув таъмни бузади ва хлорлаш самарасини пасайтиради."}`]);
+    if (no3 !== null) rows.push(no3 <= 50 ? ["✅", 0, `Нитрат ${no3} мг/л — ЖССТ тавсиясидан (50 мг/л) паст.`] : ["⛔", 2, `Нитрат ${no3} мг/л — 50 мг/л дан юқори. Гўдаклар учун хавфли (метгемоглобинемия). Бундай сувни чақалоқ овқатига ишлатманг.`]);
+    if (ntu !== null) rows.push(ntu <= 1 ? ["✅", 0, `Лойқалик ${ntu} NTU — яхши${ntu <= 0.2 ? ", ҳатто идеал (0,2 дан паст)" : ""}.`] : ntu <= 5 ? ["⚠️", 1, `Лойқалик ${ntu} NTU — 1 NTU дан юқори. Лойқа заррачалар микробларни зарарсизлантиришдан «яширади».`] : ["⛔", 2, `Лойқалик ${ntu} NTU — жуда юқори. Тиндириш ва филтрлаш зарур.`]);
+    if (f !== null) rows.push(f <= 1.5 ? ["✅", 0, `Фторид ${f} мг/л — меъёрда (1,5 мг/л гача).`] : ["⛔", 2, `Фторид ${f} мг/л — 1,5 мг/л дан юқори. Узоқ муддатда тиш ва суяк флюорозига олиб келиши мумкин.`]);
+    if (ec === "no") rows.push(["✅", 0, "E. coli аниқланмади — микробиологик жиҳатдан яхши белги."]);
+    if (ec === "yes") rows.push(["⛔", 2, "E. coli аниқланди — сув нажас билан ифлосланган. Ичманг ёки албатта қайнатиб ичинг ва манбани текширтиринг."]);
+    if (!rows.length) {
+      $("#waterOut").innerHTML = "<p class=\"muted\">Камида битта кўрсаткични киритинг. Масалан, «Намуна: қудуқ суви» тугмасини босинг.</p>";
+      return;
+    }
+    const worst = Math.max(...rows.map((r) => r[1]));
+    const sum = ["✅ Киритилган кўрсаткичлар бўйича сув ЖССТ тавсияларига мос.", "⚠️ Айрим кўрсаткичлар меъёрдан четга чиққан. Тозалаш ёки қўшимча текширув тавсия этилади.", "⛔ Хавфли кўрсаткич бор. Бу сувни тозаламасдан ичманг."][worst];
+    $("#waterOut").innerHTML = `<p class="wsum">${esc(sum)}</p>` + rows.map((r) => `<div class="wrow"><span aria-hidden="true">${r[0]}</span><span>${esc(r[2])}</span></div>`).join("");
+    once("mono_water", 10, "сув текширилди");
+  }
+  wf.addEventListener("input", checkWater);
+  wf.addEventListener("change", checkWater);
+  wf.addEventListener("reset", () => setTimeout(checkWater, 0));
+  wf.addEventListener("submit", (e) => e.preventDefault());
+  $("#waterSample").addEventListener("click", () => {
+    Object.entries({ ph: "7.9", no3: "64", ntu: "2.4", f: "0.8", ecoli: "no" }).forEach(([k, v]) => { wf.elements[k].value = v; });
+    checkWater();
+  });
+  checkWater();
+
+  /* ---------- Тозалаш босқичлари ---------- */
+  const STEPS = [
+    { i: "🟫", n: "Хом сув", c: "#8b6a3e", t: "Дарё ёки оқава сувда йирик чиқинди, қум, лойқа, органик моддалар ва микроблар бор. Тозалаш «йирикдан майдага» тамойили бўйича босқичма-босқич боради." },
+    { i: "🪣", n: "Механик", c: "#9c7b4c", t: "Панжаралар латта ва пластикни, қум ушлагичлар қумни ушлайди. Тиндиргичларда заррачалар оғирлик кучи билан чўкади: муаллақ моддалар 50–70 %, органик ифлосланиш 25–40 % га камаяди. Эриган моддаларга эса бу босқич деярли таъсир қилмайди." },
+    { i: "🧪", n: "Коагуляция", c: "#b49a6c", t: "Сувга коагулянт (масалан, алюминий ёки темир тузи) қўшилади. Майда коллоид заррачалар бирлашиб, йирик «пағалар» (флокулалар) ҳосил қилади ва осон чўкади." },
+    { i: "🏖️", n: "Филтрлаш", c: "#a9c3c2", t: "Сув кварц қуми, антрацит каби донадор қатламдан ўтади. Тез филтрлар соатига 5–10 м тезликда ишлайди. Секин филтр юзасидаги микроорганизмлар пардаси қўшимча биологик тозалаш беради." },
+    { i: "🦠", n: "Биологик", c: "#9fd0dc", t: "Фаол лойдаги бактериялар органик моддаларни CO₂ ва сувга айлантиради. Яхши иншоот БКС ни 90–95 % камайтиради. Кислородсиз (анаэроб) усулда эса биогаз олинади, яъни чиқиндидан энергия." },
+    { i: "☀️", n: "Зарарсизлантириш", c: "#7cc6ee", t: "Якуний ва мажбурий босқич. Ултрабинафша нур ва озон микробларни ишончли йўқотади, оз миқдордаги хлор эса қувурларда сувни қайта ифлосланишдан ҳимоя қилади (истеъмолчида 0,3–0,5 мг/л қолдиқ хлор)." }
+  ];
+  let stepCur = 0;
+  function showStep(i) {
+    stepCur = i;
+    $("#treatSteps").innerHTML = STEPS.map((s, k) => `<li><button type="button" data-s="${k}" aria-pressed="${k === i}" class="${k < i ? "past" : ""}"><span aria-hidden="true">${s.i}</span>${k ? `${k}. ` : ""}${esc(s.n)}</button></li>`).join("");
+    $("#treatText").innerHTML = `<p><b>${STEPS[i].i} ${esc(STEPS[i].n)}</b></p><p>${esc(STEPS[i].t)}</p>${i < STEPS.length - 1 ? `<button class="btn btn-primary" type="button" data-s="${i + 1}">Кейинги босқич →</button>` : "<p class=\"muted small\">✅ Сув тайёр! Ҳар бир босқич кейингисининг ишончли ишлашини таъминлайди.</p>"}`;
+    $("#glassWater").style.background = `linear-gradient(180deg, ${STEPS[i].c}cc, ${STEPS[i].c})`;
+    $("#glassCap").textContent = i === STEPS.length - 1 ? "Тоза сув 💧" : `${i ? i + "-босқичдан кейин" : "Хом сув"}`;
+    if (i === STEPS.length - 1) once("mono_treat", 10, "сув тозаланди");
+  }
+  $("#monografiya").addEventListener("click", (e) => { const b = e.target.closest("[data-s]"); if (b) showStep(+b.dataset.s); });
+  showStep(0);
+
+  /* ---------- Суғориш ---------- */
+  const IRR = [
+    { n: "Эгатли (анъанавий)", lo: 40, hi: 60 },
+    { n: "Лазер билан текисланган далада эгатли", lo: 60, hi: 70 },
+    { n: "Ёмғирлатиб суғориш", lo: 70, hi: 85 },
+    { n: "Томчилатиб суғориш", lo: 85, hi: 95 },
+    { n: "Тупроқ остидан томчилатиб", lo: 90, hi: 95 }
+  ];
+  function renderIrr() {
+    const w = Math.min(1e6, Math.max(0, Number($("#irrWater").value) || 0));
+    const base = (IRR[0].lo + IRR[0].hi) / 2;
+    $("#irrList").innerHTML = IRR.map((m, i) => {
+      const mid = (m.lo + m.hi) / 2;
+      const save = i ? Math.round((1 - base / mid) * 100) : 0;
+      return `<div class="irr-row"><span>${esc(m.n)} <span class="muted small">(${m.lo}–${m.hi} %)</span></span>
+        <div class="irr-bar" role="img" aria-label="${mid} %"><div style="width:${mid}%"></div></div>
+        <span class="v">≈ ${num(w * mid / 100)} м³${save ? ` <span class="muted small">· ${save} % тежам</span>` : ""}</span></div>`;
+    }).join("");
+  }
+  $("#irrWater").addEventListener("input", () => { renderIrr(); once("mono_irr", 5, "суғориш ҳисобланди"); });
+  renderIrr();
+
+  /* ---------- Тарих сабоқлари ---------- */
+  const HIST = [
+    { y: "1950-йиллар", n: "Минамата (Япония)", w: "Кимё заводи оқавасидаги симоб балиқларда метилсимоб бўлиб тўпланди. Оғир асаб касалликлари ва ўлимлар.", l: "Оқава сувлар назорати; 2013 йилда симоб бўйича Минамата конвенцияси." },
+    { y: "1952", n: "Лондон смоги", w: "Кўмир тутуни ва SO₂ шамолсиз, туманли ҳавода тўпланиб, бир неча кунда минглаб одамлар қўшимча вафот этди.", l: "1956 йилда «Тоза ҳаво тўғрисида»ги қонун, шаҳарларда тутунсиз ёқилғига ўтиш." },
+    { y: "1960-йиллардан", n: "Орол денгизи", w: "Дарё сувлари суғоришга ҳаддан ташқари олинди. Денгиз ҳажми қарийб 90 % камайди, туз-чанг бўронлари бошланди.", l: "Табиатнинг ҳам сувга эҳтиёжи бор (экологик оқим). Сувни минтақавий бошқариш ва Оролбўйини тиклаш дастурлари.", home: true },
+    { y: "1984", n: "Бхопал (Ҳиндистон)", w: "Пестицид заводидан заҳарли метилизоцианат гази чиқиб кетди. Минглаб одам ҳалок бўлди.", l: "Кимёвий хавфсизлик, авария ҳолатларига тайёргарлик ва хавфли объектлар қонунчилиги." },
+    { y: "1986", n: "Чернобил АЭС", w: "Реактор портлаши катта ҳудудни радиоактив ифлослантирди, аҳоли кўчирилди.", l: "Ядро хавфсизлиги бўйича халқаро конвенциялар ва радиация мониторинги." }
+  ];
+  $("#monoTimeline").innerHTML = HIST.map((h) => `<article class="tl${h.home ? " home" : ""}"><span class="yr">${esc(h.y)}</span><h4>${esc(h.n)}</h4><p>${esc(h.w)}</p><p><b>Сабоқ:</b> ${esc(h.l)}</p></article>`).join("") +
+    `<article class="tl home"><span class="yr">Умумий хулоса</span><h4>Нимани ўргандик?</h4><p>Ифлосланиш оқибати кечикиб ва узоқда намоён бўлади, шунинг учун олдиндан эҳтиёт чораси керак. Очиқ мониторинг хавфни вақтида кўрсатади. Экологик зарар охир-оқибат иқтисодий фойдадан бир неча баробар қимматга тушади.</p></article>`;
+
+  /* ---------- Афсона ёки ҳақиқат ---------- */
+  const MYTHS = [
+    { q: "Кўп дарахт эксак, иқлим муаммоси ўз-ўзидан ҳал бўлади.", truth: false, a: "Бутун тропик минтақани ўрмонга айлантирсак ҳам, атиги 1,7 йиллик чиқинди қопланади. Дарахт экиш фойдали, лекин чиқиндиларни камайтириш ўрнини боса олмайди." },
+    { q: "Ҳар қандай жойга дарахт экиш табиат учун фойдали.", truth: false, a: "Саванна ва ўтлоқларда дарахт қоплами 40 % ошганда ўсимлик ва чумолилар хилма-хиллиги 30 % га камайган. Ўрмонлаштириш дарё оқимини 40–81 % камайтириши мумкин. Ўзбекистонда маҳаллий турлар ва сув балансини ҳисобга олиш керак." },
+    { q: "Иссиқхона эффекти бўлмаганда Ер жуда совуқ бўларди.", truth: true, a: "Тўғри: Ер юзасининг ўртача ҳарорати тахминан –18 °C бўларди. Муаммо эффектнинг ўзида эмас, инсон фаолияти туфайли кучайишида." },
+    { q: "Метан CO₂ дан 25 баравар кучли — бу энг янги баҳо.", truth: false, a: "25 рақами IPCC нинг 2007 йилги ҳисоботидан. Янги (Олтинчи) ҳисоботда 100 йиллик глобал исиш потенциали метан учун 27–29,8 га тенг." },
+    { q: "Китлар ҳам углерод айланишига таъсир қилади.", truth: true, a: "Тўғри: «кит насоси» — китлар чиқарган озуқа моддалар планктон ўсишини рағбатлантиради, нобуд бўлган кит танаси эса углеродни океан тубига олиб тушади. Аммо уларнинг бугунги бевосита ҳиссаси жуда кичик." },
+    { q: "Сув танқислиги фақат сувнинг миқдорига оид муаммо.", truth: false, a: "Сув камайганда ифлословчилар кам суюлади ва сув сифати ҳам ёмонлашади. Демак, танқислик ҳам миқдор, ҳам сифат муаммоси." },
+    { q: "Ифлосланишнинг олдини олиш оқибатини тузатишдан арзонга тушади.", truth: true, a: "Тўғри: сув ифлосланиши тозалаш, соғлиқни сақлаш харажатларини оширади, балиқчилик ва ҳосилдорликни камайтиради. Олдини олиш доим арзонроқ." }
+  ];
+  function renderMyths() {
+    const f = flags();
+    $("#mythGrid").innerHTML = MYTHS.map((m, i) => {
+      const done = !!f[`myth_${i}`];
+      return `<article class="myth" data-m="${i}"><q>${esc(m.q)}</q>
+        <div class="opts"><button class="chip" type="button" data-v="1">✔️ Ҳақиқат</button><button class="chip" type="button" data-v="0">✖️ Афсона</button></div>
+        <p class="ans" hidden></p>${done ? "<span class=\"small muted\">✓ XP олинган</span>" : ""}</article>`;
+    }).join("");
+  }
+  $("#mythGrid").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-v]");
+    if (!b) return;
+    const card = b.closest(".myth");
+    const m = MYTHS[+card.dataset.m];
+    const right = (b.dataset.v === "1") === m.truth;
+    card.classList.toggle("ok", right);
+    card.classList.toggle("bad", !right);
+    card.querySelectorAll("[data-v]").forEach((x) => { x.disabled = true; x.classList.toggle("active", (x.dataset.v === "1") === m.truth); });
+    const ans = $(".ans", card);
+    ans.hidden = false;
+    ans.textContent = `${right ? "✅ Тўғри!" : "❌ Нотўғри."} Бу ${m.truth ? "ҳақиқат" : "афсона"}. ${m.a}`;
+    if (right) once(`myth_${card.dataset.m}`, 5, "афсона фош этилди");
+  });
+  renderMyths();
+
+  /* ---------- Синов ---------- */
+  const QUIZ = [
+    { q: "Иссиқхона эффекти бўлмаганда Ернинг ўртача ҳарорати қанча бўларди?", a: ["+15 °C", "–18 °C", "0 °C"], c: 1, e: "Табиий иссиқхона эффекти ҳаёт учун зарур, хавф — унинг ортиқча кучайишида." },
+    { q: "Атмосферадаги CO₂ миқдори ҳозир тахминан қанча?", a: ["280 ppm", "420 ppm дан ортиқ", "1000 ppm"], c: 1, e: "Саноатлашувгача 280 ppm эди." },
+    { q: "Ўзбекистон фойдаланадиган сувнинг қанча қисми мамлакат ташқарисида ҳосил бўлади?", a: ["20 %", "50 %", "Тахминан 80 %"], c: 2, e: "Амударё ва Сирдарё ҳавзаларининг юқори оқимида." },
+    { q: "ЖССТ бўйича ичимлик сувидаги нитрат миқдори қанчадан ошмаслиги керак?", a: ["50 мг/л", "500 мг/л", "Чекланмаган"], c: 0, e: "Ортиқча нитрат гўдаклар учун айниқса хавфли." },
+    { q: "Сувни тозалашнинг якуний ва мажбурий босқичи қайси?", a: ["Тиндириш", "Зарарсизлантириш", "Коагуляция"], c: 1, e: "Хлорлаш, озонлаш ёки УБ нур билан." },
+    { q: "Нима учун сувга оз миқдорда хлор қолдирилади?", a: ["Қувурларда қайта ифлосланишдан ҳимоя учун", "Сувни ширин қилиш учун", "Лойқаликни ошириш учун"], c: 0, e: "Озон ва УБ нур қолдиқ таъсир бермайди." },
+    { q: "Қайси заррачалар ўпкага энг чуқур киради?", a: ["Қум донаси", "PM10", "PM2.5"], c: 2, e: "Диаметри 2,5 мкм дан кичик заррачалар." },
+    { q: "Томчилатиб суғоришнинг майдондаги фойдали иш коэффициенти қанча?", a: ["40–60 %", "60–70 %", "85–95 %"], c: 2, e: "Эгатли усулга нисбатан сув 30–50 % тежалади." },
+    { q: "Бутун тропик минтақани ўрмонга айлантирсак, неча йиллик чиқинди қопланади?", a: ["Атиги 1,7 йиллик", "50 йиллик", "Абадий"], c: 0, e: "Дарахт экиш чиқиндини камайтириш ўрнини босмайди." },
+    { q: "Чиқиндиларни бошқариш иерархиясида биринчи ўринда нима туради?", a: ["Кўмиш", "Қайта ишлаш", "Чиқинди ҳосил бўлишининг олдини олиш"], c: 2, e: "Кейин қайта фойдаланиш, қайта ишлаш, энергия олиш ва охирида кўмиш." }
+  ];
+  let qi = 0, score = 0;
+  function renderQuiz() {
+    const box = $("#monoQuiz");
+    if (qi >= QUIZ.length) {
+      const pass = score >= 8;
+      box.innerHTML = `<p class="mq-q">${pass ? "🎉" : "📘"} Натижа: ${score} / ${QUIZ.length}</p><p>${pass ? "Аъло! Сиз «Олим шогирди» нишонига эга бўлдингиз." : "Яхши уриниш. Курсни ўқиб, қайта синаб кўринг: 8 та тўғри жавоб керак."}</p>
+        <div class="hero-actions"><button class="btn btn-ghost" type="button" id="mqAgain">↻ Қайта бошлаш</button>${pass ? "" : "<button class=\"btn btn-primary\" type=\"button\" id=\"mqCourse\">📖 Курсни ўқиш</button>"}</div>`;
+      if (pass) once("mono_quiz", 30, "монография синови");
+      $("#mqAgain").addEventListener("click", () => { qi = 0; score = 0; renderQuiz(); });
+      const c = $("#mqCourse"); if (c) c.addEventListener("click", () => App && App.openLesson("suvhavo", 0));
+      return;
+    }
+    const q = QUIZ[qi];
+    box.innerHTML = `<div class="mq-bar" aria-hidden="true"><div style="width:${(qi / QUIZ.length) * 100}%"></div></div>
+      <span class="small muted">${qi + 1} / ${QUIZ.length} · тўғри: ${score}</span>
+      <p class="mq-q">${esc(q.q)}</p>
+      <div class="opts">${q.a.map((a, i) => `<button class="opt" type="button" data-qa="${i}">${esc(a)}</button>`).join("")}</div>
+      <p class="small" id="mqExp" aria-live="polite"></p>`;
+  }
+  $("#monoQuiz").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-qa]");
+    if (b) {
+      const q = QUIZ[qi];
+      const ok = +b.dataset.qa === q.c;
+      if (ok) score++;
+      document.querySelectorAll("#monoQuiz [data-qa]").forEach((x, i) => { x.disabled = true; if (i === q.c) x.classList.add("right"); });
+      if (!ok) b.classList.add("wrong");
+      $("#mqExp").innerHTML = `${ok ? "✅ Тўғри." : "❌ Нотўғри."} ${esc(q.e)} <button class="btn btn-primary" type="button" id="mqNext">${qi === QUIZ.length - 1 ? "Натижани кўриш" : "Кейинги →"}</button>`;
+      return;
+    }
+    if (e.target.closest("#mqNext")) { qi++; renderQuiz(); }
+  });
+  renderQuiz();
+
+  /* ---------- Луғат ---------- */
+  const GLOSS = [
+    ["Оқава сув", "Сточная вода", "Wastewater"],
+    ["Сув тайёрлаш", "Водоподготовка", "Water treatment"],
+    ["Коагуляция", "Коагуляция", "Coagulation"],
+    ["Флокуляция", "Флокуляция", "Flocculation"],
+    ["Тиндиргич", "Отстойник", "Settling tank (clarifier)"],
+    ["Фаол лой", "Активный ил", "Activated sludge"],
+    ["Аэротенк", "Аэротенк", "Aeration tank"],
+    ["Тескари осмос", "Обратный осмос", "Reverse osmosis"],
+    ["Зарарсизлантириш (дезинфекция)", "Обеззараживание", "Disinfection"],
+    ["Биокимёвий кислород сарфи (БКС)", "Биохимическое потребление кислорода (БПК)", "Biochemical oxygen demand (BOD)"],
+    ["Кимёвий кислород сарфи (ККС)", "Химическое потребление кислорода (ХПК)", "Chemical oxygen demand (COD)"],
+    ["Чанг тутгич", "Пылеуловитель", "Dust collector"],
+    ["Циклон", "Циклон", "Cyclone"],
+    ["Электрофилтр", "Электрофильтр", "Electrostatic precipitator"],
+    ["Енгли (қопли) филтр", "Рукавный фильтр", "Bag filter (baghouse)"],
+    ["Рухсат этилган максимал концентрация (РЭМ)", "Предельно допустимая концентрация (ПДК)", "Maximum allowable concentration"],
+    ["Ўлчаш ноаниқлиги", "Неопределённость измерений", "Measurement uncertainty"],
+    ["Глобал исиш потенциали", "Потенциал глобального потепления", "Global warming potential"],
+    ["Сув танқислиги", "Дефицит воды", "Water scarcity"],
+    ["Барқарор ривожланиш", "Устойчивое развитие", "Sustainable development"],
+    ["Тузсизлантириш (чучуклаштириш)", "Опреснение", "Desalination"],
+    ["Сув ифлосланиши индекси", "Индекс загрязнения воды (ИЗВ)", "Water pollution index"],
+    ["Санитария-ҳимоя зонаси", "Санитарно-защитная зона", "Sanitary protection (buffer) zone"],
+    ["Атроф-муҳитга таъсирни баҳолаш", "Оценка воздействия на окружающую среду (ОВОС)", "Environmental impact assessment"],
+    ["Ҳаёт цикли бўйича баҳолаш", "Оценка жизненного цикла", "Life cycle assessment"],
+    ["Айланма иқтисодиёт", "Циркулярная экономика", "Circular economy"],
+    ["Углерод секвестрлаш", "Секвестрация углерода", "Carbon sequestration"],
+    ["Углерод ютгичи", "Поглотитель углерода", "Carbon sink"],
+    ["Табиатга асосланган ечим", "Природное решение", "Nature-based solution"],
+    ["Биологик углерод насоси", "Биологический углеродный насос", "Biological carbon pump"]
+  ];
+  function renderGloss() {
+    const q = $("#glossSearch").value.trim().toLowerCase();
+    const hit = (r) => !q || EkoLang.matches(r[0], q) || r[1].toLowerCase().includes(q) || r[2].toLowerCase().includes(q);
+    const all = GLOSS.filter(hit);
+    const list = q || glossAll ? all : all.slice(0, 8);
+    $("#glossMore").hidden = !!q || glossAll;
+    $("#glossList").innerHTML = list.length
+      ? list.map((r) => `<div class="gl"><b>${esc(r[0])}</b><span data-notr lang="ru">🇷🇺 ${esc(r[1])}</span><span data-notr lang="en">🇬🇧 ${esc(r[2])}</span></div>`).join("")
+      : "<p class=\"muted\">Ҳеч нарса топилмади.</p>";
+  }
+  let glossAll = false;
+  $("#glossMore").addEventListener("click", () => { glossAll = true; renderGloss(); });
+  $("#glossSearch").addEventListener("input", renderGloss);
+  renderGloss();
+
+  /* ---------- Иқтибос ---------- */
+  const CITE = "Эгамбердиев Ш.Р. Сув ва атмосфера ҳавосини ифлосланишдан тозалашнинг замонавий технологиялари ва экологик мониторинг: монография. — Тошкент: Тошкент кимё-технология институти, 2026.";
+  $("#citeCopy").addEventListener("click", () => {
+    const text = EkoLang.t(CITE);
+    const done = () => App && App.toast("📋 Манба нусхаланди");
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done); else done();
+  });
+
+  /* Фойдаланувчи алмашганда (eko:reset/eko:user) ҳолатга боғлиқ қисмларни янгилаш */
+  ["eko:reset", "eko:user"].forEach((ev) => window.addEventListener(ev, () => { renderMyths(); qi = 0; score = 0; renderQuiz(); }));
+})();
+  </script>
   <script>
 /* ЭкоТаълим — кириш ва чиқиш.
    Платформа server.js орқали очилганда ишлайди; файл тўғридан-тўғри очилса
