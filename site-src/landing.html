@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ЭкоТаълим — бепул экологик таълим платформаси</title>
+<meta name="description" content="ЭкоТаълим — аҳоли, мактаб ва корхоналар учун бепул онлайн экологик таълим: эко-ўйинлар, курслар ва сертификат, «Сув ва ҳаво» бўлими, эко-харита, ҳаво сифати ва углерод изи калькулятори.">
+<meta name="keywords" content="экология, экологик таълим, ЭкоТаълим, eko talim, ekologiya, Ўзбекистон, сув, ҳаво сифати, эко-ўйинлар, мактаб, Орол">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#17803d">
+<link rel="canonical" href="{{url}}">
+<link rel="alternate" hreflang="uz-Latn" href="{{base}}">
+<link rel="alternate" hreflang="uz-Cyrl" href="{{base}}kirill/">
+<link rel="alternate" hreflang="x-default" href="{{base}}">
+<link rel="icon" href="{{root}}favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ЭкоТаълим">
+<meta property="og:locale" content="{{oglocale}}">
+<meta property="og:title" content="ЭкоТаълим — бепул экологик таълим платформаси">
+<meta property="og:description" content="Ўйнаб ўрганинг, курсларни тугатиб сертификат олинг, атрофингиздаги муаммони харитада белгиланг.">
+<meta property="og:url" content="{{url}}">
+<meta property="og:image" content="{{base}}og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{{jsonld}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one long scroll — hero with a phone, a feature field, a water band for the monograph, three real steps, install, closing call. */
+:root {
+  --bg: #f4f7f2;          /* paxta-white with a green bias */
+  --surface: #ffffff;
+  --ink: #102318;
+  --muted: #536758;
+  --line: #d7e3d9;
+  --leaf: #17803d;        /* saksovul green, main accent */
+  --leaf-ink: #ffffff;
+  --water: #0b6e8a;       /* Amu daryo teal */
+  --sand: #e9dcc0;        /* Qizilqum sand */
+  --band: #0b3b4c;        /* deep water band */
+  --band-ink: #e8f6f8;
+  --band-muted: #a6cbd3;
+  --display: "Unbounded", "Golos Text", system-ui, sans-serif;
+  --body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 18px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0c1611; --surface: #13211a; --ink: #e6f1e9; --muted: #9db3a4; --line: #23382c;
+  --leaf: #34c76a; --leaf-ink: #06240f; --water: #4cc0dc; --sand: #3a3322; --band: #0a2a35; --band-ink: #e3f4f7; --band-muted: #8fb8c1;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0c1611; --surface: #13211a; --ink: #e6f1e9; --muted: #9db3a4; --line: #23382c;
+  --leaf: #34c76a; --leaf-ink: #06240f; --water: #4cc0dc; --sand: #3a3322; --band: #0a2a35; --band-ink: #e3f4f7; --band-muted: #8fb8c1;
+  color-scheme: dark; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.6 var(--body); }
+img { max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--water); outline-offset: 3px; border-radius: 8px; }
+.wrap { max-width: 1140px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; text-wrap: balance; margin: 0; letter-spacing: -.01em; }
+h1 { font-size: clamp(2.1rem, 5.4vw, 3.9rem); font-weight: 800; }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.5rem); font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font: 600 .78rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--water); }
+.muted { color: var(--muted); }
+
+/* top bar */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; gap: 18px; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; font: 800 1.08rem var(--display); text-decoration: none; }
+.logo svg { width: 30px; height: 30px; }
+.bar nav { display: flex; gap: 4px; margin-left: auto; }
+.bar nav a { text-decoration: none; color: var(--muted); padding: 8px 10px; border-radius: 10px; font-weight: 500; font-size: .95rem; }
+.bar nav a:hover { color: var(--ink); background: var(--surface); }
+.lang { display: inline-flex; align-items: center; text-decoration: none; font: 600 .85rem var(--body); background: none; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; height: 38px; padding: 0 12px; cursor: pointer; }
+.btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font: 600 1rem var(--body); padding: 14px 22px; border-radius: 14px; border: 1px solid transparent; cursor: pointer; transition: transform .15s; }
+.btn:hover { transform: translateY(-1px); }
+.btn-go { background: var(--leaf); color: var(--leaf-ink); }
+.btn-line { border-color: var(--line); background: var(--surface); color: var(--ink); }
+.bar .btn { padding: 9px 16px; font-size: .92rem; border-radius: 11px; }
+
+/* hero */
+.hero { padding-block: 56px 40px; overflow-x: clip; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+.hero h1 em { font-style: normal; color: var(--leaf); }
+.hero .lead { font-size: 1.15rem; color: var(--muted); max-width: 54ch; margin-top: 20px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 30px; font-size: .95rem; color: var(--muted); }
+.facts b { font: 700 1.35rem var(--display); color: var(--ink); display: block; font-variant-numeric: tabular-nums; }
+.phone { width: min(300px, 100%); aspect-ratio: 390 / 780; max-width: 100%; margin: 0 auto; border-radius: 40px; padding: 10px; background: #0f1a14; box-shadow: 0 30px 60px -20px rgba(11, 59, 76, .45); position: relative; }
+.phone img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 31px; }
+.hero .phone { transform: rotate(2.5deg); }
+.hero-art { position: relative; }
+.hero-art::before { content: ""; position: absolute; inset: 8% -6% 4% 4%; border-radius: 48% 52% 44% 56% / 55% 45% 55% 45%; background: var(--sand); z-index: -1; }
+
+/* sections */
+section { padding-block: 64px; }
+.head { display: grid; gap: 12px; max-width: 720px; margin-bottom: 34px; }
+.head p { color: var(--muted); font-size: 1.08rem; }
+
+.features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.feat { background: var(--surface); padding: 24px 22px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.feat .ic { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--leaf) 14%, transparent); color: var(--leaf); }
+.feat .ic svg { width: 22px; height: 22px; }
+.feat p { color: var(--muted); font-size: .95rem; }
+.tag { justify-self: start; font-size: .72rem; font-weight: 600; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+
+/* water band */
+.band { background: var(--band); color: var(--band-ink); position: relative; overflow: hidden; }
+.band .wrap { display: grid; grid-template-columns: .85fr 1.15fr; gap: 56px; align-items: center; position: relative; }
+.band .eyebrow { color: #7fd6e8; }
+.band .head p, .band .muted { color: var(--band-muted); }
+.waves { position: absolute; inset: auto 0 0 0; width: 100%; height: 120px; opacity: .18; pointer-events: none; }
+.band ul { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; }
+.band li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; }
+.band li span:first-child { color: #7fd6e8; font-weight: 700; }
+.quote { margin-top: 26px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.18); font-size: .92rem; color: var(--band-muted); }
+.quote b { color: var(--band-ink); font-weight: 600; }
+.band .phone { transform: rotate(-2deg); }
+
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.gallery figure { margin: 0; display: grid; gap: 14px; justify-items: center; text-align: center; }
+.gallery .phone { width: min(250px, 100%); }
+.gallery figcaption { font-weight: 600; }
+.gallery figcaption span { display: block; font-weight: 400; color: var(--muted); font-size: .92rem; }
+
+.who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.who article { border-top: 3px solid var(--leaf); padding-top: 16px; display: grid; gap: 8px; }
+.who article:nth-child(2) { border-color: var(--water); }
+.who article:nth-child(3) { border-color: #b7791f; }
+.who p { color: var(--muted); }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: s; }
+.step { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; display: grid; gap: 10px; align-content: start; }
+.step::before { counter-increment: s; content: counter(s); font: 800 2.2rem/1 var(--display); color: var(--leaf); }
+.step p { color: var(--muted); font-size: .97rem; }
+
+.install { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.inst { display: grid; gap: 8px; padding: 22px; border-radius: var(--r); background: color-mix(in srgb, var(--water) 9%, var(--surface)); border: 1px solid var(--line); align-content: start; }
+.inst ol { margin: 0; padding-left: 20px; color: var(--muted); font-size: .96rem; }
+.safe { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.safe span { font-size: .9rem; font-weight: 500; padding: 7px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+
+.final { text-align: center; padding-block: 72px; }
+.final .wrap { display: grid; gap: 18px; justify-items: center; }
+.final p { color: var(--muted); max-width: 52ch; }
+.addr { font: 600 .95rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 10px 14px; border-radius: 10px; border: 1px dashed var(--line); background: var(--surface); user-select: all; word-break: break-all; }
+footer { border-top: 1px solid var(--line); padding-block: 26px; font-size: .9rem; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+@media (max-width: 980px) {
+  .features { grid-template-columns: repeat(2, 1fr); }
+  .bar nav { display: none; }
+  .bar .lang { margin-left: auto; }
+}
+@media (max-width: 820px) {
+  .hero .wrap, .band .wrap { grid-template-columns: 1fr; gap: 36px; }
+  .gallery, .who, .steps, .install { grid-template-columns: 1fr; }
+  .gallery { gap: 36px; }
+  .hero { padding-block: 32px 20px; }
+  section { padding-block: 48px; }
+}
+@media (max-width: 480px) {
+  .features { grid-template-columns: 1fr; }
+  .bar .btn { display: none; }
+  body { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="ЭкоТаълим">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="var(--leaf)"/><path d="M9 21c0-7 5-12 14-12-1 9-6 13-12 13" fill="none" stroke="var(--leaf-ink)" stroke-width="2.4" stroke-linecap="round"/><path d="M10 22l7-7" stroke="var(--leaf-ink)" stroke-width="2.4" stroke-linecap="round"/></svg>
+      ЭкоТаълим
+    </a>
+    <nav aria-label="Бўлимлар">
+      <a href="#imkoniyatlar">Имкониятлар</a>
+      <a href="#suv-havo">Сув ва ҳаво</a>
+      <a href="#boshlash">Қандай бошлаш</a>
+      <a href="#ornatish">Телефонга ўрнатиш</a>
+    </nav>
+    <a class="lang" href="{{otherurl}}" hreflang="{{otherlang}}" data-keep>{{othername}}</a>
+    <a class="btn btn-go js-go" href="#manzil">Платформага ўтиш</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Бепул · онлайн · ҳамма учун</span>
+        <h1 style="margin-top:14px">Ўзбекистон табиатини асраш <em>билимдан</em> бошланади</h1>
+        <p class="lead">ЭкоТаълим — аҳоли, мактаблар ва корхоналар учун экологик таълим платформаси. Ўйнаб ўрганинг, курсларни тугатиб сертификат олинг, атрофингиздаги муаммони харитада белгиланг.</p>
+        <div class="ctas">
+          <a class="btn btn-go js-go" href="#manzil">Платформани очиш →</a>
+          <a class="btn btn-line" href="#ornatish">Телефонга ўрнатиш</a>
+        </div>
+        <div class="facts">
+          <div><b>17</b>интерактив дарс</div>
+          <div><b>4</b>эко-ўйин</div>
+          <div><b>32</b>кутубхона материали</div>
+          <div><b>13</b>шаҳар ҳаво сифати</div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="phone"><img src="{{root}}img/s-bosh.jpg" alt="ЭкоТаълим платформасининг бош саҳифаси телефонда"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="imkoniyatlar">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Платформада нима бор</span>
+        <h2>Бир жойда ўрганиш, ўйнаш ва ҳаракат қилиш</h2>
+      </div>
+      <div class="features">
+        <article class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="7" width="18" height="11" rx="4"/><path d="M8 11v3M6.5 12.5h3M15 12h.01M17 14h.01"/></svg></span><h3>Эко-ўйинлар</h3><p>Чиқиндини саралаш, хотира, викторина ва дарахт ўстириш. Болалар учун реклама ва кузатувсиз.</p></article>
+        <article class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h7a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H4zM20 5h-4a2 2 0 0 0-2 2"/><path d="M20 5v12h-6"/></svg></span><h3>Курслар ва сертификат</h3><p>Аҳоли, корхона ва таълим учун 4 курс. Ҳар дарсдан кейин тест, якунида сертификат.</p></article>
+        <article class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span><h3>Сув ва ҳаво</h3><p>Илмий монография асосида: сув текширгич, тозалаш босқичлари, афсона ва ҳақиқат.</p></article>
+        <article class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3>Эко-харита</h3><p>Ахлатхона, тутун ёки кесилган дарахтни харитада белгиланг. Модерациядан кейин ҳамма кўради.</p></article>
+        <article class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></span><h3>Эко-кўз</h3><p>Расмни сунъий интеллект экологик таҳлил қилади ва ҳокимиятга мурожаат матнини тузади.</p><span class="tag">18 ёшдан</span></article>
+        <article class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="8" height="14" rx="2"/><rect x="13" y="5" width="8" height="14" rx="2"/><path d="M15.5 12l1.5 1.5 2.5-3"/></svg></span><h3>Ҳашар: олдин ва кейин</h3><p>Тозалашдан олдинги ва кейинги расмни битта чиройли расмга бирлаштиринг.</p></article>
+        <article class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10l9-5 9 5-9 5z"/><path d="M7 12.5V17c3 2 7 2 10 0v-4.5"/></svg></span><h3>Мактаблар учун</h3><p>Ўқитувчи синф очади ва топшириқ беради. Ўқувчи фақат код ва лақаб билан қатнашади.</p></article>
+        <article class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 15a4 4 0 0 1 1-8 6 6 0 0 1 11 1 4 4 0 0 1 1 7"/><path d="M8 19h8M10 22h4"/></svg></span><h3>Ҳаво ва углерод изи</h3><p>13 шаҳарда жонли ҳаво сифати ва шахсий углерод изи калькулятори.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="suv-havo">
+    <svg class="waves" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 C150 20 300 100 450 60 S750 20 900 60 1050 100 1200 60 V120 H0z" fill="#7fd6e8"/><path d="M0 85 C200 55 350 115 600 85 S1000 55 1200 85 V120 H0z" fill="#7fd6e8" opacity=".6"/></svg>
+    <div class="wrap">
+      <div class="phone"><img src="{{root}}img/s-mono.jpg" alt="«Сув ва ҳаво» бўлими телефонда"></div>
+      <div>
+        <div class="head" style="margin-bottom:0">
+          <span class="eyebrow">Янги бўлим</span>
+          <h2>Сув ва ҳаво: олим нигоҳида</h2>
+          <p>Тошкент кимё-технология институти олими Ш.Р. Эгамбердиевнинг монографияси оммабоп тилда, интерактив шаклда.</p>
+        </div>
+        <ul>
+          <li><span>pH</span><span>Сув таҳлили натижасини киритинг ва ЖССТ тавсиялари билан солиштиринг.</span></li>
+          <li><span>5</span><span>Сув қандай тозаланишини босқичма-босқич кўринг: механикдан зарарсизлантиришгача.</span></li>
+          <li><span>%</span><span>Томчилатиб суғориш эгатли усулга нисбатан сувни 30–50 % тежашини ҳисоблаб кўринг.</span></li>
+          <li><span>?</span><span>«Афсона ёки ҳақиқат?», 10 саволли синов ва 5 дарсли курс.</span></li>
+        </ul>
+        <p class="quote">Манба: <b>Эгамбердиев Ш.Р.</b> Сув ва атмосфера ҳавосини ифлосланишдан тозалашнинг замонавий технологиялари ва экологик мониторинг: монография. — Тошкент: ТКТИ, 2026.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Телефонда шундай кўринади</span>
+        <h2>Илова каби қулай, интернетсиз ҳам очилади</h2>
+      </div>
+      <div class="gallery">
+        <figure><div class="phone"><img src="{{root}}img/s-oyin.jpg" alt="Эко-ўйинлар бўлими" loading="lazy"></div><figcaption>Эко-ўйинлар<span>Ўйнаб XP ва нишонлар тўпланг</span></figcaption></figure>
+        <figure><div class="phone"><img src="{{root}}img/s-kurs.jpg" alt="Курслар бўлими" loading="lazy"></div><figcaption>Курслар<span>Дарс, тест ва сертификат</span></figcaption></figure>
+        <figure><div class="phone"><img src="{{root}}img/s-mono.jpg" alt="Сув ва ҳаво бўлими" loading="lazy"></div><figcaption>Сув ва ҳаво<span>Илмий билим оммабоп тилда</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Ким учун</span>
+        <h2>Ҳар кимга ўз йўли</h2>
+      </div>
+      <div class="who">
+        <article><h3>Аҳоли</h3><p>Сув ва энергияни тежаш, чиқиндини саралаш, ҳаво ифлос кунларда ўзини асраш бўйича оддий дарслар.</p></article>
+        <article><h3>Мактаб ва олийгоҳлар</h3><p>Синф топшириқлари, рейтинг, Орол муаммоси ва барқарор ривожланиш мақсадлари. Якунида сертификат.</p></article>
+        <article><h3>Корхоналар</h3><p>Ходимлар учун ISO 14001, энергия самарадорлиги, айланма иқтисодиёт ва ESG асослари.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="boshlash" style="background:color-mix(in srgb, var(--sand) 35%, var(--bg))">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Қандай бошлаш</span>
+        <h2>Уч қадам</h2>
+      </div>
+      <div class="steps">
+        <article class="step"><h3>Платформани очинг</h3><p>Телефон ёки компьютер браузерида. Ўйин ва дарслар учун ҳисоб шарт эмас.</p></article>
+        <article class="step"><h3>Хоҳласангиз, ҳисоб очинг</h3><p>Ҳисоб натижаларингизни сақлайди ва Эко-харитага хабар юбориш имконини беради. 13 ёшдан.</p></article>
+        <article class="step"><h3>Ўрганинг ва ҳаракат қилинг</h3><p>Дарсларни тугатинг, XP тўпланг, муаммони харитада белгиланг ва ҳашарга чиқинг.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="ornatish">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Телефонга ўрнатиш</span>
+        <h2>Бош экранга бир босишда</h2>
+        <p>Платформа илова каби ўрнатилади ва интернет йўқ пайтда ҳам очилади.</p>
+      </div>
+      <div class="install">
+        <div class="inst"><h3>Android (Chrome)</h3><ol><li>Платформани очинг.</li><li>⋮ менюни босинг.</li><li>«Бош экранга қўшиш» ёки «Иловани ўрнатиш».</li></ol></div>
+        <div class="inst"><h3>iPhone (Safari)</h3><ol><li>Платформани очинг.</li><li>«Улашиш» тугмасини босинг.</li><li>«Add to Home Screen».</li></ol></div>
+        <div class="inst"><h3>Google Play</h3><ol><li>Илова Google Play'га тайёрланмоқда.</li><li>Чиққанда шу ерда ҳавола пайдо бўлади.</li></ol></div>
+      </div>
+      <div class="safe" aria-label="Хавфсизлик">
+        <span>Бепул</span><span>Реклама йўқ</span><span>Кузатув йўқ</span><span>Расмлар сақланмайди</span><span>Кирилл ва лотин ёзуви</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="manzil">
+    <div class="wrap">
+      <h2>Бугун биринчи дарсни бошланг</h2>
+      <p id="addrNote">Платформа манзили:</p>
+      <div class="addr" id="addr">—</div>
+      <a class="btn btn-go js-go" href="#manzil">Платформани очиш →</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 ЭкоТаълим</span>
+    <span>Экология йахшилаш учун</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+  /* Платформа манзили (Render). Бўш бўлса, тугмалар шу саҳифадаги манзил блокига олиб боради. */
+  const PLATFORM = "";
+
+  const go = document.querySelectorAll(".js-go");
+  if (PLATFORM) {
+    go.forEach((a) => { a.href = PLATFORM; a.target = "_blank"; a.rel = "noopener"; });
+    document.getElementById("addr").textContent = PLATFORM.replace(/^https?:\/\//, "");
+  } else {
+    document.getElementById("addrNote").textContent = "Платформа ишга туширилмоқда. Манзили шу ерда эълон қилинади.";
+    document.getElementById("addr").hidden = true;
+    go.forEach((a) => { if (a.closest("#manzil")) a.hidden = true; });
+  }
+
+})();
+</script>
+</body>
+</html>

@@ -107,3 +107,12 @@ ADMIN_PASSWORD="кучли-парол" node server.js
 ## Лицензия
 
 MIT
+
+## Таништирув сайти (GitHub Pages)
+
+`docs/` папкасида платформага йўналтирувчи статик сайт бор: лотин (`docs/index.html`) ва кирилл (`docs/kirill/`) саҳифалар, `sitemap.xml`, `robots.txt`, ижтимоий тармоқлар учун `og.jpg`.
+
+- Ёқиш: GitHub → **Settings → Pages → Build and deployment → Deploy from a branch**, папка `/docs`. Манзил: `https://egamberdiyevshukurjon9-dotcom.github.io/--/`.
+- Матнни ўзгартириш: `site-src/landing.html` ни таҳрирлаб, `node tools/build-site.js` ни ишга туширинг.
+- Платформа манзили: `site-src/platform-url.txt` га ёзинг (масалан, Render манзили) ва қайта йиғинг.
+- Ўз доменингиз бўлса: `SITE_URL=https://domen.uz/ node tools/build-site.js` ва Pages созламасида Custom domain.
