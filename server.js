@@ -393,7 +393,7 @@ const publicReport = (r) => ({ id: r.id, category: r.category, text: r.text, lat
 
 /* ---------- Мактаблар учун ---------- */
 const TASK_TYPES = ["xp", "sort", "quiz", "memory", "tree", "course", "streak"];
-const COURSE_IDS = ["asoslar", "korxona", "talaba", "suvhavo"];
+const COURSE_IDS = ["asoslar", "korxona", "talaba", "suvhavo", "sanoat"];
 const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function newClassCode() {
   for (;;) {
@@ -858,6 +858,12 @@ const STATIC = {
   "/vendor/leaflet/images/layers-2x.png": { file: "vendor/leaflet/images/layers-2x.png", type: "image/png", cache: true },
   "/vendor/uz-border.json": { file: "vendor/uz-border.json", type: "application/json; charset=utf-8", cache: true }
 };
+/* Дарслик муқоваларини (books/*.webp) рўйхатга қўшамиз */
+try {
+  for (const f of fs.readdirSync(path.join(__dirname, "books"))) {
+    if (/^[a-z0-9-]+\.webp$/.test(f)) STATIC[`/books/${f}`] = { file: `books/${f}`, type: "image/webp", cache: true };
+  }
+} catch (e) { /* папка йўқ бўлса — муқовасиз ишлайди */ }
 
 /* Android иловаси сайтни манзил сатрисиз очиши учун (Trusted Web Activity) */
 function assetLinks() {
