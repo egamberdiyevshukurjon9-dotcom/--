@@ -782,6 +782,117 @@ a { text-underline-offset: 3px; }
 @media (max-width: 359px) {
   .app-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* ---------- Финляндия усули: дарс тузилмаси ---------- */
+.fin-intro { margin: 4px 0 20px; }
+.fin-card { background: var(--glass); border: 1px solid var(--glass-line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 18px; backdrop-filter: blur(10px); }
+.fin-card summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; list-style: none; }
+.fin-card summary::-webkit-details-marker { display: none; }
+.fin-card summary::after { content: "▾"; margin-left: auto; color: var(--muted); transition: transform .2s; }
+.fin-card:not([open]) summary::after { transform: rotate(-90deg); }
+.fin-flag { font-size: 1.3rem; }
+.fin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin-top: 14px; }
+.fin-item { display: flex; gap: 10px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+.fin-item > span { font-size: 1.5rem; line-height: 1; }
+.fin-item b { display: block; font-size: .95rem; }
+.fin-item small { color: var(--muted); font-size: .82rem; }
+.fin-how { margin: 12px 0 0; }
+.course-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+.course-btns .btn { margin-top: 0; flex: 1 1 auto; }
+.lesson-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-right: 40px; }
+.lesson-steps { display: flex; gap: 5px; }
+.lesson-steps i { width: 22px; height: 6px; border-radius: 99px; background: var(--line); }
+.lesson-steps i.done { background: color-mix(in srgb, var(--primary) 55%, transparent); }
+.lesson-steps i.cur { background: var(--primary); width: 34px; }
+.lesson-meta { margin: -6px 0 12px; }
+.lesson-goal, .lesson-wonder { border-radius: 14px; padding: 12px 16px; margin: 0 0 10px; }
+.lesson-goal { background: color-mix(in srgb, var(--primary-2) 12%, var(--card)); border: 1px solid color-mix(in srgb, var(--primary-2) 25%, transparent); }
+.lesson-wonder { background: color-mix(in srgb, #f59e0b 13%, var(--card)); border: 1px solid color-mix(in srgb, #f59e0b 30%, transparent); }
+.lesson-wonder small { display: block; color: var(--muted); margin-top: 4px; }
+.lesson-tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 14px 0; }
+.seg { display: inline-flex; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 3px; }
+.seg button, .seg-one { border: 0; background: transparent; color: var(--text); font: inherit; font-size: .9rem; padding: 8px 12px; border-radius: 9px; cursor: pointer; min-height: 38px; }
+.seg button.on { background: var(--card); box-shadow: var(--shadow); font-weight: 650; color: var(--primary); }
+.seg-one { border: 1px solid var(--line); background: var(--bg-alt); font-weight: 700; }
+.seg-one.on { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.lesson-body.easy p { font-size: 1.08em; }
+.lesson-body.easy p::before { content: "🌱 "; }
+.lesson-big { font-size: 1.15rem; }
+.lesson-big .lesson-body p { line-height: 1.75; }
+.lesson-task, .lesson-xw, .lesson-self { border-top: 1px solid var(--line); margin-top: 20px; padding-top: 16px; }
+.lesson-task h3, .lesson-xw h3, .lesson-self h3, .quiz h3 { margin: 0 0 6px; }
+.lesson-task p { margin: 0 0 10px; }
+.task-done { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; padding: 8px 12px; border-radius: 12px; background: var(--bg-alt); }
+.task-done input { width: 20px; height: 20px; accent-color: var(--primary); }
+.q-hint { margin: 6px 0 0; color: var(--muted); }
+.self-opts { display: grid; gap: 8px; }
+.self-opt { display: flex; gap: 10px; align-items: center; text-align: left; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; cursor: pointer; }
+.self-opt span { font-size: 1.4rem; }
+.self-opt.on { border-color: var(--primary); background: var(--primary-soft); font-weight: 600; }
+.self-msg { margin: 8px 0 0; color: var(--primary); }
+.lesson-break { margin-top: 16px; padding: 14px 16px; border-radius: 14px; background: color-mix(in srgb, #a16207 12%, var(--card)); border: 1px dashed color-mix(in srgb, #a16207 45%, transparent); }
+.lesson-break small { display: block; margin-top: 6px; color: var(--muted); }
+/* Дарслик */
+.book > .pill { margin-right: 44px; }
+.book-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; }
+.book-toc { background: var(--bg-alt); border-radius: 14px; padding: 12px 16px; margin: 12px 0 8px; }
+.book-toc ol { margin: 6px 0 0; padding-left: 22px; }
+.book-toc a { color: var(--primary); }
+.book-ch { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 18px; }
+.book-ch h3 { margin: 0 0 10px; }
+.book-wonder { font-style: italic; color: var(--muted); }
+.book-task { background: var(--bg-alt); border-radius: 12px; padding: 10px 14px; }
+.book-q summary { cursor: pointer; font-weight: 600; margin: 6px 0; }
+.in-app .web-only { display: none; }
+@media print {
+  body.print-book > *:not(#lessonModal) { display: none !important; }
+  body.print-book #lessonModal { position: static; display: block; width: auto; max-height: none; box-shadow: none; border-radius: 0; }
+  body.print-book .modal-close, body.print-book .no-print { display: none !important; }
+  html.eko-aurora body.print-book::before, html.eko-aurora body.print-book::after { display: none; }
+}
+
+/* ---------- Кроссворд ---------- */
+.xw { display: grid; gap: 14px; }
+@media (min-width: 900px) {
+  .xw:not(.xw-compact) { grid-template-columns: minmax(0, 1.25fr) minmax(280px, 1fr); align-items: start; }
+  .xw:not(.xw-compact) .xw-clues { grid-template-columns: 1fr; }
+  .xw:not(.xw-compact) .xw-actions, .xw:not(.xw-compact) .xw-msg { grid-column: 1 / -1; }
+}
+.xw-board { container-type: inline-size; width: 100%; }
+.xw-grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 2px; width: min(100%, calc(var(--cols) * 44px)); margin: 0 auto; }
+.xw-compact .xw-grid { width: min(100%, calc(var(--cols) * 40px)); }
+.xw-gap { aspect-ratio: 1; }
+.xw-cell { position: relative; aspect-ratio: 1; background: var(--card); border: 1.5px solid color-mix(in srgb, var(--primary) 45%, var(--line)); border-radius: 5px; display: block; }
+.xw-cell input { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; text-align: center; font: 700 1rem var(--eko-font, inherit); font-size: clamp(.6rem, calc(100cqw / var(--cols) * .46), 1.35rem); color: var(--text); text-transform: uppercase; padding: 0; caret-color: transparent; border-radius: 4px; }
+.xw-cell input:focus { outline: none; }
+.xw-n { position: absolute; top: 1px; left: 3px; font-size: clamp(.45rem, calc(100cqw / var(--cols) * .22), .66rem); line-height: 1; color: var(--muted); pointer-events: none; z-index: 1; }
+.xw-cell.on { background: var(--primary-soft); }
+.xw-cell.cur { background: color-mix(in srgb, var(--primary) 32%, var(--card)); border-color: var(--primary); }
+.xw-cell.ok input { color: var(--primary); }
+.xw-cell.bad { background: color-mix(in srgb, #ef4444 16%, var(--card)); border-color: #ef4444; }
+.xw-clues { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.xw-clues h4 { margin: 0 0 6px; }
+.xw-clues ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.xw-clues li { padding: 7px 10px; border-radius: 10px; cursor: pointer; border: 1px solid transparent; font-size: .95rem; }
+.xw-clues li:hover { border-color: var(--line); }
+.xw-clues li.on { background: var(--primary-soft); border-color: color-mix(in srgb, var(--primary) 40%, transparent); }
+.xw-len { color: var(--muted); font-size: .85em; }
+.xw-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.xw-msg { margin: 0; min-height: 1.3em; }
+.xw-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; margin-top: 18px; }
+.xw-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left; padding: 18px; border-radius: 20px; border: 1px solid color-mix(in srgb, var(--c) 30%, var(--line)); background: linear-gradient(150deg, color-mix(in srgb, var(--c) 16%, var(--card)), var(--card)); color: var(--text); font: inherit; cursor: pointer; box-shadow: var(--shadow); transition: transform .15s; }
+.xw-card:hover, .xw-card:focus-visible { transform: translateY(-3px); }
+.xw-card-ic { font-size: 2.2rem; line-height: 1; margin-bottom: 4px; }
+.xw-card small { color: var(--muted); }
+.xw-solved { position: absolute; top: 12px; right: 12px; font-size: .75rem; font-weight: 700; color: var(--primary); background: var(--primary-soft); padding: 3px 8px; border-radius: 99px; }
+.xw-stage { margin-top: 18px; background: var(--glass); border: 1px solid var(--glass-line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; backdrop-filter: blur(10px); }
+.xw-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.xw-head h3 { margin: 0; }
+@media (max-width: 560px) {
+  .xw-stage { padding: 12px; margin-left: -4px; margin-right: -4px; }
+  .xw-grid { gap: 1px; }
+  .xw-cell { border-width: 1px; border-radius: 3px; }
+}
 </style>
 </head>
 <body>
@@ -859,7 +970,8 @@ a { text-underline-offset: 3px; }
           <a class="app" href="#xarita" style="--c:#ef4444"><span class="app-ic" aria-hidden="true">🗺️</span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
           <a class="app" href="#hashar" style="--c:#14b8a6"><span class="app-ic" aria-hidden="true">🧹</span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
           <a class="app" href="#maktab" style="--c:#6366f1"><span class="app-ic" aria-hidden="true">🏫</span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
-          <a class="app" href="#kurslar" style="--c:#16a34a"><span class="app-ic" aria-hidden="true">🎓</span><b>Курслар</b><small>Дарслар ва тестлар</small></a>
+          <a class="app" href="#kurslar" style="--c:#16a34a"><span class="app-ic" aria-hidden="true">🎓</span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" href="#krossvord" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true">🧩</span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
           <a class="app" href="#yangiliklar" style="--c:#64748b"><span class="app-ic" aria-hidden="true">📰</span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
           <a class="app" href="#kutubxona" style="--c:#a16207"><span class="app-ic" aria-hidden="true">📚</span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
           <a class="app" href="#havo" style="--c:#0284c7"><span class="app-ic" aria-hidden="true">🌫️</span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
@@ -1169,12 +1281,30 @@ a { text-underline-offset: 3px; }
           <h2 class="section-title">Курслар</h2>
           <div class="filters" id="courseFilters">
             <button class="chip active" data-f="all">Барчаси</button>
+            <button class="chip" data-f="bola">Болалар</button>
             <button class="chip" data-f="aholi">Аҳоли</button>
             <button class="chip" data-f="korxona">Корхона</button>
             <button class="chip" data-f="talaba">Таълим</button>
           </div>
         </div>
+        <div class="fin-intro" id="finIntro"></div>
         <div class="course-grid" id="courseGrid"></div>
+      </div>
+    </section>
+
+    <!-- CROSSWORDS -->
+    <section class="section" id="krossvord">
+      <div class="wrap">
+        <h2 class="section-title">🧩 Эко-кроссвордлар</h2>
+        <p class="muted">Мавзуни танланг ва катакларни тўлдиринг. Шошилманг: «💡 Битта ҳарф» ёрдам беради, хато қилиш — ўрганишнинг бир қисми. Ҳар бир ечилган кроссворд учун +25 XP.</p>
+        <div class="xw-picker" id="xwPicker"></div>
+        <div class="xw-stage" id="xwStage" hidden>
+          <div class="xw-head">
+            <button class="btn btn-ghost btn-sm" id="xwBack">← Мавзулар</button>
+            <h3 id="xwTitle"></h3>
+          </div>
+          <div id="xwBox"></div>
+        </div>
       </div>
     </section>
 
@@ -1514,6 +1644,8 @@ const EkoLang = (() => {
       btn.setAttribute("aria-label", lang === "lat" ? "Кирилл алифбосига ўтиш" : "Lotin alifbosiga oʻtish");
     }
     if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) { /* ignore */ } }
+    // Алифбога боғлиқ қисмлар (масалан, кроссворд катаклари) қайта чизилиши учун
+    window.dispatchEvent(new CustomEvent("eko:lang", { detail: lang }));
   }
 
   // Янги қўшилган элементларни (рендер, тост, чат) ҳам ўгириш
@@ -2359,6 +2491,599 @@ const LIBRARY = {
 };
 </script>
   <script>
+/* ЭкоТаълим — Финляндия таълим усули: дарс тузилмаси, болалар курси ва кроссвордлар.
+   Ҳар бир дарс: мақсад → ҳаётий савол (феномен) → қисқа матн (ёки «Осон тилда») →
+   амалий топшириқ → мини-кроссворд → стрессиз тест → ўз-ўзини баҳолаш → танаффус. */
+
+/* Болалар учун курс (6–10 ёш): жуда қисқа, расмли ва ўйин орқали */
+COURSES.unshift({
+  id: "kichik",
+  audience: "bola",
+  audienceLabel: "Болалар учун",
+  icon: "🧒",
+  title: "Кичик эколог",
+  desc: "6–10 ёшли болалар учун: дарахт, сув, чиқинди ва ҳайвонлар ҳақида жуда оддий, қизиқарли дарслар.",
+  lessons: [
+    {
+      title: "Дарахт — бизнинг дўстимиз",
+      minutes: 5,
+      body: [
+        "Дарахтлар биз нафас оладиган кислородни беради.",
+        "Улар ёзда салқин соя беради ва ҳаводаги чангни ушлаб қолади.",
+        "Дарахтда қушлар уя қуради, ҳашаротлар яшайди.",
+        "Бир туп дарахт катта бўлиши учун кўп йил керак. Шунинг учун уни синдирмаймиз, суғорамиз."
+      ],
+      tip: "Ҳовлингиздаги дарахтга исм қўйинг ва уни ҳар ҳафта суғоринг!",
+      quiz: [
+        { q: "Дарахт бизга нима беради?", a: ["Кислород", "Тутун", "Шовқин"], c: 0 },
+        { q: "Дарахтда ким уя қуради?", a: ["Балиқ", "Қуш", "Мушук"], c: 1 }
+      ]
+    },
+    {
+      title: "Томчининг саёҳати",
+      minutes: 5,
+      body: [
+        "Қуёш сувни иситади. Сув буғга айланиб, осмонга кўтарилади.",
+        "Осмонда буғ совийди ва булутга айланади.",
+        "Булутдан ёмғир ёки қор ёғади. Сув яна дарё ва ерга қайтади.",
+        "Шундай қилиб, бир томчи сув доим айланиб юради. Уни ифлос қилмаслик керак."
+      ],
+      tip: "Тиш ювганда жўмракни ёпинг — томчилар сизга раҳмат айтади.",
+      quiz: [
+        { q: "Булут нимадан ҳосил бўлади?", a: ["Тутундан", "Сув буғидан", "Пахтадан"], c: 1 },
+        { q: "Сувни ким иситиб, осмонга кўтаради?", a: ["Ой", "Шамол", "Қуёш"], c: 2 }
+      ]
+    },
+    {
+      title: "Чиқинди қаерга кетади?",
+      minutes: 5,
+      body: [
+        "Ҳар куни уйда чиқинди пайдо бўлади: қоғоз, пластик, шиша, овқат қолдиғи.",
+        "Агар уларни ажратиб ташласак, заводлар улардан янги нарса ясайди.",
+        "Пластик бутилкадан ҳатто кийим ва ўйинчоқ тайёрлаш мумкин!",
+        "Овқат қолдиғи эса чириб, тупроққа ўғит бўлади."
+      ],
+      tip: "Уйда иккита қути қилинг: бири пластик учун, бири қоғоз учун.",
+      quiz: [
+        { q: "Банан пўчоғи қайси қутига ташланади?", a: ["Пластик", "Овқат қолдиғи", "Шиша"], c: 1 },
+        { q: "Пластик бутилкадан нима ясаш мумкин?", a: ["Кийим", "Нон", "Сут"], c: 0 }
+      ]
+    },
+    {
+      title: "Ҳайвонлар уйи",
+      minutes: 6,
+      body: [
+        "Ҳар бир ҳайвоннинг ўз уйи бор: балиқ сувда, қуш дарахтда, жайрон чўлда яшайди.",
+        "Ўзбекистонда ноёб ҳайвонлар бор: қор қоплони, жайрон, Бухоро буғуси.",
+        "Ўрмон кесилса ёки сув ифлосланса, ҳайвонлар уйсиз қолади.",
+        "Табиатда шовқин қилмаймиз, уяларни бузмаймиз, ахлат ташламаймиз."
+      ],
+      tip: "Қишда қушлар учун деразага дон ва сув қўйиб беринг.",
+      quiz: [
+        { q: "Жайрон қаерда яшайди?", a: ["Денгизда", "Чўлда", "Музликда"], c: 1 },
+        { q: "Ҳайвонларга қандай ёрдам берамиз?", a: ["Уяларни бузамиз", "Ахлат ташламаймиз", "Шовқин қиламиз"], c: 1 }
+      ]
+    }
+  ]
+});
+
+/* Ҳар бир дарс учун Финляндия усули қисмлари.
+   goal — нимани ўрганасиз; wonder — ҳаётий савол; simple — «Осон тилда»;
+   task — қўл билан бажариладиган топшириқ; words — мини-кроссворд [жавоб, савол]. */
+const LESSON_PLUS = {
+  "kichik:0": {
+    goal: "Дарахтлар нега керак эканини биласиз.",
+    wonder: "Ёзда иссиқ кунда нега ҳамма дарахт соясига қочади?",
+    task: "Ҳовлига чиқинг ва битта дарахтни топинг. Унинг баргини қоғозга чизинг. Барг қандай шаклда? Оилангизга кўрсатинг.",
+    words: [["ДАРАХТ", "Кислород берадиган катта ўсимлик"], ["БАРГ", "Дарахтнинг яшил «кийими»"], ["ШОХ", "Барглар ўсадиган дарахт «қўли»"], ["ИЛДИЗ", "Дарахтни ерда ушлаб, унга сув ичирадиган қисм"]]
+  },
+  "kichik:1": {
+    goal: "Сув табиатда қандай айланишини биласиз.",
+    wonder: "Ёмғирдан кейинги кўлмак қуёшли кунда қаерга йўқолиб қолади?",
+    task: "Тажриба: ликопчага бир қошиқ сув қуйиб, қуёш тушадиган деразага қўйинг. Кечқурун сувга нима бўлганини кузатинг.",
+    words: [["БУЛУТ", "Осмонда сузиб юрадиган «пахта»"], ["ЁМҒИР", "Булутдан тушадиган сув"], ["БУҒ", "Исиган сув шунга айланади"], ["ҚОР", "Қишда ёғадиган оқ «ёмғир»"], ["ДАРЁ", "Ёмғир суви оқиб борадиган жой"]]
+  },
+  "kichik:2": {
+    goal: "Чиқиндиларни турига қараб ажратишни ўрганасиз.",
+    wonder: "Ташлаб юборилган пластик бутилка кейин нима бўлади?",
+    task: "Катталар билан бирга 5 та тоза чиқиндини (қути, бутилка, банка, қоғоз) олиб, уларни қоғоз, пластик, шиша ва металлга ажратинг.",
+    words: [["ҚУТИ", "Чиқиндини ажратиб соладиган идиш"], ["ШИША", "Синадиган, тиниқ материал"], ["ЎҒИТ", "Овқат қолдиғидан ҳосил бўлиб, ўсимликни озиқлантиради"], ["ПЛАСТИК", "Бутилка ва пакет материали"]]
+  },
+  "kichik:3": {
+    goal: "Ҳайвонлар қаерда яшашини ва уларни қандай асрашни биласиз.",
+    wonder: "Нега қор қоплони шаҳарда эмас, баланд тоғларда яшайди?",
+    task: "Катталар билан қушлар учун охурча ясанг: бўш бутилкани кесиб, дон солинг ва дарахтга илинг. Қайси қушлар келганини ёзиб боринг.",
+    words: [["ЖАЙРОН", "Чўлда яшайдиган чаққон ҳайвон"], ["ҚОПЛОН", "Тоғда яшайдиган қор ..."], ["БАЛИҚ", "Сувда яшайди"], ["ЧЎЛ", "Жайроннинг уйи"]]
+  },
+
+  "asoslar:0": {
+    goal: "Экотизим нима эканини ва унда ҳар бир тирик мавжудот нега муҳимлигини биласиз.",
+    wonder: "Агар ўрмондаги барча қуртлар ва замбуруғлар йўқолса, нима бўларди?",
+    simple: ["Табиатда ҳамма нарса бир-бирига боғлиқ.", "Ўсимлик қуёшдан озиқ олади, ҳайвон ўсимликни ейди, микроблар эса қолдиқларни тупроққа айлантиради.", "Битта бўғин йўқолса, бутун занжир бузилади."],
+    task: "Ҳовли ёки боғда 10 дақиқа кузатинг: 3 та ўсимлик, 2 та ҳашарот ва 1 та қушни топинг. Улар бир-бирига қандай боғлиқ? Чизиқлар билан расм чизинг.",
+    words: [["ЭКОТИЗИМ", "Тирик мавжудотлар ва уларнинг муҳити бирлиги"], ["АСАЛАРИ", "Гулларни чанглатадиган ҳашарот"], ["ТУПРОҚ", "Микроорганизмлар қолдиқларни шунга қайтаради"], ["ҚУЁШ", "Ўсимликлар энергияни шундан олади"]]
+  },
+  "asoslar:1": {
+    goal: "Иқлим нега ўзгараётганини ва уни секинлатиш учун ўзингиз нима қила олишингизни биласиз.",
+    wonder: "Нега ёзлар бобо-бувиларимиз ёшлигидагидан иссиқроқ бўлиб бормоқда?",
+    simple: ["Кўмир, нефть ва газ ёнганда ҳавога иссиқликни ушлайдиган газлар чиқади.", "Шу сабабли Ер исиб бормоқда, музликлар эримоқда.", "Чироқни ўчириш, пиёда юриш ва дарахт экиш ёрдам беради."],
+    task: "Бир кун давомида уйингизда нечта чироқ ва қурилма бекорга ёниб турганини санаб, рўйхат тузинг. Оилангиз билан қайсиларини ўчириш мумкинлигини келишинг.",
+    words: [["ИҚЛИМ", "Бир ҳудуддаги кўп йиллик об-ҳаво тартиби"], ["МУЗЛИК", "Тоғлардаги эриётган катта муз"], ["ИССИҚХОНА", "CO₂ кучайтирадиган эффект: ... эффекти"], ["КЎМИР", "Ёнганда кўп CO₂ чиқарадиган қазилма ёқилғи"]]
+  },
+  "asoslar:2": {
+    goal: "Чучук сув нега кам эканини ва уйда сувни қандай тежашни биласиз.",
+    wonder: "Ер юзининг катта қисми сув бўлса ҳам, нега ичимлик суви етишмайди?",
+    simple: ["Ердаги сувнинг кўп қисми шўр. Ичишга яроқли чучук сув жуда оз.", "Ўзбекистонда сувнинг кўп қисми далаларни суғоришга кетади.", "Тиш ювганда жўмракни ёпинг, оқаётган жўмракни тузатинг."],
+    task: "Тиш ювишда жўмрак очиқ қолса, 1 дақиқада қанча сув оқишини идишга йиғиб ўлчанг. Кейин бу сувни гулларга қуйинг.",
+    words: [["ЖЎМРАК", "Сув оқадиган кран"], ["ОРОЛ", "Сувдан нотўғри фойдаланиш туфайли қуриган денгиз"], ["ТОМЧИ", "Сувнинг энг кичик бўлаги"], ["ЧУЧУК", "Ичишга яроқли, шўр бўлмаган сув"]]
+  },
+  "asoslar:3": {
+    goal: "Чиқиндиларни турларга ажратишни ва «3R» қоидасини ўрганасиз.",
+    wonder: "Бугун ташлаган пластик бутилкангиз неча йилдан кейин йўқ бўлади?",
+    simple: ["Чиқиндини турига қараб алоҳида йиғамиз: қоғоз, пластик, шиша, металл, овқат қолдиғи.", "Пластик табиатда юзлаб йил сақланади.", "Аввал камроқ ишлатинг, кейин қайта фойдаланинг, охирида қайта ишланг."],
+    task: "Уйда 3 кун давомида пластик, қоғоз ва овқат қолдиқларини алоҳида қутиларга йиғинг. Қайси қути тезроқ тўлди? Нега?",
+    words: [["ПЛАСТИК", "Юзлаб йил чиримайдиган материал"], ["ШИША", "Қайта-қайта эритиб ишлатиладиган идиш материали"], ["МЕТАЛЛ", "Банка ва қопқоқлар тайёрланадиган материал"], ["САРАЛАШ", "Чиқиндиларни турларга ажратиш"]]
+  },
+
+  "korxona:0": {
+    goal: "Корхонада экологик менежмент тизими қандай ишлашини ва PDCA циклини тушунасиз.",
+    wonder: "Нега йирик харидорлар ҳамкорлардан ISO 14001 сертификатини сўрайди?",
+    simple: ["ISO 14001 — корхона табиатга зарарини бошқариши учун халқаро қоида.", "У тўрт қадамдан иборат: режалаштир, бажар, текшир, яхшила.", "Бу пул тежайди ва ҳамкорлар ишончини оширади."],
+    task: "Иш жойингизда табиатга таъсир қиладиган 3 та жараённи ёзинг (электр, қоғоз, чиқинди ва ҳ.к.) ва ҳар бирига битта яхшилаш таклифини беринг.",
+    words: [["СТАНДАРТ", "ISO 14001 — халқаро ..."], ["АУДИТ", "Тизимнинг ички текшируви"], ["ЦИКЛ", "Режалаштир—Бажар—Текшир—Такомиллаштир ..."], ["РЕЕСТР", "Экологик жиҳатлар ... и: қаерда нима сарфланади"]]
+  },
+  "korxona:1": {
+    goal: "Корхонада энергияни тез ва арзон тежаш йўлларини биласиз.",
+    wonder: "Кечаси ҳеч ким йўқ цехда нега ҳисоблагич айланишда давом этади?",
+    simple: ["Энергия — корхонанинг энг катта харажатларидан бири.", "LED чироқ, сенсорлар ва сизиб чиқишни тузатиш тез фойда беради.", "Аввал ўлчанг, кейин тежанг."],
+    task: "Иш жойингизда бир кун давомида кераксиз ёниб турган чироқ, компьютер ва ускуналарни санаб, рўйхат тузинг. Ҳар бирининг қувватини (Вт) ёзиб, ойлик исрофни ҳисобланг.",
+    words: [["СЕНСОР", "Одам йўқ пайтда чироқни ўчирадиган ҳаракат ..."], ["ИЗОЛЯЦИЯ", "Бинодан иссиқлик чиқиб кетишини камайтириш"], ["АУДИТ", "Энергия сарфини ўлчаб текшириш: энергия ..."], ["РЕКУПЕРАЦИЯ", "Иссиқликни қайта ишлатиш"]]
+  },
+  "korxona:2": {
+    goal: "«Ол—ишлат—ташла» ўрнига материалларни айланмада сақлашни ўрганасиз.",
+    wonder: "Бир заводнинг чиқиндиси бошқа завод учун пул бўлиши мумкинми?",
+    simple: ["Айланма иқтисодиётда нарсалар ташланмайди, қайта ишлатилади.", "Бир корхонанинг қолдиғи бошқасининг хомашёси бўлади.", "Энг яхши йўл — чиқиндининг олдини олиш."],
+    task: "Корхонангиз (ёки уйингиз) бир ҳафтада чиқарадиган 5 хил чиқиндини ёзинг. Ҳар бири учун: олдини олиш, қайта фойдаланиш ёки қайта ишлашдан қайси бири мумкин?",
+    words: [["КОМПОСТ", "Органик қолдиқлардан олинадиган ўғит"], ["БИОГАЗ", "Органик чиқиндидан олинадиган ёқилғи газ"], ["ХОМАШЁ", "Бир корхона чиқиндиси бошқасининг ... си бўлиши мумкин"], ["КАРТОН", "Қайта ишланадиган қалин қоғоз ўрам"]]
+  },
+  "korxona:3": {
+    goal: "ESG нима эканини ва корхона экологик кўрсаткичларини қандай йиғишни биласиз.",
+    wonder: "Нега банклар кредит беришдан олдин корхонанинг экологик ҳисоботини сўрай бошлади?",
+    simple: ["ESG — экология, жамият ва бошқарув бўйича баҳо.", "Корхона қанча энергия ва сув сарфлаши, қанча газ чиқаришини ҳисоблайди.", "Очиқ ҳисобот инвестор ва ҳамкорлар ишончини оширади."],
+    task: "Ўтган йилги электр, газ ва сув ҳисоб-варақаларини йиғиб, бир жадвалга ёзинг. Қайси ойда сарф энг кўп бўлди ва нега?",
+    words: [["ИНВЕСТОР", "Компанияга пул киритувчи"], ["ҲИСОБОТ", "Шаффоф ... «яшил» молияга йўл очади"], ["ЭКОЛОГИЯ", "ESG даги E ҳарфи"], ["ШАФФОФЛИК", "Ҳисоботнинг очиқ ва аниқ бўлиши"]]
+  },
+
+  "talaba:0": {
+    goal: "БМТнинг 17 та мақсадини ва улардан қайсилари экологияга оидлигини биласиз.",
+    wonder: "2030 йилда сиз нечага кирасиз ва дунё қандай бўлишини хоҳлайсиз?",
+    simple: ["2015 йилда дунё давлатлари 17 та катта мақсад белгилади.", "Улардан баъзилари тоза сув, тоза энергия ва иқлимга оид.", "Барқарорлик — бугун яшаб, келажакка зарар бермаслик."],
+    task: "17 та мақсаддан биттасини танланг. Мактаб ёки маҳаллангизда шу мақсад учун бир ҳафтада қила оладиган 3 та кичик ишни ёзинг ва биттасини бажаринг.",
+    words: [["МАҚСАД", "БМТ 17 та барқарор ривожланиш ... ини қабул қилган"], ["ИҚЛИМ", "13-мақсад: ... ҳаракати"], ["БАРҚАРОР", "Келажакка зарар бермайдиган ривожланиш"], ["АВЛОД", "Келажак ... лари эҳтиёжини ҳам ўйлаш керак"]]
+  },
+  "talaba:1": {
+    goal: "Орол денгизи нега қуриганини ва бугун қандай ёрдам берилаётганини тушунасиз.",
+    wonder: "Кема қумда, денгиздан юзлаб километр узоқда турибди. Бу қандай бўлиши мумкин?",
+    simple: ["Орол катта денгиз эди.", "Дарёлар суви далаларга жуда кўп олингани учун денгиз қуриб қолди.", "Энди туз ва чанг учади, одамлар соғлиғи ёмонлашди. Саксовул экиб, қумни ушлаймиз."],
+    task: "«Орол фожиаси» бўлимида денгизнинг олдинги ва бугунги ҳолатини солиштиринг. Фарқни расмда чизиб, оилангизга тушунтиринг.",
+    words: [["ОРОЛ", "Қуриб бораётган денгиз"], ["САКСОВУЛ", "Қумни ушлаш учун экиладиган чўл ўсимлиги"], ["ТУЗ", "Қуриган тубдан шамол учирадиган оқ модда"], ["АМУДАРЁ", "Оролга қуйиладиган икки дарёдан бири"], ["БАЛИҚЧИЛИК", "Денгиз қуригач йўқолган соҳа"]]
+  },
+  "talaba:2": {
+    goal: "Қуёш, шамол ва ақлли датчиклар табиатни асрашга қандай ёрдам беришини биласиз.",
+    wonder: "Томдаги қуёш панели бир кунда уйга қанча электр бериши мумкин?",
+    simple: ["Қуёш ва шамол — тугамайдиган, тоза энергия.", "Ақлли датчиклар сув ва энергияни ўлчаб, тежашга ёрдам беради.", "Сунъий йўлдошлар ўрмон ёнғинлари ва ифлосланишни кузатади."],
+    task: "«Ҳаво сифати» бўлимида 3 кун давомида шаҳрингиз кўрсаткичини ёзиб боринг. Қайси кун ҳаво тозароқ бўлди ва нега деб ўйлайсиз?",
+    words: [["ДАТЧИК", "Намлик ёки ҳароратни ўлчайдиган қурилма"], ["ШАМОЛ", "Тегирмонлари электр берадиган тоза энергия"], ["ЭЛЕКТРОМОБИЛ", "Бензинсиз юрадиган автомобил"], ["ҚУЁШ", "Ўзбекистонда йилига 300 кунга яқин порлайди"]]
+  },
+  "talaba:3": {
+    goal: "Кичик экологик тадқиқотни бошидан охиригача ўтказишни ўрганасиз.",
+    wonder: "Мактабингизда бир кунда неча килограмм чиқинди чиқади? Буни қандай аниқлаш мумкин?",
+    simple: ["Тадқиқот муаммони топишдан бошланади.", "Кейин маълумот йиғамиз: расм, ўлчов, жадвал.", "Охирида натижани бошқаларга кўрсатиб, ечим таклиф қиламиз."],
+    task: "Бир ҳафта давомида уйингизда ҳар куни нечта пластик пакет пайдо бўлишини санаб, жадвал ва оддий диаграмма тузинг.",
+    words: [["МУАММО", "Тадқиқотнинг биринчи қадами: ... ни аниқлаш"], ["ЖАДВАЛ", "Маълумотларни қатор ва устунларга ёзиш"], ["ПЛАКАТ", "Натижани кўрсатиш учун катта расмли варақ"], ["СМАРТФОН", "Маълумот йиғиш учун етарли восита"]]
+  },
+
+  "suvhavo:0": {
+    goal: "Ҳаво ифлосланиши, исиш ва сув танқислиги бир-бирига қандай боғлиқлигини кўрасиз.",
+    wonder: "Шаҳардаги машина тутуни тоғдаги музликка қандай таъсир қилиши мумкин?",
+    simple: ["Кўмир ва газ ёнганда ҳаво ифлосланади ва Ер исийди.", "Исиш музликларни эритади — дарёларда сув камаяди.", "Демак, ҳавони асраш — сувни ҳам асраш."],
+    task: "«Занжир» чизинг: ёқилғи → тутун → исиш → музлик → дарё → дала. Ҳар бир бўғин ёнига уни узиш учун битта иш ёзинг.",
+    words: [["ЗАНЖИР", "Учта муаммо битта ... нинг бўғинлари"], ["МУЗЛИК", "Амударё сувининг асосий манбаи"], ["ҚУРУМ", "Ёнишдан чиқадиган қора заррача"], ["БУҒЛАНИШ", "Исиш кучайтирадиган сув йўқотиш"]]
+  },
+  "suvhavo:1": {
+    goal: "Сув тоза ёки ифлослигини қайси белгилар бўйича билиш мумкинлигини ўрганасиз.",
+    wonder: "Тиниқ кўринган сув ҳам хавфли бўлиши мумкинми?",
+    simple: ["Сувнинг тозалигини кўз билан аниқлаб бўлмайди.", "Лабораторияда pH, лойқалик, нитрат ва микроблар текширилади.", "Шубҳали сувни қайнатиб ичинг."],
+    task: "Жўмрак суви ва (бўлса) булоқ сувини иккита тиниқ идишга қуйиб, 1 кун тиндиринг. Тубида чўкма борми? Кузатувни ёзиб қўйинг.",
+    words: [["ЛОЙҚАЛИК", "Сувнинг хиралиги, NTU да ўлчанади"], ["НИТРАТ", "50 мг/л дан ошмаслиги керак бўлган модда"], ["ВАБО", "Ифлос сув тарқатадиган оғир касаллик"], ["ҚАЙНАТИШ", "Шубҳали сувни ичишдан олдин ..."]]
+  },
+  "suvhavo:2": {
+    goal: "Сув қандай босқичлар билан тозаланишини тартиб билан айта оласиз.",
+    wonder: "Ваннадан оқиб кетган сув қаерга боради ва қандай қилиб яна тоза бўлади?",
+    simple: ["Сув аввал панжара ва тиндиргичдан ўтади.", "Кейин бактериялар ифлосликни «ейди».", "Охирида хлор, озон ёки ультрабинафша нур билан микроблар йўқотилади."],
+    task: "Уйда фильтр ясанг: пластик бутилка, пахта, қум ва майда тош. Лойқа сувни ўтказиб, олдинги ва кейинги ҳолатини солиштиринг. (Бу сувни ичманг!)",
+    words: [["ТИНДИРГИЧ", "Заррачалар чўкадиган ҳовуз"], ["БАКТЕРИЯ", "Фаол лойда органик моддани парчалайди"], ["ОЗОН", "Зарарсизлантириш учун ишлатиладиган газ"], ["ОСМОС", "Шўр сувни чучуклаштириш: тескари ..."], ["ХЛОР", "Қувурларни ҳимоялаш учун оз миқдорда қўшиладиган модда"]]
+  },
+  "suvhavo:3": {
+    goal: "PM2.5 нима эканини ва ифлос ҳаво кунларида ўзингизни қандай ҳимоя қилишни биласиз.",
+    wonder: "Қишда шаҳар устида кулранг «қалпоқ» нега пайдо бўлади?",
+    simple: ["Ҳавода кўзга кўринмайдиган жуда майда чанг бор.", "Энг майдаси (PM2.5) ўпкага чуқур киради ва зарарли.", "Ифлос кунда ташқарида кам югуринг, хонани эрталаб шамоллатинг."],
+    task: "«Ҳаво сифати» бўлимида шаҳрингизнинг PM2.5 кўрсаткичини эрталаб ва кечқурун текширинг. Қачон ҳаво тозароқ экан?",
+    words: [["ЧАНГ", "Ҳавода муаллақ турган қаттиқ заррачалар"], ["ФИЛТР", "Заводда чангни ушлайдиган мослама"], ["ЦЕМЕНТ", "Клинкер печлари бўлган ишлаб чиқариш"], ["ЎПКА", "PM2.5 чуқур кирадиган нафас аъзоси"], ["НАФАС", "PM2.5 ... йўлларига чуқур киради"]]
+  },
+  "suvhavo:4": {
+    goal: "Ўзбекистонда сув ва ҳавони асраш учун энг самарали ечимларни биласиз.",
+    wonder: "Нега кўчат экиш эмас, уни ўстириш муҳимроқ?",
+    simple: ["Сувнинг энг кўпи далаларни суғоришга кетади.", "Томчилатиб суғориш сувни деярли ярмигача тежайди.", "Маҳаллий дарахт экиб, уни парвариш қилиш керак."],
+    task: "Ҳовли ёки мактабда бир туп маҳаллий дарахт (жийда, туранғил ва б.) экинг ёки мавжуд дарахтни 2 ҳафта суғориб боринг. Ҳар ҳафта расмга олинг.",
+    words: [["ТОМЧИЛАТИБ", "Сувни 30–50 % тежайдиган суғориш усули"], ["ЖИЙДА", "Қурғоқчиликка чидамли маҳаллий дарахт"], ["ДАЛА", "Суғориладиган экин майдони"], ["КЎЧАТ", "Экиладиган ёш дарахт"]]
+  }
+};
+COURSES.forEach((c) => c.lessons.forEach((l, i) => Object.assign(l, LESSON_PLUS[`${c.id}:${i}`] || {})));
+
+/* Финляндия усулининг асосий тамойиллари (Курслар бўлими тепасида) */
+const FIN_PRINCIPLES = [
+  ["🎈", "Қизиқиш ва ўйин", "Ўйнаб, кроссворд ечиб ўрганамиз"],
+  ["🔍", "Ҳаётдан савол", "Ҳар дарс кундалик ҳаётдаги ҳодисадан бошланади"],
+  ["🐾", "Кичик қадамлар", "Битта дарс 5–10 дақиқа"],
+  ["🤲", "Қўл билан бажариш", "Ҳар дарсда уйда қиладиган топшириқ"],
+  ["🪞", "Ўзингизни баҳоланг", "Баҳо эмас, ўсиш муҳим. Хато қилиш мумкин"],
+  ["🐢", "Ўз суръатингизда", "Шошилмасдан, хоҳлаганча қайтаринг"],
+  ["☕", "Дам олиш", "Дарсдан кейин қисқа танаффус"]
+];
+
+/* Мавзули кроссвордлар */
+const CROSSWORDS = [
+  {
+    id: "bolalar", icon: "🧒", level: "Осон", title: "Болалар учун", color: "#f59e0b",
+    words: [["ДАРАХТ", "Кислород берадиган катта ўсимлик"], ["ЛОЛА", "Баҳорда очиладиган қизил гул"], ["ҚУШ", "Дарахтда уя қуради, сайрайди"], ["БУЛОҚ", "Ердан чиқадиган тоза сув"], ["ҚУЁШ", "Бизни иситадиган юлдуз"], ["АРИ", "Асал берадиган ҳашарот"], ["БАЛИҚ", "Дарёда сузади"]]
+  },
+  {
+    id: "suv", icon: "💧", level: "Осон", title: "Сув дунёси", color: "#0ea5e9",
+    words: [["ДАРЁ", "Амударё ва Сирдарё нима?"], ["БУЛУТ", "Осмонда сув томчиларидан ҳосил бўлади"], ["ЁМҒИР", "Булутдан ерга тушадиган сув"], ["БУЛОҚ", "Ердан ўзи отилиб чиқадиган тоза сув"], ["МУЗЛИК", "Тоғларда дарёларни сув билан таъминлайдиган муз"], ["ДЕНГИЗ", "Орол — қуриб бораётган ..."], ["КЎЛ", "Атрофи қуруқлик билан ўралган сув ҳавзаси"], ["СУҒОРИШ", "Далага сув бериш"]]
+  },
+  {
+    id: "chiqindi", icon: "♻️", level: "Осон", title: "Чиқиндилар", color: "#16a34a",
+    words: [["ПЛАСТИК", "Юзлаб йил чиримайдиган материал"], ["ШИША", "Синадиган, тиниқ идиш материали"], ["ҚОҒОЗ", "Дарахтдан тайёрланади, қайта ишланади"], ["МЕТАЛЛ", "Банка ва қопқоқлар материали"], ["КОМПОСТ", "Овқат қолдиқларидан олинадиган ўғит"], ["БАТАРЕЯ", "Алоҳида топшириладиган хавфли чиқинди"], ["САРАЛАШ", "Чиқиндиларни турларга ажратиш"], ["ПОЛИГОН", "Чиқиндилар кўмиладиган жой"]]
+  },
+  {
+    id: "tabiat", icon: "🌳", level: "Ўрта", title: "Ўсимлик ва ҳайвонлар", color: "#65a30d",
+    words: [["САКСОВУЛ", "Қумни ушлайдиган чўл дарахти"], ["ЖАЙРОН", "Қизил китобга кирган чаққон чўл ҳайвони"], ["ҚОПЛОН", "Тоғларда яшайдиган қор ..."], ["АРЧА", "Тоғларда ўсадиган доим яшил дарахт"], ["ЧИНОР", "Юзлаб йил яшайдиган катта соя дарахти"], ["АСАЛАРИ", "Гулларни чанглатадиган ҳашарот"], ["БУРГУТ", "Тоғларда учадиган йиртқич қуш"], ["ЛОЛА", "Баҳорда адирларда очиладиган қизил гул"]]
+  },
+  {
+    id: "havo", icon: "🌫️", level: "Ўрта", title: "Ҳаво ва иқлим", color: "#0284c7",
+    words: [["КИСЛОРОД", "Нафас олишимиз учун зарур газ"], ["ЧАНГ", "Ҳавода учиб юрадиган майда заррачалар"], ["ТУТУН", "Ёнганда чиқадиган қора-кулранг газ"], ["ИҚЛИМ", "Кўп йиллик об-ҳаво тартиби"], ["ИССИҚХОНА", "CO₂ кучайтирадиган ... эффекти"], ["ШАМОЛ", "Ҳавонинг бир жойдан бошқасига оқими"], ["СМОГ", "Шаҳар устидаги заҳарли туман"], ["ОЗОН", "Ерни қуёш нуридан ҳимоя қиладиган қатлам"]]
+  },
+  {
+    id: "orol", icon: "🌊", level: "Ўрта", title: "Орол ва Ўзбекистон табиати", color: "#0891b2",
+    words: [["ОРОЛ", "Қуриб бораётган денгиз"], ["ТУЗ", "Қуриган денгиз тубида қолган оқ модда"], ["ЧЎЛ", "Қизилқум — бу ..."], ["АМУДАРЁ", "Ўзбекистоннинг энг катта дарёси"], ["БАЛИҚ", "Орол қуригач, унинг овланиши тўхтади"], ["МЎЙНОҚ", "Кемалар «қабристони» бор собиқ денгиз бўйи шаҳри"], ["БЎРОН", "Туз ва чангни узоққа учирадиган кучли шамол"], ["САКСОВУЛ", "Орол тубига экилаётган ўсимлик"]]
+  },
+  {
+    id: "energiya", icon: "⚡", level: "Ўрта", title: "Энергия", color: "#ea580c",
+    words: [["ҚУЁШ", "Панеллари электр берадиган энергия манбаи"], ["ШАМОЛ", "Парраклари айланиб, электр ишлаб чиқаради"], ["ЭЛЕКТР", "Чироқ ва телефонни ишлатадиган энергия"], ["КЎМИР", "Ёнганда кўп тутун чиқарадиган ёқилғи"], ["ТЕЖАШ", "Кераксиз чироқни ўчириш — энергияни ..."], ["ЧИРОҚ", "Хонадан чиқаётганда ўчириладиган нарса"], ["БИОГАЗ", "Гўнг ва органик қолдиқлардан олинадиган ёқилғи"], ["ВЕЛОСИПЕД", "Ёқилғисиз, соғлиқ учун фойдали транспорт"]]
+  },
+  {
+    id: "atamalar", icon: "🎓", level: "Қийин", title: "Экология атамалари", color: "#7c3aed",
+    words: [["ЭКОТИЗИМ", "Тирик мавжудотлар ва уларнинг муҳити бирлиги"], ["БИОСФЕРА", "Ердаги ҳаёт тарқалган қобиқ"], ["ЭРОЗИЯ", "Тупроқнинг шамол ва сув билан емирилиши"], ["МОНИТОРИНГ", "Табиат ҳолатини мунтазам кузатиш"], ["ФОТОСИНТЕЗ", "Ўсимликлар қуёш нурида озиқ ҳосил қилиши"], ["ЭКОЛОГИЯ", "Тирик организмлар ва муҳит ҳақидаги фан"], ["ОСМОС", "Шўр сувни чучуклаштириш: тескари ..."], ["КОМПОСТ", "Органик қолдиқлардан тайёрланадиган ўғит"]]
+  }
+];
+
+/* Кроссворд ясовчи: сўзларни ҳар бир алифбода алоҳида жойлайди.
+   Лотин ёзувида sh, ch, oʻ, gʻ — битта катак (ўзбек алифбосидаги каби). */
+const EkoCross = (() => {
+  "use strict";
+  const lat = () => typeof EkoLang !== "undefined" && EkoLang.lang === "lat";
+  const APOS = /[ʻʼ'`’‘]/g;
+
+  function tokens(word, latin = lat()) {
+    const w = String(word).toLowerCase();
+    if (!latin) return [...w].filter((c) => /\p{L}/u.test(c));
+    const s = EkoLang.tr(w).toLowerCase().replace(APOS, "ʻ");
+    return (s.match(/oʻ|gʻ|sh|ch|\p{L}/gu) || []);
+  }
+
+  /* Тасодифий, лекин ҳар доим бир хил (seed) — ҳар очилганда бир хил тўр */
+  function rng(seed) {
+    let h = 2166136261;
+    for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+    return () => { h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return ((h ^= h >>> 16) >>> 0) / 4294967296; };
+  }
+
+  /* Орқага қайтиб излаш: аввал энг кам вариантли сўзни жойлаймиз. Кичик тўплам учун тез. */
+  function layout(base, rand) {
+    const grid = new Map();
+    const key = (r, c) => r + "," + c;
+    const placed = [];
+    let best = null, nodes = 0, found = 0;
+    const fits = (t, r, c, dir) => {
+      const dr = dir === "d" ? 1 : 0, dc = dir === "a" ? 1 : 0;
+      if (grid.has(key(r - dr, c - dc)) || grid.has(key(r + dr * t.length, c + dc * t.length))) return -1;
+      let cross = 0;
+      for (let i = 0; i < t.length; i++) {
+        const rr = r + dr * i, cc = c + dc * i;
+        const g = grid.get(key(rr, cc));
+        if (g) { if (g.ch !== t[i] || g.dirs.includes(dir)) return -1; cross++; continue; }
+        // Ён томонда бегона ҳарф бўлмасин
+        if (grid.has(key(rr + dc, cc + dr)) || grid.has(key(rr - dc, cc - dr))) return -1;
+      }
+      return cross === t.length ? -1 : cross;
+    };
+    const cands = (w) => {
+      const out = [];
+      for (const p of placed) {
+        const dir = p.dir === "a" ? "d" : "a";
+        for (let i = 0; i < p.t.length; i++) for (let j = 0; j < w.t.length; j++) {
+          if (p.t[i] !== w.t[j]) continue;
+          const pr = p.r + (p.dir === "d" ? i : 0), pc = p.c + (p.dir === "a" ? i : 0);
+          const r = dir === "d" ? pr - j : pr, c = dir === "a" ? pc - j : pc;
+          if (!out.some((o) => o.r === r && o.c === c && o.dir === dir) && fits(w.t, r, c, dir) > 0) out.push({ r, c, dir });
+        }
+      }
+      return out;
+    };
+    const put = (w, r, c, dir) => {
+      const dr = dir === "d" ? 1 : 0, dc = dir === "a" ? 1 : 0;
+      const fresh = [];
+      w.t.forEach((ch, i) => {
+        const k = key(r + dr * i, c + dc * i);
+        const g = grid.get(k);
+        if (g) g.dirs.push(dir); else { grid.set(k, { ch, dirs: [dir] }); fresh.push(k); }
+      });
+      placed.push({ ...w, r, c, dir });
+      return () => {
+        placed.pop();
+        w.t.forEach((_, i) => { const g = grid.get(key(r + dr * i, c + dc * i)); if (g) g.dirs.pop(); });
+        fresh.forEach((k) => grid.delete(k));
+      };
+    };
+    const score = () => {
+      const rs = placed.flatMap((p) => [p.r, p.r + (p.dir === "d" ? p.t.length - 1 : 0)]);
+      const cs = placed.flatMap((p) => [p.c, p.c + (p.dir === "a" ? p.t.length - 1 : 0)]);
+      const h = Math.max(...rs) - Math.min(...rs) + 1, w = Math.max(...cs) - Math.min(...cs) + 1;
+      return { s: placed.length * 1000 - h * w - Math.abs(h - w) * 4 - Math.max(0, w - 12) * 30, h, w, r0: Math.min(...rs), c0: Math.min(...cs) };
+    };
+    const record = () => {
+      const sc = score();
+      if (!best || sc.s > best.s) best = { ...sc, placed: placed.map((p) => ({ ...p })) };
+    };
+    function dfs(rest) {
+      if (++nodes > 3000 || found >= 12) return;
+      if (!rest.length) { found++; record(); return; }
+      let pick = null;
+      for (const w of rest) {
+        const cs = cands(w);
+        if (cs.length && (!pick || cs.length < pick.cs.length)) pick = { w, cs };
+      }
+      if (!pick) { record(); return; }
+      const opts = pick.cs.sort(() => rand() - 0.5);
+      for (const o of opts) {
+        const undo = put(pick.w, o.r, o.c, o.dir);
+        dfs(rest.filter((x) => x !== pick.w));
+        undo();
+        if (nodes > 3000 || found >= 12) return;
+      }
+    }
+    const order = [...base].sort((x, y) => y.t.length - x.t.length);
+    for (const first of order) {
+      nodes = 0;
+      const undo = put(first, 0, 0, "a");
+      dfs(base.filter((x) => x !== first));
+      undo();
+      if (best && best.placed.length === base.length && found >= 4) break;
+    }
+    return best;
+  }
+
+  function build(words, seed) {
+    const latin = lat();
+    const base = words.map(([a, q], i) => ({ i, a, q, t: tokens(a, latin) })).filter((w) => w.t.length > 1);
+    const best = layout(base, rng(seed + (latin ? ":lat" : ":cyr")));
+    const { placed, r0, c0, h, w } = best;
+    placed.forEach((p) => { p.r -= r0; p.c -= c0; });
+    // Рақамлаш: юқоридан пастга, чапдан ўнгга
+    const starts = [...new Set(placed.map((p) => p.r * 1000 + p.c))].sort((a, b) => a - b);
+    placed.forEach((p) => { p.n = starts.indexOf(p.r * 1000 + p.c) + 1; });
+    placed.sort((a, b) => a.n - b.n);
+    return { rows: h, cols: w, words: placed, latin };
+  }
+
+  const norm = (v) => String(v || "").toLowerCase().replace(APOS, "ʻ").trim();
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* Кроссвордни контейнерга чизади. opts: { id, words, onSolve, compact } */
+  function mount(box, opts) {
+    let L, cells, dir = "a", active = null, solved = false, revealed = false;
+    const ac = new AbortController();
+    const on = { signal: ac.signal };
+
+    function render() {
+      L = build(opts.words, opts.id);
+      cells = new Map();
+      L.words.forEach((w) => w.t.forEach((ch, i) => {
+        const r = w.r + (w.dir === "d" ? i : 0), c = w.c + (w.dir === "a" ? i : 0);
+        const k = r + "," + c;
+        const cell = cells.get(k) || { r, c, ch, words: [] };
+        cell.words.push(w);
+        if (i === 0) cell.n = w.n;
+        cells.set(k, cell);
+      }));
+      const across = L.words.filter((w) => w.dir === "a"), down = L.words.filter((w) => w.dir === "d");
+      const clue = (w) => `<li data-w="${L.words.indexOf(w)}"><b>${w.n}.</b> ${esc(w.q)} <span class="xw-len">(${w.t.length})</span></li>`;
+      let grid = "";
+      for (let r = 0; r < L.rows; r++) for (let c = 0; c < L.cols; c++) {
+        const cell = cells.get(r + "," + c);
+        grid += cell
+          ? `<div class="xw-cell" data-k="${r},${c}">${cell.n ? `<span class="xw-n">${cell.n}</span>` : ""}<input maxlength="2" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="${r + 1}-қатор, ${c + 1}-устун"></div>`
+          : `<span class="xw-gap"></span>`;
+      }
+      box.innerHTML = `
+        <div class="xw ${opts.compact ? "xw-compact" : ""}">
+          <div class="xw-board"><div class="xw-grid" style="--cols:${L.cols}">${grid}</div></div>
+          <div class="xw-clues">
+            ${across.length ? `<div><h4>➡️ Энига</h4><ol>${across.map(clue).join("")}</ol></div>` : ""}
+            ${down.length ? `<div><h4>⬇️ Бўйига</h4><ol>${down.map(clue).join("")}</ol></div>` : ""}
+          </div>
+          <div class="xw-actions">
+            <button type="button" class="btn btn-primary btn-sm" data-x="check">✓ Текшириш</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-x="hint">💡 Битта ҳарф</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-x="show">👁 Жавоблар</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-x="clear">↺ Тозалаш</button>
+          </div>
+          <p class="xw-msg small muted" aria-live="polite">${L.latin ? "Лотинда sh, ch, oʻ, gʻ битта катакка ёзилади." : "Катакни босинг ва ёзинг. Савол рақамини босиб, сўзни танланг."}</p>
+        </div>`;
+      solved = false; revealed = false;
+    }
+
+    const cellEl = (k) => box.querySelector(`.xw-cell[data-k="${k}"]`);
+    const inputOf = (k) => { const el = cellEl(k); return el && el.querySelector("input"); };
+    const keyOfInput = (inp) => inp.closest(".xw-cell").dataset.k;
+    const wordCells = (w) => w.t.map((_, i) => (w.r + (w.dir === "d" ? i : 0)) + "," + (w.c + (w.dir === "a" ? i : 0)));
+
+    function highlight() {
+      box.querySelectorAll(".xw-cell.on, .xw-cell.cur").forEach((e) => e.classList.remove("on", "cur"));
+      box.querySelectorAll(".xw-clues li.on").forEach((e) => e.classList.remove("on"));
+      if (!active) return;
+      const cell = cells.get(active);
+      const w = cell.words.find((x) => x.dir === dir) || cell.words[0];
+      dir = w.dir;
+      wordCells(w).forEach((k) => cellEl(k).classList.add("on"));
+      cellEl(active).classList.add("cur");
+      const li = box.querySelector(`.xw-clues li[data-w="${L.words.indexOf(w)}"]`);
+      if (li) li.classList.add("on");
+    }
+
+    function focus(k) {
+      const inp = inputOf(k);
+      if (!inp) return;
+      active = k; inp.focus(); inp.select(); highlight();
+    }
+
+    function step(k, d, back = false) {
+      const [r, c] = k.split(",").map(Number);
+      const s = back ? -1 : 1;
+      const nk = d === "a" ? `${r},${c + s}` : `${r + s},${c}`;
+      return cells.has(nk) ? nk : null;
+    }
+
+    const COMBINE = { s: "h", c: "h", o: "ʻ", g: "ʻ" };
+    function accept(inp, v) {
+      v = norm(v);
+      const k = keyOfInput(inp);
+      if (!v) { inp.value = ""; return; }
+      if (!L.latin) {
+        inp.value = v.slice(-1).toUpperCase();
+        const n = step(k, dir); if (n) focus(n);
+        return;
+      }
+      // Лотин: «s»+«h», «o»+«ʻ» каби икки белгини битта катакда бирлаштириш
+      if (v.length >= 2) {
+        const pair = v.slice(0, 2);
+        if (COMBINE[pair[0]] === pair[1]) { inp.value = cap(pair); const n = step(k, dir); if (n) focus(n); return; }
+        inp.value = cap(v[0]);
+        const n = step(k, dir);
+        if (n) { focus(n); accept(inputOf(n), v.slice(1)); }
+        return;
+      }
+      inp.value = cap(v);
+      if (!(v in COMBINE)) { const n = step(k, dir); if (n) focus(n); }
+    }
+    const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+    function check(silent) {
+      let empty = 0, wrong = 0;
+      cells.forEach((cell, k) => {
+        const inp = inputOf(k);
+        const v = norm(inp.value);
+        cellEl(k).classList.remove("ok", "bad");
+        if (!v) { empty++; return; }
+        if (v !== cell.ch) { wrong++; if (!silent) cellEl(k).classList.add("bad"); }
+        else if (!silent) cellEl(k).classList.add("ok");
+      });
+      const msg = box.querySelector(".xw-msg");
+      if (!empty && !wrong) return win();
+      if (silent) return;
+      msg.textContent = wrong
+        ? `${wrong} та катакни яна бир ўйлаб кўринг. Қизил катаклар — маслаҳат, хато эмас 🙂`
+        : `Ҳаммаси тўғри! Яна ${empty} та катак қолди.`;
+    }
+
+    function win() {
+      if (solved) return;
+      solved = true;
+      cells.forEach((_, k) => { cellEl(k).classList.remove("bad"); cellEl(k).classList.add("ok"); });
+      box.querySelector(".xw-msg").innerHTML = revealed
+        ? "Жавоблар кўрсатилди. Кейинги сафар ўзингиз ечиб кўринг — сиз уддалайсиз! 💪"
+        : "🎉 Офарин! Кроссворд тўлиқ ечилди.";
+      if (!revealed && opts.onSolve) opts.onSolve();
+    }
+
+    box.addEventListener("click", (e) => {
+      const x = e.target.closest("[data-x]");
+      if (x) {
+        const a = x.dataset.x;
+        if (a === "check") check(false);
+        if (a === "clear") { cells.forEach((_, k) => { inputOf(k).value = ""; cellEl(k).classList.remove("ok", "bad"); }); solved = false; revealed = false; box.querySelector(".xw-msg").textContent = ""; }
+        if (a === "show") { revealed = true; cells.forEach((cell, k) => { inputOf(k).value = cap(cell.ch); }); check(true); }
+        if (a === "hint") {
+          const left = [...cells].filter(([k, cell]) => norm(inputOf(k).value) !== cell.ch);
+          const pick = left.find(([k]) => active && cellEl(k).classList.contains("on")) || left[0];
+          if (pick) { inputOf(pick[0]).value = cap(pick[1].ch); cellEl(pick[0]).classList.add("ok"); check(true); }
+        }
+        return;
+      }
+      const li = e.target.closest(".xw-clues li[data-w]");
+      if (li) { const w = L.words[+li.dataset.w]; dir = w.dir; focus(wordCells(w)[0]); return; }
+      const cell = e.target.closest(".xw-cell");
+      if (cell) {
+        const k = cell.dataset.k;
+        if (k === active && cells.get(k).words.length > 1) dir = dir === "a" ? "d" : "a";
+        active = k; highlight();
+      }
+    }, on);
+    box.addEventListener("focusin", (e) => {
+      const inp = e.target.closest(".xw-cell input");
+      if (!inp) return;
+      inp.select();
+      if (keyOfInput(inp) !== active) { active = keyOfInput(inp); highlight(); }
+    }, on);
+    box.addEventListener("input", (e) => {
+      const inp = e.target.closest(".xw-cell input");
+      if (!inp) return;
+      cellEl(keyOfInput(inp)).classList.remove("ok", "bad");
+      accept(inp, inp.value);
+      check(true);
+    }, on);
+    box.addEventListener("keydown", (e) => {
+      const inp = e.target.closest(".xw-cell input");
+      if (!inp) return;
+      const k = keyOfInput(inp);
+      const mv = { ArrowRight: ["a", false], ArrowLeft: ["a", true], ArrowDown: ["d", false], ArrowUp: ["d", true] }[e.key];
+      if (mv) {
+        e.preventDefault();
+        let n = k;
+        const [r, c] = k.split(",").map(Number);
+        for (let s = 1; s < 30; s++) {
+          const nk = mv[0] === "a" ? `${r},${c + (mv[1] ? -s : s)}` : `${r + (mv[1] ? -s : s)},${c}`;
+          if (cells.has(nk)) { n = nk; break; }
+        }
+        if (cells.get(n).words.some((w) => w.dir === mv[0])) dir = mv[0];
+        focus(n);
+      } else if (e.key === "Backspace" && !inp.value) {
+        e.preventDefault();
+        const p = step(k, dir, true);
+        if (p) { inputOf(p).value = ""; focus(p); }
+      }
+    }, on);
+
+    render();
+    window.addEventListener("eko:lang", () => { active = null; render(); }, on);
+    return { destroy: () => ac.abort(), rerender: render };
+  }
+
+  return { tokens, build, mount };
+})();
+</script>
+  <script>
 /* ЭкоТаълим — асосий мантиқ */
 (() => {
   "use strict";
@@ -2371,7 +3096,7 @@ const LIBRARY = {
 
   /* ---------- Ҳолат (браузерда сақланади) ---------- */
   const KEY = "ekotalim:v1";
-  const fresh = () => ({ xp: 0, correct: {}, perfect: {}, challenges: {}, flags: {}, read: {}, name: "", games: {} });
+  const fresh = () => ({ xp: 0, correct: {}, perfect: {}, challenges: {}, flags: {}, read: {}, name: "", games: {}, self: {}, tasks: {}, xw: {}, easy: false, big: false });
   let state = fresh();
   try { state = Object.assign(fresh(), JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { /* хотира йўқ — сақламасдан ишлайди */ }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* ignore */ } };
@@ -2423,16 +3148,19 @@ const LIBRARY = {
         <h3>${esc(c.title)}</h3>
         <p>${esc(c.desc)}</p>
         <div class="progress" title="${pct}%"><div style="width:${pct}%"></div></div>
-        <span class="small muted">${p.done} / ${p.total} дарс тугатилди</span>
+        <span class="small muted">${p.done} / ${p.total} дарс тугатилди${selfNote(c.id)}</span>
         <ul class="lesson-list">${c.lessons.map((l, i) => `
           <li><button data-c="${c.id}" data-l="${i}">
             <span class="${lessonDone(c.id, i) ? "done" : ""}">${lessonDone(c.id, i) ? "✓" : i + 1}</span>
             ${esc(l.title)}<span class="mins">${l.minutes} дақ</span>
           </button></li>`).join("")}
         </ul>
+        <div class="course-btns">
         ${complete
           ? `<button class="btn btn-primary" data-cert="${c.id}">🏆 Сертификат олиш</button>`
-          : `<button class="btn btn-ghost" data-c="${c.id}" data-l="${c.lessons.findIndex((_, i) => !lessonDone(c.id, i))}">${p.done ? "Давом эттириш" : "Бошлаш"} →</button>`}
+          : `<button class="btn btn-primary" data-c="${c.id}" data-l="${c.lessons.findIndex((_, i) => !lessonDone(c.id, i))}">${p.done ? "Давом эттириш" : "Бошлаш"} →</button>`}
+          <button class="btn btn-ghost" data-book="${c.id}">📖 Дарслик</button>
+        </div>
       </article>`;
     }).join("");
 
@@ -2449,9 +3177,27 @@ const LIBRARY = {
     renderCourses();
   });
 
+  /* Ўз-ўзини баҳолаш: курс бўйича «тушундим» белгилари */
+  const SELF = [["3", "😀", "Тушундим, бошқаларга ҳам айтиб бера оламан"], ["2", "🙂", "Асосан тушундим"], ["1", "🤔", "Яна бир ўқиб чиқаман"]];
+  function selfNote(cid) {
+    const marks = Object.entries(state.self || {}).filter(([k]) => k.startsWith(cid + ":")).map(([, v]) => v);
+    const again = marks.filter((v) => v === "1").length;
+    return again ? ` · 🤔 ${again} дарсни такрорлаш` : "";
+  }
+
+  /* Финляндия усули тамойиллари */
+  $("#finIntro").innerHTML = `
+    <details class="fin-card" open>
+      <summary><span class="fin-flag" aria-hidden="true">🇫🇮</span><b>Финляндия усулида ўқиймиз</b><span class="muted small">— дунёдаги энг яхши таълим тизимларидан бири</span></summary>
+      <div class="fin-grid">${FIN_PRINCIPLES.map(([i, t, d]) => `<div class="fin-item"><span aria-hidden="true">${i}</span><div><b>${esc(t)}</b><small>${esc(d)}</small></div></div>`).join("")}</div>
+      <p class="small muted fin-how">Ҳар бир дарс: 🎯 мақсад → 🤔 ҳаётий савол → 📖 қисқа матн (ёки «Осон тилда») → 🤲 амалий топшириқ → 🧩 мини-кроссворд → 📝 стрессиз тест → 🪞 ўзингизни баҳолаш.</p>
+    </details>`;
+
   $("#courseGrid").addEventListener("click", (e) => {
     const cert = e.target.closest("[data-cert]");
     if (cert) return openCertificate(cert.dataset.cert);
+    const book = e.target.closest("[data-book]");
+    if (book) return openBook(book.dataset.book);
     const b = e.target.closest("[data-c]");
     if (b) openLesson(b.dataset.c, +b.dataset.l);
   });
@@ -2462,65 +3208,141 @@ const LIBRARY = {
   modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
   modal.addEventListener("close", () => { renderCourses(); renderLibrary(); });
 
+  let lessonXw = null;
+  modal.addEventListener("close", () => { if (lessonXw) { lessonXw.destroy(); lessonXw = null; } document.body.classList.remove("print-book"); });
+
   function openLesson(cid, li) {
     const course = COURSES.find((c) => c.id === cid);
     const lesson = course.lessons[li];
+    const lk = `${cid}:${li}`;
     const answered = {};
+    const easy = state.easy && lesson.simple;
+    const paras = easy ? lesson.simple : lesson.body;
+    if (lessonXw) { lessonXw.destroy(); lessonXw = null; }
     modalBody.innerHTML = `
-      <span class="pill">${course.icon} ${esc(course.title)} · ${li + 1}/${course.lessons.length}-дарс</span>
+      <div class="lesson ${state.big ? "lesson-big" : ""}">
+      <div class="lesson-top">
+        <span class="pill">${course.icon} ${esc(course.title)} · ${li + 1}/${course.lessons.length}-дарс</span>
+        <span class="lesson-steps" aria-label="Дарслар">${course.lessons.map((_, i) => `<i class="${i === li ? "cur" : lessonDone(cid, i) ? "done" : ""}"></i>`).join("")}</span>
+      </div>
       <h2>${esc(lesson.title)}</h2>
-      <div class="lesson-body">${lesson.body.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+      <p class="small muted lesson-meta">⏱ ${lesson.minutes} дақиқа · 🐢 ўз суръатингизда</p>
+      ${lesson.goal ? `<div class="lesson-goal">🎯 <b>Бугун нимани биласиз:</b> ${esc(lesson.goal)}</div>` : ""}
+      ${lesson.wonder ? `<div class="lesson-wonder">🤔 <b>Ўйлаб кўринг:</b> ${esc(lesson.wonder)}<small>Жавобни ҳозир билмасангиз ҳам майли — дарс охирида яна шу саволга қайтинг.</small></div>` : ""}
+      <div class="lesson-tools">
+        ${lesson.simple ? `<div class="seg" role="group" aria-label="Матн тури">
+          <button class="${easy ? "" : "on"}" data-mode="full">📖 Тўлиқ матн</button>
+          <button class="${easy ? "on" : ""}" data-mode="easy">🧒 Осон тилда</button>
+        </div>` : ""}
+        <button class="seg-one ${state.big ? "on" : ""}" id="bigText" aria-pressed="${state.big}" title="Ҳарфларни катталаштириш">Aa</button>
+      </div>
+      <div class="lesson-body ${easy ? "easy" : ""}">${paras.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
       <div class="lesson-tip">💡 <b>Амалий маслаҳат:</b> ${esc(lesson.tip)}</div>
       ${course.source ? `<p class="small muted lesson-src">📘 Манба: ${esc(course.source)}</p>` : ""}
+      ${lesson.task ? `<div class="lesson-task">
+        <h3>🤲 Амалий топшириқ</h3>
+        <p>${esc(lesson.task)}</p>
+        <label class="task-done"><input type="checkbox" id="taskDone" ${state.tasks[lk] ? "checked" : ""}> Бажардим (+5 XP)</label>
+      </div>` : ""}
+      ${lesson.words ? `<div class="lesson-xw">
+        <h3>🧩 Мини-кроссворд</h3>
+        <p class="small muted">Дарсдаги асосий сўзларни эслаб қолиш учун.</p>
+        <div id="lessonXw"></div>
+      </div>` : ""}
       <div class="quiz">
-        <h3>📝 Билимингизни синанг</h3>
+        <h3>📝 Ўзингизни синанг</h3>
+        <p class="small muted">Бу имтиҳон эмас. Хато қилсангиз, яна танлашингиз мумкин — ҳар бир уриниш ўргатади.</p>
         ${lesson.quiz.map((q, qi) => `
           <div class="q" data-q="${qi}">
             <p>${qi + 1}. ${esc(q.q)}</p>
             <div class="opts">${q.a.map((a, ai) => `<button class="opt" data-a="${ai}">${esc(a)}</button>`).join("")}</div>
+            <p class="q-hint small" hidden></p>
           </div>`).join("")}
         <p id="quizResult" class="muted"></p>
       </div>
+      <div class="lesson-self">
+        <h3>🪞 Ўзингизни баҳоланг</h3>
+        <p class="small muted">Бу дарсни қанчалик тушундингиз? Жавобингизни фақат сиз кўрасиз.</p>
+        <div class="self-opts">${SELF.map(([v, i, t]) => `<button class="self-opt ${state.self[lk] === v ? "on" : ""}" data-self="${v}"><span aria-hidden="true">${i}</span>${esc(t)}</button>`).join("")}</div>
+        <p class="small self-msg" id="selfMsg"></p>
+      </div>
+      <div class="lesson-break" id="lessonBreak" hidden></div>
       <div class="modal-actions">
         <button class="btn btn-ghost" id="prevL" ${li === 0 ? "disabled" : ""}>← Олдинги</button>
         <button class="btn btn-primary" id="nextL">${li === course.lessons.length - 1 ? "Курсни якунлаш" : "Кейинги дарс →"}</button>
+      </div>
       </div>`;
+
+    $$("[data-mode]", modalBody).forEach((b) => b.addEventListener("click", () => {
+      state.easy = b.dataset.mode === "easy"; save();
+      const y = modal.scrollTop;
+      openLesson(cid, li);
+      modal.scrollTop = y;
+    }));
+    $("#bigText", modalBody).addEventListener("click", (e) => {
+      state.big = !state.big; save();
+      $(".lesson", modalBody).classList.toggle("lesson-big", state.big);
+      e.currentTarget.classList.toggle("on", state.big);
+      e.currentTarget.setAttribute("aria-pressed", state.big);
+    });
+    const task = $("#taskDone", modalBody);
+    if (task) task.addEventListener("change", () => {
+      if (task.checked && !state.tasks[lk]) { state.tasks[lk] = true; addXp(5, "амалий топшириқ"); }
+      else if (!task.checked) { delete state.tasks[lk]; save(); }
+    });
+    if (lesson.words) {
+      lessonXw = EkoCross.mount($("#lessonXw", modalBody), {
+        id: "lesson-" + lk, words: lesson.words, compact: true,
+        onSolve: () => { if (!state.xw["lesson-" + lk]) { state.xw["lesson-" + lk] = true; addXp(10, "мини-кроссворд"); } }
+      });
+    }
+    $$(".self-opt", modalBody).forEach((b) => b.addEventListener("click", () => {
+      state.self[lk] = b.dataset.self; save(); renderGamification();
+      $$(".self-opt", modalBody).forEach((x) => x.classList.toggle("on", x === b));
+      $("#selfMsg", modalBody).textContent = {
+        3: "Ажойиб! Энди буни оилангиз ёки дўстингизга тушунтириб беринг — бу билимни мустаҳкамлайди.",
+        2: "Яхши! «Осон тилда» матнини ёки мини-кроссвордни яна бир кўриб чиқинг.",
+        1: "Ҳеч гап йўқ — ҳамма ўз суръатида ўрганади. Дарсни кейинроқ яна очинг, курс саҳифасида эслатма турибди."
+      }[b.dataset.self];
+    }));
 
     $$(".q", modalBody).forEach((qEl) => {
       qEl.addEventListener("click", (e) => {
         const opt = e.target.closest(".opt");
-        if (!opt) return;
+        if (!opt || opt.disabled) return;
         const qi = +qEl.dataset.q;
         const ai = +opt.dataset.a;
         const q = lesson.quiz[qi];
-        $$(".opt", qEl).forEach((o, i) => {
-          o.disabled = true;
-          if (i === q.c) o.classList.add("right");
-        });
-        answered[qi] = ai === q.c;
-        if (ai === q.c) {
-          const k = qKey(cid, li, qi);
-          if (!state.correct[k]) { state.correct[k] = true; addXp(10, "тўғри жавоб"); }
-        } else {
-          opt.classList.add("wrong");
+        const hint = $(".q-hint", qEl);
+        if (ai !== q.c) {
+          // Форматив баҳолаш: хато жавоб жазоланмайди, яна уриниш мумкин
+          opt.classList.add("wrong"); opt.disabled = true;
+          if (!(qi in answered)) answered[qi] = false;
+          hint.hidden = false;
+          hint.textContent = "Деярли! Матнга яна бир қаранг ва бошқа жавобни танланг.";
+          return;
         }
-        if (Object.keys(answered).length === lesson.quiz.length) finishQuiz();
+        $$(".opt", qEl).forEach((o, i) => { o.disabled = true; if (i === q.c) o.classList.add("right"); });
+        hint.hidden = false;
+        hint.textContent = answered[qi] === false ? "✓ Тўғри! Хатодан ўргандингиз — бу энг яхши ўрганиш." : "✓ Тўғри!";
+        if (!(qi in answered)) answered[qi] = true;
+        const k = qKey(cid, li, qi);
+        if (!state.correct[k]) { state.correct[k] = true; addXp(10, "тўғри жавоб"); }
+        if ($$(".opt.right", modalBody).length === lesson.quiz.length) finishQuiz();
       });
     });
 
     function finishQuiz() {
-      const right = Object.values(answered).filter(Boolean).length;
+      const first = Object.values(answered).filter(Boolean).length;
       const res = $("#quizResult", modalBody);
-      if (right === lesson.quiz.length) {
-        res.innerHTML = `✅ Аъло! ${right}/${lesson.quiz.length} тўғри. Дарс тугатилди.`;
-        const pk = `${cid}:${li}`;
-        if (!state.perfect[pk]) { state.perfect[pk] = true; addXp(20, "дарс тугатилди"); }
-        const p = courseProgress(cid);
-        if (p.done === p.total) flag(`course_${cid}`);
-      } else {
-        res.innerHTML = `${right}/${lesson.quiz.length} тўғри. Дарсни яна бир бор ўқиб, қайта уриниб кўринг. <button class="linklike" id="retry">Қайта топшириш</button>`;
-        $("#retry", modalBody).addEventListener("click", () => openLesson(cid, li));
-      }
+      res.innerHTML = `✅ Дарс тугатилди! Биринчи уринишда ${first}/${lesson.quiz.length} тўғри.${first < lesson.quiz.length ? " Энди барчасини биласиз 👏" : " Аъло!"}`;
+      const pk = `${cid}:${li}`;
+      if (!state.perfect[pk]) { state.perfect[pk] = true; addXp(20, "дарс тугатилди"); }
+      const p = courseProgress(cid);
+      if (p.done === p.total) flag(`course_${cid}`);
+      const br = $("#lessonBreak", modalBody);
+      br.hidden = false;
+      br.innerHTML = `☕ <b>Қисқа танаффус!</b> ${esc(BREAKS[(li + cid.length) % BREAKS.length])}${lesson.wonder ? `<small>Энди дарс бошидаги саволга жавоб бера оласизми? «${esc(lesson.wonder)}»</small>` : ""}`;
     }
 
     $("#prevL", modalBody).addEventListener("click", () => openLesson(cid, li - 1));
@@ -2534,6 +3356,102 @@ const LIBRARY = {
     if (!modal.open) modal.showModal();
     modal.scrollTop = 0;
   }
+
+  /* Финча танаффус: 45 дақиқа дарс — 15 дақиқа дам; бизда қисқа дарс — қисқа дам */
+  const BREAKS = [
+    "5 дақиқа деразадан узоққа қаранг ва 3 та яшил нарса топинг.",
+    "Ўрнингиздан туриб, 10 марта чўзилинг ва бир стакан сув ичинг.",
+    "Ташқарига чиқинг: бугун осмон қандай? Булутлар борми?",
+    "Кўзингизни юмиб, 5 марта чуқур нафас олинг.",
+    "Оилангиздан бирига бугун нимани ўрганганингизни айтиб беринг."
+  ];
+
+  /* ---------- Дарслик: курсни китоб каби бир саҳифада ўқиш ---------- */
+  function openBook(cid) {
+    const course = COURSES.find((c) => c.id === cid);
+    if (lessonXw) { lessonXw.destroy(); lessonXw = null; }
+    const easy = state.easy;
+    modalBody.innerHTML = `
+      <div class="book ${state.big ? "lesson-big" : ""}">
+        <span class="pill">📖 Дарслик · ${esc(course.audienceLabel)}</span>
+        <h2>${course.icon} ${esc(course.title)}</h2>
+        <p class="muted">${esc(course.desc)}</p>
+        ${course.source ? `<p class="small muted">📘 Манба: ${esc(course.source)}</p>` : ""}
+        <div class="book-tools no-print">
+          ${course.lessons.some((l) => l.simple) ? `<div class="seg" role="group" aria-label="Матн тури">
+            <button class="${easy ? "" : "on"}" data-bmode="full">📖 Тўлиқ</button>
+            <button class="${easy ? "on" : ""}" data-bmode="easy">🧒 Осон тилда</button>
+          </div>` : ""}
+          <button class="btn btn-ghost btn-sm web-only" id="bookPrint">🖨 Чоп этиш / PDF</button>
+          <button class="btn btn-ghost btn-sm" id="bookSave">⬇ Юклаб олиш</button>
+        </div>
+        <nav class="book-toc"><b>Мундарижа</b><ol>${course.lessons.map((l, i) => `<li><a href="#" data-goto="${i}">${esc(l.title)}</a> <span class="muted small">· ${l.minutes} дақ</span></li>`).join("")}</ol></nav>
+        ${course.lessons.map((l, i) => `
+          <article class="book-ch" id="bookCh${i}">
+            <h3>${i + 1}. ${esc(l.title)}</h3>
+            ${l.goal ? `<p class="lesson-goal">🎯 ${esc(l.goal)}</p>` : ""}
+            ${l.wonder ? `<p class="book-wonder">🤔 ${esc(l.wonder)}</p>` : ""}
+            ${((easy && l.simple) || l.body).map((p) => `<p>${esc(p)}</p>`).join("")}
+            <p class="lesson-tip">💡 ${esc(l.tip)}</p>
+            ${l.task ? `<p class="book-task">🤲 <b>Топшириқ:</b> ${esc(l.task)}</p>` : ""}
+            ${l.words ? `<p class="small muted">🔑 Калит сўзлар: ${l.words.map((w) => esc(w[0].charAt(0) + w[0].slice(1).toLowerCase())).join(", ")}</p>` : ""}
+            <details class="book-q"><summary>📝 Ўзингизни текширинг</summary><ol>${l.quiz.map((q) => `<li>${esc(q.q)} <span class="muted">— ${esc(q.a[q.c])}</span></li>`).join("")}</ol></details>
+            <button class="btn btn-ghost btn-sm no-print" data-open="${i}">Интерактив дарсни очиш →</button>
+          </article>`).join("")}
+      </div>`;
+    $$("[data-bmode]", modalBody).forEach((b) => b.addEventListener("click", () => { state.easy = b.dataset.bmode === "easy"; save(); openBook(cid); }));
+    $$("[data-goto]", modalBody).forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); $("#bookCh" + a.dataset.goto, modalBody).scrollIntoView({ behavior: "smooth" }); }));
+    $$("[data-open]", modalBody).forEach((b) => b.addEventListener("click", () => openLesson(cid, +b.dataset.open)));
+    $("#bookPrint", modalBody).addEventListener("click", () => { document.body.classList.add("print-book"); window.print(); });
+    $("#bookSave", modalBody).addEventListener("click", () => {
+      const html = `<!doctype html><html lang="${EkoLang.lang === "lat" ? "uz-Latn" : "uz-Cyrl"}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(T(course.title))}</title><style>body{font:17px/1.6 system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#0b1f17}h2{color:#047857}.lesson-tip,.lesson-goal{background:#d1fae5;border-radius:10px;padding:10px 14px}.no-print,.book-tools{display:none}a{color:#047857}</style>${$(".book", modalBody).innerHTML}<p style="color:#4a5f56;font-size:14px">ЭкоТаълим · ${dayKey()}</p></html>`;
+      const a = document.createElement("a");
+      a.download = `EkoTalim-darslik-${course.id}.html`;
+      a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      toast("📖 Дарслик юклаб олинди");
+    });
+    if (!modal.open) modal.showModal();
+    modal.scrollTop = 0;
+  }
+  window.addEventListener("afterprint", () => document.body.classList.remove("print-book"));
+
+  /* ---------- Кроссвордлар бўлими ---------- */
+  let xwMounted = null;
+  function renderXwPicker() {
+    $("#xwPicker").innerHTML = CROSSWORDS.map((x) => `
+      <button class="xw-card" data-xw="${x.id}" style="--c:${x.color}">
+        <span class="xw-card-ic" aria-hidden="true">${x.icon}</span>
+        <b>${esc(x.title)}</b>
+        <small>${esc(x.level)} · ${x.words.length} та сўз</small>
+        ${state.xw[x.id] ? `<span class="xw-solved">✓ Ечилган</span>` : ""}
+      </button>`).join("");
+  }
+  function openXw(id) {
+    const x = CROSSWORDS.find((c) => c.id === id);
+    if (!x) return;
+    if (xwMounted) xwMounted.destroy();
+    $("#xwPicker").hidden = true;
+    $("#xwStage").hidden = false;
+    $("#xwTitle").textContent = `${x.icon} ${x.title}`;
+    xwMounted = EkoCross.mount($("#xwBox"), {
+      id: x.id, words: x.words,
+      onSolve: () => {
+        if (state.xw[x.id]) return toast("🎉 Яна бир бор ечдингиз!");
+        state.xw[x.id] = true; addXp(25, "кроссворд ечилди");
+        renderXwPicker();
+      }
+    });
+    $("#krossvord").scrollIntoView({ behavior: "smooth" });
+  }
+  $("#xwPicker").addEventListener("click", (e) => { const b = e.target.closest("[data-xw]"); if (b) openXw(b.dataset.xw); });
+  $("#xwBack").addEventListener("click", () => {
+    if (xwMounted) { xwMounted.destroy(); xwMounted = null; }
+    $("#xwBox").innerHTML = "";
+    $("#xwStage").hidden = true; $("#xwPicker").hidden = false;
+  });
+  renderXwPicker();
 
   /* ---------- Сертификат ---------- */
   function openCertificate(cid) {
@@ -2870,6 +3788,7 @@ const LIBRARY = {
 
   const BADGES = [
     { id: "first", icon: "👣", name: "Биринчи қадам", test: () => Object.keys(state.perfect).length >= 1 },
+    { id: "c0", icon: "🧒", name: "Кичик эколог", test: () => state.flags.course_kichik },
     { id: "c1", icon: "🌱", name: "Экология асослари", test: () => state.flags.course_asoslar },
     { id: "c2", icon: "🏭", name: "Эко-менежер", test: () => state.flags.course_korxona },
     { id: "c3", icon: "🎓", name: "Барқарорлик элчиси", test: () => state.flags.course_talaba },
@@ -2889,7 +3808,10 @@ const LIBRARY = {
     { id: "g_tree", icon: "🌳", name: "Боғбон", test: () => state.flags.game_tree7 },
     { id: "patrol", icon: "🛡️", name: "Эко-патрул", test: () => Object.values((state.games || {}).patrol || {}).some((n) => n >= 1) },
     { id: "hashar", icon: "🧹", name: "Ҳашарчи", test: () => state.flags.hashar },
-    { id: "class", icon: "🏫", name: "Синф аъзоси", test: () => state.flags.class_join }
+    { id: "class", icon: "🏫", name: "Синф аъзоси", test: () => state.flags.class_join },
+    { id: "xw3", icon: "🧩", name: "Кроссвордчи", test: () => CROSSWORDS.filter((x) => state.xw[x.id]).length >= 3 },
+    { id: "task5", icon: "🤲", name: "Амалиётчи", test: () => Object.keys(state.tasks || {}).length >= 5 },
+    { id: "self5", icon: "🪞", name: "Ўзини баҳоловчи", test: () => Object.keys(state.self || {}).length >= 5 }
   ];
 
   function renderGamification() {
@@ -2964,7 +3886,7 @@ const LIBRARY = {
   $("#resetBtn").addEventListener("click", () => {
     if (!confirm(T("Барча натижалар (XP, дарслар, челленжлар, ўйинлар) ўчирилади. Давом этасизми?"))) return;
     state = fresh(); save();
-    renderCourses(); renderChallenges(); renderLibrary(); renderGamification();
+    renderCourses(); renderChallenges(); renderLibrary(); renderGamification(); renderXwPicker();
     window.dispatchEvent(new Event("eko:reset"));
     toast("Натижалар тозаланди");
   });
