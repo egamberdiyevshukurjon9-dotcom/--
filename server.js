@@ -867,6 +867,10 @@ const STATIC = {
   "/vendor/fontawesome/webfonts/fa-regular-400.woff2": { file: "vendor/fontawesome/webfonts/fa-regular-400.woff2", type: "font/woff2", cache: true },
   /* Дизайн тизими ва Onest шрифти (SIL OFL) — ҳамма саҳифалар учун умумий */
   "/vendor/eko-ui.css": { file: "vendor/eko-ui.css", type: "text/css; charset=utf-8" },
+  /* Рус ва инглиз тили луғатлари (асл кирилл матн → таржима) */
+  "/vendor/i18n/keys.js": { file: "vendor/i18n/keys.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/i18n/ru.js": { file: "vendor/i18n/ru.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/i18n/en.js": { file: "vendor/i18n/en.js", type: "text/javascript; charset=utf-8" },
   "/vendor/fonts/onest-cyrillic-wght-normal.woff2": { file: "vendor/fonts/onest-cyrillic-wght-normal.woff2", type: "font/woff2", cache: true },
   "/vendor/fonts/onest-cyrillic-ext-wght-normal.woff2": { file: "vendor/fonts/onest-cyrillic-ext-wght-normal.woff2", type: "font/woff2", cache: true },
   "/vendor/fonts/onest-latin-wght-normal.woff2": { file: "vendor/fonts/onest-latin-wght-normal.woff2", type: "font/woff2", cache: true },

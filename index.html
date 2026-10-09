@@ -1067,6 +1067,21 @@ html.no-profile body { overflow: hidden; }
 .speak-btn { border: 0; background: var(--bg-alt); color: var(--text); border-radius: 99px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: .9rem; }
 
 
+/* Тил менюси (ўзбек кирилл/лотин, рус, инглиз) */
+.lang-wrap { position: relative; }
+.lang-btn i { font-size: .95em; margin-right: 2px; }
+.lang-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 60; display: grid; min-width: 190px; padding: 6px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.lang-menu[hidden] { display: none; }
+.lang-menu button { font: inherit; text-align: left; padding: 10px 12px; border: 0; border-radius: 10px; background: none; color: var(--text); cursor: pointer; font-weight: 600; }
+.lang-menu button:hover, .lang-menu button.on { background: var(--primary-soft); color: var(--primary); }
+.reg-langs { display: flex; justify-content: flex-end; gap: 6px; margin: -6px 0 4px; }
+.reg-langs button { font: 600 .82rem var(--eko-font, system-ui); padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; }
+.reg-langs button.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+.xw-uz-note { display: none; margin: 0 0 8px; color: var(--muted); }
+.xw-uz-note span { display: none; }
+html[lang="ru"] .xw-uz-note, html[lang="en"] .xw-uz-note { display: block; }
+html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inline; }
+
 /* Онлайн лабораториялар */
 .lab-tabs { margin: 16px 0 12px; flex-wrap: wrap; }
 .lab-stage { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 18px; box-shadow: var(--shadow); }
@@ -1134,6 +1149,7 @@ html.no-profile body { overflow: hidden; }
   <!-- Рўйхатдан ўтиш: ҳар бир фойдаланувчи илова ичига кириш учун профил очади -->
   <div class="reg-gate" id="regGate" role="dialog" aria-modal="true" aria-labelledby="regTitle" hidden>
     <div class="reg-card">
+      <div class="reg-langs" data-notr><button type="button" data-setlang="cyr">Ўз</button><button type="button" data-setlang="lat">Oʻz</button><button type="button" data-setlang="ru">Ру</button><button type="button" data-setlang="en">En</button></div>
       <div class="reg-logo" aria-hidden="true">🌱</div>
       <h1 id="regTitle">ЭкоТаълимга хуш келибсиз!</h1>
       <p class="muted" style="margin:0">Илова ичига кириш учун рўйхатдан ўтинг. Ёшингизга қараб мос босқич очилади.</p>
@@ -1219,7 +1235,15 @@ html.no-profile body { overflow: hidden; }
       </div>
       <button class="auth-btn signed" id="profileBtn" type="button" hidden>👤 <span class="auth-name" id="profileBtnName"></span></button>
       <button class="auth-btn auth-legacy" id="authBtn" hidden>Кириш</button>
-      <button class="lang-btn" id="langBtn" data-notr aria-label="Lotin alifbosiga oʻtish">Lotin</button>
+      <div class="lang-wrap" data-notr>
+        <button class="lang-btn" id="langBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Til / Тил / Язык / Language"><i class="fa-solid fa-globe" aria-hidden="true"></i> Ўз</button>
+        <div class="lang-menu" id="langMenu" hidden>
+          <button type="button" data-setlang="cyr">Ўзбекча (кирилл)</button>
+          <button type="button" data-setlang="lat">Oʻzbekcha (lotin)</button>
+          <button type="button" data-setlang="ru">Русский</button>
+          <button type="button" data-setlang="en">English</button>
+        </div>
+      </div>
       <button class="theme-btn" id="themeBtn" aria-label="Мавзуни алмаштириш"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
   </header>
@@ -1686,6 +1710,7 @@ html.no-profile body { overflow: hidden; }
     <section class="section" id="krossvord">
       <div class="wrap">
         <h2 class="section-title">🧩 Эко-кроссвордлар</h2>
+        <p class="xw-uz-note small" data-notr><span class="ru">Кроссворд составлен на узбекском языке.</span><span class="en">The crossword is in Uzbek.</span></p>
         <p class="muted">Мавзуни танланг ва катакларни тўлдиринг. Шошилманг: «💡 Битта ҳарф» ёрдам беради, хато қилиш — ўрганишнинг бир қисми. Ҳар бир ечилган кроссворд учун +25 XP.</p>
         <div class="xw-picker" id="xwPicker"></div>
         <div class="xw-stage" id="xwStage" hidden>
@@ -1981,8 +2006,80 @@ const EkoLang = (() => {
   const KEY = "ekotalim:lang";
   const ATTRS = ["placeholder", "title", "aria-label"];
   const orig = new WeakMap();
+  const LANGS = ["cyr", "lat", "ru", "en"];
+  const HTML_LANG = { cyr: "uz-Cyrl", lat: "uz-Latn", ru: "ru", en: "en" };
+  const BTN = { cyr: "Ўз", lat: "Oʻz", ru: "Ру", en: "En" };
   let lang = "cyr";
   let origTitle = document.title;
+
+  /* Рус ва инглиз тили: луғат (vendor/i18n) — асл кирилл матн → таржима.
+     Луғатда йўқ матн ўзбекча қолади (инглиз режимида — лотин алифбосида). */
+  const DICT = {};
+  const nrm = (x) => x.replace(/\s+/g, " ").trim();
+  function loadScript(src) {
+    return new Promise((ok, fail) => {
+      const el = document.createElement("script");
+      el.src = src; el.onload = ok; el.onerror = fail;
+      document.head.appendChild(el);
+    });
+  }
+  async function loadDict(l) {
+    if (DICT[l]) return DICT[l];
+    if (!window.EKO_I18N_KEYS) await loadScript("/vendor/i18n/keys.js");
+    const name = "EKO_I18N_" + l.toUpperCase();
+    if (!window[name]) await loadScript("/vendor/i18n/" + l + ".js");
+    const keys = window.EKO_I18N_KEYS, vals = window[name], m = new Map(), idx = new Map();
+    keys.forEach((k, i) => {
+      if (!vals[i]) return;
+      m.set(k, vals[i]);
+      // Матн ичидан қидириш учун: калит биринчи сўзи бўйича индекс (бош белгилар — эмодзи, рақам — олиб ташланади)
+      const lead = k.match(/^[^\p{L}]*/u)[0];
+      if (lead && !vals[i].startsWith(lead)) return;
+      const key = k.slice(lead.length), val = vals[i].slice(lead.length);
+      const w = key.match(/^[\p{L}ʻʼ'’]+/u);
+      if (!w || !/[Ѐ-ӿ]/.test(key) || key.length < 2) return;
+      const list = idx.get(w[0]) || [];
+      list.push([key, val]);
+      idx.set(w[0], list);
+    });
+    idx.forEach((list) => list.sort((a, b) => b[0].length - a[0].length));
+    m.idx = idx;
+    return (DICT[l] = m);
+  }
+  const PUNCT = [":", ".", "!", "?", ","];
+  function look(m, k) {
+    if (!k) return null;
+    const v = m.get(k);
+    if (v != null) return v;
+    for (const p of PUNCT) {
+      const w = m.get(k + p);
+      if (w != null) return w.endsWith(p) ? w.slice(0, -p.length) : w;
+    }
+    return null;
+  }
+  function trans(x) {
+    const m = DICT[lang];
+    if (!x || !m || !/[Ѐ-ӿ]/.test(x)) return x;
+    const whole = x.match(/^(\s*)([\s\S]*?)(\s*)$/);
+    const v = look(m, nrm(whole[2]));
+    if (v != null) return whole[1] + v + whole[3];
+    // Йиғма матн («16 ёш · 120 XP», шаблонлар): ичидаги маълум бўлакларни энг узунидан бошлаб алмаштириш
+    const L = /[\p{L}ʻʼ'’]/u;
+    let out = "", i = 0;
+    while (i < x.length) {
+      if (L.test(x[i]) && (i === 0 || !L.test(x[i - 1]))) {
+        const w = x.slice(i).match(/^[\p{L}ʻʼ'’]+/u)[0];
+        const hit = (m.idx.get(w) || []).find(([k]) => x.startsWith(k, i) && !(L.test(k[k.length - 1]) && L.test(x[i + k.length] || "")));
+        if (hit) { out += hit[1]; i += hit[0].length; continue; }
+        out += lang === "en" ? tr(w) : w;
+        i += w.length;
+        continue;
+      }
+      out += x[i++];
+    }
+    return out;
+  }
+  const conv = (x) => (lang === "lat" ? tr(x) : trans(x));
 
   function eachText(root, fn) {
     const skip = (n) => n.parentElement && n.parentElement.closest("script,style,[data-notr]");
@@ -2001,11 +2098,11 @@ const EkoLang = (() => {
   }
 
   function apply(root) {
-    const toLat = lang === "lat";
+    const toLat = lang !== "cyr";
     eachText(root, (n) => {
       if (toLat) {
         if (!orig.has(n)) orig.set(n, n.nodeValue);
-        const v = tr(orig.get(n));
+        const v = conv(orig.get(n));
         if (n.nodeValue !== v) n.nodeValue = v;
       } else if (orig.has(n)) {
         n.nodeValue = orig.get(n);
@@ -2016,7 +2113,7 @@ const EkoLang = (() => {
       const k = "orig" + a.replace(/-./g, (m) => m[1].toUpperCase()).replace(/^./, (m) => m.toUpperCase());
       if (toLat) {
         if (!(k in el.dataset)) el.dataset[k] = el.getAttribute(a);
-        el.setAttribute(a, tr(el.dataset[k]));
+        el.setAttribute(a, conv(el.dataset[k]));
       } else if (k in el.dataset) {
         el.setAttribute(a, el.dataset[k]);
         delete el.dataset[k];
@@ -2024,16 +2121,21 @@ const EkoLang = (() => {
     });
   }
 
-  function set(l, persist = true) {
-    lang = l === "lat" ? "lat" : "cyr";
-    document.documentElement.lang = lang === "lat" ? "uz-Latn" : "uz-Cyrl";
-    document.title = lang === "lat" ? tr(origTitle) : origTitle;
+  async function set(l, persist = true) {
+    l = LANGS.includes(l) ? l : "cyr";
+    if (l === "ru" || l === "en") {
+      try { await loadDict(l); } catch (e) {
+        if (window.EkoApp && EkoApp.toast) EkoApp.toast("Таржима файли юкланмади. Интернетни текширинг.");
+        return;
+      }
+    }
+    lang = l;
+    document.documentElement.lang = HTML_LANG[lang];
+    document.title = lang === "cyr" ? origTitle : conv(origTitle);
     apply(document.body);
     const btn = document.getElementById("langBtn");
-    if (btn) {
-      btn.textContent = lang === "lat" ? "Кирилл" : "Lotin";
-      btn.setAttribute("aria-label", lang === "lat" ? "Кирилл алифбосига ўтиш" : "Lotin alifbosiga oʻtish");
-    }
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-globe" aria-hidden="true"></i> ' + BTN[lang];
+    document.querySelectorAll("[data-setlang]").forEach((b) => b.classList.toggle("on", b.dataset.setlang === lang));
     if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) { /* ignore */ } }
     // Алифбога боғлиқ қисмлар (масалан, кроссворд катаклари) қайта чизилиши учун
     window.dispatchEvent(new CustomEvent("eko:lang", { detail: lang }));
@@ -2041,25 +2143,33 @@ const EkoLang = (() => {
 
   // Янги қўшилган элементларни (рендер, тост, чат) ҳам ўгириш
   new MutationObserver((muts) => {
-    if (lang !== "lat") return;
+    if (lang === "cyr") return;
     muts.forEach((m) => m.addedNodes.forEach((n) => apply(n)));
   }).observe(document.documentElement, { childList: true, subtree: true });
 
   document.addEventListener("DOMContentLoaded", () => {
     origTitle = document.title;
     let l = new URLSearchParams(location.search).get("lang");
-    const fromUrl = l === "lat" || l === "cyr";
+    const fromUrl = LANGS.includes(l);
     if (!fromUrl) { try { l = localStorage.getItem(KEY); } catch (e) { l = null; } }
     set(l || "cyr", false);
-    const btn = document.getElementById("langBtn");
-    if (btn) btn.addEventListener("click", () => set(lang === "lat" ? "cyr" : "lat"));
+    const btn = document.getElementById("langBtn"), menu = document.getElementById("langMenu");
+    if (btn && menu) {
+      btn.addEventListener("click", (e) => { e.stopPropagation(); menu.hidden = !menu.hidden; btn.setAttribute("aria-expanded", String(!menu.hidden)); });
+      document.addEventListener("click", () => { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); });
+    }
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest && e.target.closest("[data-setlang]");
+      if (b) set(b.dataset.setlang);
+    });
   });
 
   /* Қидирув учун: матн ва сўров қайси алифбода бўлса ҳам солиштириш */
   const norm = (s) => s.toLowerCase().replace(/[ʻʼ'`’‘]/g, "'");
-  const matches = (hay, q) => norm(hay).includes(norm(q)) || norm(tr(hay)).includes(norm(tr(q)));
+  const matches = (hay, q) => norm(hay).includes(norm(q)) || norm(tr(hay)).includes(norm(tr(q))) ||
+    ((lang === "ru" || lang === "en") && norm(trans(hay)).includes(norm(q)));
 
-  return { tr, t: (s) => (lang === "lat" ? tr(s) : s), set, get lang() { return lang; }, matches };
+  return { tr, t: (s) => (lang === "cyr" ? s : conv(s)), set, get lang() { return lang; }, get htmlLang() { return HTML_LANG[lang]; }, matches };
 })();
 </script>
   <script>
@@ -11831,6 +11941,7 @@ COURSES.splice(1, 0, {
       </div>` : ""}
       ${lesson.words ? `<div class="lesson-xw">
         <h3>🧩 Мини-кроссворд</h3>
+        <p class="xw-uz-note small" data-notr><span class="ru">Кроссворд составлен на узбекском языке.</span><span class="en">The crossword is in Uzbek.</span></p>
         <p class="small muted">Дарсдаги асосий сўзларни эслаб қолиш учун.</p>
         <div id="lessonXw"></div>
       </div>` : ""}
@@ -12124,7 +12235,7 @@ COURSES.splice(1, 0, {
     $$("[data-open]", modalBody).forEach((b) => b.addEventListener("click", () => openLesson(cid, +b.dataset.open)));
     $("#bookPrint", modalBody).addEventListener("click", () => { document.body.classList.add("print-book"); window.print(); });
     $("#bookSave", modalBody).addEventListener("click", () => {
-      const html = `<!doctype html><html lang="${EkoLang.lang === "lat" ? "uz-Latn" : "uz-Cyrl"}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(T(course.title))}</title><style>body{font:17px/1.6 system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#0b1f17}h2{color:#047857}.lesson-tip,.lesson-goal{background:#d1fae5;border-radius:10px;padding:10px 14px}.no-print,.book-tools{display:none}a{color:#047857}</style>${$(".book", modalBody).innerHTML}<p style="color:#4a5f56;font-size:14px">ЭкоТаълим · ${dayKey()}</p></html>`;
+      const html = `<!doctype html><html lang="${EkoLang.htmlLang}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(T(course.title))}</title><style>body{font:17px/1.6 system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#0b1f17}h2{color:#047857}.lesson-tip,.lesson-goal{background:#d1fae5;border-radius:10px;padding:10px 14px}.no-print,.book-tools{display:none}a{color:#047857}</style>${$(".book", modalBody).innerHTML}<p style="color:#4a5f56;font-size:14px">ЭкоТаълим · ${dayKey()}</p></html>`;
       const a = document.createElement("a");
       a.download = `EkoTalim-darslik-${course.id}.html`;
       a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
@@ -14424,14 +14535,13 @@ COURSES.splice(1, 0, {
       <div class="prof-head"><div class="pc-av" aria-hidden="true">${st === "maktab" ? "🎒" : "🎓"}</div>
         <div><h2 style="margin:0">${esc(profile.name)}</h2><span class="stage-badge">${st === "maktab" ? "🎒 Мактаб" : "🎓 Университет"}</span>
         <div class="small muted">${a} ёш${st === "maktab" ? ` · ${groupOf(a).icon} ${groupOf(a).name}` : ""} · ${App.state.xp} XP</div></div></div>
-      <div class="prof-sec"><h3>🌐 Тил</h3><div class="lang-list" data-notr>${LANGS.map(([k, n]) => `<button type="button" data-lang="${k}" class="${EkoLang.lang === k ? "on" : ""}">${n}</button>`).join("")}</div></div>
+      <div class="prof-sec"><h3>🌐 Тил</h3><div class="lang-list" data-notr>${LANGS.map(([k, n]) => `<button type="button" data-setlang="${k}" class="${EkoLang.lang === k ? "on" : ""}">${n}</button>`).join("")}</div></div>
       <div class="prof-sec"><h3>☁️ Онлайн ҳисоб</h3>${account
         ? `<p class="small">${esc(account.email)}</p><button class="btn btn-ghost btn-sm" id="profAcc" type="button">Ҳисоб созламалари (чиқиш, ўчириш)</button>`
         : online
           ? `<p class="small muted">${a >= 13 ? "Ҳисоб очсангиз, бошқа телефондан кириб давом эттирасиз." : "Онлайн ҳисоб 13 ёшдан очилади. Профилингиз шу қурилмада сақланмоқда."}</p>${a >= 13 ? `<button class="btn btn-ghost btn-sm" id="profLogin" type="button">Кириш ёки ҳисоб очиш</button>` : ""}`
           : `<p class="small muted">Интернетга уланган платформада мавжуд. Профилингиз шу қурилмада сақланмоқда.</p>`}</div>
       <div class="prof-sec"><button class="btn btn-primary btn-sm" id="profEdit2" type="button">✏️ Профилни ўзгартириш</button></div>`;
-    $$("[data-lang]", pModal).forEach((b) => b.addEventListener("click", () => { EkoLang.set(b.dataset.lang); openProfile(); }));
     const acc = $("#profAcc"); if (acc) acc.addEventListener("click", () => { pModal.close(); $("#authBtn").click(); });
     const lg = $("#profLogin"); if (lg) lg.addEventListener("click", () => { pModal.close(); $("#authBtn").click(); });
     $("#profEdit2").addEventListener("click", () => { pModal.close(); openGate(true); });
