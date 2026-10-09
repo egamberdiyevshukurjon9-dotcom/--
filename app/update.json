@@ -1,7 +1,14 @@
 {
- "apk": null,
+ "apk": {
+  "versionCode": 4,
+  "versionName": "1.3",
+  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.3.apk",
+  "sha256": "b2afeecf1c32dc79ee0b9075a420ad87ec37a130670a5796bbd69e3babe8a06f",
+  "size": 1056932,
+  "notes": "• Рўйхатдан ўтиш: ёшга қараб «Мактаб» ёки «Университет» босқичи очилади\n• 🎒 Мактаб (5–15 ёш): «Эко-саёҳат» — 6 олам, 24 босқич, ўйин асосидаги дарслар\n• 🎓 Университет (16–60 ёш): «Илмий лаборатория», илмий далиллар ва CER таҳлил\n• 16 ёшга тўлганда университет босқичига автоматик ўтиш\n• Янги курс: «Иқлим ўзгаришини бошқариш» — 64 дарс, луғатга 35 атама"
+ },
  "content": {
-  "version": "5283f89c6bcb11b9",
+  "version": "c41297e41c1102cf",
   "minApk": 3,
   "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
   "files": {
@@ -11,7 +18,7 @@
    "icons/icon-maskable-512.png": "3a174bcac2c25674d619d6ffc7b269684aa9fb8432621171ae7a55a2034c94b8",
    "icons/icon-maskable.svg": "1d5e677de2e6e48d183221bce174707bec92ead88488ad9d4b29c394e7d0aa32",
    "icons/icon.svg": "0c37b15d2bafdf1eb7847eda50445696e0406395308a995cd80a0e5535d4a303",
-   "index.html": "0b0cd21b33e082cfd7109ed55a85e3069a6edf1aaef7f30169c26eb4ea7761f9",
+   "index.html": "26c354cf379da2c355f5e142b86480973a492eb00681ea23d01e7ef7e77df21e",
    "manifest.webmanifest": "1742854f8308e88c06de2d4f094740b8e773509a1a85c250d679bf7ce626e813",
    "orol.html": "84bf7c65c08529070971e09cfd0d486ce245192a36cc7b0caea34a472bc5aee6",
    "privacy.html": "efd3cf74d27bd0923995293b7362ce04077ad3c608bced2e20bdf72c0e9f143e",
