@@ -314,7 +314,7 @@ public class MainActivity extends Activity {
         }
         if (path.equals("/") || path.equals("/index.html")) path = "/index.html";
         else if (path.equals("/privacy")) path = "/privacy.html";
-        else if (path.equals("/orol")) path = "/orol.html";
+        else if (path.equals("/orol") || path.equals("/orol.html")) path = "/index.html"; // Орол саҳифаси олиб ташланди
         if (path.contains("..")) return json(404, "Not Found", "{}");
         String file = "www" + path;
         String ext = path.substring(path.lastIndexOf('.') + 1).toLowerCase(Locale.ROOT);

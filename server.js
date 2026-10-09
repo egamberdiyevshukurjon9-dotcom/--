@@ -842,9 +842,9 @@ const STATIC = {
   "/admin.html": { file: "admin.html", type: HTML },
   "/privacy": { file: "privacy.html", type: HTML },
   "/privacy.html": { file: "privacy.html", type: HTML },
-  /* «Яшил белбоғ» — Орол ва ҳудудлар экологик мониторинги (алоҳида саҳифа) */
-  "/orol": { file: "orol.html", type: HTML },
-  "/orol.html": { file: "orol.html", type: HTML },
+  /* «Орол фожиаси» саҳифаси олиб ташланди: эски ҳаволалар бош саҳифани очади */
+  "/orol": { file: "index.html", type: HTML },
+  "/orol.html": { file: "index.html", type: HTML },
   "/manifest.webmanifest": { file: "manifest.webmanifest", type: "application/manifest+json; charset=utf-8" },
   "/sw.js": { file: "sw.js", type: "text/javascript; charset=utf-8" },
   "/icons/icon.svg": { file: "icons/icon.svg", type: "image/svg+xml", cache: true },
@@ -866,6 +866,9 @@ const STATIC = {
   "/vendor/fontawesome/webfonts/fa-solid-900.woff2": { file: "vendor/fontawesome/webfonts/fa-solid-900.woff2", type: "font/woff2", cache: true },
   "/vendor/fontawesome/webfonts/fa-regular-400.woff2": { file: "vendor/fontawesome/webfonts/fa-regular-400.woff2", type: "font/woff2", cache: true },
   /* Дизайн тизими ва Onest шрифти (SIL OFL) — ҳамма саҳифалар учун умумий */
+  "/vendor/three/three.module.min.js": { file: "vendor/three/three.module.min.js", type: "text/javascript; charset=utf-8", cache: true },
+  "/vendor/eko-lab3d.js": { file: "vendor/eko-lab3d.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-loyiha.js": { file: "vendor/eko-loyiha.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-ui.css": { file: "vendor/eko-ui.css", type: "text/css; charset=utf-8" },
   /* Рус ва инглиз тили луғатлари (асл кирилл матн → таржима) */
   "/vendor/i18n/keys.js": { file: "vendor/i18n/keys.js", type: "text/javascript; charset=utf-8" },

@@ -1,7 +1,6 @@
 # Илова ичига жойланадиган ва автоматик янгиланадиган платформа файллари (репозиторий илдизидан).
 # android/build.sh ва tools/build-update.js шу рўйхатни ўқийди.
 index.html
-orol.html
 privacy.html
 manifest.webmanifest
 icons

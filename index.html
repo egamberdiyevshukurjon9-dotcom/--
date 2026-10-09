@@ -1143,6 +1143,126 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
 .pbl-steps { counter-reset: s; list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 8px; }
 .pbl-steps li { counter-increment: s; display: flex; gap: 10px; align-items: flex-start; }
 .pbl-steps li::before { content: counter(s); flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); font-weight: 700; font-size: .85rem; }
+/* ===== Бош саҳифа иконкалари: гуруҳлар, қидирув, рўйхат кўриниши, сўнгги очилганлар ===== */
+.apps-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+.apps-head .apps-title { margin: 0; flex: 1 1 160px; }
+.app-search { position: relative; flex: 1 1 220px; max-width: 340px; }
+.app-search i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: .9rem; pointer-events: none; }
+.app-search input { width: 100%; box-sizing: border-box; min-height: 44px; padding: 8px 14px 8px 38px; border-radius: 999px; border: 1px solid var(--glass-line, var(--line)); background: var(--glass, var(--card)); color: var(--text); font: inherit; box-shadow: var(--shadow); }
+.app-search input:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 45%, transparent); outline-offset: 1px; }
+.app-view-btn { width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--glass-line, var(--line)); background: var(--glass, var(--card)); color: var(--text); cursor: pointer; box-shadow: var(--shadow); }
+.app-view-btn[aria-pressed="true"] { background: var(--primary-soft); }
+.app-cat { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; margin: 14px 2px 0; font-size: .92rem; font-weight: 750; color: var(--muted); letter-spacing: .01em; }
+.app-cat:first-child { margin-top: 0; }
+.app-cat i { color: var(--primary); }
+.app-cat::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+.app { position: relative; }
+.app.app-off { display: none !important; }
+.app-new { position: absolute; top: 8px; right: 8px; padding: 1px 7px; border-radius: 999px; background: #dc2626; color: #fff; font-size: .62rem; font-weight: 800; letter-spacing: .03em; line-height: 1.5; box-shadow: 0 4px 10px -4px #dc2626; }
+.app-recent { display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 2px 2px 12px; scrollbar-width: none; }
+.app-recent a { flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px 5px 5px; border-radius: 999px; background: var(--glass, var(--card)); border: 1px solid var(--glass-line, var(--line)); color: var(--text); text-decoration: none; font-size: .85rem; box-shadow: var(--shadow); }
+.app-recent a .app-ic { width: 32px; height: 32px; border-radius: 11px; }
+.app-recent a .app-ic i { font-size: .95rem; }
+.app-recent a b { font-weight: 650; }
+.app-none { margin-top: 10px; }
+.apps-list .app-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 10px; }
+.apps-list .app { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 14px; row-gap: 2px; align-items: center; text-align: left; padding: 12px 14px; border-radius: 18px; background: var(--glass, var(--card)); border: 1px solid var(--glass-line, var(--line)); box-shadow: var(--shadow); }
+.apps-list .app .app-ic { grid-row: 1 / span 2; width: 50px; height: 50px; border-radius: 16px; }
+.apps-list .app b { align-self: end; font-size: .95rem; }
+.apps-list .app small { display: block !important; align-self: start; font-size: .8rem; }
+.apps-list .app-new { top: 50%; transform: translateY(-50%); right: 12px; }
+@media (max-width: 620px) {
+  .app-search { max-width: none; order: 3; flex-basis: 100%; }
+  .app-new { top: -2px; right: 4px; font-size: .56rem; padding: 0 5px; }
+  .app-cat { margin-top: 10px; font-size: .85rem; }
+}
+
+/* ===== 🧊 3D виртуал лаборатория ===== */
+.l3-row { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.l3-viewbox { position: relative; min-width: 0; }
+.l3-view { position: relative; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; background: #0b1324; border: 1px solid var(--line); box-shadow: var(--shadow); }
+.l3-canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; cursor: grab; outline: none; }
+.l3-canvas:active { cursor: grabbing; }
+.l3-canvas:focus-visible { box-shadow: inset 0 0 0 3px var(--primary); }
+.l3-load { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 18px; text-align: center; color: #cbd5e1; }
+.l3-tools { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; }
+.l3-tb { width: 40px; height: 40px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, .28); background: rgba(15, 23, 42, .55); color: #fff; cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.l3-tb:hover { background: rgba(15, 23, 42, .8); }
+.l3-tb.on { background: var(--primary); color: var(--on-primary); border-color: transparent; }
+.l3-hint { margin: 6px 2px 0; }
+.l3-panel { gap: 10px; }
+.l3-h { margin: 2px 0; }
+.l3-chips { gap: 6px; flex-wrap: wrap; margin: 0; }
+.l3-chips .chip { padding: 5px 11px; font-size: .85rem; }
+.l3-pres { display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 8px; }
+.l3-pre { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 9px 10px; text-align: left; font-size: .95rem; }
+.l3-pre span { font-size: .82rem; font-weight: 650; }
+.l3-pre small { font-size: .72rem; font-weight: 500; color: var(--muted); }
+.l3-pres.mini .l3-pre { padding: 6px 8px; }
+.l3-pres.mini .l3-pre small { display: none; }
+.l3-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .8rem; color: var(--muted); }
+.l3-legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; vertical-align: middle; }
+.l3-big { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding: 10px 14px; border-radius: 16px; background: var(--primary-soft); }
+.l3-big span { font-size: 2rem; line-height: 1; }
+.l3-big b { font-size: 1.55rem; font-weight: 800; }
+.l3-big small { color: var(--muted); }
+.l3-mission { margin: 0; padding: 10px 12px; border-radius: 12px; border: 1px dashed #f59e0b; background: color-mix(in srgb, #f59e0b 10%, var(--card)); font-size: .9rem; }
+.l3-mission.l3-star-on { border-style: solid; background: color-mix(in srgb, #f59e0b 22%, var(--card)); font-weight: 700; }
+.l3-check { display: flex; gap: 8px; align-items: flex-start; font-size: .9rem; cursor: pointer; }
+.l3-check input { margin-top: 4px; accent-color: var(--primary); flex: none; }
+.l3-tab { display: table; }
+.l3-tab th { width: 42%; font-weight: 600; color: var(--muted); }
+.l3-stage .lab-formula { line-height: 1.75; overflow-x: auto; }
+@media (max-width: 820px) {
+  .l3-row { grid-template-columns: 1fr; }
+  .l3-view { aspect-ratio: 1 / 1; max-height: 68vh; }
+}
+
+/* ===== 🎓 Лойиҳалар ===== */
+.ly-tabs .chip { font-weight: 600; }
+.ly-ic { display: inline-grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 13px; font-size: 1.35rem; background: color-mix(in srgb, var(--c, var(--primary)) 18%, var(--card)); }
+.ly-card { display: flex; flex-direction: column; gap: 6px; text-align: left; font: inherit; color: var(--text); cursor: pointer; border-top: 4px solid var(--c, var(--primary)); transition: transform .15s; }
+.ly-card:hover { transform: translateY(-2px); }
+.ly-card h3 { margin: 4px 0 0; }
+.ly-form { display: grid; gap: 10px; max-width: 640px; margin-bottom: 18px; }
+.ly-form label { display: grid; gap: 4px; font-size: .9rem; font-weight: 600; }
+.ly-form input, .ly-form select, .ly-form textarea, .ly-cv textarea { width: 100%; box-sizing: border-box; font: inherit; font-weight: 400; padding: 9px 11px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+.ly-head { display: flex; align-items: center; gap: 12px; margin: 14px 0 8px; }
+.ly-head h3 { margin: 0; }
+.ly-head p { margin: 2px 0 0; }
+.ly-pct { margin-left: auto; font-size: 1.5rem; color: var(--c, var(--primary)); }
+.ly-steps { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0; }
+.ly-step { flex: none; display: flex; align-items: center; gap: 8px; padding: 7px 14px 7px 7px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; }
+.ly-step b { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--bg-alt); font-size: .8rem; }
+.ly-step.on { border-color: var(--primary); background: var(--primary-soft); font-weight: 700; }
+.ly-step.ok b { background: var(--primary); color: var(--on-primary); }
+.ly-stage h4 { margin: 0 0 6px; }
+.ly-cv { display: grid; gap: 4px; margin-top: 12px; font-size: .9rem; }
+.ly-cv textarea { resize: vertical; }
+.ly-canvas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.ly-canvas .ly-cv { margin: 0; padding: 10px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); }
+.ly-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.ly-col { min-height: 90px; padding: 10px; border-radius: 14px; background: var(--bg-alt); border: 1px solid var(--line); }
+.ly-col h5 { display: flex; justify-content: space-between; margin: 0 0 8px; font-size: .9rem; }
+.ly-col h5 span { color: var(--muted); }
+.ly-task { display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 6px; padding: 8px 10px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); font-size: .88rem; overflow-wrap: anywhere; }
+.ly-tbtn { display: flex; gap: 2px; flex: none; }
+.ly-tbtn button { min-width: 30px; min-height: 30px; border: 0; border-radius: 8px; background: none; color: var(--muted); cursor: pointer; font: inherit; }
+.ly-tbtn button:hover { background: var(--bg-alt); color: var(--text); }
+.ly-rtable { overflow-x: auto; margin-top: 8px; }
+.ly-rubric { display: table; min-width: 680px; }
+.ly-rubric th { font-size: .85rem; }
+.ly-rubric td { font-size: .82rem; vertical-align: top; }
+.ly-rb { display: block; padding: 4px 6px; border-radius: 8px; cursor: pointer; }
+.ly-rb.on { background: var(--primary-soft); font-weight: 600; }
+.ly-rb input { width: auto; margin: 0 4px 0 0; accent-color: var(--primary); }
+.ly-sdg { display: inline-block; margin: 2px 2px 0 0; padding: 1px 8px; border-radius: 999px; background: var(--bg-alt); font-size: .75rem; }
+.ly-idea { display: flex; flex-direction: column; gap: 6px; }
+.ly-idea .ev-tools { margin-top: auto; }
+.ly-methods { display: grid; gap: 10px; margin-top: 12px; }
+.ly-m summary { align-items: center; }
+.ly-m summary b { flex: 1 1 200px; }
+@media (max-width: 640px) { .ly-board { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -1214,8 +1334,9 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
         <a href="#sayohat" data-stage="maktab">Эко-саёҳат</a>
         <a href="#lab" data-stage="maktab">Лаборатория</a>
         <a href="#ilmiy" data-stage="uni">Илмий лаборатория</a>
+        <a href="#lab3d">3D лаборатория</a>
+        <a href="#loyiha" data-stage="uni">Лойиҳалар</a>
         <a href="#monografiya" data-stage="uni">Сув ва ҳаво</a>
-        <a href="orol.html" data-stage="uni">Орол</a>
         <a href="#oyinlar" data-stage="maktab">Ўйинлар</a>
         <a href="#ekokoz" data-stage="uni">Эко-кўз</a>
         <a href="#xarita" data-stage="uni">Харита</a>
@@ -1284,30 +1405,41 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
           <div class="orbit o4">♻️</div>
         </div>
       </div>
-      <div class="wrap apps">
-        <h2 class="apps-title">Бўлимлар</h2>
+      <div class="wrap apps" id="apps">
+        <div class="apps-head">
+          <h2 class="apps-title">Бўлимлар</h2>
+          <label class="app-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" id="appSearch" placeholder="Бўлим қидириш…" aria-label="Бўлим қидириш" autocomplete="off"></label>
+          <button type="button" class="app-view-btn" id="appView" aria-pressed="false" title="Рўйхат кўриниши" aria-label="Рўйхат кўриниши"><i class="fa-solid fa-list" aria-hidden="true"></i></button>
+        </div>
+        <div class="app-recent" id="appRecent" hidden></div>
         <nav class="app-grid" aria-label="Бўлимлар">
-          <a class="app" href="#sayohat" data-stage="maktab" style="--c:#f97316"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
-          <a class="app" href="#lab" data-stage="maktab" style="--c:#06b6d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
-          <a class="app" href="#vlab" data-stage="uni" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
-          <a class="app" href="#onlayn" data-stage="uni" style="--c:#0f766e"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
-          <a class="app" href="#ilmiy" data-stage="uni" style="--c:#2563eb"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
-          <a class="app" href="orol.html" data-stage="uni" style="--c:#0891b2"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-water"></i></span><b>Орол фожиаси</b><small>«Яшил белбоғ» мониторинги</small></a>
-          <a class="app" href="#monografiya" data-stage="uni" style="--c:#0ea5e9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
-          <a class="app" href="#oyinlar" data-stage="maktab" style="--c:#f59e0b"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
-          <a class="app" href="#ekokoz" data-stage="uni" style="--c:#8b5cf6"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
-          <a class="app" href="#xarita" data-stage="uni" style="--c:#ef4444"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
-          <a class="app" href="#hashar" style="--c:#14b8a6"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
-          <a class="app" href="#maktab" style="--c:#6366f1"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
-          <a class="app" href="#kurslar" style="--c:#16a34a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
-          <a class="app" href="#krossvord" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
-          <a class="app" href="#yangiliklar" style="--c:#64748b"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
-          <a class="app" href="#kutubxona" style="--c:#a16207"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
-          <a class="app" href="#havo" style="--c:#0284c7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
-          <a class="app" href="#kalkulyator" style="--c:#db2777"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
-          <a class="app" href="#chellenj" style="--c:#ea580c"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
-          <a class="app" href="#yordamchi" style="--c:#0d9488"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
+          <h3 class="app-cat" data-cat="learn"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Ўрганиш</h3>
+          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#f97316"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
+          <a class="app" data-cat="learn" href="#kurslar" style="--c:#16a34a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
+          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#0ea5e9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
+          <a class="app" data-cat="learn" href="#krossvord" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
+          <a class="app" data-cat="learn" href="#kutubxona" style="--c:#a16207"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
+          <a class="app" data-cat="learn" href="#yangiliklar" style="--c:#64748b"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
+          <h3 class="app-cat" data-cat="lab"><i class="fa-solid fa-flask" aria-hidden="true"></i> Лабораториялар</h3>
+          <a class="app" data-cat="lab" href="#lab3d" style="--c:#0891b2"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>Айлантириб кўринг</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#06b6d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
+          <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
+          <a class="app" data-cat="lab" href="#ilmiy" data-stage="uni" style="--c:#2563eb"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
+          <h3 class="app-cat" data-cat="act"><i class="fa-solid fa-seedling" aria-hidden="true"></i> Амалиёт ва лойиҳалар</h3>
+          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#ea580c"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="act" href="#chellenj" style="--c:#ea580c"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
+          <a class="app" data-cat="act" href="#hashar" style="--c:#14b8a6"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
+          <a class="app" data-cat="act" href="#maktab" style="--c:#6366f1"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
+          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8b5cf6"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
+          <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#ef4444"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
+          <h3 class="app-cat" data-cat="tool"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Ўйин ва асбоблар</h3>
+          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#f59e0b"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
+          <a class="app" data-cat="tool" href="#havo" style="--c:#0284c7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
+          <a class="app" data-cat="tool" href="#kalkulyator" style="--c:#db2777"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
+          <a class="app" data-cat="tool" href="#yordamchi" style="--c:#0d9488"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
         </nav>
+        <p class="muted app-none" id="appNone" hidden>Бундай бўлим топилмади.</p>
       </div>
       <div class="wrap stats">
         <div class="stat"><b>3</b><span>йўналиш: аҳоли, корхона, таълим</span></div>
@@ -1333,6 +1465,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
               <li>🇫🇮 Финляндия феномен усули: ҳаётий савол орқали ўрганиш</li>
               <li>🤲 Монтессори: «қилиб ўрган» — саралаш, тартиблаш, жуфтлаш</li>
               <li>🔁 Хато саволлар раунд охирида қайтади (spaced repetition)</li>
+              <li>🧊 3D лаборатория: Ер, молекула ва сувни айлантириб кузатиш (PhET усули)</li>
             </ul>
           </article>
           <article class="aud" id="stageCardUni">
@@ -1344,6 +1477,8 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
               <li>✍️ CER усули (АҚШ, NGSS): даъво → далил → асослаш</li>
               <li>🧠 Блум таксономияси, инсерт, Венн, синквейн, кластер</li>
               <li>🛠 PBL лойиҳа таълими ва «тескари синф» (flipped classroom)</li>
+              <li>🚀 «Лойиҳалар» бўлими: Design Thinking, Capstone, CDIO, Lean Canvas, Scrum, LogFrame</li>
+              <li>🧊 3D виртуал лаборатория: формула ва модел билан тажриба</li>
             </ul>
           </article>
         </div>
@@ -1674,6 +1809,16 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
         <div class="filters lab-tabs" id="vlabTabs"></div>
         <div class="lab-stage" id="vlabStage"></div>
       </div>
+    </section>
+
+    <!-- 3D VIRTUAL LABORATORIYA (maktab va universitet) — vendor/eko-lab3d.js -->
+    <section class="section alt" id="lab3d">
+      <div class="wrap" id="l3Root" data-notr></div>
+    </section>
+
+    <!-- UNIVERSITET: LOYIHALAR (PBL, Design Thinking, Capstone...) — vendor/eko-loyiha.js -->
+    <section class="section" id="loyiha" data-stage="uni">
+      <div class="wrap" id="lyRoot" data-notr></div>
     </section>
 
     <!-- UNIVERSITET: ONLAYN DARSLIKLAR -->
@@ -4297,7 +4442,7 @@ const LESSON_PLUS = {
     goal: "Орол денгизи нега қуриганини ва бугун қандай ёрдам берилаётганини тушунасиз.",
     wonder: "Кема қумда, денгиздан юзлаб километр узоқда турибди. Бу қандай бўлиши мумкин?",
     simple: ["Орол катта денгиз эди.", "Дарёлар суви далаларга жуда кўп олингани учун денгиз қуриб қолди.", "Энди туз ва чанг учади, одамлар соғлиғи ёмонлашди. Саксовул экиб, қумни ушлаймиз."],
-    task: "«Орол фожиаси» бўлимида денгизнинг олдинги ва бугунги ҳолатини солиштиринг. Фарқни расмда чизиб, оилангизга тушунтиринг.",
+    task: "Орол денгизининг 1960 йилги ва бугунги харитасини солиштиринг. Фарқни расмда чизиб, оилангизга тушунтиринг.",
     words: [["ОРОЛ", "Қуриб бораётган денгиз"], ["САКСОВУЛ", "Қумни ушлаш учун экиладиган чўл ўсимлиги"], ["ТУЗ", "Қуриган тубдан шамол учирадиган оқ модда"], ["АМУДАРЁ", "Оролга қуйиладиган икки дарёдан бири"], ["БАЛИҚЧИЛИК", "Денгиз қуригач йўқолган соҳа"]]
   },
   "talaba:2": {
@@ -14956,7 +15101,7 @@ COURSES.splice(1, 0, {
     { t: "Сувни тежовчи суғориш", q: "Томорқада томчилатиб суғориш қанча сув тежайди?", data: "Икки хил суғоришда бир хил майдонга кетган сув ҳажмини челак ёки ҳисоблагич билан ўлчанг.", calc: "Тежам (%) = (V(жўяк) − V(томчи)) / V(жўяк) × 100.", sol: "Маҳалла учун оддий томчилатиш тизими лойиҳаси ва нархи.", src: "«Иқлим ўзгаришини бошқариш», 5.2, 8.3-мавзулар" },
     { t: "Ҳаво сифати ва транспорт", q: "Тирбанд вақтда кўчадаги PM2.5 ошадими?", data: "«Ҳаво сифати» бўлимидан шаҳрингиз бўйича 2 ҳафталик PM2.5 ни соатлар кесимида ёзиб боринг.", calc: "Эрталабки (7–9) ва кундузги (12–14) ўртачаларни солиштиринг; фарқ % да.", sol: "Велойўлак, жамоат транспорти ёки мактабга пиёда бориш кампанияси.", src: "«Экологик мониторинг» дарслиги, III–IV боблар" },
     { t: "Чиқиндидан метан", q: "Маҳалламиз чиқиндиси қанча метан ҳосил қилиши мумкин?", data: "Бир ҳафта давомида уйдаги органик чиқиндини тортиб боринг.", calc: "Йиллик органик чиқинди массасини ҳисобланг; компостга ўтказилса, полигонга кетадиган масса қанча камаяди?", sol: "Ҳовли ёки мактабда компост қутиси лойиҳаси.", src: "«Иқлим ўзгаришини бошқариш», 4.7-мавзу" },
-    { t: "Орол бўйида саксовул", q: "Қуриган денгиз тубида ўрмон барпо этиш чанг бўронларини камайтирадими?", data: "Дарслик ва «Орол фожиаси» бўлимидаги ўрмонзорлар майдони ва чанг-туз бўронлари маълумотларини йиғинг.", calc: "Йиллар кесимида экилган майдон ва бўронлар сонини жадвалга солиб, тенденцияни баҳоланг.", sol: "Ёшлар волонтёрлик экспедицияси режаси.", src: "«Иқлим ўзгаришини бошқариш», 7.3-мавзу" }
+    { t: "Орол бўйида саксовул", q: "Қуриган денгиз тубида ўрмон барпо этиш чанг бўронларини камайтирадими?", data: "Дарслик ва Орол бўйи ўрмон хўжаликлари ҳисоботларидан ўрмонзорлар майдони ва чанг-туз бўронлари маълумотларини йиғинг.", calc: "Йиллар кесимида экилган майдон ва бўронлар сонини жадвалга солиб, тенденцияни баҳоланг.", sol: "Ёшлар волонтёрлик экспедицияси режаси.", src: "«Иқлим ўзгаришини бошқариш», 7.3-мавзу" }
   ];
   const pblSel = $("#pblTopic");
   PBL.forEach((p, i) => pblSel.add(new Option(p.t, String(i))));
@@ -14985,7 +15130,15 @@ COURSES.splice(1, 0, {
     ["🛠", "Лойиҳа таълими — PBL (АҚШ, Финляндия)", "Ҳақиқий муаммо бўйича 6 босқичли тадқиқот: гипотеза, ўлчов, ҳисоб, ечим."],
     ["🔄", "Тескари синф — flipped classroom", "Назарияни дарсдан олдин платформада ўқиш, аудиторияда эса муҳокама ва амалиёт."],
     ["🧠", "Блум таксономияси", "Ҳар бир дарс билишдан яратишгача бўлган фикрлаш босқичида белгиланган."],
-    ["📊", "Кейс усули (Гарвард)", "Ўзбекистон ҳудудлари мисолида реал вазиятлар: Орол, сув танқислиги, яшил энергетика."]
+    ["📊", "Кейс усули (Гарвард)", "Ўзбекистон ҳудудлари мисолида реал вазиятлар: Орол, сув танқислиги, яшил энергетика."],
+    ["💡", "Дизайн-фикрлаш (Стэнфорд d.school)", "Фойдаланувчини тушуниш → ғоя → прототип → синов. «Лойиҳалар» бўлимида босқичма-босқич."],
+    ["🚀", "Challenge Based Learning (Apple, Европа)", "Катта ғоя → аниқ чақириқ → тадқиқот → амалий ҳаракат ва натижани ўлчаш."],
+    ["⚙️", "CDIO (MIT, Chalmers, KTH)", "Муҳандислик лойиҳасининг тўлиқ цикли: ўйлаш, лойиҳалаш, ясаш, ишлатиш."],
+    ["🎓", "Capstone — битирув лойиҳаси (АҚШ, Буюк Британия)", "Барча фанларни бирлаштирадиган якуний лойиҳа, кўпинча буюртмачи корхона билан."],
+    ["🎯", "Ўзгариш назарияси ва LogFrame (UNDP, GEF)", "Халқаро грант лойиҳалари тили: мақсад, натижалар, SMART кўрсаткичлар, хатарлар."],
+    ["🧊", "3D виртуал лаборатория (PhET, Колорадо университети)", "Кўринмас жараёнларни уч ўлчамда кузатиш ва илмий моделни синаб кўриш."],
+    ["🙋", "Peer Instruction (Эрик Мазур, Гарвард)", "Савол → ўзи жавоб беради → жуфтликда баҳс → қайта жавоб: тушунча чуқурлашади."],
+    ["📡", "Фуқаро илми (NASA GLOBE, iNaturalist)", "Талабалар ягона протокол билан ҳаво, сув ва дарахтлар ҳақида маълумот йиғади."]
   ];
   $("#labMethod").innerHTML = LAB_METHOD.map(([i, t, d]) => `<div class="fin-item"><span aria-hidden="true">${i}</span><div><b>${esc(t)}</b><small>${esc(d)}</small></div></div>`).join("");
 
@@ -15388,5 +15541,73 @@ COURSES.splice(1, 0, {
   show(decodeURIComponent(location.hash.slice(1)));
 })();
 </script>
+  <script>
+/* Бош саҳифа иконкалари: қидирув, рўйхат/тўр кўриниши, сўнгги очилганлар ва бўш гуруҳларни яшириш */
+(() => {
+  "use strict";
+  const box = document.getElementById("apps");
+  if (!box) return;
+  const grid = box.querySelector(".app-grid"), q = document.getElementById("appSearch");
+  const viewBtn = document.getElementById("appView"), recent = document.getElementById("appRecent"), none = document.getElementById("appNone");
+  const tiles = [...grid.querySelectorAll(".app")], cats = [...grid.querySelectorAll(".app-cat")];
+  const VKEY = "ekotalim:appview", RKEY = "ekotalim:recent";
+  const get = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const put = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } };
+  const shown = (el) => getComputedStyle(el).display !== "none";
+  const norm = (s) => s.toLowerCase().replace(/\s+/g, " ");
+  function filter() {
+    const v = norm(q.value.trim());
+    let any = false;
+    tiles.forEach((a) => {
+      const hit = !v || norm(a.textContent).includes(v) || (typeof EkoLang !== "undefined" && EkoLang.matches(a.textContent, v));
+      a.classList.toggle("app-off", !hit);
+      if (hit && shown(a)) any = true;
+    });
+    cats.forEach((c) => { c.hidden = !tiles.some((a) => a.dataset.cat === c.dataset.cat && shown(a)); });
+    none.hidden = any;
+    recent.hidden = !!v || !recent.children.length;
+  }
+  function setView(list) {
+    box.classList.toggle("apps-list", list);
+    viewBtn.setAttribute("aria-pressed", String(list));
+    viewBtn.innerHTML = `<i class="fa-solid ${list ? "fa-table-cells" : "fa-list"}" aria-hidden="true"></i>`;
+    const t = EkoLang.t(list ? "Тўр кўриниши" : "Рўйхат кўриниши");
+    viewBtn.title = t; viewBtn.setAttribute("aria-label", t);
+  }
+  function renderRecent() {
+    let ids = [];
+    try { ids = JSON.parse(get(RKEY)) || []; } catch (e) { ids = []; }
+    const items = ids.map((h) => tiles.find((a) => a.getAttribute("href") === h)).filter((a) => a && shown(a)).slice(0, 4);
+    recent.innerHTML = items.length ? `<span class="small muted">${EkoLang.t("Сўнгги:")}</span>` : "";
+    items.forEach((a) => {
+      const r = document.createElement("a");
+      r.href = a.getAttribute("href"); r.style.cssText = a.style.cssText;
+      r.append(a.querySelector(".app-ic").cloneNode(true), a.querySelector("b").cloneNode(true));
+      recent.appendChild(r);
+    });
+    recent.hidden = !items.length || !!q.value.trim();
+  }
+  tiles.forEach((a) => a.addEventListener("click", () => {
+    let ids = [];
+    try { ids = JSON.parse(get(RKEY)) || []; } catch (e) { ids = []; }
+    const h = a.getAttribute("href");
+    put(RKEY, JSON.stringify([h, ...ids.filter((x) => x !== h)].slice(0, 8)));
+    setTimeout(renderRecent, 300);
+  }));
+  q.addEventListener("input", filter);
+  q.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { const a = tiles.find((t) => !t.classList.contains("app-off") && shown(t)); if (a) { e.preventDefault(); a.click(); } }
+    if (e.key === "Escape") { q.value = ""; filter(); }
+  });
+  viewBtn.addEventListener("click", () => { const l = !box.classList.contains("apps-list"); setView(l); put(VKEY, l ? "list" : "grid"); });
+  setView(get(VKEY) === "list");
+  const refresh = () => { filter(); renderRecent(); };
+  window.addEventListener("eko:stage", () => setTimeout(refresh, 0));
+  window.addEventListener("eko:lang", () => { setView(box.classList.contains("apps-list")); setTimeout(refresh, 0); });
+  refresh();
+})();
+</script>
+  <script src="/vendor/eko-lab3d.js" defer></script>
+  <script src="/vendor/eko-loyiha.js" defer></script>
 </body>
 </html>
