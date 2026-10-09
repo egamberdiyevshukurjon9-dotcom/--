@@ -228,7 +228,8 @@ function startSession(user, req, res) {
   logEvent("login", user, req);
   res.setHeader("Set-Cookie", cookie("eko_session", token, SESSION_MS, req));
 }
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, adult: !!u.adult, approved: u.approved || 0 });
+/* by/bm — туғилган йил ва ой: илова босқични (мактаб / университет) аниқлаши учун */
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, adult: !!u.adult, approved: u.approved || 0, by: u.by || 0, bm: u.bm || 0 });
 
 /* Жим қолган сессияларни «офлайн» деб белгилаш ва муддати ўтганларини ўчириш */
 function sweep() {
@@ -393,7 +394,7 @@ const publicReport = (r) => ({ id: r.id, category: r.category, text: r.text, lat
 
 /* ---------- Мактаблар учун ---------- */
 const TASK_TYPES = ["xp", "sort", "quiz", "memory", "tree", "course", "streak"];
-const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim"];
+const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "yosh"];
 const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function newClassCode() {
   for (;;) {
@@ -467,7 +468,7 @@ async function api(req, res, pathname) {
     if (name.length < 2) return send(res, 400, { error: "Исмингизни киритинг" });
     if (!EMAIL_RE.test(email)) return send(res, 400, { error: "Электрон почта нотўғри" });
     if (password.length < 6) return send(res, 400, { error: "Парол камида 6 белгидан иборат бўлсин" });
-    /* Ёш текшируви: 13 ёшгача болалардан шахсий маълумот йиғилмайди. Туғилган йил сақланмайди. */
+    /* Ёш текшируви: 13 ёшгача болалардан онлайн ҳисоб очилмайди (уларнинг профили фақат қурилмада). */
     const birthYear = Math.floor(Number(body.birthYear) || 0);
     const birthMonth = Math.floor(Number(body.birthMonth) || 0);
     const today = new Date(), thisYear = today.getFullYear();
@@ -476,12 +477,12 @@ async function api(req, res, pathname) {
     const age = thisYear - birthYear - (today.getMonth() + 1 <= birthMonth ? 1 : 0);
     if (age < 13) return send(res, 403, { error: "Ҳисоб очиш учун 13 ёш тўлган бўлиши керак. Барча дарслар ва ўйинлар ҳисобсиз ҳам ишлайди!" });
     if (db.users.some((u) => u.email === email)) return send(res, 409, { error: "Бу почта билан аллақачон рўйхатдан ўтилган" });
-    /* Фақат «18 ёшдан катта»ми — шу белги сақланади (Эко-кўз учун), йилнинг ўзи эмас */
+    /* «18 ёшдан катта» белгиси (Эко-кўз учун) ва туғилган йил-ой (босқични бошқа қурилмада тиклаш учун) сақланади */
     const adult = age >= 18;
     const hashed = await hashPassword(password);
     /* Хэшлаш вақтида шу почта билан бошқа сўров рўйхатдан ўтган бўлиши мумкин */
     if (db.users.some((u) => u.email === email)) return send(res, 409, { error: "Бу почта билан аллақачон рўйхатдан ўтилган" });
-    const user = { id: newId(), name, email, password: hashed, adult, createdAt: now(), lastLogin: null, loginCount: 0 };
+    const user = { id: newId(), name, email, password: hashed, adult, by: birthYear, bm: birthMonth, createdAt: now(), lastLogin: null, loginCount: 0 };
     db.users.push(user);
     logEvent("register", user, req);
     startSession(user, req, res);

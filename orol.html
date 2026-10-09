@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="uz-Cyrl" data-theme="light" class="eko-aurora">
 <head>
+  <script>
+    /* «Орол фожиаси» — университет босқичи (16 ёшдан) учун. Мактаб босқичидаги профил бош саҳифага қайтарилади. */
+    (function () { try { var p = JSON.parse(localStorage.getItem("ekotalim:profile") || "null"), n = new Date();
+      if (!p || !p.by || (n.getFullYear() - p.by - (n.getMonth() + 1 < p.bm ? 1 : 0)) < 16) location.replace("index.html"); } catch (e) { /* ignore */ } })();
+  </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Орол — «Яшил белбоғ» | ЭкоТаълим</title>
