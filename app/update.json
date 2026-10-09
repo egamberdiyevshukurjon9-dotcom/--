@@ -1,14 +1,14 @@
 {
  "apk": {
-  "versionCode": 5,
-  "versionName": "1.4",
-  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.4.apk",
-  "sha256": "b406662c78d3eb6589f85af1fba9294d1daf381b952566e1c1061b852b9e4030",
-  "size": 2060676,
-  "notes": "• 🌐 Тил менюси: ўзбекча (кирилл ва лотин), русча ва инглизча — дарслар, тестлар ва лабораториялар таржима қилинди\n• 👤 «Профил» тугмаси: рўйхатдан ўтиш ва ҳисобга кириш битта ойнада\n• 🧪 Онлайн лаборатория: мактаб учун 4 та тажриба, университет учун 4 та виртуал лаборатория ва амалий машғулотлар\n• 📗 Онлайн дарсликлар ва ишончли манбаларга ҳаволалар (университет)\n• 🔭 Мактаб учун янги курс «Ёш тадқиқотчи» ва «Экоша» эртак-дарслари\n• Орол фожиаси бўлими фақат университет босқичида\n• Янги иконкалар"
+  "versionCode": 6,
+  "versionName": "1.5",
+  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.5.apk",
+  "sha256": "ee7bcdde2848f6121a66e93c85da354fa64c8f3baee4a24dddf83cf45671b1de",
+  "size": 2196097,
+  "notes": "• 🧊 3D виртуал лаборатория (мактаб ва университет): иссиқхона самараси, молекулалар ва ИҚ нур, сувни тиндириш, қуёш панели, дарахт ва CO₂ — айлантириб кузатинг\n• 🚀 «Лойиҳалар» бўлими (университет): 12 та хорижий методика — PBL, Design Thinking, Capstone, CDIO, Lean Canvas, Scrum, LogFrame ва бошқалар; ғоялар банки, Kanban тахтаси, рубрика ва ҳисобот\n• 🔎 Бўлимлар гуруҳларга ажратилди: қидирув, рўйхат кўриниши ва «сўнгги очилганлар»\n• 🌍 Илмий лабораторияда методикалар кенгайтирилди\n• «Орол фожиаси» лойиҳаси платформадан олиб ташланди"
  },
  "content": {
-  "version": "11475dbf4c513638",
+  "version": "5fc0b699a0828495",
   "minApk": 3,
   "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
   "files": {
@@ -18,10 +18,11 @@
    "icons/icon-maskable-512.png": "b915b6e69616430fd084943e18024aab264fac920426f2c03e80420c96091748",
    "icons/icon-maskable.svg": "76a72a544e63a21bdfd69e33db4ee08da25dacd83eda2e2c0a40dcb189372594",
    "icons/icon.svg": "4f2227bd2a4ae862f39cefbf0a5b5550d2d63d56cd7ed6e969af43da0710797a",
-   "index.html": "07c1a2ef4cf7b117444e7a376713340711e2679c52b8ce84c7fe7ac2312ef26f",
+   "index.html": "6002269afcbcd12bc5a70928ade061e166bc4f9f567ddc108081ab6878e855e9",
    "manifest.webmanifest": "1742854f8308e88c06de2d4f094740b8e773509a1a85c250d679bf7ce626e813",
-   "orol.html": "179579dbe1f0fbc7094ebec3677df7dd11399693156024f8eb7c9b8eef95d32f",
    "privacy.html": "6e4f3d2c4bbf49b43ec981a05a88cc84c6b477c2bce24249e34e8f54ea14bc65",
+   "vendor/eko-lab3d.js": "14139e0042c7805a0ff8794551c656a7e31981a941c7a6fe20c16fe455ade26c",
+   "vendor/eko-loyiha.js": "c5c5ca34b4278ea8e8a4d86d13058e2a5739ffb755748a039d5d5a4cef01f85a",
    "vendor/eko-ui.css": "9412a016799009750bc3a90b7ac5fe5275e8bcab7b1dbbb6b249994cfeaa8aeb",
    "vendor/fontawesome/LICENSE.txt": "0aa8f86525273b2efa4f40f4272a188e187704252170e979dc06879adf68d43c",
    "vendor/fontawesome/css/fa.min.css": "f77802297b39b74a3f8dbbba71041c45dc9f522870e4015d6523c04c24c93185",
@@ -32,9 +33,9 @@
    "vendor/fonts/onest-cyrillic-wght-normal.woff2": "68e5e01d6265bd68967746d4f5a9d18d0e6cbb5d15583c7082d6384ab1229b27",
    "vendor/fonts/onest-latin-ext-wght-normal.woff2": "14e7d3079b75860e2ab50efc6c318c398fdb46ede9b56e625f12ae70a3c5d9a4",
    "vendor/fonts/onest-latin-wght-normal.woff2": "052df74533250c2e0ca0c4bdd32de594e107d99c1648e63820ef9c6142067828",
-   "vendor/i18n/en.js": "920d54ec7b9cfabf424ef281c934d30409f1781587f3855467a4cc02155b5f4e",
-   "vendor/i18n/keys.js": "9d2ede76c819fa31d0163e7b5569d07458fc06e9f6cb5307083af12908879ed9",
-   "vendor/i18n/ru.js": "1ad5b369af4e283d4ef1e462cadf93d59a0fbfa3b2ad8c8d33af0050cedd18f1",
+   "vendor/i18n/en.js": "695752fe8144ade229039787321f3db5ed97e263620d5a2f103a46902a7dbc22",
+   "vendor/i18n/keys.js": "b2bc29d09bda47b2624b447bb4eaa7b247da59619a7005f21d45fe6ec31fa137",
+   "vendor/i18n/ru.js": "72e11a4d9b5526987d95b7702d146a32722c41e13dbca50dee1b80c09d943ddf",
    "vendor/leaflet/LICENSE": "53e8dc25862014e4324741ca18fbe3611e11d42ef69f59f86ea8c5389647d4cb",
    "vendor/leaflet/images/layers-2x.png": "066daca850d8ffbef007af00b06eac0015728dee279c51f3cb6c716df7c42edf",
    "vendor/leaflet/images/layers.png": "1dbbe9d028e292f36fcba8f8b3a28d5e8932754fc2215b9ac69e4cdecf5107c6",
@@ -43,6 +44,8 @@
    "vendor/leaflet/images/marker-shadow.png": "264f5c640339f042dd729062cfc04c17f8ea0f29882b538e3848ed8f10edb4da",
    "vendor/leaflet/leaflet.css": "a7837102824184820dfa198d1ebcd109ff6d0ff9a2672a074b9a1b4d147d04c6",
    "vendor/leaflet/leaflet.js": "db49d009c841f5ca34a888c96511ae936fd9f5533e90d8b2c4d57596f4e5641a",
+   "vendor/three/LICENSE": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+   "vendor/three/three.module.min.js": "08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7",
    "vendor/uz-border.json": "0692604f7f8902975abc9ade3735993b09c2e7516da243b210b75acf858e61e2"
   }
  }
