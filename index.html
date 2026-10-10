@@ -1460,6 +1460,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
           <a class="app" data-cat="learn" href="#krossvord" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
           <a class="app" data-cat="learn" href="#kutubxona" style="--c:#a16207"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
           <a class="app" data-cat="learn" href="#yangiliklar" style="--c:#64748b"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
+          <a class="app" data-cat="learn" href="#internet" style="--c:#2563eb"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <h3 class="app-cat" data-cat="lab"><i class="fa-solid fa-flask" aria-hidden="true"></i> Лабораториялар</h3>
           <a class="app" data-cat="lab" href="#lab3d" style="--c:#0891b2"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>Айлантириб кўринг</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#06b6d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
@@ -1906,6 +1907,11 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
           <div id="xwBox"></div>
         </div>
       </div>
+    </section>
+
+    <!-- ONLAYN MAʼLUMOTLAR: Open-Meteo, NASA EONET, USGS, Википедия — vendor/eko-onlayn.js -->
+    <section class="section alt" id="internet">
+      <div class="wrap" id="netRoot" data-notr></div>
     </section>
 
     <!-- NEWS -->
@@ -19223,10 +19229,19 @@ COURSES.splice(1, 0, {
       current: "us_aqi,pm2_5,pm10,nitrogen_dioxide",
       timezone: "Asia/Tashkent"
     });
+    // Интернет бўлмаса — охирги сақланган маълумот кўрсатилади
+    const AQ_KEY = "ekotalim:net:air";
+    let data, cachedAt = 0;
     try {
       const r = await fetch(url);
       if (!r.ok) throw new Error(r.status);
-      let data = await r.json();
+      data = await r.json();
+      try { localStorage.setItem(AQ_KEY, JSON.stringify({ t: Date.now(), d: data })); } catch (e) { /* ignore */ }
+    } catch (e) {
+      try { const c = JSON.parse(localStorage.getItem(AQ_KEY) || "null"); if (c && c.d) { data = c.d; cachedAt = c.t; } } catch (e2) { /* ignore */ }
+    }
+    try {
+      if (!data) throw new Error("offline");
       if (!Array.isArray(data)) data = [data];
       const rows = CITIES.map((c, i) => ({ name: c[0], cur: (data[i] || {}).current || {} }))
         .sort((a, b) => (b.cur.us_aqi ?? -1) - (a.cur.us_aqi ?? -1));
@@ -19240,8 +19255,9 @@ COURSES.splice(1, 0, {
         </div>`;
       }).join("");
       const t = rows[0] && rows[0].cur.time;
-      $("#aqTime").textContent = t ? `Охирги янгиланиш: ${t.replace("T", " ")} (Тошкент вақти). Бу модел асосидаги баҳо, расмий станция ўлчови эмас.` : "";
-      flag("air");
+      $("#aqTime").textContent = (cachedAt ? "📴 Интернет йўқ — охирги сақланган маълумот кўрсатилмоқда. " : "") +
+        (t ? `Охирги янгиланиш: ${t.replace("T", " ")} (Тошкент вақти). Бу модел асосидаги баҳо, расмий станция ўлчови эмас.` : "");
+      if (!cachedAt) flag("air");
     } catch (e) {
       grid.innerHTML = `<p class="muted">Ҳаво сифати маълумотларини юклаб бўлмади. Интернет алоқасини текширинг ва «Янгилаш» тугмасини босинг.</p>`;
     }
@@ -22184,5 +22200,6 @@ COURSES.splice(1, 0, {
 </script>
   <script src="/vendor/eko-lab3d.js" defer></script>
   <script src="/vendor/eko-loyiha.js" defer></script>
+  <script src="/vendor/eko-onlayn.js" defer></script>
 </body>
 </html>
