@@ -394,7 +394,7 @@ const publicReport = (r) => ({ id: r.id, category: r.category, text: r.text, lat
 
 /* ---------- Мактаблар учун ---------- */
 const TASK_TYPES = ["xp", "sort", "quiz", "memory", "tree", "course", "streak"];
-const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "qayta", "yosh"];
+const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "qayta", "ekologiya", "yosh"];
 const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function newClassCode() {
   for (;;) {
@@ -868,6 +868,8 @@ const STATIC = {
   /* Дизайн тизими ва Onest шрифти (SIL OFL) — ҳамма саҳифалар учун умумий */
   "/vendor/three/three.module.min.js": { file: "vendor/three/three.module.min.js", type: "text/javascript; charset=utf-8", cache: true },
   "/vendor/eko-lab3d.js": { file: "vendor/eko-lab3d.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-dunyo3d.js": { file: "vendor/eko-dunyo3d.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/world-land.json": { file: "vendor/world-land.json", type: "application/json; charset=utf-8", cache: true },
   "/vendor/eko-loyiha.js": { file: "vendor/eko-loyiha.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-onlayn.js": { file: "vendor/eko-onlayn.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-ui.css": { file: "vendor/eko-ui.css", type: "text/css; charset=utf-8" },

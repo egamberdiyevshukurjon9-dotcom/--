@@ -2,6 +2,8 @@
    Талаба хорижий университет методикаларидан бирини танлаб, экологик лойиҳани
    босқичма-босқич бажаради: босқич топшириқлари, канвас, Kanban тахтаси,
    рубрика бўйича ўзини баҳолаш ва ҳисобот (HTML) юклаб олиш.
+   «🚀 Стартап» панели: стартап босқичи ва TRL, юнит-иқтисодиёт (зарарсизлик нуқтаси),
+   смета (10 % захира, грант/ўз ҳиссаси, CSV) ва питч-дек (HTML слайдлар) экспорти.
    Маълумот фақат қурилмада сақланади (localStorage «ekotalim:projects»).
    Матнлар uz/ru/en кўринишида шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
@@ -313,6 +315,84 @@
   };
   const LV = [t3("Бошланғич", "Начальный", "Beginning"), t3("Ривожланаётган", "Развивающийся", "Developing"), t3("Малакали", "Компетентный", "Proficient"), t3("Намунавий", "Образцовый", "Exemplary")];
 
+
+  /* ===================== 🚀 Стартап панели ===================== */
+  /* Стартап босқичлари ва технологик тайёрлик даражаси (TRL, NASA / EU Horizon шкаласи) */
+  const SU_STAGES = [
+    [t3("💡 Ғоя", "💡 Идея", "💡 Idea"), t3("Муаммо ва ечим ғояси бор", "Есть идея проблемы и решения", "There is an idea of the problem and solution")],
+    [t3("🔍 Муаммо тасдиқланди", "🔍 Проблема подтверждена", "🔍 Problem validated"), t3("Камида 10–20 та мижоз билан суҳбатлашилди", "Проведено интервью хотя бы с 10–20 клиентами", "Interviewed at least 10–20 customers")],
+    [t3("🛠 MVP / прототип", "🛠 MVP / прототип", "🛠 MVP / prototype"), t3("Энг оддий ишлайдиган намуна тайёр", "Готов простейший рабочий образец", "The simplest working version is ready")],
+    [t3("🧪 Пилот", "🧪 Пилот", "🧪 Pilot"), t3("Ҳақиқий шароитда синалди, натижа ўлчанди", "Испытано в реальных условиях, результат измерен", "Tested in real conditions, results measured")],
+    [t3("💰 Биринчи даромад", "💰 Первая выручка", "💰 First revenue"), t3("Биринчи мижозлар пул тўлади", "Первые клиенты заплатили", "First customers have paid")],
+    [t3("🚀 Кенгайиш", "🚀 Масштабирование", "🚀 Scale-up"), t3("Янги ҳудуд ёки бозорга чиқиш", "Выход в новые регионы или рынки", "Expanding to new regions or markets")]
+  ];
+  const TRL = [
+    t3("Асосий тамойиллар кузатилди", "Наблюдены базовые принципы", "Basic principles observed"),
+    t3("Технология ғояси шакллантирилди", "Сформулирована концепция технологии", "Technology concept formulated"),
+    t3("Ғоя тажрибада исботланди", "Концепция доказана экспериментально", "Experimental proof of concept"),
+    t3("Лабораторияда синалди", "Проверено в лаборатории", "Validated in the lab"),
+    t3("Ҳақиқийга яқин муҳитда синалди", "Проверено в среде, близкой к реальной", "Validated in a relevant environment"),
+    t3("Ҳақиқийга яқин муҳитда намойиш қилинди", "Продемонстрировано в среде, близкой к реальной", "Demonstrated in a relevant environment"),
+    t3("Прототип ҳақиқий шароитда намойиш қилинди", "Прототип продемонстрирован в реальных условиях", "Prototype demonstrated in an operational environment"),
+    t3("Тизим тўлиқ тайёр ва синалган", "Система завершена и испытана", "System complete and qualified"),
+    t3("Ҳақиқий шароитда муваффақиятли ишламоқда", "Успешно работает в реальных условиях", "Proven in an operational environment")
+  ];
+  const BCAT = [t3("Ускуна", "Оборудование", "Equipment"), t3("Материал", "Материалы", "Materials"), t3("Хизмат", "Услуги", "Services"), t3("Иш ҳақи", "Оплата труда", "Salaries"), t3("Маркетинг", "Маркетинг", "Marketing"), t3("Бошқа", "Прочее", "Other")];
+  const PITCH = [
+    ["problem", t3("😟 Муаммо", "😟 Проблема", "😟 Problem"), t3("Кимнинг қандай муаммоси бор? Рақам билан.", "У кого какая проблема? С цифрами.", "Who has what problem? Use numbers.")],
+    ["solution", t3("💡 Ечим", "💡 Решение", "💡 Solution"), t3("Сизнинг маҳсулот ёки хизматингиз нима қилади?", "Что делает ваш продукт или услуга?", "What does your product or service do?")],
+    ["market", t3("🎯 Бозор ва мижоз", "🎯 Рынок и клиент", "🎯 Market and customer"), t3("Мижоз ким, улар қанча, бозор ҳажми қанча?", "Кто клиент, сколько их, каков объём рынка?", "Who is the customer, how many are there, how big is the market?")],
+    ["rivals", t3("⚔️ Рақобатчилар", "⚔️ Конкуренты", "⚔️ Competitors"), t3("Ҳозир муаммо қандай ҳал қилинмоқда, сиз нимаси билан яхшироқсиз?", "Как проблему решают сейчас и чем вы лучше?", "How is the problem solved today, and why are you better?")],
+    ["impact", t3("🌱 Экологик таъсир", "🌱 Экологический эффект", "🌱 Environmental impact"), t3("Қанча чиқинди, CO₂, сув ёки энергия тежалади?", "Сколько отходов, CO₂, воды или энергии сберегается?", "How much waste, CO₂, water or energy is saved?")],
+    ["ask", t3("🤝 Сўров", "🤝 Запрос", "🤝 The ask"), t3("Қанча маблағ ёки қандай ёрдам керак ва нимага сарфланади?", "Сколько средств или какая помощь нужна и на что?", "How much funding or what help do you need, and for what?")]
+  ];
+  const SX = {
+    views: [["work", t3("🧭 Методика", "🧭 Методика", "🧭 Method")], ["su", t3("🚀 Стартап", "🚀 Стартап", "🚀 Startup")]],
+    suLead: t3("Лойиҳани стартапга айлантиринг: босқични белгиланг, бизнес-моделни ҳисобланг, сметани тузинг ва инвестор ёки грант комиссияси учун питч-декни юклаб олинг.", "Превратите проект в стартап: отметьте этап, рассчитайте бизнес-модель, составьте смету и скачайте питч-дек для инвестора или грантовой комиссии.", "Turn the project into a startup: mark its stage, work out the business model, build a budget and download a pitch deck for investors or a grant panel."),
+    stageH: t3("1. Стартап босқичи", "1. Этап стартапа", "1. Startup stage"),
+    trlH: t3("Технологик тайёрлик даражаси (TRL)", "Уровень технологической готовности (TRL)", "Technology readiness level (TRL)"),
+    trlHint: t3("Грант дастурлари кўпинча TRL ни сўрайди: 1–3 — илмий ғоя, 4–6 — прототип, 7–9 — бозорга тайёр.", "Грантовые программы часто спрашивают TRL: 1–3 — научная идея, 4–6 — прототип, 7–9 — готово к рынку.", "Grant programmes often ask for the TRL: 1–3 is a research idea, 4–6 a prototype, 7–9 market-ready."),
+    ecoH: t3("2. Бизнес-модел ва юнит-иқтисодиёт", "2. Бизнес-модель и юнит-экономика", "2. Business model and unit economics"),
+    price: t3("Сотиш нархи (1 дона, сўм)", "Цена продажи (1 шт., сум)", "Selling price (per unit, UZS)"),
+    cost: t3("Ўзгарувчан харажат (1 дона, сўм)", "Переменные затраты (1 шт., сум)", "Variable cost (per unit, UZS)"),
+    fixed: t3("Доимий харажат (ойига, сўм)", "Постоянные затраты (в месяц, сум)", "Fixed costs (per month, UZS)"),
+    sales: t3("Кутилаётган сотув (ойига, дона)", "Ожидаемые продажи (в месяц, шт.)", "Expected sales (per month, units)"),
+    margin: t3("Ялпи фойда (1 дона)", "Маржа (1 шт.)", "Unit margin"),
+    marginP: t3("Маржа", "Маржинальность", "Margin"),
+    be: t3("Зарарсизлик нуқтаси", "Точка безубыточности", "Break-even point"),
+    perMonth: t3("дона / ой", "шт. / мес.", "units / month"),
+    profit: t3("Ойлик фойда", "Прибыль в месяц", "Monthly profit"),
+    payback: t3("Сметани қоплаш муддати", "Срок окупаемости сметы", "Payback of the budget"),
+    months: t3("ой", "мес.", "months"),
+    never: t3("фойда йўқ — нарх ёки сотувни ошириш керак", "прибыли нет — нужно поднять цену или продажи", "no profit: raise the price or sales"),
+    lossUnit: t3("Нарх харажатдан паст: ҳар бир сотувда зарар", "Цена ниже затрат: убыток с каждой продажи", "Price is below cost: every sale loses money"),
+    budH: t3("3. Смета (харажатлар режаси)", "3. Смета (план расходов)", "3. Budget (cost plan)"),
+    bName: t3("Харажат номи", "Статья расходов", "Item"),
+    bCat: t3("Тоифа", "Категория", "Category"),
+    bQty: t3("Сони", "Кол-во", "Qty"),
+    bPrice: t3("Нархи (сўм)", "Цена (сум)", "Price (UZS)"),
+    bSum: t3("Жами", "Сумма", "Total"),
+    bAdd: t3("＋ Қатор қўшиш", "＋ Добавить строку", "＋ Add row"),
+    subtotal: t3("Оралиқ жами", "Промежуточный итог", "Subtotal"),
+    reserve: t3("Кутилмаган харажатлар захираси (10 %)", "Резерв на непредвиденные расходы (10 %)", "Contingency reserve (10 %)"),
+    total: t3("Умумий смета", "Итого по смете", "Total budget"),
+    grant: t3("Грантдан сўраладиган улуш, %", "Доля, запрашиваемая из гранта, %", "Share requested from the grant, %"),
+    grantSum: t3("Грант маблағи", "Средства гранта", "Grant funds"),
+    own: t3("Ўз ҳиссаси", "Собственный вклад", "Own contribution"),
+    csv: t3("⬇️ Смета (CSV, Excel учун)", "⬇️ Смета (CSV для Excel)", "⬇️ Budget (CSV for Excel)"),
+    pitchH: t3("4. Питч (инвестор ва грант учун)", "4. Питч (для инвестора и гранта)", "4. Pitch (for investors and grants)"),
+    sdgH: t3("Қайси БМТ барқарор ривожланиш мақсадларига хизмат қилади?", "Каким целям устойчивого развития ООН служит?", "Which UN Sustainable Development Goals does it serve?"),
+    deck: t3("🎤 Питч-дек (HTML слайдлар)", "🎤 Питч-дек (HTML-слайды)", "🎤 Pitch deck (HTML slides)"),
+    deckTip: t3("Питч-декни браузерда очинг: ← → тугмалари билан варақланг, чоп этиш орқали PDF га сақланг.", "Откройте питч-дек в браузере: листайте клавишами ← →, сохраняйте в PDF через печать.", "Open the deck in a browser: use ← → to move between slides and print to save as PDF."),
+    team: t3("👥 Жамоа", "👥 Команда", "👥 Team"),
+    stageNow: t3("📍 Босқич ва тайёрлик", "📍 Этап и готовность", "📍 Stage and readiness"),
+    model: t3("💵 Бизнес-модел", "💵 Бизнес-модель", "💵 Business model"),
+    budget: t3("📊 Смета", "📊 Смета", "📊 Budget"),
+    thanks: t3("Раҳмат! Саволлар?", "Спасибо! Вопросы?", "Thank you! Questions?"),
+    sum: t3("сўм", "сум", "UZS"),
+    whySu: "стартап питчи тайёр"
+  };
+
   /* ===================== Сақлаш ===================== */
   const KEY = "ekotalim:projects";
   let DB = { list: [] };
@@ -366,8 +446,11 @@
     const team = p.team.length ? `<p class="small">👥 ${p.team.map((x) => esc(x)).join(" · ")}</p>` : "";
     const rub = RUBRIC.map(([c, lv], i) => `<tr><th>${H(c)}</th>${lv.map((d, k) => `<td><label class="ly-rb ${p.rubric[i] === k ? "on" : ""}"><input type="radio" name="rb${i}" data-rb="${i}" value="${k}" ${p.rubric[i] === k ? "checked" : ""}><b>${k + 1}</b> ${H(d)}</label></td>`).join("")}</tr>`).join("");
     const sc = Object.values(p.rubric).reduce((a, b) => a + b + 1, 0);
-    return `<button class="btn btn-ghost btn-sm" type="button" data-back>${H(TX.back)}</button>
+    const head = `<button class="btn btn-ghost btn-sm" type="button" data-back>${H(TX.back)}</button>
       <div class="ly-head" style="--c:${m.color}"><span class="ly-ic" aria-hidden="true">${m.icon}</span><div><h3>${esc(p.title)}</h3><p class="small muted">${H(m.name)}${p.idea ? " · " + H((IDEAS.find((i) => i.id === p.idea) || {}).t) : ""}</p>${team}</div><b class="ly-pct">${pr}%</b></div>
+      <div class="filters ly-views" role="tablist">${SX.views.map(([k, t]) => `<button type="button" role="tab" class="chip ${(p.view || "work") === k ? "active" : ""}" aria-selected="${(p.view || "work") === k}" data-view="${k}">${H(t)}</button>`).join("")}</div>`;
+    if (p.view === "su") return head + startupView(p);
+    return `${head}
       <div class="pc-bar" aria-hidden="true"><i style="width:${pr}%"></i></div>
       <div class="ly-steps">${steps}</div>
       <div class="lab-stage ly-stage">
@@ -383,6 +466,161 @@
       <h4 style="margin-top:22px">${H(TX.self)} · ${H(TX.score)}: ${sc}/20</h4>
       <div class="ly-rtable"><table class="lab-table ly-rubric">${rub}</table></div>
       <div class="ev-tools" style="margin-top:18px"><button class="btn btn-primary btn-sm" type="button" data-report>${H(TX.report)}</button><button class="btn btn-ghost btn-sm" type="button" data-copy>${H(TX.copy)}</button><button class="btn btn-ghost btn-sm" type="button" data-del>${H(TX.del)}</button></div>`;
+  }
+
+
+  /* ---------- 🚀 Стартап: маълумот, ҳисоб-китоб, экспорт ---------- */
+  const SU = (p) => {
+    if (!p.su) p.su = {};
+    const u = p.su;
+    if (!Array.isArray(u.budget)) u.budget = [];
+    if (!u.pitch) u.pitch = {};
+    if (!Array.isArray(u.sdg)) u.sdg = [];
+    if (u.stage == null) u.stage = 0;
+    if (u.trl == null) u.trl = 1;
+    if (u.grant == null) u.grant = 70;
+    return u;
+  };
+  const num = (v) => { const n = parseFloat(String(v ?? "").replace(/\s+/g, "").replace(",", ".")); return isFinite(n) && n > 0 ? n : 0; };
+  const fmt = (n) => Math.round(n).toLocaleString("ru-RU").replace(/ /g, " ");
+  function suCalc(u) {
+    const price = num(u.price), cost = num(u.cost), fixed = num(u.fixed), sales = num(u.sales);
+    const unit = price - cost;
+    const sub = u.budget.reduce((a, r) => a + num(r.q) * num(r.p), 0);
+    const reserve = sub * 0.1, total = sub + reserve;
+    const g = Math.max(0, Math.min(100, num(u.grant)));
+    const profit = unit * sales - fixed;
+    return {
+      price, cost, fixed, sales, unit,
+      pct: price > 0 ? (unit / price) * 100 : 0,
+      be: unit > 0 ? Math.ceil(fixed / unit) : null,
+      profit, payback: profit > 0 && total > 0 ? Math.ceil(total / profit) : null,
+      sub, reserve, total, grant: (total * g) / 100, own: (total * (100 - g)) / 100,
+      cats: BCAT.map((_, k) => u.budget.filter((r) => +r.c === k).reduce((a, r) => a + num(r.q) * num(r.p), 0))
+    };
+  }
+  function suOut(u) {
+    const c = suCalc(u), S = L(SX.sum);
+    const loss = c.price > 0 && c.unit <= 0;
+    return {
+      unit: c.price ? `${fmt(c.unit)} ${S}` : "—",
+      pct: c.price ? `${c.pct.toFixed(0)} %` : "—",
+      be: loss ? L(SX.lossUnit) : c.be != null ? `${fmt(c.be)} ${L(SX.perMonth)}` : "—",
+      profit: c.price ? `${fmt(c.profit)} ${S}` : "—",
+      payback: c.total ? (c.payback != null ? `${c.payback} ${L(SX.months)}` : L(SX.never)) : "—",
+      sub: `${fmt(c.sub)} ${S}`, reserve: `${fmt(c.reserve)} ${S}`, total: `${fmt(c.total)} ${S}`,
+      grant: `${fmt(c.grant)} ${S}`, own: `${fmt(c.own)} ${S}`,
+      bars: c.total ? BCAT.map((b, k) => c.cats[k] ? `<div class="su-bar"><span>${H(b)}</span><i style="width:${Math.max(2, (c.cats[k] / c.sub) * 100).toFixed(1)}%"></i><b>${Math.round((c.cats[k] / c.sub) * 100)} %</b></div>` : "").join("") : "",
+      bad: loss
+    };
+  }
+  function startupView(p) {
+    const u = SU(p), o = suOut(u);
+    const field = (k, t) => `<label class="su-f"><span>${H(t)}</span><input inputmode="decimal" data-su="${k}" value="${esc(u[k] ?? "")}" placeholder="0"></label>`;
+    const row = (r, i) => `<tr><td><input data-b="${i}" data-k="n" value="${esc(r.n || "")}" aria-label="${H(SX.bName)}"></td>
+      <td><select data-b="${i}" data-k="c" aria-label="${H(SX.bCat)}">${BCAT.map((c, k) => `<option value="${k}" ${+r.c === k ? "selected" : ""}>${H(c)}</option>`).join("")}</select></td>
+      <td><input data-b="${i}" data-k="q" inputmode="decimal" value="${esc(r.q ?? "")}" aria-label="${H(SX.bQty)}"></td>
+      <td><input data-b="${i}" data-k="p" inputmode="decimal" value="${esc(r.p ?? "")}" aria-label="${H(SX.bPrice)}"></td>
+      <td class="su-num" data-bsum="${i}">${fmt(num(r.q) * num(r.p))}</td>
+      <td><button type="button" class="su-x" data-brm="${i}" aria-label="✕">✕</button></td></tr>`;
+    return `<p class="muted">${H(SX.suLead)}</p>
+      <section class="su-card"><h4>${H(SX.stageH)}</h4>
+        <div class="ly-steps su-steps">${SU_STAGES.map(([t, d], i) => `<button type="button" class="ly-step ${i === u.stage ? "on" : ""} ${i < u.stage ? "ok" : ""}" data-sus="${i}" title="${H(d)}"><b>${i < u.stage ? "✓" : i + 1}</b><span>${H(t)}</span></button>`).join("")}</div>
+        <p class="small muted">${H(SU_STAGES[u.stage][1])}</p>
+        <label class="su-f su-trl"><span>${H(SX.trlH)}: <b data-trlv>TRL ${u.trl}</b></span><input type="range" min="1" max="9" step="1" value="${u.trl}" data-trl aria-label="TRL"></label>
+        <p class="small" data-trld>${H(TRL[u.trl - 1])}</p>
+        <p class="small muted">${H(SX.trlHint)}</p>
+      </section>
+      <section class="su-card"><h4>${H(SX.ecoH)}</h4>
+        <div class="su-grid">${field("price", SX.price)}${field("cost", SX.cost)}${field("fixed", SX.fixed)}${field("sales", SX.sales)}</div>
+        <div class="su-kpis">
+          <div><small>${H(SX.margin)}</small><b data-o="unit">${o.unit}</b></div>
+          <div><small>${H(SX.marginP)}</small><b data-o="pct">${o.pct}</b></div>
+          <div class="${o.bad ? "su-bad" : ""}" data-obox="be"><small>${H(SX.be)}</small><b data-o="be">${o.be}</b></div>
+          <div><small>${H(SX.profit)}</small><b data-o="profit">${o.profit}</b></div>
+          <div><small>${H(SX.payback)}</small><b data-o="payback">${o.payback}</b></div>
+        </div>
+      </section>
+      <section class="su-card"><h4>${H(SX.budH)}</h4>
+        <div class="ly-rtable"><table class="lab-table su-table"><thead><tr><th>${H(SX.bName)}</th><th>${H(SX.bCat)}</th><th>${H(SX.bQty)}</th><th>${H(SX.bPrice)}</th><th>${H(SX.bSum)}</th><th></th></tr></thead>
+          <tbody>${u.budget.map(row).join("")}</tbody></table></div>
+        <button class="btn btn-ghost btn-sm" type="button" data-badd>${H(SX.bAdd)}</button>
+        <div class="su-tot">
+          <p><span>${H(SX.subtotal)}</span><b data-o="sub">${o.sub}</b></p>
+          <p><span>${H(SX.reserve)}</span><b data-o="reserve">${o.reserve}</b></p>
+          <p class="su-big"><span>${H(SX.total)}</span><b data-o="total">${o.total}</b></p>
+          <label class="su-f"><span>${H(SX.grant)}</span><input inputmode="decimal" data-su="grant" value="${esc(u.grant)}"></label>
+          <p><span>${H(SX.grantSum)}</span><b data-o="grant">${o.grant}</b></p>
+          <p><span>${H(SX.own)}</span><b data-o="own">${o.own}</b></p>
+        </div>
+        <div class="su-bars" data-o-html="bars">${o.bars}</div>
+        <button class="btn btn-ghost btn-sm" type="button" data-csv>${H(SX.csv)}</button>
+      </section>
+      <section class="su-card"><h4>${H(SX.pitchH)}</h4>
+        ${PITCH.map(([k, t, h]) => `<label class="ly-cv"><b>${H(t)}</b><textarea data-pitch="${k}" rows="2" placeholder="${H(h)}">${esc(u.pitch[k] || "")}</textarea></label>`).join("")}
+        <p class="small"><b>${H(SX.sdgH)}</b></p>
+        <div class="su-sdg">${Object.keys(SDG).map((n) => `<label class="ly-sdg"><input type="checkbox" data-sdg="${n}" ${u.sdg.includes(+n) ? "checked" : ""}> SDG ${n} · ${H(SDG[n])}</label>`).join("")}</div>
+        <div class="ev-tools" style="margin-top:14px"><button class="btn btn-primary btn-sm" type="button" data-deck>${H(SX.deck)}</button></div>
+        <p class="small muted">${H(SX.deckTip)}</p>
+      </section>`;
+  }
+  function suRefresh(u) {
+    const o = suOut(u);
+    ROOT.querySelectorAll("[data-o]").forEach((el) => { el.textContent = o[el.dataset.o]; });
+    const bars = ROOT.querySelector("[data-o-html=bars]"); if (bars) bars.innerHTML = o.bars;
+    const beBox = ROOT.querySelector("[data-obox=be]"); if (beBox) beBox.classList.toggle("su-bad", o.bad);
+    u.budget.forEach((r, i) => { const c = ROOT.querySelector(`[data-bsum="${i}"]`); if (c) c.textContent = fmt(num(r.q) * num(r.p)); });
+  }
+  function download(name, type, text) {
+    const blob = new Blob([text], { type });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+  const fileName = (p, ext) => (p.title.replace(/[\\/:*?"<>|]+/g, " ").trim() || "loyiha") + ext;
+  function budgetCsv(p) {
+    const u = SU(p), c = suCalc(u), q = (x) => `"${String(x).replace(/"/g, '""')}"`;
+    const lines = [[L(SX.bName), L(SX.bCat), L(SX.bQty), L(SX.bPrice), L(SX.bSum)].map(q).join(";")];
+    u.budget.forEach((r) => lines.push([q(r.n || ""), q(L(BCAT[+r.c] || BCAT[5])), num(r.q), num(r.p), Math.round(num(r.q) * num(r.p))].join(";")));
+    lines.push("", [q(L(SX.subtotal)), "", "", "", Math.round(c.sub)].join(";"), [q(L(SX.reserve)), "", "", "", Math.round(c.reserve)].join(";"), [q(L(SX.total)), "", "", "", Math.round(c.total)].join(";"), [q(L(SX.grantSum)), "", "", "", Math.round(c.grant)].join(";"), [q(L(SX.own)), "", "", "", Math.round(c.own)].join(";"));
+    return "﻿" + lines.join("\r\n");
+  }
+  function deckHtml(p) {
+    const u = SU(p), c = suCalc(u), o = suOut(u), m = M(p.method), S = L(SX.sum);
+    const pg = (k) => esc(u.pitch[k] || "—").replace(/\n/g, "<br>");
+    const slides = [
+      `<h1>${esc(p.title)}</h1><p class="sub">${H(SU_STAGES[u.stage][0])} · TRL ${u.trl}</p>${p.team.length ? `<p>${H(SX.team)}: ${p.team.map(esc).join(", ")}</p>` : ""}`,
+      ...PITCH.slice(0, 4).map(([k, t]) => `<h2>${H(t)}</h2><p class="big">${pg(k)}</p>`),
+      `<h2>${H(SX.model)}</h2><table><tr><th>${H(SX.price)}</th><td>${fmt(c.price)} ${S}</td></tr><tr><th>${H(SX.cost)}</th><td>${fmt(c.cost)} ${S}</td></tr><tr><th>${H(SX.margin)}</th><td>${o.unit} (${o.pct})</td></tr><tr><th>${H(SX.be)}</th><td>${o.be}</td></tr><tr><th>${H(SX.profit)}</th><td>${o.profit}</td></tr></table>`,
+      `<h2>${H(SX.stageNow)}</h2><ol class="road">${SU_STAGES.map(([t], i) => `<li class="${i < u.stage ? "done" : i === u.stage ? "now" : ""}">${H(t)}</li>`).join("")}</ol><p>TRL ${u.trl}: ${H(TRL[u.trl - 1])}</p><p class="sub">${H(m.name)} · ${progress(p)}%</p>`,
+      `<h2>${H(SX.budget)}</h2><table>${BCAT.map((b, k) => c.cats[k] ? `<tr><th>${H(b)}</th><td>${fmt(c.cats[k])} ${S}</td></tr>` : "").join("")}<tr><th>${H(SX.reserve)}</th><td>${o.reserve}</td></tr><tr class="tot"><th>${H(SX.total)}</th><td>${o.total}</td></tr><tr><th>${H(SX.grantSum)}</th><td>${o.grant}</td></tr><tr><th>${H(SX.own)}</th><td>${o.own}</td></tr></table>`,
+      `<h2>${H(PITCH[4][1])}</h2><p class="big">${pg("impact")}</p>${u.sdg.length ? `<p class="sdg">${u.sdg.map((n) => `<span>SDG ${n} · ${H(SDG[n])}</span>`).join("")}</p>` : ""}`,
+      `<h2>${H(PITCH[5][1])}</h2><p class="big">${pg("ask")}</p><p class="sub">${H(SX.thanks)}</p>`
+    ];
+    return `<!doctype html><html lang="${EL() ? EL().htmlLang : "uz"}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(p.title)}</title>
+<style>*{box-sizing:border-box}body{margin:0;font:20px/1.5 system-ui,sans-serif;background:#0b1f17;color:#0b1f17}section{width:100vw;height:100vh;padding:7vh 8vw;background:linear-gradient(135deg,#ecfdf5,#fff 60%);display:none;flex-direction:column;justify-content:center;position:relative}section.on{display:flex}h1{font-size:3.2em;margin:0;color:#047857;line-height:1.1}h2{font-size:2em;margin:0 0 .6em;color:#047857}.sub{color:#4a5f56;font-size:1.1em}.big{font-size:1.35em;max-width:46em}table{border-collapse:collapse;font-size:1.05em;max-width:52em}th,td{padding:.45em .9em;border-bottom:1px solid #d1fae5;text-align:left}td{text-align:right;font-weight:700}tr.tot th,tr.tot td{color:#047857;font-size:1.15em}.road{display:flex;flex-wrap:wrap;gap:.5em;list-style:none;padding:0}.road li{padding:.4em .9em;border-radius:999px;border:2px solid #a7f3d0;color:#4a5f56}.road li.done{background:#d1fae5;color:#065f46}.road li.now{background:#047857;color:#fff;border-color:#047857}.sdg span{display:inline-block;margin:.25em;padding:.3em .8em;border-radius:999px;background:#d1fae5;color:#065f46;font-size:.85em}.n{position:absolute;right:3vw;bottom:3vh;color:#4a5f56;font-size:.8em}.brand{position:absolute;left:8vw;bottom:3vh;color:#047857;font-weight:700;font-size:.8em}@media print{body{background:#fff}section{display:flex!important;page-break-after:always;height:100vh}}</style>
+${slides.map((x, i) => `<section class="${i ? "" : "on"}">${x}<span class="brand">🌿 ${H(t3("ЭкоТаълим", "ЭкоТаълим", "EkoTa'lim"))}</span><span class="n">${i + 1} / ${slides.length}</span></section>`).join("\n")}
+<script>let i=0;const s=document.querySelectorAll("section");const go=(d)=>{s[i].classList.remove("on");i=Math.max(0,Math.min(s.length-1,i+d));s[i].classList.add("on")};addEventListener("keydown",(e)=>{if(["ArrowRight","PageDown"," "].includes(e.key))go(1);if(["ArrowLeft","PageUp"].includes(e.key))go(-1)});addEventListener("click",(e)=>go(e.clientX>innerWidth/3?1:-1));</script></html>`;
+  }
+  function bindStartup(p) {
+    const u = SU(p), $$ = (q) => ROOT.querySelectorAll(q);
+    $$("[data-sus]").forEach((b) => b.addEventListener("click", () => { u.stage = +b.dataset.sus; save(); render(); }));
+    const trl = ROOT.querySelector("[data-trl]");
+    if (trl) trl.addEventListener("input", () => { u.trl = +trl.value; save(); ROOT.querySelector("[data-trlv]").textContent = "TRL " + u.trl; ROOT.querySelector("[data-trld]").textContent = L(TRL[u.trl - 1]); });
+    $$("[data-su]").forEach((i) => i.addEventListener("input", () => { u[i.dataset.su] = i.value; save(); suRefresh(u); }));
+    $$("[data-b]").forEach((i) => i.addEventListener(i.tagName === "SELECT" ? "change" : "input", () => { const r = u.budget[+i.dataset.b]; if (!r) return; r[i.dataset.k] = i.value; save(); suRefresh(u); }));
+    $$("[data-brm]").forEach((b) => b.addEventListener("click", () => { u.budget.splice(+b.dataset.brm, 1); save(); render(); }));
+    const add = ROOT.querySelector("[data-badd]");
+    if (add) add.addEventListener("click", () => { u.budget.push({ n: "", c: 0, q: 1, p: "" }); save(); render(); const r = ROOT.querySelectorAll('[data-k="n"]'); if (r.length) r[r.length - 1].focus(); });
+    $$("[data-pitch]").forEach((t) => t.addEventListener("input", () => { u.pitch[t.dataset.pitch] = t.value; save(); }));
+    $$("[data-sdg]").forEach((c) => c.addEventListener("change", () => { const n = +c.dataset.sdg; u.sdg = c.checked ? [...new Set([...u.sdg, n])].sort((a, b) => a - b) : u.sdg.filter((x) => x !== n); save(); }));
+    const csv = ROOT.querySelector("[data-csv]"); if (csv) csv.addEventListener("click", () => download(fileName(p, "-smeta.csv"), "text/csv;charset=utf-8", budgetCsv(p)));
+    const deck = ROOT.querySelector("[data-deck]");
+    if (deck) deck.addEventListener("click", () => {
+      download(fileName(p, "-pitch.html"), "text/html", deckHtml(p));
+      if (PITCH.every(([k]) => (u.pitch[k] || "").trim()) && u.budget.length) xpOnce(`ly_${p.id}_pitch`, 20, SX.whySu);
+    });
   }
 
   function ideasView() {
@@ -456,6 +694,8 @@ ${p.tasks.length ? `<h2>${H(TX.board)}</h2><table>${[0, 1, 2].map((c) => `<tr><t
     const p = DB.list.find((x) => x.id === openId);
     if (!p || tab !== "my") return;
     const bk = $("[data-back]"); if (bk) bk.addEventListener("click", () => { openId = null; render(); });
+    $$("[data-view]").forEach((b) => b.addEventListener("click", () => { p.view = b.dataset.view; save(); render(); }));
+    if (p.view === "su") return bindStartup(p);
     $$("[data-stage]").forEach((b) => b.addEventListener("click", () => { p.stage = +b.dataset.stage; save(); render(); }));
     $$("[data-chk]").forEach((c) => c.addEventListener("change", () => {
       p.checks[c.dataset.chk] = c.checked; save(); check(p);

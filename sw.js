@@ -3,7 +3,7 @@
    /api/ ва /admin ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekotalim-v13";
+const CACHE = "ekotalim-v14";
 const SHELL = [
   "/",
   "/privacy",
@@ -25,6 +25,8 @@ const SHELL = [
   "/vendor/eko-ui.css",
   "/vendor/three/three.module.min.js",
   "/vendor/eko-lab3d.js",
+  "/vendor/eko-dunyo3d.js",
+  "/vendor/world-land.json",
   "/vendor/eko-loyiha.js",
   "/vendor/eko-onlayn.js",
   "/vendor/i18n/keys.js",

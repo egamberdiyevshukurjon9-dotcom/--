@@ -1,14 +1,14 @@
 {
  "apk": {
-  "versionCode": 7,
-  "versionName": "1.6",
-  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.6.apk",
-  "sha256": "a695ca07a585827c292b2d4a6bed974312d7e96aab8542cfaee0abceaaed1496",
-  "size": 2491086,
-  "notes": "• 🌐 «Онлайн маълумотлар» бўлими: интернет бўлса, об-ҳаво ва ҳаво сифати (Open-Meteo), сайёра кўрсаткичлари — CO₂, метан, ҳарорат (NOAA, NASA), дунёдаги табиий ҳодисалар (NASA EONET), охирги зилзилалар (USGS) ва Википедиядан экология мақолалари\n• 📦 Олинган маълумотлар телефонда сақланади: интернет ўчса, охирги маълумот кўрсатилади\n• 📴 Интернетсиз режим белгиси: дарслар, ўйинлар ва лабораториялар интернетсиз ҳам ишлайди\n• 💨 «Ҳаво сифати» бўлими ҳам интернетсиз охирги маълумотни кўрсатади"
+  "versionCode": 8,
+  "versionName": "1.7",
+  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.7.apk",
+  "sha256": "09533d712665e8b66bc10fdd9fb063a8329de07098a819b9fa4423a373ea43ef",
+  "size": 2970475,
+  "notes": "• 📗 Янги «Экология» курси (Нигматов, Пулатов, 2026): 13 боб, 49 дарс, 13 кроссворд ва 45 атамали глоссарий\n• 📝 «Экологик мониторинг» курсига якуний тест: 150 саволлик банкдан ҳар сафар 20 та савол, 80% дан ўтса нишон\n• 🧪 3 янги 3D лаборатория (тутун, дарё, экологик пирамида) ва ҳар бир лабораторияга «Қандай ишлатилади?» йўриқномаси\n• 🚀 «Лойиҳалар» бўлимида стартап панели: босқичлар, TRL, бизнес-модель, смета (CSV), тежамкорлик ҳисоби ва питч-тақдимот\n• 🌏 Болалар учун «3D Эко-дунё»: чиқиндини саралаш, Орол оролчаси ва айланадиган глобус\n• 🌐 Барча янги бўлимлар рус ва инглиз тилларида"
  },
  "content": {
-  "version": "330b4269199f9153",
+  "version": "0d9f170b03a36fdc",
   "minApk": 3,
   "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
   "files": {
@@ -18,11 +18,12 @@
    "icons/icon-maskable-512.png": "b915b6e69616430fd084943e18024aab264fac920426f2c03e80420c96091748",
    "icons/icon-maskable.svg": "76a72a544e63a21bdfd69e33db4ee08da25dacd83eda2e2c0a40dcb189372594",
    "icons/icon.svg": "4f2227bd2a4ae862f39cefbf0a5b5550d2d63d56cd7ed6e969af43da0710797a",
-   "index.html": "7729870e2eb1e1d6fd3bcd157313ec9cf4d53c80d0204cb94f170a2537536308",
+   "index.html": "cdb6d757684b964023f7df3f477f4b2a67f335f46f2e6fa8ae5cffd36ac1a989",
    "manifest.webmanifest": "1742854f8308e88c06de2d4f094740b8e773509a1a85c250d679bf7ce626e813",
    "privacy.html": "6e4f3d2c4bbf49b43ec981a05a88cc84c6b477c2bce24249e34e8f54ea14bc65",
-   "vendor/eko-lab3d.js": "554a918d0f013be4cd13deca74fca48110aa5aa100b91f613ff46f9cb0a4f971",
-   "vendor/eko-loyiha.js": "c5c5ca34b4278ea8e8a4d86d13058e2a5739ffb755748a039d5d5a4cef01f85a",
+   "vendor/eko-dunyo3d.js": "8dc11b9ca12d89839a56a3d9d0eade95c340aab70521aacaf937ba901febcb94",
+   "vendor/eko-lab3d.js": "32067aac1ea0daa7d7e9745da72b81e489e6f5af45b2f6a310f0d1813bdaa266",
+   "vendor/eko-loyiha.js": "a8d1fcaaaf0060284bc5d70b46ee0dd6c6394b945563572fbb8eadbf1cd7b215",
    "vendor/eko-onlayn.js": "9cad8e070b044b91f61375dfcf2f0e3214288515f5da66a506171b096b28561c",
    "vendor/eko-ui.css": "9412a016799009750bc3a90b7ac5fe5275e8bcab7b1dbbb6b249994cfeaa8aeb",
    "vendor/fontawesome/LICENSE.txt": "0aa8f86525273b2efa4f40f4272a188e187704252170e979dc06879adf68d43c",
@@ -34,9 +35,9 @@
    "vendor/fonts/onest-cyrillic-wght-normal.woff2": "68e5e01d6265bd68967746d4f5a9d18d0e6cbb5d15583c7082d6384ab1229b27",
    "vendor/fonts/onest-latin-ext-wght-normal.woff2": "14e7d3079b75860e2ab50efc6c318c398fdb46ede9b56e625f12ae70a3c5d9a4",
    "vendor/fonts/onest-latin-wght-normal.woff2": "052df74533250c2e0ca0c4bdd32de594e107d99c1648e63820ef9c6142067828",
-   "vendor/i18n/en.js": "74fc347c9270e17c5c89a70a483e929c395487ec37f4ee93a5b9aeef0a85b34b",
-   "vendor/i18n/keys.js": "062869130c20208e9973c02cab7d2638d4e8582c15902737a527c5088851ed84",
-   "vendor/i18n/ru.js": "49e9f5fc08359f6c14708709afe26d8f990b5c71027f9ab816ec818e036d99fe",
+   "vendor/i18n/en.js": "1979e3becdb6bfa59f6558d27cd478af152bb3716c242a4c3724b788321194a7",
+   "vendor/i18n/keys.js": "0cfb60315c39fcac276429e4b54602c569b026aed8a7f2d8a626a4f0100d9042",
+   "vendor/i18n/ru.js": "ea1e62bc297476fb382c48ed6567b3e2dc358a0784d7f124a302f48b282c88ac",
    "vendor/leaflet/LICENSE": "53e8dc25862014e4324741ca18fbe3611e11d42ef69f59f86ea8c5389647d4cb",
    "vendor/leaflet/images/layers-2x.png": "066daca850d8ffbef007af00b06eac0015728dee279c51f3cb6c716df7c42edf",
    "vendor/leaflet/images/layers.png": "1dbbe9d028e292f36fcba8f8b3a28d5e8932754fc2215b9ac69e4cdecf5107c6",
@@ -47,7 +48,8 @@
    "vendor/leaflet/leaflet.js": "db49d009c841f5ca34a888c96511ae936fd9f5533e90d8b2c4d57596f4e5641a",
    "vendor/three/LICENSE": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
    "vendor/three/three.module.min.js": "08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7",
-   "vendor/uz-border.json": "0692604f7f8902975abc9ade3735993b09c2e7516da243b210b75acf858e61e2"
+   "vendor/uz-border.json": "0692604f7f8902975abc9ade3735993b09c2e7516da243b210b75acf858e61e2",
+   "vendor/world-land.json": "1b35ebc9d28cf04311f6c27fa7c658eb9e2c6f63ae44a8336a1d5872a581ed05"
   }
  }
 }
