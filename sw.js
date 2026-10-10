@@ -3,7 +3,7 @@
    /api/ ва /admin ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekotalim-v9";
+const CACHE = "ekotalim-v12";
 const SHELL = [
   "/",
   "/privacy",
@@ -15,11 +15,16 @@ const SHELL = [
   "/vendor/leaflet/leaflet.js",
   "/vendor/leaflet/leaflet.css",
   "/vendor/uz-border.json",
-  "/orol.html",
   "/vendor/fontawesome/css/fa.min.css",
   "/vendor/fontawesome/webfonts/fa-solid-900.woff2",
   "/vendor/fontawesome/webfonts/fa-regular-400.woff2",
   "/vendor/eko-ui.css",
+  "/vendor/three/three.module.min.js",
+  "/vendor/eko-lab3d.js",
+  "/vendor/eko-loyiha.js",
+  "/vendor/i18n/keys.js",
+  "/vendor/i18n/ru.js",
+  "/vendor/i18n/en.js",
   "/vendor/fonts/onest-cyrillic-wght-normal.woff2",
   "/vendor/fonts/onest-cyrillic-ext-wght-normal.woff2",
   "/vendor/fonts/onest-latin-wght-normal.woff2",

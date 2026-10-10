@@ -1,27 +1,28 @@
 {
  "apk": {
-  "versionCode": 4,
-  "versionName": "1.3",
-  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.3.apk",
-  "sha256": "b2afeecf1c32dc79ee0b9075a420ad87ec37a130670a5796bbd69e3babe8a06f",
-  "size": 1056932,
-  "notes": "• Рўйхатдан ўтиш: ёшга қараб «Мактаб» ёки «Университет» босқичи очилади\n• 🎒 Мактаб (5–15 ёш): «Эко-саёҳат» — 6 олам, 24 босқич, ўйин асосидаги дарслар\n• 🎓 Университет (16–60 ёш): «Илмий лаборатория», илмий далиллар ва CER таҳлил\n• 16 ёшга тўлганда университет босқичига автоматик ўтиш\n• Янги курс: «Иқлим ўзгаришини бошқариш» — 64 дарс, луғатга 35 атама"
+  "versionCode": 6,
+  "versionName": "1.5",
+  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.5.apk",
+  "sha256": "ee7bcdde2848f6121a66e93c85da354fa64c8f3baee4a24dddf83cf45671b1de",
+  "size": 2196097,
+  "notes": "• 🧊 3D виртуал лаборатория (мактаб ва университет): иссиқхона самараси, молекулалар ва ИҚ нур, сувни тиндириш, қуёш панели, дарахт ва CO₂ — айлантириб кузатинг\n• 🚀 «Лойиҳалар» бўлими (университет): 12 та хорижий методика — PBL, Design Thinking, Capstone, CDIO, Lean Canvas, Scrum, LogFrame ва бошқалар; ғоялар банки, Kanban тахтаси, рубрика ва ҳисобот\n• 🔎 Бўлимлар гуруҳларга ажратилди: қидирув, рўйхат кўриниши ва «сўнгги очилганлар»\n• 🌍 Илмий лабораторияда методикалар кенгайтирилди\n• «Орол фожиаси» лойиҳаси платформадан олиб ташланди"
  },
  "content": {
-  "version": "c41297e41c1102cf",
+  "version": "51e5b530c4ea5791",
   "minApk": 3,
   "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
   "files": {
-   "icons/apple-touch-icon.png": "d11d9f535875566f3763fdc3fcbb920c3085fb614e571e73dda0480bf9fea77d",
-   "icons/icon-192.png": "0955b089e710207dc482bd3f6c01375ae28142b8a8894226e7a63558fe2ca2bf",
-   "icons/icon-512.png": "05462dc33339bce4517ec6f22165b74411d600ce8b9ae9410794a868cfec0f1c",
-   "icons/icon-maskable-512.png": "3a174bcac2c25674d619d6ffc7b269684aa9fb8432621171ae7a55a2034c94b8",
-   "icons/icon-maskable.svg": "1d5e677de2e6e48d183221bce174707bec92ead88488ad9d4b29c394e7d0aa32",
-   "icons/icon.svg": "0c37b15d2bafdf1eb7847eda50445696e0406395308a995cd80a0e5535d4a303",
-   "index.html": "26c354cf379da2c355f5e142b86480973a492eb00681ea23d01e7ef7e77df21e",
+   "icons/apple-touch-icon.png": "8bcfcbe2dedc46537f7bd8304bbfcfe8316a076897760f7fb2e39407f47dcbbe",
+   "icons/icon-192.png": "bf2d6ee1b6420331e4c742e392eb8d5144820239a8d10491dd1adc14790d44db",
+   "icons/icon-512.png": "dd24c1518a31a2dbff4d47688447eb6ada02e705062c762e06131dfa257eefde",
+   "icons/icon-maskable-512.png": "b915b6e69616430fd084943e18024aab264fac920426f2c03e80420c96091748",
+   "icons/icon-maskable.svg": "76a72a544e63a21bdfd69e33db4ee08da25dacd83eda2e2c0a40dcb189372594",
+   "icons/icon.svg": "4f2227bd2a4ae862f39cefbf0a5b5550d2d63d56cd7ed6e969af43da0710797a",
+   "index.html": "81fc9cc9b5ebb256afeaceb2ce8080560251e3bf93030e36957e2b028e514992",
    "manifest.webmanifest": "1742854f8308e88c06de2d4f094740b8e773509a1a85c250d679bf7ce626e813",
-   "orol.html": "84bf7c65c08529070971e09cfd0d486ce245192a36cc7b0caea34a472bc5aee6",
-   "privacy.html": "efd3cf74d27bd0923995293b7362ce04077ad3c608bced2e20bdf72c0e9f143e",
+   "privacy.html": "6e4f3d2c4bbf49b43ec981a05a88cc84c6b477c2bce24249e34e8f54ea14bc65",
+   "vendor/eko-lab3d.js": "554a918d0f013be4cd13deca74fca48110aa5aa100b91f613ff46f9cb0a4f971",
+   "vendor/eko-loyiha.js": "c5c5ca34b4278ea8e8a4d86d13058e2a5739ffb755748a039d5d5a4cef01f85a",
    "vendor/eko-ui.css": "9412a016799009750bc3a90b7ac5fe5275e8bcab7b1dbbb6b249994cfeaa8aeb",
    "vendor/fontawesome/LICENSE.txt": "0aa8f86525273b2efa4f40f4272a188e187704252170e979dc06879adf68d43c",
    "vendor/fontawesome/css/fa.min.css": "f77802297b39b74a3f8dbbba71041c45dc9f522870e4015d6523c04c24c93185",
@@ -32,6 +33,9 @@
    "vendor/fonts/onest-cyrillic-wght-normal.woff2": "68e5e01d6265bd68967746d4f5a9d18d0e6cbb5d15583c7082d6384ab1229b27",
    "vendor/fonts/onest-latin-ext-wght-normal.woff2": "14e7d3079b75860e2ab50efc6c318c398fdb46ede9b56e625f12ae70a3c5d9a4",
    "vendor/fonts/onest-latin-wght-normal.woff2": "052df74533250c2e0ca0c4bdd32de594e107d99c1648e63820ef9c6142067828",
+   "vendor/i18n/en.js": "bdf515796ba8acf28f8304142c7dd892097a44555c5f9325826b665712014b2c",
+   "vendor/i18n/keys.js": "c954269dbf603d10168a5e3cdc1bf7dd99c937165e72eba3fe93be8a13fe4ab3",
+   "vendor/i18n/ru.js": "4f7cab1911d65974dbf388d9752abc5027249b4c64db45c5c8ad2d37314384f9",
    "vendor/leaflet/LICENSE": "53e8dc25862014e4324741ca18fbe3611e11d42ef69f59f86ea8c5389647d4cb",
    "vendor/leaflet/images/layers-2x.png": "066daca850d8ffbef007af00b06eac0015728dee279c51f3cb6c716df7c42edf",
    "vendor/leaflet/images/layers.png": "1dbbe9d028e292f36fcba8f8b3a28d5e8932754fc2215b9ac69e4cdecf5107c6",
@@ -40,6 +44,8 @@
    "vendor/leaflet/images/marker-shadow.png": "264f5c640339f042dd729062cfc04c17f8ea0f29882b538e3848ed8f10edb4da",
    "vendor/leaflet/leaflet.css": "a7837102824184820dfa198d1ebcd109ff6d0ff9a2672a074b9a1b4d147d04c6",
    "vendor/leaflet/leaflet.js": "db49d009c841f5ca34a888c96511ae936fd9f5533e90d8b2c4d57596f4e5641a",
+   "vendor/three/LICENSE": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+   "vendor/three/three.module.min.js": "08fd7545d13d2c7fb65ab691530a802dafefd638596501854f267d0fb13c39e7",
    "vendor/uz-border.json": "0692604f7f8902975abc9ade3735993b09c2e7516da243b210b75acf858e61e2"
   }
  }
