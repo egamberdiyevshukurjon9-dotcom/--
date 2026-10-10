@@ -7,6 +7,9 @@
      💧 тиндиргич — Стокс қонуни ва Хазен назарияси (идеал тиндириш ҳавзаси);
      ☀️ қуёш панели — қуёш геометрияси (Cooper, 1969), Kasten–Young ҳаво массаси, Meinel модели;
      🌳 дарахт ва CO₂ — Chave ва бошқ. (2014) аллометрик тенгламаси, IPCC углерод улуши 0,47.
+     🧪 пластикни саралаш — Архимед кучи F = (ρс − ρп)·V·g, полимер зичликлари (флотация, оғир муҳит);
+     ⚙️ гранулалаш линияси — модда баланси W = m₁(w₁ − w₂)/(1 − w₂), буғланиш иссиқлиги Q = W·r
+        (иккаласи ҳам Клинков ва бошқ. «Рециклинг и утилизация тары и упаковки», 2010–2014 асосида).
    Матнлар uz/ru/en кўринишида шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
   "use strict";
@@ -822,7 +825,275 @@
     }
   };
 
-  const EXPS = [GH, MOLS, TANK, SOLAR, TREE];
+  /* =====================================================================
+     6) 🧪 Пластикни суюқликда саралаш — Архимед кучи (сузиш–чўкиш)
+     ===================================================================== */
+  const POLY = [
+    ["pp", 5, 0.905, 0xf97316, { uz: "ПП", ru: "ПП", en: "PP" }, { uz: "қопқоқ, контейнер", ru: "крышки, контейнеры", en: "caps, containers" }],
+    ["ldpe", 4, 0.92, 0xfacc15, { uz: "ПЭНП", ru: "ПЭНП", en: "LDPE" }, { uz: "пакет, плёнка", ru: "пакеты, плёнка", en: "bags, film" }],
+    ["hdpe", 2, 0.955, 0xf1f5f9, { uz: "ПЭВП", ru: "ПЭВП", en: "HDPE" }, { uz: "шампун ва сут идиши", ru: "флаконы, бутылки для молока", en: "shampoo and milk bottles" }],
+    ["ps", 6, 1.05, 0xa855f7, { uz: "ПС", ru: "ПС", en: "PS" }, { uz: "бир марталик стакан", ru: "одноразовые стаканы", en: "disposable cups" }],
+    ["pet", 1, 1.38, 0x38bdf8, { uz: "ПЭТ", ru: "ПЭТ", en: "PET" }, { uz: "ичимлик бутилкаси", ru: "бутылки для напитков", en: "drink bottles" }],
+    ["pvc", 3, 1.4, 0x475569, { uz: "ПВХ", ru: "ПВХ", en: "PVC" }, { uz: "қувур, дераза профили", ru: "трубы, оконный профиль", en: "pipes, window profiles" }]
+  ];
+  const FLOT = {
+    id: "flotatsiya", icon: "🧪",
+    name: { uz: "Пластикни сувда саралаш", ru: "Сортировка пластика в жидкости", en: "Sink–float plastic sorting" },
+    q: { uz: "Майдаланган пластик бўлакларини сувга солсак, қайсилари сузади ва қайсилари чўкади? Буни саралашда қандай ишлатса бўлади?", ru: "Если бросить измельчённый пластик в воду, какие кусочки всплывут, а какие утонут? Как это использовать для сортировки?", en: "If we drop shredded plastic into water, which pieces float and which sink? How can we use this for sorting?" },
+    src: {
+      uz: "Клинков А.С. ва бошқ. «Рециклинг и утилизация тары и упаковки», ТГТУ, 2010 (флотация, оғир муҳитда ажратиш); полимер зичликлари — Brandrup & Immergut, Polymer Handbook, 4th ed.; NaCl эритмаси зичлиги — CRC Handbook of Chemistry and Physics",
+      ru: "Клинков А.С. и др. «Рециклинг и утилизация тары и упаковки», ТГТУ, 2010 (флотация, разделение в тяжёлых средах); плотности полимеров — Brandrup & Immergut, Polymer Handbook, 4th ed.; плотность раствора NaCl — CRC Handbook of Chemistry and Physics",
+      en: "Klinkov A.S. et al. Recycling and Disposal of Containers and Packaging, TSTU, 2010 (flotation, heavy-media separation); polymer densities — Brandrup & Immergut, Polymer Handbook, 4th ed.; NaCl solution density — CRC Handbook of Chemistry and Physics",
+    },
+    view: { bg: "#e0f2fe", d: 5.4, ph: 1.2, th: 0.5, target: [0, 0.75, 0], minD: 2.5, maxD: 10 },
+    presets: [
+      [0.93, { uz: "Спирт + сув", ru: "Спирт + вода", en: "Alcohol + water" }, { uz: "≈ 45 % спирт", ru: "≈ 45 % спирта", en: "≈ 45% alcohol" }, "🥃"],
+      [1.0, { uz: "Тоза сув", ru: "Чистая вода", en: "Plain water" }, { uz: "20 °C", ru: "20 °C", en: "20 °C" }, "💧"],
+      [1.1, { uz: "Тузли сув", ru: "Солёная вода", en: "Salt water" }, { uz: "≈ 14 % NaCl", ru: "≈ 14 % NaCl", en: "≈ 14% NaCl" }, "🧂"],
+      [1.2, { uz: "Тўйинган туз эритмаси", ru: "Насыщенный рассол", en: "Saturated brine" }, { uz: "≈ 26 % NaCl", ru: "≈ 26 % NaCl", en: "≈ 26% NaCl" }, "🌊"]
+    ],
+    build(v, ui) {
+      const T = THREE, S = { rho: 1.0, seen: new Set([1.0]) };
+      const LX = 3, HY = 1.7, WZ = 1.5, NPER = 14;
+      const g = new T.Group(); g.position.set(-LX / 2, 0, -WZ / 2); v.scene.add(g);
+      const box = new T.BoxGeometry(LX, HY, WZ);
+      const liquid = new T.Mesh(box, new T.MeshStandardMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.2, depthWrite: false }));
+      liquid.position.set(LX / 2, HY / 2, WZ / 2); g.add(liquid);
+      const edges = new T.LineSegments(new T.EdgesGeometry(box), new T.LineBasicMaterial({ color: 0x1e3a8a }));
+      edges.position.copy(liquid.position); g.add(edges);
+      const surf = new T.Mesh(new T.PlaneGeometry(LX, WZ), new T.MeshStandardMaterial({ color: 0x93c5fd, transparent: true, opacity: 0.35, side: T.DoubleSide, depthWrite: false }));
+      surf.rotation.x = -Math.PI / 2; surf.position.set(LX / 2, HY - 0.001, WZ / 2); g.add(surf);
+      const floor = new T.Mesh(new T.BoxGeometry(LX + 0.2, 0.06, WZ + 0.2), new T.MeshStandardMaterial({ color: 0x94a3b8 }));
+      floor.position.set(LX / 2, -0.03, WZ / 2); g.add(floor);
+      const lTop = textSprite("⬆ " + L({ uz: "сузади", ru: "всплывает", en: "floats" }), "#047857", 0.24); lTop.position.set(LX + 0.55, HY - 0.1, WZ / 2); g.add(lTop);
+      const lBot = textSprite("⬇ " + L({ uz: "чўкади", ru: "тонет", en: "sinks" }), "#b91c1c", 0.24); lBot.position.set(LX + 0.55, 0.15, WZ / 2); g.add(lBot);
+      let lRho = null;
+      const label = () => {
+        if (lRho) { g.remove(lRho); lRho.material.map.dispose(); lRho.material.dispose(); }
+        lRho = textSprite("ρ = " + fmt(S.rho, 2) + (lang() === "en" ? " g/cm³" : " г/см³"), "#1e3a8a", 0.3); lRho.position.set(LX / 2, HY + 0.35, WZ / 2); g.add(lRho);
+      };
+      /* Бўлаклар: ҳар полимердан NPER та ясси бўлак (флекс) */
+      const N = POLY.length * NPER, im = new T.InstancedMesh(new T.BoxGeometry(0.16, 0.025, 0.11), new T.MeshStandardMaterial({ roughness: 0.55 }), N);
+      g.add(im);
+      const col = new T.Color(), mtx = new T.Matrix4(), q = new T.Quaternion(), e = new T.Euler(), sc = new T.Vector3(1, 1, 1), pos = new T.Vector3();
+      const F = Array.from({ length: N }, (_, i) => ({ t: Math.floor(i / NPER), x: 0, y: 0, z: 0, a: 0, b: 0, s: 0 }));
+      const stir = () => F.forEach((f) => { f.x = 0.15 + Math.random() * (LX - 0.3); f.z = 0.12 + Math.random() * (WZ - 0.24); f.y = 0.3 + Math.random() * (HY - 0.6); f.a = Math.random() * 6.28; f.b = Math.random() * 6.28; f.s = Math.random(); });
+      stir();
+      F.forEach((f, i) => { col.setHex(POLY[f.t][3]); im.setColorAt(i, col); });
+      v.updaters.push((dt, t) => {
+        F.forEach((f, i) => {
+          const d = S.rho - POLY[f.t][2];
+          /* Сузиш тезлиги (визуал): Архимед кучи фарқи |Δρ| га мутаносиб */
+          const sp = Math.sign(d) * clamp(Math.abs(d) * 4, 0.12, 1.1);
+          const top = HY - 0.02 - f.s * 0.05, bot = 0.03 + f.s * 0.09;
+          f.y = clamp(f.y + sp * dt, bot, top);
+          const moving = f.y > bot + 0.001 && f.y < top - 0.001;
+          if (moving) { f.a += dt * 1.6; f.b += dt * 1.1; }
+          const bob = f.y >= top - 0.001 ? Math.sin(t * 2 + f.s * 6) * 0.008 : 0;
+          e.set(moving ? Math.sin(f.a) * 0.6 : 0.05 * Math.sin(f.s * 9), f.b, moving ? Math.cos(f.a) * 0.4 : 0);
+          q.setFromEuler(e); pos.set(f.x, f.y + bob, f.z);
+          mtx.compose(pos, q, sc); im.setMatrixAt(i, mtx);
+        });
+        im.instanceMatrix.needsUpdate = true;
+      });
+      const floats = () => POLY.filter((p) => p[2] < S.rho);
+      const draw = () => {
+        const k = clamp((S.rho - 0.85) / 0.55, 0, 1);
+        liquid.material.color.setHSL(lerp(0.6, 0.47, k), 0.75, lerp(0.7, 0.55, k));
+        liquid.material.opacity = 0.16 + k * 0.14;
+        label(); ui.render();
+      };
+      const sep = () => S.rho > 1.05 && S.rho < 1.38;
+      ui.html = () => {
+        const uni = stage() === "uni", fl = floats();
+        const nm = (p) => `<span class="l3-dot" style="background:#${p[3].toString(16).padStart(6, "0")}"></span>${H(p[4])}`;
+        const legend = `<div class="l3-legend">${POLY.map((p) => `<span><i style="background:#${p[3].toString(16).padStart(6, "0")}"></i>${p[1]} ${H(p[4])}</span>`).join("")}</div>`;
+        const pre = this.presets.map(([r, n, d, i]) => `<button type="button" class="sg-opt l3-pre ${Math.abs(r - S.rho) < 0.001 ? "sel" : ""}" data-r="${r}"><b>${i} ${fmt(r, 2)}</b><span>${H(n)}</span><small>${H(d)}</small></button>`).join("");
+        const res = `<p class="lab-out">⬆ <b>${H({ uz: "Сузади", ru: "Всплывают", en: "Float" })}:</b> ${fl.length ? fl.map(nm).join(", ") : "—"}<br>⬇ <b>${H({ uz: "Чўкади", ru: "Тонут", en: "Sink" })}:</b> ${POLY.filter((p) => p[2] >= S.rho).map(nm).join(", ") || "—"}</p>`;
+        const stirB = `<button type="button" class="btn btn-ghost btn-sm" data-stir>🥄 ${H({ uz: "Аралаштириш", ru: "Перемешать", en: "Stir" })}</button>`;
+        if (!uni) {
+          const tip = S.rho < 0.95 ? { uz: "Спиртли сувда фақат энг енгил ПП ва ПЭНП сузади: улар бир-биридан ҳам ажрайди.", ru: "В спиртовой воде всплывают только самые лёгкие ПП и ПЭНП.", en: "In alcohol–water only the lightest PP and LDPE float." } : S.rho < 1.04 ? { uz: "Сувда полиолефинлар (ПП, ПЭ) сузади, қолганлари чўкади. Заводда шу усул билан ПЭТ бутилкадан қопқоқ ажратилади!", ru: "В воде всплывают полиолефины (ПП, ПЭ), остальное тонет. Так на заводе отделяют крышки от ПЭТ-бутылок!", en: "In water polyolefins (PP, PE) float and the rest sinks. Plants separate caps from PET bottles this way!" } : { uz: "Тузли сув оғирроқ: энди ПС ҳам сузади, ПЭТ ва ПВХ эса чўкади.", ru: "Солёная вода тяжелее: теперь всплывает и ПС, а ПЭТ и ПВХ тонут.", en: "Salt water is heavier: now PS floats too, while PET and PVC sink." };
+          return `<div class="l3-pres">${pre}</div>${legend}${res}
+            <p class="small">💡 ${H(tip)}</p>${stirB}
+            <p class="l3-mission" data-star>${H(TX.mission)}: ${H({ uz: "ПС стаканни (6) ПЭТ бутилкадан (1) ажратадиган суюқликни топинг: ПС сузсин, ПЭТ чўксин.", ru: "Найдите жидкость, которая отделит стаканчики ПС (6) от бутылок ПЭТ (1): ПС всплывает, ПЭТ тонет.", en: "Find the liquid that separates PS cups (6) from PET bottles (1): PS floats, PET sinks." })}</p>`;
+        }
+        const rows = POLY.map((p) => { const d = S.rho - p[2]; return `<tr><td>${p[1]} ${nm(p)}</td><td>${fmt(p[2], 3)}</td><td>${d > 0 ? "⬆" : "⬇"} ${fmt(Math.abs(d) * 9.81, 2)}</td></tr>`; }).join("");
+        return `<label>${H({ uz: "Суюқлик зичлиги", ru: "Плотность жидкости", en: "Liquid density" })} ρ<sub>c</sub>: <b>${fmt(S.rho, 2)} g/cm³</b><input type="range" data-k="rho" min="0.8" max="1.5" step="0.01" value="${S.rho}"></label>
+          <div class="l3-pres mini">${pre}</div>
+          <table class="l3-tbl"><thead><tr><th>${H({ uz: "Полимер", ru: "Полимер", en: "Polymer" })}</th><th>ρ, g/cm³</th><th>${H({ uz: "Натижавий куч, мН/см³", ru: "Результирующая сила, мН/см³", en: "Net force, mN/cm³" })}</th></tr></thead><tbody>${rows}</tbody></table>
+          <div class="lab-formula">F = (ρ<sub>c</sub> − ρ<sub>p</sub>) · V · g &nbsp;→&nbsp; F &gt; 0 ⬆, F &lt; 0 ⬇</div>
+          ${res}${stirB}
+          <p class="small muted">${H({ uz: "ПЭТ (1,33–1,40) ва ПВХ (1,35–1,45) зичликлари устма-уст тушади, шунинг учун уларни флотация билан ажратиб бўлмайди: бунинг учун ИҚ ёки рентген сканерли автоматик саралаш керак. Ҳақиқий бўлакларда ҳаво пуфакчалари, ёрлиқ ва тўлдирувчилар зичликни ўзгартиради, шу сабабли суюқлик сирт фаол модда билан аралаштирилади.", ru: "Плотности ПЭТ (1,33–1,40) и ПВХ (1,35–1,45) перекрываются, поэтому флотацией их не разделить: нужна автоматическая сортировка с ИК- или рентгеновским сканером. В реальности пузырьки воздуха, этикетки и наполнители меняют плотность, поэтому в жидкость добавляют ПАВ.", en: "PET (1.33–1.40) and PVC (1.35–1.45) densities overlap, so flotation cannot separate them: automatic sorting with NIR or X-ray scanners is needed. In real flakes, air bubbles, labels and fillers shift the density, so a surfactant is added to the liquid." })}</p>`;
+      };
+      ui.bind = (el) => {
+        el.querySelectorAll("[data-r]").forEach((b) => b.addEventListener("click", () => {
+          S.rho = +b.dataset.r; S.seen.add(S.rho); draw();
+          if (stage() !== "uni" && sep()) star("flotatsiya", ui.el.querySelector("[data-star]"));
+        }));
+        const r = el.querySelector("input[data-k]");
+        if (r) {
+          r.addEventListener("input", () => { S.rho = +r.value; const b = r.parentElement.querySelector("b"); if (b) b.textContent = fmt(S.rho, 2) + " g/cm³"; });
+          r.addEventListener("change", () => { S.rho = +r.value; draw(); });
+        }
+        el.querySelector("[data-stir]").addEventListener("click", stir);
+      };
+      ui.task = () => ({ q: { uz: "ПЭТ бўлаги: V = 1 см³, ρ = 1,38 г/см³, сувда (ρ = 1,00 г/см³). Бўлакни тубга тортувчи натижавий куч неча мН? (g = 9,81 м/с²)", ru: "Кусочек ПЭТ: V = 1 см³, ρ = 1,38 г/см³, в воде (ρ = 1,00 г/см³). Какова результирующая сила, тянущая его на дно, мН? (g = 9,81 м/с²)", en: "A PET flake: V = 1 cm³, ρ = 1.38 g/cm³, in water (ρ = 1.00 g/cm³). What net force pulls it to the bottom, in mN? (g = 9.81 m/s²)" }, a: 0.38 * 9.81, tol: 0.05, unit: "mN", hint: { uz: "F = (1380 − 1000) кг/м³ · 10⁻⁶ м³ · 9,81, сўнг ×1000", ru: "F = (1380 − 1000) кг/м³ · 10⁻⁶ м³ · 9,81, затем ×1000", en: "F = (1380 − 1000) kg/m³ · 10⁻⁶ m³ · 9.81, then ×1000" } });
+      draw();
+    }
+  };
+
+  /* =====================================================================
+     7) ⚙️ Полиолефин чиқиндисини гранулалаш линияси — модда баланси
+     ===================================================================== */
+  const ST = [
+    ["sort", "🧺", { uz: "Саралаш", ru: "Сортировка", en: "Sorting" }, 0x22c55e],
+    ["shred", "✂️", { uz: "Майдалаш", ru: "Измельчение", en: "Shredding" }, 0xf59e0b],
+    ["wash", "🫧", { uz: "Ювиш", ru: "Мойка", en: "Washing" }, 0x3b82f6],
+    ["cent", "🌀", { uz: "Центрифуга", ru: "Центрифуга", en: "Centrifuge" }, 0x06b6d4],
+    ["dry", "♨️", { uz: "Қуритиш", ru: "Сушка", en: "Drying" }, 0xef4444],
+    ["extr", "⚙️", { uz: "Экструдер", ru: "Экструдер", en: "Extruder" }, 0x8b5cf6]
+  ];
+  const LINE = {
+    id: "liniya", icon: "⚙️",
+    name: { uz: "Гранулалаш линияси", ru: "Линия грануляции", en: "Pelletizing line" },
+    q: { uz: "Ифлос пластик идишдан тоза гранула олиш учун қайси машиналар керак ва биттаси ўчирилса нима бўлади?", ru: "Какие машины нужны, чтобы из грязной пластиковой тары получить чистые гранулы, и что будет, если выключить одну из них?", en: "Which machines turn dirty plastic packaging into clean pellets, and what happens if one is switched off?" },
+    src: {
+      uz: "Клинков А.С. ва бошқ. «Рециклинг и утилизация тары и упаковки», ТГТУ, 2010, 2-боб (полиолефин чиқиндисини тайёрлаш: аралашма ≤ 5 %, бўлак 2–9 мм, центрифугадан кейин намлик 10–15 %, қуритгичдан кейин 0,2 %); буғланиш иссиқлиги r = 2257 кЖ/кг",
+      ru: "Клинков А.С. и др. «Рециклинг и утилизация тары и упаковки», ТГТУ, 2010, гл. 2 (подготовка отходов полиолефинов: примеси ≤ 5 %, хлопья 2–9 мм, влажность после центрифуги 10–15 %, после сушилки 0,2 %); теплота парообразования r = 2257 кДж/кг",
+      en: "Klinkov A.S. et al. Recycling and Disposal of Containers and Packaging, TSTU, 2010, ch. 2 (polyolefin waste preparation: impurities ≤ 5%, flakes 2–9 mm, moisture 10–15% after the centrifuge and 0.2% after the dryer); heat of vaporisation r = 2257 kJ/kg",
+    },
+    view: { bg: "#e2e8f0", d: 12.5, ph: 1.12, th: 0.18, target: [0.6, 0.7, 0], minD: 4, maxD: 20, auto: false },
+    msgs: {
+      sort: { uz: "Саралаш ўчиқ: ПВХ ва ПЭТ бўлаклари аралашди — гранула ранги ҳар хил ва мўрт.", ru: "Сортировка выключена: примешались ПВХ и ПЭТ — гранулы разноцветные и хрупкие.", en: "Sorting is off: PVC and PET got mixed in — pellets are multicoloured and brittle." },
+      shred: { uz: "Майдалагич ўчиқ: бутун идишлар экструдерга сиғмайди — линия тиқилиб қолди!", ru: "Дробилка выключена: целая тара не проходит в экструдер — линия забилась!", en: "The shredder is off: whole containers do not fit the extruder — the line is jammed!" },
+      wash: { uz: "Ювиш ўчиқ: ёрлиқ, ёғ ва қум қолди — гранула кир ва жигарранг.", ru: "Мойка выключена: остались этикетки, жир и песок — гранулы грязные, бурые.", en: "Washing is off: labels, grease and sand remain — pellets are dirty and brown." },
+      cent: { uz: "Центрифуга ўчиқ: бўлакларда сув жуда кўп, қуритгич улгурмайди — гранулада ғоваклар.", ru: "Центрифуга выключена: воды слишком много, сушилка не справляется — в гранулах поры.", en: "The centrifuge is off: too much water, the dryer cannot cope — pellets have pores." },
+      dry: { uz: "Қуритиш ўчиқ: намлик 10–15 % — экструдерда буғ пуфакчалари ҳосил бўлади, гранула ғовак.", ru: "Сушка выключена: влажность 10–15 % — в экструдере образуется пар, гранулы пористые.", en: "Drying is off: 10–15% moisture turns to steam in the extruder — pellets are porous." },
+      extr: { uz: "Экструдер ўчиқ: тоза флекс бор, лекин гранула чиқмаяпти.", ru: "Экструдер выключен: чистые хлопья есть, но гранул нет.", en: "The extruder is off: clean flakes are ready, but no pellets come out." }
+    },
+    build(v, ui) {
+      const T = THREE, S = { on: ST.map(() => true), tried: new Set(), G: 1000, x: 5, w1: 12, eta: 60 };
+      /* Тор (телефон) экранда бутун линия кўринсин */
+      if (v.camera && v.camera.aspect < 1.2) { v.home.d = v.d = 12.5 * 1.3 / Math.max(0.6, v.camera.aspect); v.place(); }
+      const XS = [-5, -3, -1, 1, 3, 5], BY = 0.42, END = 6.2;
+      const belt = new T.Mesh(new T.BoxGeometry(END + 6.6, 0.06, 0.62), new T.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 }));
+      belt.position.set((END - 6.6) / 2, BY - 0.04, 0); v.scene.add(belt);
+      for (let x = -6.2; x <= END; x += 1.1) { const leg = new T.Mesh(new T.BoxGeometry(0.06, BY - 0.07, 0.06), new T.MeshStandardMaterial({ color: 0x64748b })); leg.position.set(x, (BY - 0.07) / 2, 0.26); v.scene.add(leg); const l2 = leg.clone(); l2.position.z = -0.26; v.scene.add(l2); }
+      const floor = new T.Mesh(new T.PlaneGeometry(16, 5), new T.MeshStandardMaterial({ color: 0xcbd5e1 }));
+      floor.rotation.x = -Math.PI / 2; v.scene.add(floor);
+      /* Машиналар: танага қараб шакл, ўчирилса кулранг ва ярим шаффоф */
+      const bodies = [], spin = [];
+      ST.forEach(([id, ic, nm, c], i) => {
+        const gr = new T.Group(); gr.position.x = XS[i]; v.scene.add(gr);
+        const mat = new T.MeshStandardMaterial({ color: c, roughness: 0.5, metalness: 0.15, transparent: true, opacity: 0.92 });
+        let body;
+        if (id === "wash") { body = new T.Mesh(new T.BoxGeometry(1.2, 0.75, 1.0), mat); body.position.y = 0.42; }
+        else if (id === "cent") { body = new T.Mesh(new T.CylinderGeometry(0.5, 0.5, 0.95, 28), mat); body.position.y = 0.8; }
+        else if (id === "extr") { body = new T.Mesh(new T.CylinderGeometry(0.26, 0.26, 1.3, 24), mat); body.rotation.z = Math.PI / 2; body.position.y = 0.62; }
+        else { body = new T.Mesh(new T.BoxGeometry(1.05, 0.85, 0.95), mat); body.position.y = 0.85; }
+        gr.add(body); bodies.push(body);
+        if (id === "shred") for (let k = -1; k <= 1; k += 2) { const kn = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.8, 6), new T.MeshStandardMaterial({ color: 0xe5e7eb, metalness: 0.8, roughness: 0.3 })); kn.rotation.x = Math.PI / 2; kn.position.set(k * 0.16, 1.32, 0); gr.add(kn); spin.push([kn, "y", k * 6, i]); }
+        if (id === "cent") spin.push([body, "y", 5, i]);
+        if (id === "extr") {
+          const hop = new T.Mesh(new T.CylinderGeometry(0.34, 0.1, 0.5, 20, 1, true), new T.MeshStandardMaterial({ color: 0xa78bfa, side: T.DoubleSide })); hop.position.set(-0.4, 1.05, 0); gr.add(hop);
+          for (let k = 0; k < 4; k++) { const rg = new T.Mesh(new T.TorusGeometry(0.27, 0.025, 8, 24), new T.MeshStandardMaterial({ color: 0x4c1d95 })); rg.rotation.y = Math.PI / 2; rg.position.set(-0.45 + k * 0.3, 0.62, 0); gr.add(rg); }
+          const die = new T.Mesh(new T.CylinderGeometry(0.3, 0.3, 0.08, 24), new T.MeshStandardMaterial({ color: 0x1f2937, metalness: 0.6 })); die.rotation.z = Math.PI / 2; die.position.set(0.68, 0.62, 0); gr.add(die); spin.push([die, "x", 4, i]);
+        }
+        if (id === "sort") { const bin = new T.Mesh(new T.BoxGeometry(0.7, 0.4, 0.5), new T.MeshStandardMaterial({ color: 0x15803d })); bin.position.set(0, 0.2, -0.85); gr.add(bin); }
+        const lb = textSprite(`${i + 1}. ${L(nm)}`, "#0f172a", 0.3); lb.position.set(0, i % 2 ? 2.05 : 1.6, 0); gr.add(lb);
+      });
+      const pile = new T.Mesh(new T.CircleGeometry(0.6, 32), new T.MeshStandardMaterial({ color: 0x94a3b8 })); pile.rotation.x = -Math.PI / 2; pile.position.set(END + 0.35, 0.005, 0); pile.visible = false; v.scene.add(pile);
+      /* Буюмлар: 0 — идиш, 1 — бўлак (флекс), 2 — гранула */
+      const N = 90, IT = Array.from({ length: N }, () => ({})), flake = new T.InstancedMesh(new T.BoxGeometry(1, 1, 1), new T.MeshStandardMaterial({ roughness: 0.6 }), N);
+      const PN = 160, pel = new T.InstancedMesh(new T.SphereGeometry(0.045, 8, 6), new T.MeshStandardMaterial({ roughness: 0.4 }), PN);
+      v.scene.add(flake, pel);
+      const BASE = [0xf8fafc, 0xfef08a, 0xbae6fd], ODD = [0x38bdf8, 0x475569, 0xa855f7], DIRT = new T.Color(0x92400e);
+      const col = new T.Color(), mtx = new T.Matrix4(), zero = new T.Matrix4().makeScale(0, 0, 0);
+      const spawn = (o, x) => { o.x = x ?? -6.6 - Math.random() * 0.4; o.z = (Math.random() - 0.5) * 0.36; o.st = 0; o.odd = Math.random() < 0.18; o.c = o.odd ? ODD[Math.floor(Math.random() * 3)] : BASE[Math.floor(Math.random() * 3)]; o.dirty = true; o.wet = 0; o.out = 0; o.pass = 0; o.r = Math.random() * 6.28; };
+      IT.forEach((o, i) => spawn(o, -6.6 + i * (12.6 / N)));
+      let pi = 0, made = 0;
+      const vs = new T.Vector3();
+      for (let i = 0; i < PN; i++) pel.setMatrixAt(i, zero);
+      const addPellet = (o) => {
+        const a = Math.random() * 6.28, rr = Math.sqrt(Math.random()) * 0.5, h = (0.5 - rr) * 0.55 * Math.random() + 0.04;
+        mtx.makeTranslation(END + 0.35 + rr * Math.cos(a), h, rr * Math.sin(a)); pel.setMatrixAt(pi, mtx);
+        col.setHex(S.on[0] ? 0xe2e8f0 : o.c); if (o.dirty) col.lerp(DIRT, 0.65);
+        if (o.wet > 0.5) col.offsetHSL(0, -0.3, 0.12);
+        pel.setColorAt(pi, col); pi = (pi + 1) % PN; made++;
+        pel.instanceMatrix.needsUpdate = true; if (pel.instanceColor) pel.instanceColor.needsUpdate = true;
+      };
+      IT.forEach((o, i) => { col.setHex(o.c); flake.setColorAt(i, col); });
+      pel.setColorAt(0, col.setHex(0xe2e8f0));
+      v.updaters.push((dt) => {
+        spin.forEach(([m, ax, w, i]) => { if (S.on[i]) m.rotation[ax] += w * dt; });
+        IT.forEach((o, i) => {
+          if (o.out) { /* саралашда ажратилган бўлак қутига тушади */
+            o.z -= dt * 1.6; o.y = Math.max(0.3, (o.y ?? BY) - dt * 1.2);
+            if (o.z < -0.85) spawn(o);
+          } else {
+            o.x += dt * 1.15;
+            for (let k = 0; k < 6; k++) {
+              if (o.pass > k || o.x < XS[k] + 0.3) continue;
+              o.pass = k + 1;
+              if (!S.on[k]) continue;
+              if (k === 0 && o.odd) { o.out = 1; o.y = BY; }
+              if (k === 1) o.st = 1;
+              if (k === 2) { o.dirty = false; o.wet = 1; }
+              if (k === 3 && o.wet) o.wet = 0.6;
+              if (k === 4 && o.wet) o.wet = S.on[3] ? 0 : 0.6;
+              if (k === 5) { if (o.st === 0) { spawn(o); return; } addPellet(o); spawn(o); return; }
+            }
+            if (o.x > END) { spawn(o); return; }
+          }
+          const sz = o.st === 0 ? [0.2, 0.3, 0.2] : [0.1, 0.025, 0.08];
+          mtx.makeRotationY(o.r); mtx.scale(vs.set(sz[0], sz[1], sz[2])); mtx.setPosition(o.x, (o.out ? o.y : BY) + sz[1] / 2, o.z);
+          flake.setMatrixAt(i, mtx);
+          col.setHex(o.c); if (o.dirty) col.lerp(DIRT, 0.55); if (o.wet >= 1) col.offsetHSL(0, 0, -0.08);
+          flake.setColorAt(i, col);
+        });
+        flake.instanceMatrix.needsUpdate = true; if (flake.instanceColor) flake.instanceColor.needsUpdate = true;
+        pile.visible = made > 0;
+      });
+      const paint = () => ST.forEach((s, i) => { bodies[i].material.color.setHex(S.on[i] ? s[3] : 0x9ca3af); bodies[i].material.opacity = S.on[i] ? 0.92 : 0.45; });
+      const issues = () => ST.map((s, i) => (S.on[i] ? null : s[0])).filter(Boolean);
+      const grade = () => { const is = issues(); if (!S.on[5]) return 0; if (!S.on[1]) return 1; return is.length ? 2 : 3; };
+      /* Модда баланси: G — қуруқ хомашё, x — аралашма, w1 — центрифугадан кейин, w2 — қуритгичдан кейин */
+      const W2 = 0.2;
+      const bal = () => { const P = S.G * (1 - S.x / 100), m1 = P / (1 - S.w1 / 100), W = (m1 * (S.w1 - W2) / 100) / (1 - W2 / 100), Q = (W * 2257) / 3600, m2 = P / (1 - W2 / 100); return { P, m1, W, Q, Pn: Q / (S.eta / 100), m2 }; };
+      const draw = () => { paint(); ui.render(); };
+      ui.html = () => {
+        const uni = stage() === "uni", gr = grade(), is = issues();
+        const sw = ST.map(([id, ic, nm], i) => `<button type="button" class="sg-opt ${S.on[i] ? "sel" : ""}" data-st="${i}" aria-pressed="${S.on[i]}"><span class="e" aria-hidden="true">${ic}</span>${i + 1}. ${H(nm)}<small>${S.on[i] ? H({ uz: "ёқиқ", ru: "вкл.", en: "on" }) : H({ uz: "ўчиқ", ru: "выкл.", en: "off" })}</small></button>`).join("");
+        const big = [["⛔", { uz: "Гранула йўқ", ru: "Гранул нет", en: "No pellets" }], ["🚫", { uz: "Линия тиқилди", ru: "Линия забита", en: "Line jammed" }], ["⚠️", { uz: "Сифатсиз гранула", ru: "Некачественные гранулы", en: "Poor-quality pellets" }], ["🏆", { uz: "А сифат: тоза гранула", ru: "Качество А: чистые гранулы", en: "Grade A: clean pellets" }]][gr];
+        const msg = is.length ? is.map((k) => `<li>${H(this.msgs[k])}</li>`).join("") : `<li>${H({ uz: "Барча машиналар ишламоқда: бўлак 2–9 мм, аралашма ≤ 5 %, намлик 0,2 % — гранула янги буюм учун тайёр.", ru: "Все машины работают: хлопья 2–9 мм, примесей ≤ 5 %, влажность 0,2 % — гранулы готовы для новых изделий.", en: "All machines run: 2–9 mm flakes, ≤ 5% impurities, 0.2% moisture — pellets are ready for new products." })}</li>`;
+        const head = `<p class="small">${H({ uz: "Машинани босиб ёқинг ёки ўчиринг ва гранула сифати қандай ўзгаришини кузатинг.", ru: "Нажмите на машину, чтобы включить или выключить её, и следите за качеством гранул.", en: "Tap a machine to switch it on or off and watch how the pellet quality changes." })}</p><div class="lab-opts l3-line">${sw}</div>
+          <div class="l3-big ${gr < 3 ? "warn" : ""}"><span>${big[0]}</span><b>${H(big[1])}</b></div><ul class="lab-out l3-list">${msg}</ul>`;
+        if (!uni) return head + `<p class="l3-mission" data-star>${H(TX.mission)}: ${H({ uz: "Камида 3 та машинани навбат билан ўчириб кўринг, кейин ҳаммасини ёқиб, «А сифат» гранула олинг.", ru: "Выключите по очереди хотя бы 3 машины, затем включите все и получите гранулы «качества А».", en: "Switch off at least 3 machines one by one, then switch all on and get grade A pellets." })} (${Math.min(3, S.tried.size)}/3)</p>`;
+        const b = bal();
+        return head + `<label>${H({ uz: "Хомашё (қуруқ) G", ru: "Сырьё (сухое) G", en: "Dry feed G" })}: <b>${S.G} kg/h</b><input type="range" data-k="G" min="200" max="3000" step="50" value="${S.G}"></label>
+          <label>${H({ uz: "Аралашма улуши x", ru: "Доля примесей x", en: "Impurity share x" })}: <b>${S.x} %</b><input type="range" data-k="x" min="0" max="15" step="1" value="${S.x}"></label>
+          <label>${H({ uz: "Центрифугадан кейин намлик w₁", ru: "Влажность после центрифуги w₁", en: "Moisture after centrifuge w₁" })}: <b>${S.w1} %</b><input type="range" data-k="w1" min="10" max="15" step="0.5" value="${S.w1}"></label>
+          <label>${H({ uz: "Қуритгич ФИК η", ru: "КПД сушилки η", en: "Dryer efficiency η" })}: <b>${S.eta} %</b><input type="range" data-k="eta" min="30" max="90" step="5" value="${S.eta}"></label>
+          <div class="lab-formula">P = G·(1 − x) = <b>${fmt(b.P, 0)}</b> kg/h<br>m₁ = P / (1 − w₁) = <b>${fmt(b.m1, 0)}</b> kg/h<br>W = m₁·(w₁ − w₂) / (1 − w₂) = <b>${fmt(b.W, 1)}</b> kg/h &nbsp;(w₂ = 0,2 %)<br>Q = W·r = <b>${fmt(b.Q, 1)}</b> kW &nbsp;→&nbsp; Q/η = <b>${fmt(b.Pn, 1)}</b> kW</div>
+          ${S.x > 5 ? `<p class="small" style="color:#b45309">⚠️ ${H({ uz: "x > 5 %: дарсликка кўра бундай аралашмани қайта саралаш керак.", ru: "x > 5 %: по учебнику такую смесь нужно досортировать.", en: "x > 5%: per the textbook, such a mix must be re-sorted." })}</p>` : ""}
+          <p class="small muted">${H({ uz: "Q — фақат сувни буғлатиш иссиқлиги (r = 2257 кЖ/кг); бўлакни ва ҳавони иситиш ҳисобга олинмаган. Солиштиринг: дарсликдаги ПЭТ линиясида қуритиш иситгичлари 4 × 30 кВт.", ru: "Q — только теплота испарения воды (r = 2257 кДж/кг); нагрев хлопьев и воздуха не учтён. Сравните: в ПЭТ-линии из учебника нагреватели сушки 4 × 30 кВт.", en: "Q covers only the heat to evaporate water (r = 2257 kJ/kg); heating the flakes and air is ignored. Compare: the textbook PET line has 4 × 30 kW dryer heaters." })}</p>`;
+      };
+      ui.bind = (el) => {
+        el.querySelectorAll("[data-st]").forEach((bt) => bt.addEventListener("click", () => {
+          const i = +bt.dataset.st; S.on[i] = !S.on[i]; if (!S.on[i]) S.tried.add(i); draw();
+          if (stage() !== "uni" && S.tried.size >= 3 && grade() === 3) star("liniya", ui.el.querySelector("[data-star]"));
+        }));
+        el.querySelectorAll("input[data-k]").forEach((r) => {
+          r.addEventListener("input", () => { S[r.dataset.k] = +r.value; const b = r.parentElement.querySelector("b"); if (b) b.textContent = r.value + (r.dataset.k === "G" ? " kg/h" : " %"); });
+          r.addEventListener("change", () => { S[r.dataset.k] = +r.value; draw(); });
+        });
+      };
+      ui.task = () => ({ q: { uz: "Центрифугадан 1000 кг/соат ҳўл флекс чиқмоқда, намлиги 12 %. Қуритгичдан кейин намлик 0,2 % бўлиши керак. Қуритгичда соатига неча кг сув буғланади?", ru: "После центрифуги выходит 1000 кг/ч влажных хлопьев с влажностью 12 %. После сушилки влажность должна быть 0,2 %. Сколько килограммов воды в час испаряется в сушилке?", en: "1000 kg/h of wet flakes with 12% moisture leave the centrifuge. After the dryer the moisture must be 0.2%. How many kg of water per hour evaporate in the dryer?" }, a: (1000 * (0.12 - 0.002)) / 0.998, tol: 0.6, unit: "kg/h", hint: { uz: "W = m₁·(w₁ − w₂)/(1 − w₂) = 1000·(0,12 − 0,002)/0,998", ru: "W = m₁·(w₁ − w₂)/(1 − w₂) = 1000·(0,12 − 0,002)/0,998", en: "W = m₁·(w₁ − w₂)/(1 − w₂) = 1000·(0.12 − 0.002)/0.998" }, dec: 1 });
+      draw();
+    }
+  };
+
+  const EXPS = [GH, MOLS, TANK, SOLAR, TREE, FLOT, LINE];
 
   /* ---------- Бўлимни чизиш ---------- */
   let cur = EXPS[0].id, view = null, built = false, glFail = false;
@@ -847,7 +1118,7 @@
           </div>
           <div class="lab-ctl l3-panel" data-panel></div>
         </div>
-        <p class="small muted lab-src">${H(TX.src)}${esc(EXPS.find((x) => x.id === cur).src)}</p>
+        <p class="small muted lab-src">${H(TX.src)}${esc(L(EXPS.find((x) => x.id === cur).src))}</p>
         ${uni ? `<div class="lab-task" data-task></div>` : ""}
       </div>
       <details class="fin-card say-method" style="margin-top:18px">
