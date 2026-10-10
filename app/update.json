@@ -1,14 +1,14 @@
 {
  "apk": {
-  "versionCode": 6,
-  "versionName": "1.5",
-  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.5.apk",
-  "sha256": "ee7bcdde2848f6121a66e93c85da354fa64c8f3baee4a24dddf83cf45671b1de",
-  "size": 2196097,
-  "notes": "• 🧊 3D виртуал лаборатория (мактаб ва университет): иссиқхона самараси, молекулалар ва ИҚ нур, сувни тиндириш, қуёш панели, дарахт ва CO₂ — айлантириб кузатинг\n• 🚀 «Лойиҳалар» бўлими (университет): 12 та хорижий методика — PBL, Design Thinking, Capstone, CDIO, Lean Canvas, Scrum, LogFrame ва бошқалар; ғоялар банки, Kanban тахтаси, рубрика ва ҳисобот\n• 🔎 Бўлимлар гуруҳларга ажратилди: қидирув, рўйхат кўриниши ва «сўнгги очилганлар»\n• 🌍 Илмий лабораторияда методикалар кенгайтирилди\n• «Орол фожиаси» лойиҳаси платформадан олиб ташланди"
+  "versionCode": 7,
+  "versionName": "1.6",
+  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/EkoTalim-1.6.apk",
+  "sha256": "a695ca07a585827c292b2d4a6bed974312d7e96aab8542cfaee0abceaaed1496",
+  "size": 2491086,
+  "notes": "• 🌐 «Онлайн маълумотлар» бўлими: интернет бўлса, об-ҳаво ва ҳаво сифати (Open-Meteo), сайёра кўрсаткичлари — CO₂, метан, ҳарорат (NOAA, NASA), дунёдаги табиий ҳодисалар (NASA EONET), охирги зилзилалар (USGS) ва Википедиядан экология мақолалари\n• 📦 Олинган маълумотлар телефонда сақланади: интернет ўчса, охирги маълумот кўрсатилади\n• 📴 Интернетсиз режим белгиси: дарслар, ўйинлар ва лабораториялар интернетсиз ҳам ишлайди\n• 💨 «Ҳаво сифати» бўлими ҳам интернетсиз охирги маълумотни кўрсатади"
  },
  "content": {
-  "version": "51e5b530c4ea5791",
+  "version": "330b4269199f9153",
   "minApk": 3,
   "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
   "files": {
@@ -18,11 +18,12 @@
    "icons/icon-maskable-512.png": "b915b6e69616430fd084943e18024aab264fac920426f2c03e80420c96091748",
    "icons/icon-maskable.svg": "76a72a544e63a21bdfd69e33db4ee08da25dacd83eda2e2c0a40dcb189372594",
    "icons/icon.svg": "4f2227bd2a4ae862f39cefbf0a5b5550d2d63d56cd7ed6e969af43da0710797a",
-   "index.html": "81fc9cc9b5ebb256afeaceb2ce8080560251e3bf93030e36957e2b028e514992",
+   "index.html": "7729870e2eb1e1d6fd3bcd157313ec9cf4d53c80d0204cb94f170a2537536308",
    "manifest.webmanifest": "1742854f8308e88c06de2d4f094740b8e773509a1a85c250d679bf7ce626e813",
    "privacy.html": "6e4f3d2c4bbf49b43ec981a05a88cc84c6b477c2bce24249e34e8f54ea14bc65",
    "vendor/eko-lab3d.js": "554a918d0f013be4cd13deca74fca48110aa5aa100b91f613ff46f9cb0a4f971",
    "vendor/eko-loyiha.js": "c5c5ca34b4278ea8e8a4d86d13058e2a5739ffb755748a039d5d5a4cef01f85a",
+   "vendor/eko-onlayn.js": "9cad8e070b044b91f61375dfcf2f0e3214288515f5da66a506171b096b28561c",
    "vendor/eko-ui.css": "9412a016799009750bc3a90b7ac5fe5275e8bcab7b1dbbb6b249994cfeaa8aeb",
    "vendor/fontawesome/LICENSE.txt": "0aa8f86525273b2efa4f40f4272a188e187704252170e979dc06879adf68d43c",
    "vendor/fontawesome/css/fa.min.css": "f77802297b39b74a3f8dbbba71041c45dc9f522870e4015d6523c04c24c93185",
@@ -33,9 +34,9 @@
    "vendor/fonts/onest-cyrillic-wght-normal.woff2": "68e5e01d6265bd68967746d4f5a9d18d0e6cbb5d15583c7082d6384ab1229b27",
    "vendor/fonts/onest-latin-ext-wght-normal.woff2": "14e7d3079b75860e2ab50efc6c318c398fdb46ede9b56e625f12ae70a3c5d9a4",
    "vendor/fonts/onest-latin-wght-normal.woff2": "052df74533250c2e0ca0c4bdd32de594e107d99c1648e63820ef9c6142067828",
-   "vendor/i18n/en.js": "bdf515796ba8acf28f8304142c7dd892097a44555c5f9325826b665712014b2c",
-   "vendor/i18n/keys.js": "c954269dbf603d10168a5e3cdc1bf7dd99c937165e72eba3fe93be8a13fe4ab3",
-   "vendor/i18n/ru.js": "4f7cab1911d65974dbf388d9752abc5027249b4c64db45c5c8ad2d37314384f9",
+   "vendor/i18n/en.js": "74fc347c9270e17c5c89a70a483e929c395487ec37f4ee93a5b9aeef0a85b34b",
+   "vendor/i18n/keys.js": "062869130c20208e9973c02cab7d2638d4e8582c15902737a527c5088851ed84",
+   "vendor/i18n/ru.js": "49e9f5fc08359f6c14708709afe26d8f990b5c71027f9ab816ec818e036d99fe",
    "vendor/leaflet/LICENSE": "53e8dc25862014e4324741ca18fbe3611e11d42ef69f59f86ea8c5389647d4cb",
    "vendor/leaflet/images/layers-2x.png": "066daca850d8ffbef007af00b06eac0015728dee279c51f3cb6c716df7c42edf",
    "vendor/leaflet/images/layers.png": "1dbbe9d028e292f36fcba8f8b3a28d5e8932754fc2215b9ac69e4cdecf5107c6",

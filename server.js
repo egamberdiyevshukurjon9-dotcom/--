@@ -869,6 +869,7 @@ const STATIC = {
   "/vendor/three/three.module.min.js": { file: "vendor/three/three.module.min.js", type: "text/javascript; charset=utf-8", cache: true },
   "/vendor/eko-lab3d.js": { file: "vendor/eko-lab3d.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-loyiha.js": { file: "vendor/eko-loyiha.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-onlayn.js": { file: "vendor/eko-onlayn.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-ui.css": { file: "vendor/eko-ui.css", type: "text/css; charset=utf-8" },
   /* Рус ва инглиз тили луғатлари (асл кирилл матн → таржима) */
   "/vendor/i18n/keys.js": { file: "vendor/i18n/keys.js", type: "text/javascript; charset=utf-8" },
