@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Бренд ранги: #047857 (веб манифест theme_color ва eko-ui.css --eko-brand билан бир хил) -->
+    <!-- Бренд ранги: #047857 (веб манифест theme_color ва eko-ui.css даги eko-brand билан бир хил) -->
     <color name="green">#047857</color>
     <color name="eko_green">#047857</color>
     <color name="status_bar">#047857</color>
