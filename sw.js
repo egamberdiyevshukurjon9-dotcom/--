@@ -32,6 +32,7 @@ const SHELL = [
   "/vendor/eko-onlayn.js",
   "/vendor/eko-stat.js",
   "/vendor/eko-adabiyot.js",
+  "/vendor/eko-oyin.js",
   "/vendor/i18n/keys.js",
   "/vendor/i18n/ru.js",
   "/vendor/i18n/en.js",

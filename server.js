@@ -1265,6 +1265,7 @@ const STATIC = {
   "/vendor/eko-onlayn.js": { file: "vendor/eko-onlayn.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-stat.js": { file: "vendor/eko-stat.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-adabiyot.js": { file: "vendor/eko-adabiyot.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-oyin.js": { file: "vendor/eko-oyin.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-ui.css": { file: "vendor/eko-ui.css", type: "text/css; charset=utf-8" },
   /* Рус ва инглиз тили луғатлари (асл кирилл матн → таржима) */
   "/vendor/i18n/keys.js": { file: "vendor/i18n/keys.js", type: "text/javascript; charset=utf-8" },

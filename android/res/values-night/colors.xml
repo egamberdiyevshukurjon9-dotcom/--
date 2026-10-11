@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Тунги режим: ҳолат панели платформанинг тўқ фонига мос -->
+    <color name="status_bar">#06110d</color>
+    <color name="splash_bg">#06110d</color>
+</resources>

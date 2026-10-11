@@ -75,11 +75,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         Window w = getWindow();
-        w.setStatusBarColor(Color.parseColor("#15803d"));
+        w.setStatusBarColor(getResources().getColor(R.color.status_bar));
+        w.setNavigationBarColor(getResources().getColor(R.color.status_bar));
 
         serverUrl = getString(R.string.server_url).trim();
         web = new WebView(this);
-        web.setBackgroundColor(Color.parseColor("#f7faf7"));
+        // Саҳифа юклангунча очилиш экрани ранги кўринади (оқ «flash» бўлмайди)
+        web.setBackgroundColor(getResources().getColor(R.color.splash_bg));
         setContentView(web);
 
         WebSettings s = web.getSettings();
@@ -556,6 +558,18 @@ public class MainActivity extends Activity {
                     else contentDismissed = true;
                     /* APK рад этилса, тайёр контент янгиланишини кўрсатамиз */
                     if (apk) showUpdate();
+                }
+            });
+        }
+
+        /** Платформада ёруғ/тўқ мавзу алмашганда ҳолат панели рангини мослайди. */
+        @JavascriptInterface
+        public void setBar(final boolean dark) {
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    int c = Color.parseColor(dark ? "#06110d" : "#047857");
+                    getWindow().setStatusBarColor(c);
+                    getWindow().setNavigationBarColor(c);
                 }
             });
         }

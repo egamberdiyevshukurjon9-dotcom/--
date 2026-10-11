@@ -330,13 +330,13 @@
       const v = parseFloat(inp.value.replace(/\s/g, "").replace(",", "."));
       const ok = isFinite(v) && Math.abs(v - ans) <= tol;
       msg.textContent = ok ? L(TX.ok) + fmt(ans, dec) + " " + unit : L(TX.no) + L(hint);
-      if (ok) once("l3t_" + id, 10, TX.whyU);
+      if (ok) { if (!flags()["l3t_" + id] && window.EkoGame) EkoGame.track("lab"); once("l3t_" + id, 60, TX.whyU); }
     };
     box.querySelector("button").addEventListener("click", go);
     inp.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
   }
   function star(id, el) {
-    if (!flags()["l3k_" + id]) { once("l3k_" + id, 5, TX.why); }
+    if (!flags()["l3k_" + id]) { if (window.EkoGame) EkoGame.track("lab"); once("l3k_" + id, 5, TX.why); }
     if (el) { el.textContent = L(TX.star); el.classList.add("l3-star-on"); }
   }
 
