@@ -9,7 +9,11 @@
      🌳 дарахт ва CO₂ — Chave ва бошқ. (2014) аллометрик тенгламаси, IPCC углерод улуши 0,47.
      🧪 пластикни саралаш — Архимед кучи F = (ρс − ρп)·V·g, полимер зичликлари (флотация, оғир муҳит);
      ⚙️ гранулалаш линияси — модда баланси W = m₁(w₁ − w₂)/(1 − w₂), буғланиш иссиқлиги Q = W·r
-        (иккаласи ҳам Клинков ва бошқ. «Рециклинг и утилизация тары и упаковки», 2010–2014 асосида).
+        (иккаласи ҳам Клинков ва бошқ. «Рециклинг и утилизация тары и упаковки», 2010–2014 асосида);
+     🏭 тутун тарқалиши — Гаусс модели, Паскуилл синфлари, Briggs σy/σz (Пулатов ва бошқ. «Экологик мониторинг», 2026, 4-боб);
+     🏞 дарё мониторинги — кузатув створлари (ўша дарслик, 6.3) ва Стритер–Фелпс кислород эгри чизиғи;
+     🔺 экологик пирамида — Линдеман 10 % қоидаси (Нигматов, Пулатов «Экология», 2026, 2.1).
+   Ҳар бир тажрибада «Қандай фойдаланилади?» йўриқномаси бор (HOW).
    Матнлар uz/ru/en кўринишида шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
   "use strict";
@@ -80,6 +84,66 @@
     ["🧮", { uz: "Модель асосидаги таълим (Modeling Instruction)", ru: "Обучение через модели (Modeling Instruction)", en: "Modeling Instruction" }, { uz: "Университет режимида формула ва параметрлар очиқ: талаба моделни ўзи синайди ва чегараларини кўради.", ru: "В университетском режиме формулы открыты: студент сам проверяет модель и её границы.", en: "In university mode formulas are open: students test the model and its limits." }],
     ["🎮", { uz: "Ўйин орқали ўрганиш (мактаб)", ru: "Обучение через игру (школа)", en: "Game-based learning (school)" }, { uz: "Ҳар бир тажрибада юлдузли вазифа ва XP; хато қилиш мумкин, қайта уриниш бепул.", ru: "В каждом опыте задание со звездой и XP; ошибаться можно, повтор бесплатный.", en: "Every experiment has a star mission and XP; mistakes are fine, retries are free." }]
   ];
+
+  /* ---------- Фойдаланиш йўриқномаси: ҳар бир тажриба учун қадамлар (k — мактаб, u — университет) ---------- */
+  const t3 = (uz, ru, en) => ({ uz, ru, en });
+  const HOW = {
+    issiq: {
+      k: [t3("Пастдаги 5 та даврдан бирини босинг: музлик даври, бугун, 2100 йил…", "Нажмите одну из 5 эпох внизу: ледниковый период, сегодня, 2100 год…", "Press one of the 5 eras below: ice age, today, year 2100…"), t3("Саҳнада сариқ нур Қуёшдан келади, қизил нур Ердан қайтади — қанчаси космосга қочишини кузатинг.", "В сцене жёлтые лучи идут от Солнца, красные — от Земли; смотрите, сколько уходит в космос.", "Yellow rays come from the Sun, red ones leave the Earth; watch how many escape to space."), t3("Ер ҳароратини (катта рақам) даврлар бўйича солиштиринг.", "Сравните температуру Земли (большое число) по эпохам.", "Compare Earth's temperature (the big number) across eras.")],
+      u: [t3("CO₂ сурилмасини 180–1200 ppm оралиғида суринг ва радиацион мажбурлаш ΔF ни кузатинг.", "Двигайте ползунок CO₂ от 180 до 1200 ppm и следите за радиационным воздействием ΔF.", "Move the CO₂ slider from 180 to 1200 ppm and watch the radiative forcing ΔF."), t3("Иқлим сезгирлиги S ни 2–5 °C оралиғида ўзгартириб, мувозанат исиши ΔT қанча ноаниқ эканини баҳоланг.", "Меняйте чувствительность S от 2 до 5 °C и оцените неопределённость равновесного потепления ΔT.", "Vary sensitivity S between 2 and 5 °C to see how uncertain the equilibrium warming ΔT is."), t3("Формулани қўлда текширинг ва пастдаги амалий машғулотни ечинг.", "Проверьте формулу вручную и решите практическое задание внизу.", "Check the formula by hand and solve the practical task below.")]
+    },
+    molekula: {
+      k: [t3("Юқоридаги тугмалардан газни танланг: CO₂, CH₄, H₂O, N₂, O₂…", "Выберите газ кнопками сверху: CO₂, CH₄, H₂O, N₂, O₂…", "Pick a gas with the buttons on top: CO₂, CH₄, H₂O, N₂, O₂…"), t3("Тебраниш турини танланг ва «ИҚ нур юбориш» тугмасини босинг.", "Выберите тип колебания и нажмите «Послать ИК-луч».", "Choose a vibration type and press “Send an IR ray”."), t3("Нур ютилдими ёки ўтиб кетдими — қизил 🔴 белги иссиқлик ушловчи газни кўрсатади.", "Луч поглощён или прошёл? Красный 🔴 значок означает газ, удерживающий тепло.", "Was the ray absorbed or did it pass? The red 🔴 mark shows a heat-trapping gas.")],
+      u: [t3("Молекула ва тебраниш модасини танланг (эгилиш, симметрик ёки носимметрик чўзилиш) — тўлқин сони см⁻¹ да кўрсатилади.", "Выберите молекулу и моду (деформационная, симметричная или антисимметричная) — волновое число дано в см⁻¹.", "Choose a molecule and mode (bending, symmetric or asymmetric stretch) — the wavenumber is shown in cm⁻¹."), t3("«ИҚ нур юбориш» билан текширинг: диполь (кўк ўқ) ўзгарса, мода ИҚ фаол.", "Проверьте кнопкой «Послать ИК-луч»: если диполь (голубая стрелка) меняется, мода ИК-активна.", "Test with “Send an IR ray”: if the dipole (blue arrow) changes, the mode is IR-active."), t3("Жадвалдан ҳаводаги улуш, GWP-100 ва атмосферада яшаш вақтини солиштиринг.", "Сравните по таблице долю в воздухе, GWP-100 и время жизни в атмосфере.", "Compare share in air, GWP-100 and atmospheric lifetime in the table.")]
+    },
+
+    tindir: {
+      k: [t3("Заррача турини танланг: йирик қум, майда қум, чанг ёки гил.", "Выберите частицы: крупный песок, мелкий песок, пыль или глину.", "Choose particles: coarse sand, fine sand, silt or clay."), t3("Сув оқимини секин ёки тез қилинг ва заррачалар тубга етиб улгуришини кузатинг.", "Сделайте поток медленным или быстрым и смотрите, успевают ли частицы осесть.", "Make the flow slow or fast and watch whether particles reach the bottom."), t3("Гил чўкмаса, коагулянт қўшиб кўринг — катта рақам «тозаланди» фоизини кўрсатади.", "Если глина не оседает, добавьте коагулянт — большое число покажет процент очистки.", "If clay will not settle, add coagulant — the big number shows the percent removed.")],
+      u: [t3("Заррача диаметри d ва зичлиги ρₚ ни беринг — Стокс тезлиги vₛ ҳисобланади.", "Задайте диаметр d и плотность ρₚ — рассчитается скорость Стокса vₛ.", "Set diameter d and density ρₚ — Stokes velocity vₛ is computed."), t3("Сув сарфи Q ни ўзгартириб, юза юкламаси q₀ ва самарадорлик E = vₛ/q₀ қандай ўзгаришини кузатинг.", "Меняйте расход Q и следите за поверхностной нагрузкой q₀ и эффективностью E = vₛ/q₀.", "Change flow Q and follow the surface loading q₀ and efficiency E = vₛ/q₀."), t3("Re > 1 огоҳлантиришига эътибор беринг ва амалий машғулотни ечинг.", "Обратите внимание на предупреждение Re > 1 и решите задание.", "Watch for the Re > 1 warning and solve the task.")]
+    },
+    quyosh: {
+      k: [t3("Санани танланг: 21 март, 21 июнь, 23 сентябрь ёки 21 декабрь.", "Выберите дату: 21 марта, 21 июня, 23 сентября или 21 декабря.", "Pick a date: 21 March, 21 June, 23 September or 21 December."), t3("Панел қиялиги ва йўналиши сурилмаларини суринг; ▶ «Кун ўтиши» Қуёшни осмонда юргизади.", "Двигайте ползунки наклона и направления панели; ▶ «Ход дня» ведёт Солнце по небу.", "Move the tilt and direction sliders; ▶ “Day cycle” moves the Sun across the sky."), t3("Кунлик энергия (кВт·соат) энг яхши ҳолатнинг 95 % идан ошишига эришинг.", "Добейтесь, чтобы энергия за день (кВт·ч) превысила 95 % от наилучшей.", "Get the daily energy (kWh) above 95% of the best possible.")],
+      u: [t3("Санани ва панелнинг қиялиги β ҳамда йўналишини (жанубдан, °) беринг.", "Задайте дату, наклон β и направление панели (от юга, °).", "Set the date, tilt β and panel direction (from south, °)."), t3("Қуёш баландлиги, тушиш бурчаги ва кунлик энергия Тошкент (41,3° ш.к.) учун ҳисобланади — энг яхши ҳолат билан солиштиринг.", "Высота Солнца, угол падения и суточная энергия рассчитываются для Ташкента (41,3° с. ш.) — сравните с наилучшим положением.", "Solar elevation, incidence angle and daily energy are computed for Tashkent (41.3° N) — compare with the best setting."), t3("Фаслга қараб энг яхши қиялик қандай ўзгаришини ёзиб олинг ва машғулотни ечинг.", "Запишите, как оптимальный наклон меняется по сезонам, и решите задание.", "Note how the best tilt changes by season and solve the task.")]
+    },
+
+    daraxt: {
+      k: [t3("Оролча устига босинг — ҳар босишда битта дарахт экилади, «+10» тугмаси тез экади.", "Нажимайте на остров — каждое нажатие сажает дерево, кнопка «+10» сажает быстрее.", "Tap the island to plant a tree; the “+10” button plants faster."), t3("Завод тутуни камайишини ва фоиз чизиғи тўлишини кузатинг.", "Смотрите, как уменьшается дым завода и заполняется полоска процентов.", "Watch the factory smoke fade and the percent bar fill up."), t3("Бир одамнинг изини қоплаш учун нечта дарахт кераклигини билиб олинг.", "Узнайте, сколько деревьев нужно, чтобы покрыть след одного человека.", "Find out how many trees offset one person's footprint.")],
+      u: [t3("Битта дарахтнинг диаметри D, баландлиги H ва ёғоч зичлиги ρ ни беринг.", "Задайте диаметр D, высоту H и плотность древесины ρ одного дерева.", "Set one tree's diameter D, height H and wood density ρ."), t3("Chave (2014) аллометрик тенгламаси бўйича биомасса, углерод ва CO₂ ҳисобланади.", "По аллометрическому уравнению Chave (2014) рассчитываются биомасса, углерод и CO₂.", "Biomass, carbon and CO₂ are computed with the Chave (2014) allometric equation."), t3("Натижани ўрмонзор лойиҳаси ёки углерод изи ҳисобида ишлатинг.", "Используйте результат в проекте лесопосадки или в расчёте углеродного следа.", "Use the result in a tree-planting project or a carbon-footprint calculation.")]
+    },
+    flotatsiya: {
+      k: [t3("Суюқликни танланг: спиртли сув, сув ёки тузли сув.", "Выберите жидкость: водно-спиртовую смесь, воду или солёную воду.", "Choose the liquid: alcohol–water, water or salt water."), t3("Қайси пластиклар сузиши ва қайсилари чўкишини кузатинг; «Аралаштириш» тугмаси бўлакларни қайта сочади.", "Смотрите, какие пластики всплывают, а какие тонут; кнопка «Перемешать» снова разбрасывает кусочки.", "Watch which plastics float and which sink; “Stir” scatters the pieces again."), t3("ПС стаканни ПЭТ бутилкадан ажратадиган суюқликни топинг.", "Найдите жидкость, которая отделит стаканчики ПС от бутылок ПЭТ.", "Find the liquid that separates PS cups from PET bottles.")],
+      u: [t3("Суюқлик зичлиги ρc ни сурилма ёки тайёр эритмалар билан беринг.", "Задайте плотность жидкости ρж ползунком или готовыми растворами.", "Set liquid density ρl with the slider or the ready solutions."), t3("Жадвалда ҳар бир полимер учун натижавий куч F = (ρc − ρп)·V·g ни ўқинг: F > 0 — сузади.", "Читайте в таблице результирующую силу F = (ρж − ρп)·V·g для каждого полимера: F > 0 — всплывает.", "Read the net force F = (ρl − ρp)·V·g for each polymer in the table: F > 0 means it floats."), t3("ПЭТ ва ПВХ нега флотацияда ажралмаслигини тушунтиринг ва машғулотни ечинг.", "Объясните, почему ПЭТ и ПВХ не разделяются флотацией, и решите задание.", "Explain why PET and PVC cannot be separated by flotation and solve the task.")]
+    },
+
+    liniya: {
+      k: [t3("Линиядаги машиналарни босиб ёқинг ёки ўчиринг.", "Нажимайте на машины линии, чтобы включать и выключать их.", "Tap machines on the line to switch them on or off."), t3("Бирор машина ўчса, гранула сифати қандай бузилишини кузатинг.", "Смотрите, как портится качество гранул, если машина выключена.", "Watch how pellet quality drops when a machine is off."), t3("3 та машинани навбат билан синаб, кейин ҳаммасини ёқиб «А сифат» гранула олинг.", "Испытайте по очереди 3 машины, затем включите все и получите гранулы «качества А».", "Try 3 machines one by one, then switch all on to get grade A pellets.")],
+      u: [t3("Қуруқ хомашё G, аралашма улуши x ва центрифугадан кейинги намлик w₁ ни беринг.", "Задайте сухое сырьё G, долю примесей x и влажность после центрифуги w₁.", "Set dry feed G, impurity share x and moisture after the centrifuge w₁."), t3("Модда баланси W = m₁(w₁ − w₂)/(1 − w₂) ва буғланиш иссиқлиги Q = W·r ни кузатинг.", "Следите за материальным балансом W = m₁(w₁ − w₂)/(1 − w₂) и теплом испарения Q = W·r.", "Follow the mass balance W = m₁(w₁ − w₂)/(1 − w₂) and evaporation heat Q = W·r."), t3("Қуритгич қувватини баҳоланг ва машғулотни ечинг.", "Оцените мощность сушилки и решите задание.", "Estimate the dryer power and solve the task.")]
+    },
+
+    tutun: {
+      k: [t3("Мўри баландлигини ва шамолни танланг.", "Выберите высоту трубы и ветер.", "Choose the stack height and the wind."), t3("Ер рангига қаранг: яшил — тоза, қизил — ифлос ҳаво; 🏘 қишлоқ қаерда эканини топинг.", "Смотрите на цвет земли: зелёный — чисто, красный — грязно; найдите посёлок 🏘.", "Look at the ground colour: green is clean, red is polluted; find the village 🏘."), t3("Фильтр қўйиб ёки мўрини баланд қилиб, қишлоқ ҳавосини тозаланг.", "Очистите воздух в посёлке фильтром или высокой трубой.", "Clean the village air with a filter or a taller stack.")],
+      u: [t3("Чиқинди Q, шамол u, самарали баландлик h ва Паскуилл синфини беринг.", "Задайте выброс Q, ветер u, эффективную высоту h и класс Паскуилла.", "Set emission Q, wind u, effective height h and the Pasquill class."), t3("Ер сатҳидаги концентрация харитасини ва Cmax масофасини кузатинг; уни ЧММ билан солиштиринг.", "Следите за картой приземной концентрации и расстоянием до Cmax; сравните с ПДК.", "Follow the ground-level concentration map and the distance of Cmax; compare with the limit."), t3("Мониторинг постини (қишлоқни) Cmax жойига қўйиб, амалий машғулотни ечинг.", "Поставьте пост мониторинга (посёлок) в точку Cmax и решите задание.", "Place the monitoring post (village) at Cmax and solve the task.")]
+    },
+    daryo: {
+      k: [t3("Дарё рангини кузатинг: кўк — кислород кўп, жигарранг — кам.", "Смотрите на цвет реки: синий — кислорода много, коричневый — мало.", "Watch the river colour: blue means lots of oxygen, brown means little."), t3("Ҳароратни ўзгартиринг ва заводга тозалаш иншооти қуриб кўринг.", "Меняйте температуру и постройте у завода очистные сооружения.", "Change the temperature and build a treatment plant at the factory."), t3("Балиқлар сонини санаб, ҳаммасини хурсанд қилинг.", "Посчитайте рыб и сделайте их всех довольными.", "Count the fish and make them all happy.")],
+      u: [t3("Дарё ва оқова сув сарфи, БКИ₅, оқим тезлиги ва ҳароратни беринг.", "Задайте расходы реки и сточных вод, БПК₅, скорость течения и температуру.", "Set river and wastewater flows, BOD₅, velocity and temperature."), t3("Учта створни дарслик қоидаси бўйича жойлаштиринг: фон — 1 км юқорида, назорат — 80 % аралашган жойда (жадвалда ✅).", "Расставьте три створа по правилу учебника: фоновый — в 1 км выше, контрольный — где смешение ≥ 80 % (✅ в таблице).", "Place three sections by the textbook rule: background 1 km upstream, control where mixing ≥ 80% (✅ in the table)."), t3("Чуқурликка қараб горизонтлар сонини ва кислород энг кам бўлган масофани аниқланг; машғулотни ечинг.", "Определите число горизонтов по глубине и расстояние минимума кислорода; решите задание.", "Find the number of sampling depths and the distance of minimum oxygen; solve the task.")]
+    },
+    piramida: {
+      k: [t3("Жонзотларни тартиб билан босинг: ўсимликдан бошланг, кейин уни ким ейди?", "Нажимайте живых существ по порядку: начните с растения, а кто его ест?", "Tap the living things in order: start with the plant — who eats it?"), t3("Пирамида қаватлари қандай кичрайиб боришини кузатинг.", "Смотрите, как уменьшаются этажи пирамиды.", "Watch the pyramid floors get smaller."), t3("Сариқ учқун — энергия, қизили — иссиқлик бўлиб йўқолган энергия.", "Жёлтая искра — энергия, красная — энергия, потерянная в виде тепла.", "Yellow sparks are energy; red ones are energy lost as heat.")],
+      u: [t3("Продуцентлар энергияси, экологик самарадорлик η ва поғоналар сонини беринг.", "Задайте энергию продуцентов, экологическую эффективность η и число уровней.", "Set producer energy, ecological efficiency η and the number of levels."), t3("Ҳар бир поғонадаги энергияни жадвалдан ўқинг ва иссиқлик йўқотилишини ҳисобланг.", "Читайте энергию каждого уровня в таблице и рассчитайте потери тепла.", "Read each level's energy from the table and work out the heat loss."), t3("Нега озиқ занжирлари одатда 4–5 поғонадан узун бўлмаслигини тушунтиринг; машғулотни ечинг.", "Объясните, почему пищевые цепи редко длиннее 4–5 звеньев; решите задание.", "Explain why food chains rarely exceed 4–5 links; solve the task.")]
+    }
+  };
+  const GUIDE = [
+    ["fa-hand-pointer", t3("Тажрибани танланг", "Выберите опыт", "Pick an experiment"), t3("Юқоридаги тугмалардан", "Кнопками сверху", "Using the buttons above")],
+    ["fa-rotate", t3("Саҳнани айлантиринг", "Вращайте сцену", "Rotate the scene"), t3("Бармоқ ёки сичқонча билан; ＋/− яқинлаштиради", "Пальцем или мышью; ＋/− масштаб", "Finger or mouse; ＋/− to zoom")],
+    ["fa-sliders", t3("Параметрни ўзгартиринг", "Меняйте параметры", "Change parameters"), t3("Ўнгдаги панелда — натижа дарров ўзгаради", "На панели справа — результат меняется сразу", "In the side panel — results update instantly")],
+    ["fa-star", t3("Вазифани бажаринг", "Выполните задание", "Complete the task"), t3("Мактабда ⭐ вазифа, университетда 📝 машғулот — XP берилади", "В школе ⭐ задание, в вузе 📝 практика — даётся XP", "School ⭐ missions, university 📝 tasks — earn XP")]
+  ];
+  const HOWT = {
+    title: t3("📖 Бу тажрибадан қандай фойдаланилади?", "📖 Как пользоваться этим опытом?", "📖 How to use this experiment"),
+    guide: t3("Лабораториядан фойдаланиш — 4 қадам", "Как работать в лаборатории — 4 шага", "Using the lab — 4 steps"),
+    teach: t3("👩‍🏫 Ўқитувчи учун: тажрибани проекторда кўрсатинг, аввал ўқувчилардан «нима бўлади?» деб тахмин сўранг, кейин параметрни ўзгартиринг (5E модели).", "👩‍🏫 Для учителя: покажите опыт на проекторе, сначала спросите «что произойдёт?», затем меняйте параметр (модель 5E).", "👩‍🏫 For teachers: show the experiment on a projector, ask students to predict ‘what will happen?’ first, then change the parameter (5E model).")
+  };
 
   /* ---------- Three.js юклаш ---------- */
   let THREE = null, threeP = null;
@@ -1093,7 +1157,372 @@
     }
   };
 
-  const EXPS = [GH, MOLS, TANK, SOLAR, TREE, FLOT, LINE];
+  /* =====================================================================
+     8) 🏭 Тутун тарқалиши — Гаусс модели ва Паскуилл барқарорлик синфлари
+     ===================================================================== */
+  /* Briggs (1973) очиқ жой учун σy, σz (x — метр), Turner (1970) иш китоби бўйича */
+  const SIGMA = {
+    A: (x) => [0.22 * x / Math.sqrt(1 + 1e-4 * x), 0.20 * x],
+    B: (x) => [0.16 * x / Math.sqrt(1 + 1e-4 * x), 0.12 * x],
+    C: (x) => [0.11 * x / Math.sqrt(1 + 1e-4 * x), 0.08 * x / Math.sqrt(1 + 2e-4 * x)],
+    D: (x) => [0.08 * x / Math.sqrt(1 + 1e-4 * x), 0.06 * x / Math.sqrt(1 + 1.5e-3 * x)],
+    E: (x) => [0.06 * x / Math.sqrt(1 + 1e-4 * x), 0.03 * x / (1 + 3e-4 * x)],
+    F: (x) => [0.04 * x / Math.sqrt(1 + 1e-4 * x), 0.016 * x / (1 + 3e-4 * x)]
+  };
+  const CLS = {
+    A: { uz: "A — кучли беқарор (иссиқ кун, кучсиз шамол)", ru: "A — сильно неустойчивая (жаркий день, слабый ветер)", en: "A — very unstable (hot day, light wind)" },
+    B: { uz: "B — ўртача беқарор", ru: "B — умеренно неустойчивая", en: "B — moderately unstable" },
+    C: { uz: "C — кучсиз беқарор", ru: "C — слабо неустойчивая", en: "C — slightly unstable" },
+    D: { uz: "D — нейтрал (булутли, шамолли)", ru: "D — нейтральная (облачно, ветрено)", en: "D — neutral (cloudy, windy)" },
+    E: { uz: "E — кучсиз барқарор (тун)", ru: "E — слабо устойчивая (ночь)", en: "E — slightly stable (night)" },
+    F: { uz: "F — барқарор (тинч тун, инверсия)", ru: "F — устойчивая (тихая ночь, инверсия)", en: "F — stable (calm night, inversion)" }
+  };
+  const PDK_SO2 = 0.5; // мг/м³, бир марталик максимал (ГН 2.1.6.3492-17)
+  /* Ер сатҳидаги концентрация, мг/м³: C = Q/(π·u·σy·σz)·exp(−y²/2σy²)·exp(−H²/2σz²) */
+  const plumeC = (Q, u, Hm, cls, x, y = 0) => {
+    if (x <= 1) return 0;
+    const [sy, sz] = SIGMA[cls](x);
+    return (Q / (Math.PI * u * sy * sz)) * Math.exp(-(y * y) / (2 * sy * sy)) * Math.exp(-(Hm * Hm) / (2 * sz * sz)) * 1000;
+  };
+  const plumeMax = (Q, u, Hm, cls) => { let best = [0, 0]; for (let x = 20; x <= 20000; x *= 1.03) { const c = plumeC(Q, u, Hm, cls, x); if (c > best[0]) best = [c, x]; } return best; };
+  const PLUME = {
+    id: "tutun", icon: "🏭",
+    name: { uz: "Тутун тарқалиши", ru: "Рассеивание дыма", en: "Smoke dispersion" },
+    q: { uz: "Завод мўрисидан чиққан тутун шамолда қаерга ва қанча узоққа боради? Мўри баланд бўлса, қишлоқ ҳавоси тозароқ бўладими?", ru: "Куда и как далеко ветер уносит дым из заводской трубы? Станет ли воздух в посёлке чище, если трубу сделать выше?", en: "Where and how far does the wind carry smoke from a factory stack? Is the village air cleaner if the stack is taller?" },
+    src: {
+      uz: "Пулатов Х.Л. ва бошқ. «Экологик мониторинг», 2026, 4.1–4.3 (Паскуилл бўйича атмосфера барқарорлиги синфлари, шлейф турлари, hэфф = H + Δh); Turner D.B., Workbook of Atmospheric Dispersion Estimates, 1970; Briggs G.A., 1973 (σy, σz)",
+      ru: "Пулатов Х.Л. и др. «Экологический мониторинг», 2026, 4.1–4.3 (классы устойчивости атмосферы по Паскуиллу, типы шлейфов, hэфф = H + Δh); Turner D.B., Workbook of Atmospheric Dispersion Estimates, 1970; Briggs G.A., 1973 (σy, σz)",
+      en: "Pulatov Kh.L. et al. «Ecological Monitoring», 2026, 4.1–4.3 (Pasquill stability classes, plume types, h_eff = H + Δh); Turner D.B., Workbook of Atmospheric Dispersion Estimates, 1970; Briggs G.A., 1973 (σy, σz)"
+    },
+    view: { bg: "#bae6fd", d: 10.5, ph: 1.08, th: 0.32, target: [1.2, 0.9, 0], minD: 4, maxD: 20 },
+    build(v, ui) {
+      const T = THREE, S = { Q: 100, u: 5, H: 50, cls: "D", x: 1000, filt: false, kidH: 1, kidW: 1, seen: new Set() };
+      const KM = 1.6; // 1 км = 1,6 саҳна бирлиги
+      const SCX = -2.6; // мўри жойи
+      /* Ер ва иссиқлик харитаси (концентрация) */
+      const TW = 128, TH = 64, cnv = document.createElement("canvas"); cnv.width = TW; cnv.height = TH;
+      const g2 = cnv.getContext("2d"), tex = new T.CanvasTexture(cnv); tex.colorSpace = T.SRGBColorSpace;
+      const GW = 10, GD = 5;
+      const ground = new T.Mesh(new T.PlaneGeometry(GW, GD), new T.MeshStandardMaterial({ map: tex, roughness: 1 }));
+      ground.rotation.x = -Math.PI / 2; ground.position.set(SCX + GW / 2 - 0.6, 0, 0); v.scene.add(ground);
+      const effH = () => S.H;
+      /* Мактаб режимида чиқинди 90 г/с (баланд мўри шабадада ҳам ЧММ дан паст бўлиши учун) */
+      const Qeff = () => (stage() === "uni" ? S.Q : 90) * (S.filt ? 0.1 : 1);
+      const heat = () => {
+        const img = g2.createImageData(TW, TH), cmax = PDK_SO2 * 2;
+        for (let j = 0; j < TH; j++) for (let i = 0; i < TW; i++) {
+          const xs = (i / TW) * GW - 0.6, zs = (j / TH - 0.5) * GD;
+          const xm = (xs / KM) * 1000, ym = (zs / KM) * 1000;
+          const c = plumeC(Qeff(), S.u, effH(), S.cls, xm, ym), f = clamp(c / cmax, 0, 1);
+          const k = (j * TW + i) * 4;
+          /* яшил → сариқ → қизил */
+          const r = f < 0.5 ? 120 + f * 2 * 135 : 255, gg = f < 0.5 ? 190 : 190 - (f - 0.5) * 2 * 150, b = 90 - f * 60;
+          img.data[k] = r; img.data[k + 1] = gg; img.data[k + 2] = b; img.data[k + 3] = 255;
+        }
+        g2.putImageData(img, 0, 0); tex.needsUpdate = true;
+      };
+      /* Завод ва мўри */
+      const fac = new T.Mesh(new T.BoxGeometry(0.9, 0.5, 0.7), new T.MeshStandardMaterial({ color: 0x94a3b8 })); fac.position.set(SCX - 0.35, 0.25, 0); v.scene.add(fac);
+      const stackM = new T.MeshStandardMaterial({ color: 0xb91c1c });
+      const stack = new T.Mesh(new T.CylinderGeometry(0.07, 0.1, 1, 14), stackM); v.scene.add(stack);
+      const stackH = () => clamp(S.H / 40, 0.4, 4.5);
+      const setStack = () => { const h = stackH(); stack.scale.y = h; stack.position.set(SCX, h / 2, 0); };
+      /* Қишлоқ уйлари (1 км да) */
+      const houseM = new T.MeshStandardMaterial({ color: 0xfde68a }), roofM = new T.MeshStandardMaterial({ color: 0xb45309 });
+      const village = new T.Group(); v.scene.add(village);
+      [[0, -0.35], [0.3, 0.25], [-0.3, 0.3], [0.05, 0.75]].forEach(([dx, dz]) => {
+        const hs = new T.Mesh(new T.BoxGeometry(0.22, 0.18, 0.22), houseM); hs.position.set(dx, 0.09, dz); village.add(hs);
+        const rf = new T.Mesh(new T.ConeGeometry(0.19, 0.14, 4), roofM); rf.position.set(dx, 0.25, dz); rf.rotation.y = Math.PI / 4; village.add(rf);
+      });
+      const vLabel = textSprite("🏘", "#ffffff", 0.4); village.add(vLabel); vLabel.position.set(0, 0.6, 0);
+      const setVillage = () => village.position.set(SCX + (S.x / 1000) * KM, 0, 0);
+      /* Шамол стрелкаси */
+      const arrow = new T.ArrowHelper(new T.Vector3(1, 0, 0), new T.Vector3(SCX - 0.4, 3.2, -1.8), 1.2, 0x0ea5e9, 0.3, 0.18); v.scene.add(arrow);
+      const wl = textSprite("💨", "#ffffff", 0.35); wl.position.set(SCX + 0.2, 3.6, -1.8); v.scene.add(wl);
+      /* Тутун заррачалари */
+      const N = 260, im = new T.InstancedMesh(new T.SphereGeometry(1, 8, 6), new T.MeshStandardMaterial({ color: 0x6b7280, transparent: true, opacity: 0.5, depthWrite: false }), N);
+      v.scene.add(im);
+      const P = Array.from({ length: N }, () => ({ t: Math.random() * 6, y: 0, z: 0, gy: 0, gz: 0 }));
+      const randn = () => { let a = 0; for (let i = 0; i < 4; i++) a += Math.random(); return (a - 2) * 1.7; };
+      P.forEach((p) => { p.gy = randn(); p.gz = randn(); });
+      const mtx = new T.Matrix4();
+      v.updaters.push((dt) => {
+        const sp = (S.u / 5) * 0.9, hs = stackH();
+        P.forEach((p, i) => {
+          p.t += dt;
+          let x = p.t * sp;
+          if (x > GW - 0.8) { p.t = 0; p.gy = randn(); p.gz = randn(); x = 0; }
+          const xm = Math.max(5, (x / KM) * 1000), [sy, sz] = SIGMA[S.cls](xm);
+          let y = hs + (p.gz * sz / 1000) * KM; if (y < 0.03) y = -y + 0.03; // ердан қайтиш (акс эттириш)
+          const z = (p.gy * sy / 1000) * KM;
+          const r = 0.035 + Math.min(0.16, x * 0.022);
+          mtx.makeScale(r, r, r); mtx.setPosition(SCX + x, Math.min(y, 6), clamp(z, -GD / 2, GD / 2));
+          im.setMatrixAt(i, mtx);
+        });
+        im.instanceMatrix.needsUpdate = true;
+        im.material.opacity = S.filt ? 0.1 : 0.38;
+      });
+      const draw = () => { setStack(); setVillage(); heat(); ui.render(); };
+      ui.html = () => {
+        const uni = stage() === "uni", C = plumeC(Qeff(), S.u, effH(), S.cls, S.x), [cm, xm] = plumeMax(Qeff(), S.u, effH(), S.cls), r = C / PDK_SO2;
+        const face = r < 0.5 ? "😊" : r < 1 ? "😐" : r < 3 ? "😷" : "🤢";
+        if (!uni) {
+          const hOpt = [[20, { uz: "Паст мўри", ru: "Низкая труба", en: "Short stack" }, "🏭"], [60, { uz: "Ўртача", ru: "Средняя", en: "Medium" }, "🏗️"], [150, { uz: "Баланд мўри", ru: "Высокая труба", en: "Tall stack" }, "🗼"]];
+          const wOpt = [[1.5, { uz: "Енгил шабада", ru: "Лёгкий ветерок", en: "Light breeze" }, "🍃"], [5, { uz: "Шамол", ru: "Ветер", en: "Wind" }, "💨"], [10, { uz: "Кучли шамол", ru: "Сильный ветер", en: "Strong wind" }, "🌬️"]];
+          const msg = r < 1 ? { uz: "Қишлоқда ҳаво тоза! Тутун юқорида тарқалиб кетди.", ru: "В посёлке чистый воздух! Дым рассеялся высоко.", en: "The village air is clean! The smoke spread out high up." } : { uz: "Қишлоқда тутун ҳиди бор. Мўрини баландроқ қилинг ёки фильтр қўйинг.", ru: "В посёлке пахнет дымом. Сделайте трубу выше или поставьте фильтр.", en: "The village smells of smoke. Make the stack taller or add a filter." };
+          return `<p class="small"><b>${H({ uz: "Мўри баландлиги", ru: "Высота трубы", en: "Stack height" })}</b></p>
+            <div class="lab-opts">${hOpt.map(([h, n, e]) => `<button type="button" class="sg-opt ${S.H === h ? "sel" : ""}" data-kh="${h}"><span class="e" aria-hidden="true">${e}</span>${H(n)}</button>`).join("")}</div>
+            <p class="small"><b>${H({ uz: "Шамол", ru: "Ветер", en: "Wind" })}</b></p>
+            <div class="lab-opts">${wOpt.map(([u, n, e]) => `<button type="button" class="sg-opt ${S.u === u ? "sel" : ""}" data-kw="${u}"><span class="e" aria-hidden="true">${e}</span>${H(n)}</button>`).join("")}</div>
+            <label class="l3-check"><input type="checkbox" data-filt ${S.filt ? "checked" : ""}> 🧯 ${H({ uz: "Мўрига фильтр ўрнатиш (тутуннинг 90 % ини ушлайди)", ru: "Поставить на трубу фильтр (задерживает 90 % дыма)", en: "Put a filter on the stack (catches 90% of the smoke)" })}</label>
+            <div class="l3-big ${r >= 1 ? "warn" : ""}"><span>${face}</span><b>${H(r < 1 ? { uz: "Тоза ҳаво", ru: "Чистый воздух", en: "Clean air" } : { uz: "Ифлос ҳаво", ru: "Грязный воздух", en: "Polluted air" })}</b><small>🏘 1 ${H({ uz: "км узоқликдаги қишлоқ", ru: "км — посёлок", en: "km away — village" })}</small></div>
+            <p class="lab-out">${H(msg)}</p>
+            <p class="l3-mission" data-star>${H(TX.mission)}: ${H({ uz: "Енгил шабадада ҳам қишлоқ ҳавосини тоза қилинг (иккита усулни синанг).", ru: "Сделайте воздух в посёлке чистым даже при лёгком ветерке (попробуйте два способа).", en: "Make the village air clean even in a light breeze (try two ways)." })}</p>`;
+        }
+        return `<label>${H({ uz: "Чиқинди миқдори Q (SO₂)", ru: "Выброс Q (SO₂)", en: "Emission rate Q (SO₂)" })}: <b>${S.Q} g/s</b><input type="range" data-k="Q" min="10" max="500" step="10" value="${S.Q}"></label>
+          <label>${H({ uz: "Шамол тезлиги u (мўри баландлигида)", ru: "Скорость ветра u (на высоте трубы)", en: "Wind speed u (at stack height)" })}: <b>${fmt(S.u, 1)} m/s</b><input type="range" data-k="u" min="1" max="15" step="0.5" value="${S.u}"></label>
+          <label>${H({ uz: "Самарали баландлик hэфф = H + Δh", ru: "Эффективная высота hэфф = H + Δh", en: "Effective height h_eff = H + Δh" })}: <b>${S.H} m</b><input type="range" data-k="H" min="10" max="250" step="5" value="${S.H}"></label>
+          <label>${H({ uz: "Атмосфера барқарорлиги (Паскуилл)", ru: "Устойчивость атмосферы (Паскуилл)", en: "Atmospheric stability (Pasquill)" })}: <select data-cls>${Object.keys(CLS).map((k) => `<option value="${k}" ${k === S.cls ? "selected" : ""}>${H(CLS[k])}</option>`).join("")}</select></label>
+          <label>${H({ uz: "Қишлоқгача масофа x", ru: "Расстояние до посёлка x", en: "Distance to village x" })}: <b>${S.x} m</b><input type="range" data-k="x" min="100" max="5000" step="50" value="${S.x}"></label>
+          <label class="l3-check"><input type="checkbox" data-filt ${S.filt ? "checked" : ""}> 🧯 ${H({ uz: "Газ тозалаш қурилмаси (самарадорлик 90 %)", ru: "Газоочистная установка (эффективность 90 %)", en: "Gas cleaning unit (90% efficiency)" })}</label>
+          <div class="lab-formula">σ<sub>y</sub>, σ<sub>z</sub> (${S.cls}, x = ${S.x} m) = <b>${fmt(SIGMA[S.cls](S.x)[0], 1)}</b>, <b>${fmt(SIGMA[S.cls](S.x)[1], 1)}</b> m<br>C(x,0,0) = Q / (π·u·σ<sub>y</sub>·σ<sub>z</sub>) · e<sup>−h²/2σz²</sup> = <b>${fmt(C, 3)}</b> mg/m³<br>C<sub>max</sub> = <b>${fmt(cm, 3)}</b> mg/m³ ${H({ uz: "масофада", ru: "на расстоянии", en: "at" })} x ≈ <b>${fmt(xm, 0)}</b> m</div>
+          <div class="l3-big ${r >= 1 ? "warn" : ""}"><span>${face}</span><b>${fmt(r, 2)} ${H({ uz: "ЧММ", ru: "ПДК", en: "× limit" })}</b><small>${H({ uz: "SO₂ бир марталик ЧММ = 0,5 мг/м³", ru: "ПДК м.р. SO₂ = 0,5 мг/м³", en: "SO₂ one-time limit = 0.5 mg/m³" })}</small></div>
+          <p class="small muted">${H({ uz: "Дарслик (4.3-расм) бўйича: инверсияда (F синф) шлейф юқорида «елпиғич» каби тарқалади, лекин кўтарилган инверсия ер усти концентрациясини 1,5–2 марта оширади. Беқарор об-ҳавода (A) тутун мўри яқинида ерга «босилади». Модель текис жой ва ўзгармас шамол учун; ер юзасидан тўлиқ қайтиш ҳисобга олинмаган.", ru: "По учебнику (рис. 4.3): при инверсии (класс F) шлейф расходится «веером» наверху, но приподнятая инверсия повышает приземную концентрацию в 1,5–2 раза. При неустойчивой погоде (A) дым «прижимается» к земле у трубы. Модель для ровной местности и постоянного ветра; отражение от поверхности не учтено.", en: "Per the textbook (fig. 4.3): in an inversion (class F) the plume fans out aloft, but an elevated inversion raises ground concentration 1.5–2 times. In unstable weather (A) smoke loops down to the ground near the stack. The model assumes flat terrain and steady wind; ground reflection is ignored." })}</p>`;
+      };
+      ui.bind = (el) => {
+        const chk = () => { if (stage() !== "uni" && S.u <= 1.5 && plumeC(Qeff(), S.u, effH(), S.cls, S.x) < PDK_SO2) { S.seen.add(S.filt ? "filter" : "tall"); if (S.seen.size >= 2) star("tutun", ui.el.querySelector("[data-star]")); } };
+        el.querySelectorAll("[data-kh]").forEach((b) => b.addEventListener("click", () => { S.H = +b.dataset.kh; draw(); chk(); }));
+        el.querySelectorAll("[data-kw]").forEach((b) => b.addEventListener("click", () => { S.u = +b.dataset.kw; S.cls = S.u <= 1.5 ? "B" : S.u >= 10 ? "D" : "C"; draw(); chk(); }));
+        const f = el.querySelector("[data-filt]"); f.addEventListener("change", () => { S.filt = f.checked; draw(); chk(); });
+        const c = el.querySelector("[data-cls]"); if (c) c.addEventListener("change", () => { S.cls = c.value; draw(); });
+        el.querySelectorAll("input[data-k]").forEach((r) => {
+          r.addEventListener("input", () => { S[r.dataset.k] = +r.value; const b = r.parentElement.querySelector("b"); if (b) b.textContent = (r.dataset.k === "u" ? fmt(S.u, 1) : r.value) + { Q: " g/s", u: " m/s", H: " m", x: " m" }[r.dataset.k]; setStack(); setVillage(); });
+          r.addEventListener("change", () => draw());
+        });
+      };
+      ui.task = () => ({ q: { uz: "Q = 100 г/с SO₂, шамол u = 5 м/с, самарали баландлик h = 50 м, D синф (нейтрал). x = 1000 м да σy = 76,3 м, σz = 37,9 м. Шлейф ўқи остида ер сатҳидаги концентрация неча мг/м³?", ru: "Q = 100 г/с SO₂, ветер u = 5 м/с, эффективная высота h = 50 м, класс D (нейтральный). При x = 1000 м σy = 76,3 м, σz = 37,9 м. Какова приземная концентрация под осью шлейфа, мг/м³?", en: "Q = 100 g/s SO₂, wind u = 5 m/s, effective height h = 50 m, class D (neutral). At x = 1000 m σy = 76.3 m, σz = 37.9 m. What is the ground-level concentration under the plume axis, in mg/m³?" }, a: (100 / (Math.PI * 5 * 76.3 * 37.9)) * Math.exp(-2500 / (2 * 37.9 * 37.9)) * 1000, tol: 0.03, unit: "mg/m³", hint: { uz: "C = 100/(π·5·76,3·37,9)·e^(−50²/(2·37,9²)) г/м³, сўнг ×1000", ru: "C = 100/(π·5·76,3·37,9)·e^(−50²/(2·37,9²)) г/м³, затем ×1000", en: "C = 100/(π·5·76.3·37.9)·e^(−50²/(2·37.9²)) g/m³, then ×1000" }, dec: 2 });
+      draw();
+    }
+  };
+
+  /* =====================================================================
+     9) 🏞 Дарё мониторинги — кузатув створлари ва эриган кислород (Стритер–Фелпс)
+     ===================================================================== */
+  const DO_SAT = { 10: 11.29, 20: 9.09, 25: 8.26, 30: 7.56 }; // мг/л, тоза сув (APHA)
+  const RIVER = {
+    id: "daryo", icon: "🏞",
+    name: { uz: "Дарё мониторинги", ru: "Мониторинг реки", en: "River monitoring" },
+    q: { uz: "Завод оқова суви дарёга тушса, сувдаги кислород қаерда энг кам бўлади? Намунани қаердан ва қандай чуқурликдан олиш керак?", ru: "Если сточные воды завода попадают в реку, где кислорода в воде будет меньше всего? Откуда и с какой глубины брать пробу?", en: "When factory wastewater enters a river, where is dissolved oxygen lowest? Where and at what depth should samples be taken?" },
+    src: {
+      uz: "Пулатов Х.Л. ва бошқ. «Экологик мониторинг», 2026, 6.3 (кузатув пунктлари ва створлар: фон створи манбадан 1 км юқорида, назорат створи 80 % аралашган жойда, горизонтлар сони чуқурликка қараб); Streeter H.W., Phelps E.B., 1925 (кислород тақчиллиги эгри чизиғи); кислород эрувчанлиги — APHA Standard Methods 4500-O",
+      ru: "Пулатов Х.Л. и др. «Экологический мониторинг», 2026, 6.3 (пункты наблюдений и створы: фоновый створ в 1 км выше источника, контрольный — там, где смешение ≥ 80 %, число горизонтов по глубине); Streeter H.W., Phelps E.B., 1925 (кривая дефицита кислорода); растворимость кислорода — APHA Standard Methods 4500-O",
+      en: "Pulatov Kh.L. et al. «Ecological Monitoring», 2026, 6.3 (monitoring points and cross-sections: background section 1 km upstream, control section where mixing ≥ 80%, number of sampling depths by river depth); Streeter H.W., Phelps E.B., 1925 (oxygen sag curve); oxygen solubility — APHA Standard Methods 4500-O"
+    },
+    view: { bg: "#d1fae5", d: 10, ph: 0.95, th: 0.35, target: [0.5, 0, 0], minD: 4, maxD: 18 },
+    build(v, ui) {
+      const T = THREE, S = { Qr: 20, Qw: 2, L: 200, kd: 0.3, ka: 0.6, temp: 20, u: 0.3, depth: 3, filt: false, posts: [-1, 0.5, 5] };
+      const KM = 0.25, X0 = -3.2, LEN = 32; // саҳнада 1 км = 0,25 бирлик, дарё −4 … +28 км
+      const toS = (km) => X0 + km * KM;
+      const Lw = () => (S.filt ? S.L * 0.1 : S.L);
+      /* Аралашма: Q·c баланс; кислород тақчиллиги D = DOsat − DO */
+      const mix = () => {
+        const sat = DO_SAT[S.temp], DOr = sat * 0.95, DOw = 1, BODr = 2;
+        const Qt = S.Qr + S.Qw;
+        return { sat, L0: (S.Qr * BODr + S.Qw * Lw()) / Qt, DO0: (S.Qr * DOr + S.Qw * DOw) / Qt };
+      };
+      const kT = (k20, th) => k20 * Math.pow(th, S.temp - 20);
+      const DOat = (km) => {
+        const m = mix();
+        if (km < 0) return m.sat * 0.95;
+        const t = (km * 1000) / S.u / 86400, kd = kT(S.kd, 1.047), ka = kT(S.ka, 1.024), D0 = m.sat - m.DO0;
+        const D = Math.abs(ka - kd) < 1e-6 ? kd * m.L0 * t * Math.exp(-kd * t) + D0 * Math.exp(-ka * t) : (kd * m.L0 / (ka - kd)) * (Math.exp(-kd * t) - Math.exp(-ka * t)) + D0 * Math.exp(-ka * t);
+        return clamp(m.sat - D, 0, m.sat);
+      };
+      const crit = () => { let best = [99, 0]; for (let km = 0; km <= 120; km += 0.25) { const d = DOat(km); if (d < best[0]) best = [d, km]; } return best; };
+      const mixPct = (km) => (km <= 0 ? 0 : 100 * (1 - Math.exp(-km / 0.6)));
+      /* Дарё сатҳи (ранг — кислород) */
+      const NX = 160, geo = new T.PlaneGeometry(LEN * KM, 1.6, NX, 1);
+      const cols = new Float32Array(geo.attributes.position.count * 3);
+      geo.setAttribute("color", new T.BufferAttribute(cols, 3));
+      const river = new T.Mesh(geo, new T.MeshStandardMaterial({ vertexColors: true, roughness: 0.4, metalness: 0.05 }));
+      river.rotation.x = -Math.PI / 2; river.position.set(X0 + (LEN * KM) / 2 - 4 * KM, 0.01, 0); v.scene.add(river);
+      const bankM = new T.MeshStandardMaterial({ color: 0x65a30d, roughness: 1 });
+      [-1.6, 1.6].forEach((z) => { const b = new T.Mesh(new T.BoxGeometry(LEN * KM, 0.12, 1.6), bankM); b.position.set(river.position.x, 0.02, z); v.scene.add(b); });
+      const colAt = new T.Color();
+      const paint = () => {
+        const pos = geo.attributes.position, sat = DO_SAT[S.temp];
+        for (let i = 0; i < pos.count; i++) {
+          const xs = pos.getX(i) + river.position.x, km = (xs - X0) / KM, d = DOat(km);
+          const f = clamp(d / sat, 0, 1);
+          colAt.setHSL(0.03 + f * 0.52, 0.75, 0.42 + f * 0.1);
+          cols[i * 3] = colAt.r; cols[i * 3 + 1] = colAt.g; cols[i * 3 + 2] = colAt.b;
+        }
+        geo.attributes.color.needsUpdate = true;
+      };
+      /* Завод ва оқова қувури */
+      const fac = new T.Mesh(new T.BoxGeometry(0.7, 0.5, 0.5), new T.MeshStandardMaterial({ color: 0x94a3b8 })); fac.position.set(toS(0), 0.27, -1.3); v.scene.add(fac);
+      const pipe = new T.Mesh(new T.CylinderGeometry(0.05, 0.05, 0.6, 10), new T.MeshStandardMaterial({ color: 0x475569 })); pipe.rotation.x = Math.PI / 2; pipe.position.set(toS(0), 0.08, -0.85); v.scene.add(pipe);
+      const plume = new T.Mesh(new T.CircleGeometry(0.35, 24), new T.MeshBasicMaterial({ color: 0x78350f, transparent: true, opacity: 0.45 })); plume.rotation.x = -Math.PI / 2; plume.position.set(toS(0) + 0.2, 0.03, -0.55); v.scene.add(plume);
+      /* Створлар (кузатув кесимлари) */
+      const postM = new T.MeshStandardMaterial({ color: 0xf59e0b });
+      const posts = S.posts.map(() => { const g = new T.Group(); const pole = new T.Mesh(new T.BoxGeometry(0.05, 0.04, 3.2), postM); pole.position.y = 0.08; g.add(pole); const lb = textSprite("•", "#7c2d12", 0.32); lb.position.set(0, 0.55, -1.75); g.add(lb); v.scene.add(g); g.userData.lb = lb; return g; });
+      const setPosts = () => posts.forEach((g, i) => { g.position.x = toS(S.posts[i]); const t = textSprite(`${i + 1}`, "#7c2d12", 0.32); g.remove(g.userData.lb); g.userData.lb = t; t.position.set(0, 0.55, -1.75); g.add(t); });
+      /* Балиқлар (кислород 6 мг/л дан юқори бўлган жойда) */
+      const fishM = new T.MeshStandardMaterial({ color: 0xf97316 }), fish = [];
+      for (let i = 0; i < 18; i++) { const f = new T.Mesh(new T.ConeGeometry(0.06, 0.2, 8), fishM); f.rotation.z = -Math.PI / 2; f.userData = { km: -3 + Math.random() * 27, z: (Math.random() - 0.5) * 1.1, ph: Math.random() * 6 }; v.scene.add(f); fish.push(f); }
+      /* Оқим заррачалари */
+      const flowM = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 }), flow = [];
+      for (let i = 0; i < 40; i++) { const m = new T.Mesh(new T.SphereGeometry(0.025, 6, 4), flowM); m.userData = { x: Math.random() * LEN * KM, z: (Math.random() - 0.5) * 1.4 }; v.scene.add(m); flow.push(m); }
+      v.updaters.push((dt, t) => {
+        flow.forEach((m) => { m.userData.x = (m.userData.x + dt * (0.2 + S.u)) % (LEN * KM); m.position.set(X0 - 4 * KM + m.userData.x, 0.04, m.userData.z); });
+        fish.forEach((f) => {
+          const ok = DOat(f.userData.km) >= 6;
+          f.visible = ok;
+          f.position.set(toS(f.userData.km) + Math.sin(t + f.userData.ph) * 0.15, 0.05 + Math.abs(Math.sin(t * 2 + f.userData.ph)) * 0.06, f.userData.z);
+        });
+        plume.material.opacity = S.filt ? 0.12 : 0.45;
+      });
+      const horizons = () => (S.depth <= 5 ? 1 : S.depth <= 10 ? 2 : 3);
+      const postOk = (i, km) => (i === 0 ? km <= -0.9 && km >= -1.5 : mixPct(km) >= 80);
+      const draw = () => { setPosts(); paint(); ui.render(); };
+      ui.html = () => {
+        const uni = stage() === "uni", m = mix(), [cDO, cKm] = crit();
+        const pr = S.posts.map((km, i) => `<tr><td>${i + 1}</td><td>${fmt(km, 1)} km</td><td>${fmt(DOat(km), 2)}</td><td>${km < 0 ? "—" : fmt(mixPct(km), 0) + "%"}</td><td>${postOk(i, km) ? "✅" : "⚠️"}</td></tr>`).join("");
+        if (!uni) {
+          const happy = DOat(cKm) >= 6, nf = fish.filter((f) => DOat(f.userData.km) >= 6).length;
+          return `<p class="small">${H({ uz: "Дарёнинг ранги — сувдаги кислород: кўк — кўп, жигарранг — кам. Балиқлар кислород етарли жойда яшайди.", ru: "Цвет реки — кислород в воде: синий — много, коричневый — мало. Рыбы живут там, где кислорода хватает.", en: "River colour shows oxygen in the water: blue means plenty, brown means little. Fish live where there is enough oxygen." })}</p>
+            <label class="l3-check"><input type="checkbox" data-filt ${S.filt ? "checked" : ""}> 🧪 ${H({ uz: "Заводга тозалаш иншооти қуриш", ru: "Построить очистные сооружения у завода", en: "Build a treatment plant at the factory" })}</label>
+            <label>🌡 ${H({ uz: "Ҳаво ҳарорати", ru: "Температура", en: "Temperature" })}: <select data-temp>${[10, 20, 25, 30].map((t) => `<option value="${t}" ${t === S.temp ? "selected" : ""}>${t} °C</option>`).join("")}</select></label>
+            <div class="l3-big ${happy ? "" : "warn"}"><span>${happy ? "🐟" : "😵"}</span><b>${nf} / ${fish.length}</b><small>${H({ uz: "балиқ хурсанд", ru: "рыб довольны", en: "happy fish" })}</small></div>
+            <p class="lab-out">${H(happy ? { uz: "Зўр! Дарё бутун узунлиги бўйлаб тоза — балиқлар қайтди.", ru: "Отлично! Река чистая по всей длине — рыбы вернулись.", en: "Great! The river is clean all the way — the fish are back." } : { uz: "Завод сувидан кейин кислород камайди, балиқлар кетиб қолди. Ёзда (иссиқда) сувда кислород яна ҳам кам бўлади.", ru: "После сброса завода кислорода стало мало, рыбы уплыли. Летом (в жару) кислорода в воде ещё меньше.", en: "Below the factory outlet oxygen dropped and the fish left. In summer heat water holds even less oxygen." })}</p>
+            <p class="l3-mission" data-star>${H(TX.mission)}: ${H({ uz: "Иссиқ ёз кунида (30 °C) ҳам ҳамма балиқларни хурсанд қилинг.", ru: "Сделайте всех рыб довольными даже в жаркий летний день (30 °C).", en: "Make every fish happy even on a hot summer day (30 °C)." })}</p>`;
+        }
+        return `<label>${H({ uz: "Дарё сарфи Q<sub>д</sub>", ru: "Расход реки Q<sub>р</sub>", en: "River flow Q<sub>r</sub>" }).replace(/&lt;(\/?)sub&gt;/g, "<$1sub>")}: <b>${S.Qr} m³/s</b><input type="range" data-k="Qr" min="2" max="100" step="1" value="${S.Qr}"></label>
+          <label>${H({ uz: "Оқова сув сарфи q", ru: "Расход сточных вод q", en: "Wastewater flow q" })}: <b>${fmt(S.Qw, 1)} m³/s</b><input type="range" data-k="Qw" min="0.2" max="10" step="0.2" value="${S.Qw}"></label>
+          <label>${H({ uz: "Оқова сувдаги БКИ₅ (L<sub>w</sub>)", ru: "БПК₅ сточных вод (L<sub>w</sub>)", en: "Wastewater BOD₅ (L<sub>w</sub>)" }).replace(/&lt;(\/?)sub&gt;/g, "<$1sub>")}: <b>${S.L} mg/l</b><input type="range" data-k="L" min="10" max="600" step="10" value="${S.L}"></label>
+          <label>${H({ uz: "Оқим тезлиги u", ru: "Скорость течения u", en: "Flow velocity u" })}: <b>${fmt(S.u, 2)} m/s</b><input type="range" data-k="u" min="0.1" max="1.5" step="0.05" value="${S.u}"></label>
+          <label>${H({ uz: "Сув ҳарорати", ru: "Температура воды", en: "Water temperature" })}: <select data-temp>${[10, 20, 25, 30].map((t) => `<option value="${t}" ${t === S.temp ? "selected" : ""}>${t} °C</option>`).join("")}</select></label>
+          <label>${H({ uz: "Дарё чуқурлиги", ru: "Глубина реки", en: "River depth" })}: <b>${S.depth} m</b><input type="range" data-k="depth" min="1" max="30" step="1" value="${S.depth}"></label>
+          <label class="l3-check"><input type="checkbox" data-filt ${S.filt ? "checked" : ""}> 🧪 ${H({ uz: "Биологик тозалаш (БКИ 90 % камаяди)", ru: "Биологическая очистка (БПК снижается на 90 %)", en: "Biological treatment (BOD cut by 90%)" })}</label>
+          <p class="small"><b>📍 ${H({ uz: "Створлар (км, 0 — оқова сув тушадиган жой)", ru: "Створы (км, 0 — место выпуска)", en: "Sampling sections (km, 0 = outfall)" })}</b></p>
+          ${S.posts.map((km, i) => `<label>${i + 1}: <b>${fmt(km, 1)} km</b><input type="range" data-post="${i}" min="-3" max="25" step="0.1" value="${km}"></label>`).join("")}
+          <div class="ly-rtable"><table class="l3-tbl"><tr><th>№</th><th>x</th><th>DO, mg/l</th><th>${H({ uz: "аралашиш", ru: "смешение", en: "mixing" })}</th><th></th></tr>${pr}</table></div>
+          <div class="lab-formula">L₀ = (Q·L<sub>д</sub> + q·L<sub>w</sub>)/(Q + q) = <b>${fmt(m.L0, 1)}</b> mg/l · DO₀ = <b>${fmt(m.DO0, 2)}</b> mg/l<br>D(t) = k<sub>d</sub>L₀/(k<sub>a</sub>−k<sub>d</sub>)·(e<sup>−k<sub>d</sub>t</sup> − e<sup>−k<sub>a</sub>t</sup>) + D₀e<sup>−k<sub>a</sub>t</sup><br>DO<sub>min</sub> = <b>${fmt(cDO, 2)}</b> mg/l, x<sub>кр</sub> ≈ <b>${fmt(cKm, 1)}</b> km · ${H({ uz: "горизонтлар", ru: "горизонтов", en: "sampling depths" })}: <b>${horizons()}</b></div>
+          <p class="small muted">${H({ uz: "Дарслик (6.3) қоидалари: 1-створ — манбадан 1 км юқорида (фон); кейингилари — оқова сув дарё суви билан камида 80 % аралашган жойда. Чуқурлик 5 м гача — 1 горизонт (юзадан 0,3 м), 5–10 м — 2 та (юза ва тубдан 0,5 м), 10–100 м — 3 та (юза, ўрта, туб). Балиқчилик сувлари учун эриган кислород одатда ≥ 6 мг/л. k<sub>d</sub> = 0,3, k<sub>a</sub> = 0,6 сут⁻¹ (20 °C) — намунавий қийматлар.", ru: "Правила учебника (6.3): створ 1 — в 1 км выше источника (фон); следующие — там, где сточные воды смешались с речной водой не менее чем на 80 %. Глубина до 5 м — 1 горизонт (0,3 м от поверхности), 5–10 м — 2 (поверхность и 0,5 м от дна), 10–100 м — 3 (поверхность, середина, дно). Для рыбохозяйственных вод растворённый кислород обычно ≥ 6 мг/л. k<sub>d</sub> = 0,3, k<sub>a</sub> = 0,6 сут⁻¹ (20 °C) — типовые значения.", en: "Textbook rules (6.3): section 1 is 1 km upstream of the source (background); the others are where wastewater has mixed with river water by at least 80%. Depth up to 5 m — 1 sampling depth (0.3 m below surface), 5–10 m — 2 (surface and 0.5 m above bed), 10–100 m — 3 (surface, middle, bed). Fishery waters usually need dissolved oxygen ≥ 6 mg/l. k<sub>d</sub> = 0.3, k<sub>a</sub> = 0.6 d⁻¹ (20 °C) are typical values." }).replace(/&lt;(\/?)sub&gt;/g, "<$1sub>")}</p>`;
+      };
+      ui.bind = (el) => {
+        const chk = () => { if (stage() !== "uni" && S.temp >= 30 && DOat(crit()[1]) >= 6) star("daryo", ui.el.querySelector("[data-star]")); };
+        const f = el.querySelector("[data-filt]"); f.addEventListener("change", () => { S.filt = f.checked; draw(); chk(); });
+        const tp = el.querySelector("[data-temp]"); tp.addEventListener("change", () => { S.temp = +tp.value; draw(); chk(); });
+        el.querySelectorAll("input[data-k]").forEach((r) => {
+          r.addEventListener("input", () => { S[r.dataset.k] = +r.value; const b = r.parentElement.querySelector("b"); if (b) b.textContent = (["Qw", "u"].includes(r.dataset.k) ? fmt(+r.value, r.dataset.k === "u" ? 2 : 1) : r.value) + { Qr: " m³/s", Qw: " m³/s", L: " mg/l", u: " m/s", depth: " m" }[r.dataset.k]; });
+          r.addEventListener("change", () => draw());
+        });
+        el.querySelectorAll("input[data-post]").forEach((r) => {
+          r.addEventListener("input", () => { S.posts[+r.dataset.post] = +r.value; posts[+r.dataset.post].position.x = toS(+r.value); const b = r.parentElement.querySelector("b"); if (b) b.textContent = fmt(+r.value, 1) + " km"; });
+          r.addEventListener("change", () => draw());
+        });
+      };
+      ui.task = () => ({ q: { uz: "Дарё: Q = 20 м³/с, эриган кислород 9 мг/л. Завод q = 2 м³/с оқова сув ташлайди, унда кислород 1 мг/л. Тўлиқ аралашгандан кейин дарёда эриган кислород неча мг/л бўлади?", ru: "Река: Q = 20 м³/с, растворённый кислород 9 мг/л. Завод сбрасывает q = 2 м³/с сточных вод с кислородом 1 мг/л. Сколько мг/л растворённого кислорода будет в реке после полного смешения?", en: "A river: Q = 20 m³/s with 9 mg/l dissolved oxygen. A factory discharges q = 2 m³/s of wastewater with 1 mg/l oxygen. What is the dissolved oxygen in mg/l after complete mixing?" }, a: (20 * 9 + 2 * 1) / 22, tol: 0.03, unit: "mg/l", hint: { uz: "DO = (Q·DOд + q·DOw)/(Q + q) = (20·9 + 2·1)/22", ru: "DO = (Q·DOр + q·DOw)/(Q + q) = (20·9 + 2·1)/22", en: "DO = (Q·DOr + q·DOw)/(Q + q) = (20·9 + 2·1)/22" } });
+      draw();
+    }
+  };
+
+  /* =====================================================================
+     10) 🔺 Экологик пирамида — энергия оқими (Линдеман, 10 % қоидаси)
+     ===================================================================== */
+  const TROPH = [
+    ["🌿", { uz: "Продуцентлар", ru: "Продуценты", en: "Producers" }, { uz: "ўт, дарахт, сувўтлар", ru: "трава, деревья, водоросли", en: "grass, trees, algae" }, 0x16a34a],
+    ["🐇", { uz: "I тартиб консументлар", ru: "Консументы I порядка", en: "Primary consumers" }, { uz: "ўтхўрлар: қуён, чигиртка", ru: "травоядные: заяц, кузнечик", en: "herbivores: hare, grasshopper" }, 0x84cc16],
+    ["🦊", { uz: "II тартиб консументлар", ru: "Консументы II порядка", en: "Secondary consumers" }, { uz: "йиртқичлар: тулки, қурбақа", ru: "хищники: лиса, лягушка", en: "carnivores: fox, frog" }, 0xf59e0b],
+    ["🦅", { uz: "III тартиб консументлар", ru: "Консументы III порядка", en: "Tertiary consumers" }, { uz: "юқори йиртқич: бургут", ru: "высший хищник: орёл", en: "top predator: eagle" }, 0xef4444]
+  ];
+  const KID_CHAIN = [["🌿", { uz: "Ўт", ru: "Трава", en: "Grass" }], ["🦗", { uz: "Чигиртка", ru: "Кузнечик", en: "Grasshopper" }], ["🐸", { uz: "Қурбақа", ru: "Лягушка", en: "Frog" }], ["🐍", { uz: "Илон", ru: "Змея", en: "Snake" }], ["🦅", { uz: "Бургут", ru: "Орёл", en: "Eagle" }]];
+  const PYR = {
+    id: "piramida", icon: "🔺",
+    name: { uz: "Экологик пирамида", ru: "Экологическая пирамида", en: "Ecological pyramid" },
+    q: { uz: "Нега табиатда бургут кам, ўт эса жуда кўп? Энергия озиқ занжирида қаерга йўқолади?", ru: "Почему в природе мало орлов и очень много травы? Куда теряется энергия в пищевой цепи?", en: "Why are there few eagles but lots of grass? Where does energy go along a food chain?" },
+    src: {
+      uz: "Нигматов А., Пулатов Х. «Экология», 2026, 2.1 (экотизимнинг трофик тузилиши, озиқ пирамидаси, Ю. Одум, 1986); Lindeman R.L., The trophic-dynamic aspect of ecology, Ecology 23:399, 1942",
+      ru: "Нигматов А., Пулатов Х. «Экология», 2026, 2.1 (трофическая структура экосистемы, пищевая пирамида, Ю. Одум, 1986); Lindeman R.L., The trophic-dynamic aspect of ecology, Ecology 23:399, 1942",
+      en: "Nigmatov A., Pulatov Kh. «Ecology», 2026, 2.1 (trophic structure of ecosystems, food pyramid, after E. Odum, 1986); Lindeman R.L., The trophic-dynamic aspect of ecology, Ecology 23:399, 1942"
+    },
+    view: { bg: "#ecfccb", d: 7.5, ph: 1.15, th: 0.7, target: [0, 1.2, 0], minD: 3, maxD: 14 },
+    build(v, ui) {
+      const T = THREE, S = { E: 10000, eff: 10, lv: 4, chain: [], drop: 0 };
+      const levels = TROPH.map(([e, n, d, c], i) => {
+        const g = new T.Group(); v.scene.add(g);
+        const m = new T.Mesh(new T.CylinderGeometry(1, 1, 0.5, 4, 1), new T.MeshStandardMaterial({ color: c, roughness: 0.7, transparent: true, opacity: 0.95 }));
+        m.rotation.y = Math.PI / 4; g.add(m);
+        const lb = textSprite(e, "#ffffff", 0.5); g.add(lb);
+        g.userData = { m, lb, i };
+        return g;
+      });
+      /* Энергия «учқунлари»: пастдан юқорига кўтарилади, ҳар поғонада кўпи иссиқлик бўлиб учиб кетади */
+      const sparkM = new T.MeshBasicMaterial({ color: 0xfde047 }), heatM = new T.MeshBasicMaterial({ color: 0xf87171, transparent: true, opacity: 0.7 });
+      const sparks = Array.from({ length: 70 }, () => { const m = new T.Mesh(new T.SphereGeometry(0.045, 8, 6), sparkM); m.userData = { lv: 0, y: 0, a: Math.random() * 6.28, r: Math.random() * 0.6, heat: false, out: 0 }; v.scene.add(m); return m; });
+      const layout = () => {
+        let y = 0;
+        levels.forEach((g, i) => {
+          const on = i < S.lv, e = S.E * Math.pow(S.eff / 100, i), w = on ? clamp(Math.pow(e / S.E, 0.3) * 2.4, 0.18, 2.4) : 0.001;
+          g.visible = on;
+          g.userData.m.scale.set(w, 1, w); g.position.y = y + 0.25; g.userData.w = w; g.userData.y = y + 0.25;
+          g.userData.lb.position.set(0, 0.55, 0);
+          y += 0.55;
+        });
+      };
+      v.updaters.push((dt) => {
+        sparks.forEach((s) => {
+          const u = s.userData;
+          if (u.heat) { u.out += dt; s.position.x += Math.cos(u.a) * dt * 1.4; s.position.z += Math.sin(u.a) * dt * 1.4; s.position.y += dt * 0.4; if (u.out > 1.2) { u.heat = false; u.lv = 0; u.y = 0; s.material = sparkM; } return; }
+          u.y += dt * 0.5;
+          const lvNow = Math.floor(u.y / 0.55);
+          if (lvNow > u.lv) { u.lv = lvNow; if (lvNow >= S.lv || Math.random() > S.eff / 100 * 2.2) { u.heat = true; u.out = 0; s.material = heatM; } }
+          const g = levels[Math.min(u.lv, levels.length - 1)], w = (g.userData.w || 1) * 0.5;
+          s.position.set(Math.cos(u.a) * u.r * w, u.y + 0.1, Math.sin(u.a) * u.r * w);
+        });
+      });
+      const draw = () => { layout(); ui.render(); };
+      ui.html = () => {
+        const uni = stage() === "uni";
+        const rows = TROPH.slice(0, S.lv).map(([e, n, d], i) => `<tr><td>${e}</td><td>${H(n)}<br><small class="muted">${H(d)}</small></td><td>${fmt(S.E * Math.pow(S.eff / 100, i), i > 1 ? 1 : 0)} kJ</td></tr>`).join("");
+        if (!uni) {
+          const done = S.chain.length === KID_CHAIN.length;
+          const left = KID_CHAIN.map((x, i) => [x, i]).filter(([, i]) => !S.chain.includes(i)).sort((a, b) => ((a[1] * 7 + 3) % 5) - ((b[1] * 7 + 3) % 5));
+          return `<p class="small">${H({ uz: "Озиқ занжирини тузинг: ким кимни ейди? Аввал ўсимликдан бошланг.", ru: "Соберите пищевую цепь: кто кого ест? Начните с растения.", en: "Build the food chain: who eats whom? Start with the plant." })}</p>
+            <div class="l3-chain" aria-live="polite">${S.chain.map((i) => `<span>${KID_CHAIN[i][0]} ${H(KID_CHAIN[i][1])}</span>`).join("<b>→</b>") || "…"}</div>
+            <div class="lab-opts">${left.map(([[e, n], i]) => `<button type="button" class="sg-opt" data-pick="${i}"><span class="e" aria-hidden="true">${e}</span>${H(n)}</button>`).join("")}</div>
+            ${S.drop ? `<p class="small" style="color:#b45309">🤔 ${H({ uz: "Йўқ, бу ҳайвон аввалгисини емайди. Яна уриниб кўринг!", ru: "Нет, это животное не ест предыдущее. Попробуйте ещё!", en: "No, this one does not eat the previous one. Try again!" })}</p>` : ""}
+            <div class="l3-big"><span>${done ? "🏆" : "🔺"}</span><b>${S.chain.length} / ${KID_CHAIN.length}</b></div>
+            <p class="lab-out">${H({ uz: "Пирамидада ҳар бир қаватга пастдагининг тахминан ўндан бир қисми энергия етиб боради. Шунинг учун ўт кўп, бургут эса кам!", ru: "В пирамиде каждому этажу достаётся примерно десятая часть энергии нижнего. Поэтому травы много, а орлов мало!", en: "Each floor of the pyramid gets only about one tenth of the energy of the floor below. That's why there is lots of grass and few eagles!" })}</p>
+            <p class="l3-mission" data-star>${H(TX.mission)}: ${H({ uz: "5 та жонзотдан тўғри озиқ занжирини тузинг.", ru: "Соберите правильную пищевую цепь из 5 живых существ.", en: "Build the right food chain from 5 living things." })}</p>`;
+        }
+        return `<label>${H({ uz: "Продуцентлар энергияси", ru: "Энергия продуцентов", en: "Producer energy" })}: <b>${S.E} kJ</b><input type="range" data-k="E" min="1000" max="100000" step="1000" value="${S.E}"></label>
+          <label>${H({ uz: "Экологик самарадорлик (поғоналар орасида)", ru: "Экологическая эффективность (между уровнями)", en: "Ecological efficiency (between levels)" })}: <b>${S.eff}%</b><input type="range" data-k="eff" min="5" max="20" step="1" value="${S.eff}"></label>
+          <label>${H({ uz: "Трофик поғоналар сони", ru: "Число трофических уровней", en: "Trophic levels" })}: <b>${S.lv}</b><input type="range" data-k="lv" min="2" max="4" step="1" value="${S.lv}"></label>
+          <div class="ly-rtable"><table class="l3-tbl">${rows}</table></div>
+          <div class="lab-formula">E<sub>n</sub> = E₁ · (η/100)<sup>n−1</sup> → E<sub>${S.lv}</sub> = <b>${fmt(S.E * Math.pow(S.eff / 100, S.lv - 1), 2)}</b> kJ<br>${H({ uz: "Иссиқлик бўлиб йўқолган", ru: "Потеряно в виде тепла", en: "Lost as heat" })}: <b>${fmt(100 - Math.pow(S.eff / 100, S.lv - 1) * 100, 2)}%</b></div>
+          <p class="small muted">${H({ uz: "Дарслик (2.1) экотизимнинг трофик тузилишини икки ярусга ажратади: юқори — автотроф «яшил камар», қуйи — гетеротроф «жигарранг камар»; озиқ пирамидасининг қуйи поғонаси камайса, юқоридагилар ҳам камаяди. Линдеман (1942) поғоналар орасида ўртача 10 % энергия ўтишини кўрсатган (табиатда 5–20 %).", ru: "Учебник (2.1) делит трофическую структуру экосистемы на два яруса: верхний — автотрофный «зелёный пояс», нижний — гетеротрофный «коричневый пояс»; если нижний уровень пищевой пирамиды сокращается, сокращаются и верхние. Линдеман (1942) показал, что между уровнями переходит в среднем 10 % энергии (в природе 5–20 %).", en: "The textbook (2.1) divides an ecosystem's trophic structure into two tiers: the upper autotrophic 'green belt' and the lower heterotrophic 'brown belt'; when the base of the food pyramid shrinks, the upper levels shrink too. Lindeman (1942) showed that on average about 10% of energy passes between levels (5–20% in nature)." })}</p>`;
+      };
+      ui.bind = (el) => {
+        el.querySelectorAll("[data-pick]").forEach((b) => b.addEventListener("click", () => {
+          const i = +b.dataset.pick;
+          if (i === S.chain.length) { S.chain.push(i); S.drop = 0; S.lv = Math.max(2, Math.min(4, S.chain.length)); layout(); }
+          else S.drop++;
+          ui.render();
+          if (S.chain.length === KID_CHAIN.length) star("piramida", ui.el.querySelector("[data-star]"));
+        }));
+        el.querySelectorAll("input[data-k]").forEach((r) => {
+          r.addEventListener("input", () => { S[r.dataset.k] = +r.value; layout(); const b = r.parentElement.querySelector("b"); if (b) b.textContent = r.value + { E: " kJ", eff: "%", lv: "" }[r.dataset.k]; });
+          r.addEventListener("change", () => draw());
+        });
+      };
+      ui.task = () => ({ q: { uz: "Ўтлоқ продуцентлари 10 000 кЖ энергия тўплади. Поғоналар орасида 10 % ўтса, III тартиб консумент (бургут) га неча кЖ етиб боради?", ru: "Продуценты луга накопили 10 000 кДж энергии. Если между уровнями переходит 10 %, сколько кДж достанется консументу III порядка (орлу)?", en: "Meadow producers stored 10,000 kJ. If 10% passes between levels, how many kJ reach a tertiary consumer (eagle)?" }, a: 10, tol: 0.01, unit: "kJ", hint: { uz: "10 000 · 0,1 · 0,1 · 0,1", ru: "10 000 · 0,1 · 0,1 · 0,1", en: "10,000 · 0.1 · 0.1 · 0.1" }, dec: 0 });
+      draw();
+    }
+  };
+
+  const EXPS = [GH, MOLS, TANK, SOLAR, TREE, FLOT, LINE, PLUME, RIVER, PYR];
 
   /* ---------- Бўлимни чизиш ---------- */
   let cur = EXPS[0].id, view = null, built = false, glFail = false;
@@ -1102,9 +1531,13 @@
     ROOT.innerHTML = `<span class="pill">${H(TX.pill)}</span>
       <h2 class="section-title">${H(TX.title)}</h2>
       <p class="muted">${H(uni ? TX.leadU : TX.leadK)}</p>
+      <details class="l3-guide" ${guideOpen() ? "open" : ""}><summary><b>${H(HOWT.guide)}</b></summary>
+        <ol class="l3-steps">${GUIDE.map(([ic, t, d]) => `<li><i class="fa-solid ${ic}" aria-hidden="true"></i><b>${H(t)}</b><small>${H(d)}</small></li>`).join("")}</ol>
+      </details>
       <div class="filters lab-tabs" role="tablist">${EXPS.map((x) => `<button type="button" role="tab" aria-selected="${x.id === cur}" class="chip ${x.id === cur ? "active" : ""}" data-x="${x.id}">${x.icon} ${H(x.name)}</button>`).join("")}</div>
       <div class="lab-stage l3-stage">
         <p class="lab-q">🤔 ${H(EXPS.find((x) => x.id === cur).q)}</p>
+        ${howHtml(uni)}
         <div class="l3-row">
           <div class="l3-viewbox">
             <div class="l3-view" data-view><p class="l3-load">${H(TX.load)}</p></div>
@@ -1126,8 +1559,20 @@
         <div class="fin-grid">${METHODS.map(([i, t, d]) => `<div class="fin-item"><span aria-hidden="true">${i}</span><div><b>${H(t)}</b><small>${H(d)}</small></div></div>`).join("")}</div>
       </details>`;
     ROOT.querySelectorAll("[data-x]").forEach((b) => b.addEventListener("click", () => { if (b.dataset.x !== cur) { cur = b.dataset.x; mount(); } }));
+    const gd = ROOT.querySelector(".l3-guide");
+    if (gd) gd.addEventListener("toggle", () => { try { localStorage.setItem(GKEY, gd.open ? "1" : "0"); } catch (e) { /* ignore */ } });
   }
 
+  /* Йўриқнома: биринчи марта очиқ, кейин фойдаланувчи танлови эсда қолади */
+  const GKEY = "ekotalim:l3guide";
+  const guideOpen = () => { try { return localStorage.getItem(GKEY) !== "0"; } catch (e) { return true; } };
+  function howHtml(uni) {
+    const h = HOW[cur]; if (!h) return "";
+    return `<details class="l3-how" open><summary><b>${H(HOWT.title)}</b></summary>
+      <ol>${(uni ? h.u : h.k).map((x) => `<li>${H(x)}</li>`).join("")}</ol>
+      ${uni ? "" : `<p class="small muted">${H(HOWT.teach)}</p>`}
+    </details>`;
+  }
   let mountId = 0;
   async function mount() {
     const my = ++mountId;
@@ -1190,7 +1635,13 @@
   window.addEventListener("eko:lang", () => { if (built) mount(); else shell(); });
   window.addEventListener("eko:stage", () => { if (built) mount(); else shell(); });
   /* Синов ва ўқитувчи намойиши учун: жорий саҳна */
-  window.EkoLab3D = { get view() { return view; }, open: (id) => { if (EXPS.some((x) => x.id === id)) { cur = id; if (built) mount(); } } };
+  window.EkoLab3D = {
+    get view() { return view; },
+    open: (id) => { if (EXPS.some((x) => x.id === id)) { cur = id; if (built) mount(); else shell(); } },
+    ids: EXPS.map((x) => x.id),
+    /* Бошқа 3D бўлимлар (болалар учун «3D Эко-дунё») шу кўрувчидан фойдаланади */
+    lib: { loadThree: () => loadThree().then(() => THREE), View: (...a) => new View(...a), textSprite: (...a) => textSprite(...a), earthTexture: () => earthTexture() }
+  };
   shell();
   onShow();
 })();

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>ЭкоТаълим · Бошқарув маркази</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23047857'/%3E%3Cpath d='M18 40c0-14 12-22 28-22-1 16-9 28-23 28-2 0-4-1-5-2' fill='none' stroke='white' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="app.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <!-- Кириш ойнаси -->
+  <main class="login" id="loginView" hidden>
+    <form class="login-card" id="loginForm" autocomplete="off">
+      <div class="brand"><span class="logo" aria-hidden="true">🛡️</span><div><b>Бошқарув маркази</b><small>ЭкоТаълим · фақат эгаси учун</small></div></div>
+      <label for="pw">Парол</label>
+      <input id="pw" name="password" type="password" autocomplete="current-password" required>
+      <div id="codeRow" hidden>
+        <label for="code">Тасдиқлаш коди (Google Authenticator)</label>
+        <input id="code" name="code" inputmode="numeric" pattern="[0-9 ]*" maxlength="7" autocomplete="one-time-code" placeholder="123 456">
+      </div>
+      <button class="btn primary" type="submit">Кириш</button>
+      <p class="err" id="loginErr" role="alert"></p>
+      <p class="hint">Ҳар бир кириш уриниши (муваффақиятли ва хато) журналга ёзилади.</p>
+    </form>
+  </main>
+
+  <!-- Асосий ойна -->
+  <div class="shell" id="appView" hidden>
+    <aside class="side">
+      <div class="brand"><span class="logo" aria-hidden="true">🛡️</span><div><b>Бошқарув маркази</b><small>ЭкоТаълим</small></div></div>
+      <nav class="tabs" id="tabs">
+        <button data-tab="dash" class="on">📊 <span>Умумий ҳолат</span></button>
+        <button data-tab="online">🟢 <span>Ҳозир онлайн</span> <i class="badge" id="bOnline">0</i></button>
+        <button data-tab="people">👥 <span>Фойдаланувчилар</span></button>
+        <button data-tab="journal">🕓 <span>Кирди-чиқди</span></button>
+        <button data-tab="stats">📈 <span>Статистик таҳлил</span></button>
+        <button data-tab="blocks">⛔ <span>Блок ва хавфсизлик</span> <i class="badge warn" id="bSusp" hidden>0</i></button>
+        <button data-tab="reports">🗺️ <span>Эко-харита</span> <i class="badge" id="bPending" hidden>0</i></button>
+      </nav>
+      <div class="side-foot">
+        <span class="muted small" id="updated"></span>
+        <button class="btn ghost sm" id="logout">Чиқиш</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="top">
+        <h1 id="title">Умумий ҳолат</h1>
+        <div class="top-tools">
+          <label class="small muted">Давр
+            <select id="range">
+              <option value="1">Бугун</option>
+              <option value="7">7 кун</option>
+              <option value="30" selected>30 кун</option>
+              <option value="90">90 кун</option>
+              <option value="180">180 кун</option>
+            </select>
+          </label>
+          <button class="btn ghost sm" id="refresh" title="Янгилаш">⟳</button>
+        </div>
+      </header>
+
+      <section data-view="dash">
+        <div class="kpis" id="kpis"></div>
+        <div class="grid2">
+          <div class="card"><h2>Кунлик ташрифчилар</h2><div id="chDaily" class="chart"></div></div>
+          <div class="card"><h2>Нима мақсадда фойдаланишмоқда</h2><div id="chPurpose"></div></div>
+        </div>
+        <div class="grid2">
+          <div class="card"><h2>Энг кўп вақт ўтказилган бўлимлар</h2><div id="chSections"></div></div>
+          <div class="card"><h2>Босқич ва ёш гуруҳи</h2><div id="chStages"></div></div>
+        </div>
+      </section>
+
+      <section data-view="online" hidden>
+        <p class="muted" id="onlineNote"></p>
+        <div class="card"><h2>Ҳисоби бор фойдаланувчилар</h2><div class="table" id="tOnlineUsers"></div></div>
+        <div class="card"><h2>Барча фаол қурилмалар (ҳозир қайси бўлимда)</h2><div class="table" id="tOnlineGuests"></div></div>
+      </section>
+
+      <section data-view="people" hidden>
+        <div class="toolbar">
+          <input type="search" id="pSearch" placeholder="Исм, почта, қурилма коди ёки IP…">
+          <select id="pKind"><option value="">Ҳаммаси</option><option value="acc">Ҳисоби борлар</option><option value="guest">Меҳмонлар (қурилма)</option><option value="blocked">Блокланганлар</option></select>
+          <a class="btn ghost sm" id="expUsers" href="#">⬇ CSV</a>
+        </div>
+        <div class="card"><h2>Рўйхатдан ўтган ҳисоблар</h2><div class="table" id="tUsers"></div></div>
+        <div class="card"><h2>Танланган даврдаги барча ташрифчилар</h2><p class="small muted">Меҳмонлар исми сақланмайди (болалар махфийлиги учун) — улар қурилма коди билан кўрсатилади.</p><div class="table" id="tPeople"></div></div>
+      </section>
+
+      <section data-view="journal" hidden>
+        <div class="toolbar">
+          <input type="search" id="jSearch" placeholder="Исм, почта ёки IP…">
+          <select id="jType">
+            <option value="">Барча ҳодисалар</option>
+            <option value="in">Кирди (кириш, рўйхатдан ўтиш, қайтиш)</option>
+            <option value="out">Чиқди (чиқиш, вақт тугади)</option>
+            <option value="bad">Хато ва блок</option>
+          </select>
+          <a class="btn ghost sm" id="expEvents" href="#">⬇ Ҳисоблар журнали CSV</a>
+          <a class="btn ghost sm" id="expVisits" href="#">⬇ Ташрифлар CSV</a>
+        </div>
+        <div class="card"><h2>Ҳисоблар: кирди-чиқди</h2><div class="table" id="tEvents"></div></div>
+        <div class="card"><h2>Ташрифлар: ким қачон кирди, қанча қолди ва қаерларни кўрди</h2><div class="table" id="tVisits"></div></div>
+      </section>
+
+      <section data-view="stats" hidden>
+        <div class="kpis" id="kpis2"></div>
+        <div class="card"><h2>Кунлар бўйича: ташрифчилар, янгилар, киришлар</h2><div id="chDaily2" class="chart tall"></div></div>
+        <div class="grid2">
+          <div class="card"><h2>Ҳафта куни × соат (қачон кўп киришади)</h2><div id="chHeat"></div></div>
+          <div class="card"><h2>Ташриф давомийлиги</h2><div id="chDur"></div></div>
+        </div>
+        <div class="grid2">
+          <div class="card"><h2>Бўлимлар: кўришлар ва вақт</h2><div class="table" id="tSections"></div></div>
+          <div class="card"><h2>Энг кўп очилган дарслар</h2><div class="table" id="tLessons"></div></div>
+        </div>
+        <div class="grid3">
+          <div class="card"><h2>Тил</h2><div id="chLang"></div></div>
+          <div class="card"><h2>Операцион тизим</h2><div id="chOs"></div></div>
+          <div class="card"><h2>Браузер</h2><div id="chBr"></div></div>
+        </div>
+        <div class="card"><h2>Хулоса</h2><ul class="insights" id="insights"></ul></div>
+      </section>
+
+      <section data-view="blocks" hidden>
+        <div class="card">
+          <h2>IP манзилни қўлда блоклаш</h2>
+          <form class="toolbar" id="ipForm">
+            <input id="ipVal" placeholder="Масалан 203.0.113.7" required>
+            <input id="ipReason" placeholder="Сабаб (ихтиёрий)">
+            <button class="btn danger sm" type="submit">⛔ Блоклаш</button>
+          </form>
+          <p class="small muted" id="yourIp"></p>
+        </div>
+        <div class="card"><h2>Блокланганлар</h2><div class="table" id="tBlocks"></div></div>
+        <div class="card"><h2>Шубҳали фаоллик (сўнгги 24 соат)</h2><p class="small muted">Кўп марта хато парол киритган, кўп ҳисоб очган ёки жуда кўп сўров юборган IP манзиллар.</p><div class="table" id="tSusp"></div></div>
+        <div class="card"><h2>Бошқарув марказига кириш журнали</h2><div class="table" id="tAdminLog"></div></div>
+        <div class="card"><h2>Ҳимоя созламалари</h2><ul class="checks" id="secConfig"></ul></div>
+      </section>
+
+      <section data-view="reports" hidden>
+        <div class="toolbar">
+          <select id="repStatus"><option value="pending">Текширишни кутаётганлар</option><option value="approved">Тасдиқланганлар</option><option value="rejected">Рад этилганлар</option><option value="">Ҳаммаси</option></select>
+        </div>
+        <div class="card"><div class="table" id="tReports"></div></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Бир одам тафсилоти -->
+  <dialog id="person">
+    <div class="dlg-head"><h2 id="pTitle">Тафсилот</h2><button class="btn ghost sm" id="pClose" aria-label="Ёпиш">✕</button></div>
+    <div id="pBody"></div>
+  </dialog>
+
+  <!-- Тасдиқлаш -->
+  <dialog id="confirm">
+    <form method="dialog" class="confirm">
+      <h2 id="cTitle"></h2>
+      <p id="cText"></p>
+      <label id="cReasonRow">Сабаб (журналга ёзилади)<input id="cReason" maxlength="200"></label>
+      <div class="row"><button class="btn ghost" value="no">Бекор қилиш</button><button class="btn danger" value="yes" id="cOk">Тасдиқлаш</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>
