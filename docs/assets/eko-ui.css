@@ -1,0 +1,102 @@
+/* ЭкоТаълим дизайн тизими (2.0): шрифт, жонли фон ва умумий қоидалар.
+   Барча саҳифалар (платформа, Орол, админ, махфийлик) шу файлни улайди.
+   Ташқи CDN йўқ: шрифт vendor/fonts ичида, интернетсиз (APK) ҳам ишлайди. */
+
+/* Onest — кирилл ва лотин учун замонавий шрифт (SIL OFL 1.1, vendor/fonts/OFL.txt) */
+@font-face {
+  font-family: "Onest"; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url("fonts/onest-cyrillic-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: "Onest"; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url("fonts/onest-cyrillic-wght-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Onest"; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url("fonts/onest-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Onest"; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url("fonts/onest-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --eko-font: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Фон: тонг ёғдуси — ялпиз, осмон ва қуёш нурлари */
+  --eko-base: #eef6f1;
+  --eko-glow-1: rgba(52, 211, 153, .34);
+  --eko-glow-2: rgba(56, 189, 248, .30);
+  --eko-glow-3: rgba(250, 204, 21, .16);
+  --eko-grid: rgba(6, 78, 59, .07);
+  --eko-ring: #0284c7;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --eko-base: #06110d;
+    --eko-glow-1: rgba(16, 185, 129, .22);
+    --eko-glow-2: rgba(14, 165, 233, .18);
+    --eko-glow-3: rgba(45, 212, 191, .10);
+    --eko-grid: rgba(167, 243, 208, .05);
+    --eko-ring: #7dd3fc;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --eko-base: #06110d;
+  --eko-glow-1: rgba(16, 185, 129, .22);
+  --eko-glow-2: rgba(14, 165, 233, .18);
+  --eko-glow-3: rgba(45, 212, 191, .10);
+  --eko-grid: rgba(167, 243, 208, .05);
+  --eko-ring: #7dd3fc;
+  color-scheme: dark;
+}
+
+/* Жонли фон: html.eko-aurora — барча саҳифаларда бир хил */
+html.eko-aurora { background: var(--eko-base); }
+html.eko-aurora body { background: transparent; }
+html.eko-aurora body::before,
+html.eko-aurora body::after { content: ""; position: fixed; pointer-events: none; z-index: -1; }
+html.eko-aurora body::before {
+  inset: -15vmax;
+  background:
+    radial-gradient(38vmax 34vmax at 18% 14%, var(--eko-glow-1), transparent 70%),
+    radial-gradient(42vmax 36vmax at 88% 10%, var(--eko-glow-2), transparent 70%),
+    radial-gradient(46vmax 40vmax at 72% 92%, var(--eko-glow-3), transparent 70%),
+    radial-gradient(36vmax 30vmax at 6% 86%, var(--eko-glow-2), transparent 72%);
+  will-change: transform;
+}
+html.eko-aurora body::after {
+  inset: 0;
+  background: radial-gradient(circle at 1px 1px, var(--eko-grid) 1.2px, transparent 0) 0 0 / 26px 26px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, transparent 70vh);
+  mask-image: linear-gradient(to bottom, #000 0, transparent 70vh);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.eko-aurora body::before { animation: eko-drift 40s ease-in-out infinite alternate; }
+}
+@keyframes eko-drift {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(3vmax, -2vmax, 0) rotate(6deg); }
+  100% { transform: translate3d(-2vmax, 2vmax, 0) rotate(-4deg); }
+}
+@keyframes eko-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* Умумий стандартлар */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid var(--eko-ring); outline-offset: 2px; }
+::selection { background: rgba(52, 211, 153, .35); }
+img, svg, video, canvas { max-width: 100%; }
+.eko-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Ҳаракатни камайтириш сўралса — анимация ва силлиқ айланиш ўчади */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+}

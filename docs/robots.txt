@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://egamberdiyevshukurjon9-dotcom.github.io/--/sitemap.xml
