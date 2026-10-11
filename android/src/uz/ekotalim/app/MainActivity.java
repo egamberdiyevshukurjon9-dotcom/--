@@ -41,7 +41,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 /**
- * ЭкоТаълим — Android илова.
+ * Экомун — Android илова.
  * Платформа (index.html ва унинг файллари) илова ичида туради ва интернетсиз ишлайди.
  * Файллар https://appassets.androidplatform.net/ манзилидан берилади (бу манзил интернетда
  * йўқ, фақат илова ичида), шунинг учун localStorage, fetch ва харита одатдагидек ишлайди.
@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
         s.setAllowContentAccess(true);
         s.setMediaPlaybackRequiresUserGesture(false);
         s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        s.setUserAgentString(s.getUserAgentString() + " EkoTalimApp/" + BuildConfig.VERSION);
+        s.setUserAgentString(s.getUserAgentString() + " EkomunApp/" + BuildConfig.VERSION);
 
         web.addJavascriptInterface(new Bridge(), "EkoAndroid");
         web.setWebViewClient(new Client());
@@ -211,7 +211,7 @@ public class MainActivity extends Activity {
                     boolean provider = Build.VERSION.SDK_INT >= 24;
                     File dir = provider ? new File(getCacheDir(), SharedFiles.DIR) : getExternalFilesDir(null);
                     if (dir == null) throw new IOException("no storage");
-                    File out = new File(dir, "EkoTalim-update.apk");
+                    File out = new File(dir, "Ekomun-update.apk");
                     updater.downloadApk(apk, out, new Updater.Progress() {
                         @Override
                         public void on(int percent) {
@@ -514,7 +514,7 @@ public class MainActivity extends Activity {
                     Intent i = new Intent(Intent.ACTION_CREATE_DOCUMENT);
                     i.addCategory(Intent.CATEGORY_OPENABLE);
                     i.setType(mime == null || mime.isEmpty() ? "application/octet-stream" : mime);
-                    i.putExtra(Intent.EXTRA_TITLE, name == null || name.isEmpty() ? "EkoTalim" : name);
+                    i.putExtra(Intent.EXTRA_TITLE, name == null || name.isEmpty() ? "Ekomun" : name);
                     try {
                         startActivityForResult(i, REQ_SAVE);
                     } catch (ActivityNotFoundException e) {

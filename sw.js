@@ -1,9 +1,9 @@
-/* ЭкоТаълим — service worker.
+/* Экомун — service worker.
    Иловани интернетсиз ҳам очиш учун асосий файлларни сақлайди.
    /api/, /admin ва «Cache-Control: no-store» жавоблар (бошқарув маркази) ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekotalim-v15";
+const CACHE = "ekomun-v16";
 const cacheable = (res) => res.ok && !/no-store/i.test(res.headers.get("Cache-Control") || "");
 const SHELL = [
   "/",

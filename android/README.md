@@ -1,4 +1,4 @@
-# ЭкоТаълим — Android илова (APK)
+# Экомун — Android илова (APK)
 
 Платформа (`index.html`, `privacy.html`, `icons/`, `vendor/`) илова ичига жойланади ва
 интернетсиз ишлайди. Ҳисоб, Эко-кўз, Эко-харита хабарлари ва Мактаблар сервер талаб қилади:
@@ -22,7 +22,7 @@
   `main` га push бўлганда `.github/workflows/app-update.yml` `app/update.json` ни ўзи янгилайди.
 - **Java коди ўзгарса**: `version.properties` даги `VERSION_CODE` ни оширинг, APK'ни йиғиб
   `app/` га қўйинг (эскисини ўчиринг), `app/notes.txt` га янгиликларни ёзинг ва
-  `node tools/build-update.js` ни ишга туширинг. Илова «ЭкоТаълим X чиқди → Янгилаш» ойнасини
+  `node tools/build-update.js` ни ишга туширинг. Илова «Экомун X чиқди → Янгилаш» ойнасини
   кўрсатади, APK'ни юклаб, ўрнатишни очади. Play'дан ташқари ўрнатилган иловани Android жимгина
   янгилашга рухсат бермайди: ўрнатишни фойдаланувчи бир марта тасдиқлайди.
 
@@ -31,8 +31,8 @@
 ```sh
 sudo apt-get install -y openjdk-17-jdk android-sdk-platform-23 aapt zipalign apksigner dalvik-exchange
 KEYSTORE=/йўл/ekotalim-release.jks KS_PASS=парол ./android/build.sh   # версия: version.properties
-cp android/build/EkoTalim-1.2.apk app/ && node tools/build-update.js
+cp android/build/Ekomun-1.9.apk app/ && node tools/build-update.js
 ```
 
-Тайёр файл: `android/build/EkoTalim-<версия>.apk`. Янгилаш ўрнатилган илова устидан
+Тайёр файл: `android/build/Ekomun-<версия>.apk`. Янгилаш ўрнатилган илова устидан
 тушиши учун ҳар доим бир хил калит (keystore) билан имзоланг.

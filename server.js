@@ -1,4 +1,4 @@
-/* ЭкоТаълим — сервер.
+/* Экомун — сервер.
    Платформани (index.html) ва алоҳида бошқарув марказини (admin/) беради, фойдаланувчилар
    рўйхатдан ўтиши, кириши ва чиқишини қайд этади.
    Ташқи кутубхоналарсиз ишлайди: `node server.js`.
@@ -19,7 +19,7 @@
      REPORTS_DAILY_LIMIT   — бир фойдаланувчи кунига нечта харита хабари юбора олади (асл қиймат 5)
      TRUST_PROXY           — 1 бўлса, мижоз IP си X-Forwarded-For дан олинади (Render каби прокси ортида)
      ADMIN_PATH            — админ сайтнинг махфий манзили (асл қиймат /admin), масалан /boshqaruv-7k2q
-     ADMIN_HOST            — админ сайт учун алоҳида домен (масалан admin.ekotalim.uz). Берилса, админ сайт
+     ADMIN_HOST            — админ сайт учун алоҳида домен (масалан admin.ekomun.uz). Берилса, админ сайт
                              фақат шу доменда очилади, асосий сайтда эса умуман кўринмайди
      ADMIN_TOTP_SECRET     — икки босқичли ҳимоя: Google Authenticator калити (tools/admin-totp.js яратади)
      ADMIN_ALLOW_IPS       — админ сайт фақат шу IP манзиллардан очилсин (вергул билан; бўш — ҳамма жойдан)
@@ -479,7 +479,7 @@ function aiCount(userId) { aiRoll(); aiUsage.total++; aiUsage.users.set(userId, 
 function aiRefund(userId) { aiUsage.total = Math.max(0, aiUsage.total - 1); aiUsage.users.set(userId, Math.max(0, (aiUsage.users.get(userId) || 1) - 1)); }
 function aiLeft(userId) { aiRoll(); return Math.max(0, AI_USER_DAILY - (aiUsage.users.get(userId) || 0)); }
 
-const AI_SYSTEM = `Сен «ЭкоТаълим» иловасидаги «Эко-кўз» ёрдамчисисан. Фойдаланувчи Ўзбекистонда телефонда олинган расмни юборади. Вазифанг — расмни ФАҚАТ экологик нуқтаи назардан тушунтириш.
+const AI_SYSTEM = `Сен «Экомун» иловасидаги «Эко-кўз» ёрдамчисисан. Фойдаланувчи Ўзбекистонда телефонда олинган расмни юборади. Вазифанг — расмни ФАҚАТ экологик нуқтаи назардан тушунтириш.
 
 Қоидалар:
 - Фақат ўзбек тилида, кирилл ёзувида, оддий ва тушунарли ёз (ўсмир ҳам тушунсин). Қисқа гаплар.
@@ -1207,15 +1207,15 @@ async function api(req, res, pathname) {
     const type = new URL(req.url, "http://x").searchParams.get("type");
     let body, name;
     if (type === "visits") {
-      name = "ekotalim-tashriflar.csv";
+      name = "ekomun-tashriflar.csv";
       body = csv([["Бошланди", "Охирги фаоллик", "Дақиқа", "Қурилма коди", "Фойдаланувчи", "Почта", "Босқич", "Ёш гуруҳи", "Тил", "Қурилма", "IP", "Бўлимлар (сония)", "Йўл", "Дарслар"],
         ...db.visits.slice().reverse().map((v) => { const x = visitView(v); return [iso(x.start), iso(x.last), Math.round(x.secs / 60), x.vid, x.user ? x.user.name : "", x.user ? x.user.email : "", x.stage, x.ag, x.lang, x.device, x.ip,
           Object.entries(x.sec || {}).map(([k, s]) => `${k}:${s}`).join(" "), (x.path || []).join(" > "), (x.lessons || []).join(" ")]; })]);
     } else if (type === "events") {
-      name = "ekotalim-kirish-chiqish.csv";
+      name = "ekomun-kirish-chiqish.csv";
       body = csv([["Вақт", "Ҳодиса", "Исм", "Почта", "Қурилма", "IP"], ...db.events.slice().reverse().map((e) => [iso(e.at), e.type, e.name, e.email, e.device, e.ip])]);
     } else if (type === "users") {
-      name = "ekotalim-foydalanuvchilar.csv";
+      name = "ekomun-foydalanuvchilar.csv";
       body = csv([["Исм", "Почта", "Туғилган йил", "18+", "Рўйхатдан ўтган", "Охирги кириш", "Киришлар", "Блокланган"],
         ...db.users.map((u) => [u.name, u.email, u.by || "", u.adult ? "ҳа" : "йўқ", iso(u.createdAt), iso(u.lastLogin), u.loginCount || 0, u.blocked ? "ҳа: " + (u.blocked.reason || "") : ""])]);
     } else return send(res, 400, { error: "Нотўғри тур" });
@@ -1360,5 +1360,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`🌿 ЭкоТаълим: http://localhost:${PORT}  ·  Бошқарув маркази: ${ADMIN_HOST ? "https://" + ADMIN_HOST + "/" : `http://localhost:${PORT}${ADMIN_PATH}/`}`);
+  console.log(`🌿 Ekomun: http://localhost:${PORT}  ·  Бошқарув маркази: ${ADMIN_HOST ? "https://" + ADMIN_HOST + "/" : `http://localhost:${PORT}${ADMIN_PATH}/`}`);
 });

@@ -1,4 +1,4 @@
-/* ЭкоТаълим — 🎓 «Лойиҳалар» бўлими (университет босқичи).
+/* Экомун — 🎓 «Лойиҳалар» бўлими (университет босқичи).
    Талаба хорижий университет методикаларидан бирини танлаб, экологик лойиҳани
    босқичма-босқич бажаради: босқич топшириқлари, канвас, Kanban тахтаси,
    рубрика бўйича ўзини баҳолаш ва ҳисобот (HTML) юклаб олиш.
@@ -603,7 +603,7 @@
     ];
     return `<!doctype html><html lang="${EL() ? EL().htmlLang : "uz"}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(p.title)}</title>
 <style>*{box-sizing:border-box}body{margin:0;font:20px/1.5 system-ui,sans-serif;background:#0b1f17;color:#0b1f17}section{width:100vw;height:100vh;padding:7vh 8vw;background:linear-gradient(135deg,#ecfdf5,#fff 60%);display:none;flex-direction:column;justify-content:center;position:relative}section.on{display:flex}h1{font-size:3.2em;margin:0;color:#047857;line-height:1.1}h2{font-size:2em;margin:0 0 .6em;color:#047857}.sub{color:#4a5f56;font-size:1.1em}.big{font-size:1.35em;max-width:46em}table{border-collapse:collapse;font-size:1.05em;max-width:52em}th,td{padding:.45em .9em;border-bottom:1px solid #d1fae5;text-align:left}td{text-align:right;font-weight:700}tr.tot th,tr.tot td{color:#047857;font-size:1.15em}.road{display:flex;flex-wrap:wrap;gap:.5em;list-style:none;padding:0}.road li{padding:.4em .9em;border-radius:999px;border:2px solid #a7f3d0;color:#4a5f56}.road li.done{background:#d1fae5;color:#065f46}.road li.now{background:#047857;color:#fff;border-color:#047857}.sdg span{display:inline-block;margin:.25em;padding:.3em .8em;border-radius:999px;background:#d1fae5;color:#065f46;font-size:.85em}.n{position:absolute;right:3vw;bottom:3vh;color:#4a5f56;font-size:.8em}.brand{position:absolute;left:8vw;bottom:3vh;color:#047857;font-weight:700;font-size:.8em}@media print{body{background:#fff}section{display:flex!important;page-break-after:always;height:100vh}}</style>
-${slides.map((x, i) => `<section class="${i ? "" : "on"}">${x}<span class="brand">🌿 ${H(t3("ЭкоТаълим", "ЭкоТаълим", "EkoTa'lim"))}</span><span class="n">${i + 1} / ${slides.length}</span></section>`).join("\n")}
+${slides.map((x, i) => `<section class="${i ? "" : "on"}">${x}<span class="brand">🌿 ${H("Ekomun")}</span><span class="n">${i + 1} / ${slides.length}</span></section>`).join("\n")}
 <script>let i=0;const s=document.querySelectorAll("section");const go=(d)=>{s[i].classList.remove("on");i=Math.max(0,Math.min(s.length-1,i+d));s[i].classList.add("on")};addEventListener("keydown",(e)=>{if(["ArrowRight","PageDown"," "].includes(e.key))go(1);if(["ArrowLeft","PageUp"].includes(e.key))go(-1)});addEventListener("click",(e)=>go(e.clientX>innerWidth/3?1:-1));</script></html>`;
   }
   function bindStartup(p) {
@@ -803,7 +803,7 @@ ${p.team.length ? `<p>${H(t3("Жамоа аъзолари:", "Члены ком�
 <h2>${H(KG.implH)}</h2><table>${KG_FIELDS.impl.map(row).join("")}</table>
 <h2>${H(t3("Низом талабларига мувофиқлик", "Соответствие требованиям положения", "Compliance with the regulation"))}</h2>
 <table>${KG_CHECKS.map((c, i) => `<tr><th>${k.c[i] ? "☑" : "☐"}</th><td>${H(c)}</td></tr>`).join("")}</table>
-<p class="n">ЭкоТаълим · ${iso(new Date())}</p></html>`;
+<p class="n">Ekomun · ${iso(new Date())}</p></html>`;
   }
   const appealText = () => L(t3(
     "Апелляция комиссиясига\n«Eng yaxshi kreativ g‘oya» республика танлови иштирокчиси __________ (Ф.И.Ш.), __________ (ОТМ, курс)\n\nАПЕЛЛЯЦИЯ\n\n«__________» лойиҳаси бўйича __.__.____ йилда эълон қилинган танлов натижасига рози эмасман. Сабаблари:\n1. __________\n2. __________\nДалиллар (илова): __________\n\nНизомнинг 33–35-бандларига асосан аризамни кўриб чиқишингизни ва қарор нусхасини менга беришингизни сўрайман.\n\nСана: __.__.____      Имзо: ________",
@@ -860,7 +860,7 @@ ${p.team.length ? `<p>${H(t3("Жамоа аъзолари:", "Члены ком�
       if (p.notes[i]) lines.push("   " + p.notes[i]);
     });
     if (p.tasks.length) { lines.push("\n" + L(TX.board)); p.tasks.forEach((t) => lines.push(`   ${L(TX.cols[t.c])}: ${t.t}`)); }
-    lines.push("\n— ЭкоТаълим");
+    lines.push("\n— Ekomun");
     return lines.join("\n");
   }
   function reportHtml(p) {
@@ -873,7 +873,7 @@ ${(m.canvas || []).length ? `<h2>${H(TX.canvas)}</h2><div class="cv">${m.canvas.
 <h2>${H(TX.stage)}</h2>${m.stages.map((s, i) => `<h3 class="${stageDone(p, i) ? "ok" : ""}">${i + 1}. ${H(s.t)} ${stageDone(p, i) ? "✓" : ""}</h3><ul>${s.o.map((o, j) => `<li>${p.checks[i + "-" + j] ? "☑" : "☐"} ${H(o)}</li>`).join("")}</ul>${p.notes[i] ? `<pre>${esc(p.notes[i])}</pre>` : ""}`).join("")}
 ${p.tasks.length ? `<h2>${H(TX.board)}</h2><table>${[0, 1, 2].map((c) => `<tr><th>${H(TX.cols[c])}</th><td>${p.tasks.filter((t) => t.c === c).map((t) => esc(t.t)).join("<br>") || "—"}</td></tr>`).join("")}</table>` : ""}
 <h2>${H(TX.self)} · ${sc}/20</h2><table>${RUBRIC.map(([c, lv], i) => `<tr><th>${H(c)}</th><td>${p.rubric[i] != null ? `${p.rubric[i] + 1}. ${H(LV[p.rubric[i]])} — ${H(lv[p.rubric[i]])}` : "—"}</td></tr>`).join("")}</table>
-<p class="m" style="margin-top:28px">ЭкоТаълим · ${new Date().toISOString().slice(0, 10)}</p></html>`;
+<p class="m" style="margin-top:28px">Ekomun · ${new Date().toISOString().slice(0, 10)}</p></html>`;
   }
 
   function create(title, method, idea, teamText) {
