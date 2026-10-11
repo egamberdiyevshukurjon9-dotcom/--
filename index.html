@@ -1164,6 +1164,36 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
 .lesson-ev ul { margin: 0; padding-left: 18px; }
 .lesson-ev li { margin: 6px 0; }
 .lesson-ev cite { display: block; font-style: normal; color: var(--muted); font-size: .85rem; }
+.lesson-refs ol { margin: 0; padding-left: 20px; }
+.lesson-refs li { margin: 8px 0; font-size: .92rem; }
+.lesson-refs a { white-space: nowrap; }
+.lesson-calc { margin: 16px 0; padding: 14px 16px; border-radius: 14px; border: 1px dashed color-mix(in srgb, var(--primary-2) 45%, var(--line)); }
+.lesson-calc h3 { margin: 0 0 6px; }
+.lesson-calc summary { cursor: pointer; font-weight: 600; color: var(--primary); }
+/* Хорижий адабиёт */
+.ad-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 18px 0; }
+.ad-stats div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.ad-stats b { display: block; font-size: 1.6rem; color: var(--primary); }
+.ad-stats span { color: var(--muted); font-size: .85rem; }
+.ad-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 8px; }
+.ad-tools .filters { margin: 0; }
+.ad-tools .search { flex: 1 1 200px; }
+.ad-only { display: inline-flex; gap: 6px; align-items: center; font-size: .9rem; }
+.ad-topic { margin-top: 26px; }
+.ad-topic h3 { margin: 0 0 4px; }
+.ad-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 14px; margin-top: 12px; }
+.ad-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.ad-card h4 { margin: 0; font-size: 1.02rem; }
+.ad-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.ad-kind, .ad-open { font-size: .78rem; padding: 2px 8px; border-radius: 999px; background: color-mix(in srgb, var(--primary-2) 14%, var(--card)); }
+.ad-open { background: color-mix(in srgb, #f59e0b 18%, var(--card)); }
+.ad-cite { margin: 0; font-size: .82rem; color: var(--muted); overflow-wrap: anywhere; }
+.ad-sum, .ad-use { margin: 0; font-size: .92rem; }
+.ad-lessons { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ad-lessons .chip { font-size: .78rem; padding: 4px 10px; text-align: left; }
+.ad-go { align-self: flex-start; margin-top: auto; }
+.ad-doi { overflow-wrap: anywhere; }
+.ad-note { margin-top: 22px; }
 .lesson-cer { margin: 16px 0; padding: 14px 16px; border-radius: 14px; border: 1px dashed var(--line); }
 .lesson-cer textarea { width: 100%; font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--text); resize: vertical; min-height: 54px; margin: 4px 0 8px; }
 .lesson-cer label { font-weight: 600; font-size: .9rem; }
@@ -1543,6 +1573,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
           <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#f97316"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
           <a class="app" data-cat="learn" href="#kurslar" style="--c:#16a34a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
           <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
+          <a class="app" data-cat="learn" href="#adabiyot" style="--c:#4f46e5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#0ea5e9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
           <a class="app" data-cat="learn" href="#krossvord" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
           <a class="app" data-cat="learn" href="#kutubxona" style="--c:#a16207"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
@@ -1965,6 +1996,11 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
         <h3 style="margin-top:28px">🌐 Ишончли халқаро ва миллий манбалар</h3>
         <div class="lab-grid" id="onLinks"></div>
       </div>
+    </section>
+
+    <!-- XORIJIY ADABIYOT: ilmiy manbalar katalogi — vendor/eko-adabiyot.js -->
+    <section class="section" id="adabiyot">
+      <div class="wrap" id="adRoot"></div>
     </section>
 
     <!-- COURSES -->
@@ -26530,10 +26566,24 @@ COURSES.splice(1, 0, {
       <ul>${b.d.map(([t, v]) => `<li><span class="lb-t">${esc(t)}</span><span class="lb-bar" aria-hidden="true"><i style="width:${v > 0 ? Math.max(1.5, Math.min(100, (v / max) * 100)).toFixed(1) : 0}%"></i></span><span class="lb-v">${num(v)}${b.u ? ` <span>${esc(b.u)}</span>` : ""}</span></li>`).join("")}</ul>
     </figure>`;
   }
+  /* Дарснинг илмий манбалари: дарсдаги ҳаволалар + «Хорижий адабиёт» каталогидан шу дарсга боғланганлар */
+  function lessonRefs(lk, lesson) {
+    const own = (lesson.refs || []).map((r) => ({ cite: r.t, url: r.u }));
+    const cat = window.EKO_ADABIYOT ? EKO_ADABIYOT.items.filter((x) => x.lessons && x.lessons.includes(lk)).map((x) => ({ cite: x.cite, url: x.url, title: x.title_uz, open: x.open })) : [];
+    const seen = new Set(), all = [...own, ...cat].filter((r) => r.url && !seen.has(r.url) && seen.add(r.url));
+    if (!all.length) return "";
+    return `<div class="lesson-ev lesson-refs">
+        <h3>🌍 Илмий манбалар (хорижий адабиёт)</h3>
+        <ol>${all.map((r) => `<li>${r.title ? `<b>${esc(r.title)}</b><br>` : ""}<span data-notr>${esc(r.cite)}</span> <a href="${esc(r.url)}" target="_blank" rel="noopener">↗ ${r.open ? "Очиқ манба" : "Манбани очиш"}</a></li>`).join("")}</ol>
+        <p class="small muted"><a href="#adabiyot">Барча манбалар ва уларнинг таҳлили →</a></p>
+      </div>`;
+  }
+
   function openLesson(cid, li) {
     const course = COURSES.find((c) => c.id === cid);
     const lesson = course.lessons[li];
     const lk = `${cid}:${li}`;
+    window.dispatchEvent(new CustomEvent("eko:lesson", { detail: { key: lk } }));
     const answered = {};
     const easy = state.easy && lesson.simple;
     const paras = easy ? lesson.simple : lesson.body;
@@ -26576,11 +26626,17 @@ COURSES.splice(1, 0, {
         <p><b>Қадамлар:</b></p><ol>${lesson.exp.steps.map((x) => `<li>${esc(x)}</li>`).join("")}</ol>
         <p>👀 <b>Нимани кўрасиз:</b> ${esc(lesson.exp.see)}</p>
       </div>` : ""}
+      ${lesson.calc ? `<div class="lesson-calc">
+        <h3>🧮 Ҳисоблаб кўр</h3>
+        <p>${esc(lesson.calc.q)}</p>
+        <details><summary>Жавобни кўриш</summary><p>${esc(lesson.calc.a)}</p></details>
+      </div>` : ""}
       ${course.source ? `<p class="small muted lesson-src">📘 Манба: ${esc(course.source)}${course.standard ? `<br>🎓 <span>${esc(course.standard)}</span>` : ""}</p>` : ""}
       ${lesson.evidence ? `<div class="lesson-ev">
         <h3>🔬 Илмий далиллар</h3>
         <ul>${lesson.evidence.map((e) => `<li>${esc(e.f)}<cite>— ${esc(e.s)}</cite></li>`).join("")}</ul>
       </div>` : ""}
+      ${lessonRefs(lk, lesson)}
       ${lesson.words && lesson.words.length > 2 ? `<div class="lesson-method">
         <h3>🕸 Кластер</h3>
         <p class="small muted">Марказда — мавзу, тармоқларда — калит тушунчалар. Тармоқни босинг: изоҳи чиқади. Ўзингиз ҳам тармоқ қўшинг.</p>
@@ -27878,6 +27934,8 @@ COURSES.splice(1, 0, {
   }
   /* Админ хабарни тасдиқласа (Эко-патрул), янги ҳисоб дарҳол кўринсин */
   function refresh(data) {
+    /* Админ ҳисобни блоклаган бўлса — чиқариб юборилади */
+    if (data && data.blocked && user) { user = null; render(); startPing(); notify("Ҳисобингиз блокланган"); return; }
     if (data && data.user && user && data.user.approved !== user.approved) { user = data.user; render(); }
   }
 
@@ -30233,5 +30291,7 @@ COURSES.splice(1, 0, {
   <script src="/vendor/eko-dunyo3d.js" defer></script>
   <script src="/vendor/eko-loyiha.js" defer></script>
   <script src="/vendor/eko-onlayn.js" defer></script>
+  <script src="/vendor/eko-adabiyot.js" defer></script>
+  <script src="/vendor/eko-stat.js" defer></script>
 </body>
 </html>

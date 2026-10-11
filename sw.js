@@ -1,9 +1,10 @@
 /* ЭкоТаълим — service worker.
    Иловани интернетсиз ҳам очиш учун асосий файлларни сақлайди.
-   /api/ ва /admin ҳеч қачон кешланмайди. */
+   /api/, /admin ва «Cache-Control: no-store» жавоблар (бошқарув маркази) ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekotalim-v14";
+const CACHE = "ekotalim-v15";
+const cacheable = (res) => res.ok && !/no-store/i.test(res.headers.get("Cache-Control") || "");
 const SHELL = [
   "/",
   "/privacy",
@@ -29,6 +30,8 @@ const SHELL = [
   "/vendor/world-land.json",
   "/vendor/eko-loyiha.js",
   "/vendor/eko-onlayn.js",
+  "/vendor/eko-stat.js",
+  "/vendor/eko-adabiyot.js",
   "/vendor/i18n/keys.js",
   "/vendor/i18n/ru.js",
   "/vendor/i18n/en.js",
@@ -68,7 +71,7 @@ self.addEventListener("fetch", (e) => {
     e.respondWith(
       fetch(req)
         .then((res) => {
-          if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(url.pathname === "/" ? "/" : req, copy)); }
+          if (cacheable(res)) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(url.pathname === "/" ? "/" : req, copy)); }
           return res;
         })
         .catch(() => caches.match(req, { ignoreSearch: true }).then((r) => r || caches.match("/")))
@@ -78,7 +81,7 @@ self.addEventListener("fetch", (e) => {
 
   // Бошқа файллар: аввал кешдан; рўйхатда йўқ файл интернетдан олинса, у ҳам сақланади
   e.respondWith(caches.match(req, { ignoreSearch: url.pathname.startsWith("/vendor/") }).then((r) => r || fetch(req).then((res) => {
-    if (res.ok && res.type === "basic") { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
+    if (cacheable(res) && res.type === "basic") { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
     return res;
   })));
 });
