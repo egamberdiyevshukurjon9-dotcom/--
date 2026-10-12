@@ -179,7 +179,7 @@
     const d = D();
     const norm = (s) => String(s).toLowerCase();
     const list = (d.LAWS || []).map((l, i) => [l, i]).filter(([l]) => (libTopic === "all" || (l.topics || []).includes(libTopic)) &&
-      (!libQ || norm(L(l.title) + " " + L(l.short) + " " + (l.no || "")).includes(norm(libQ)) || (EL() && EL().matches && EL().matches(L(l.title), libQ))));
+      (!libQ || norm(L(l.title) + " " + L(l.short) + " " + L(l.no || "")).includes(norm(libQ)) || (EL() && EL().matches && EL().matches(L(l.title), libQ))));
     return `<div class="qn-card">
         <h3>📚 ${H(t3("Экологик қонунчилик кутубхонаси", "Библиотека экологического законодательства", "Environmental legislation library"))}</h3>
         <p class="muted">${H(t3("Ҳар бир карточкада: ҳужжат тури, қабул қилинган сана ва рақам, амалдаги ҳолат, муҳим моддалар, кимга қандай ҳуқуқ ёки мажбурият, амалий мисол, муҳокама саволи ва расмий ҳавола.",
@@ -187,15 +187,16 @@
           "Each card shows: document type, adoption date and number, current status, key articles, whose rights or duties, a practical example, a discussion question and the official link."))}</p>
         <p class="small muted">${H(TX.asof)}: <b>${esc(d.ASOF || "")}</b>. ${H(TX.verify)}</p>
         <input type="search" class="qn-ta" style="min-height:44px" data-lib-q value="${esc(libQ)}" placeholder="${H(t3("Қонун қидириш…", "Поиск закона…", "Search laws…"))}" aria-label="${H(t3("Қонун қидириш", "Поиск закона", "Search laws"))}">
-        <div class="filters pdf-skip" style="margin:10px 0 0">${[["all", t3("Барчаси", "Все", "All")], ...(d.TOPICS || [])].map(([k, t]) => `<button type="button" class="chip ${k === libTopic ? "active" : ""}" data-topic="${k}">${H(t)}</button>`).join("")}</div>
+        <div class="filters qn-chips pdf-skip" style="margin:10px 0 0">${[["all", t3("Барчаси", "Все", "All")], ...(d.TOPICS || [])].map(([k, t]) => `<button type="button" class="chip ${k === libTopic ? "active" : ""}" data-topic="${k}">${H(t)}</button>`).join("")}</div>
       </div>
       <div class="qn-grid">${list.length ? list.map(([l, i]) => lawCard(l, i)).join("") : `<p class="muted">${H(t3("Ҳеч нарса топилмади.", "Ничего не найдено.", "Nothing found."))}</p>`}</div>`;
   }
+  const noL = (n) => { const v = L(n); return lang() === "ru" ? v.replace(/ЎРҚ/g, "ЗРУ") : lang() === "en" ? v.replace(/ЎРҚ/g, "ZRU") : v; };
   function lawCard(l, i) {
     const status = l.status === "old" ? "old" : l.status === "check" ? "warn" : "";
     return `<article class="qn-card" id="qn-law-${i}">
       <h3>${l.icon || "📘"} ${H(l.title)}</h3>
-      <div class="qn-meta"><span class="qn-tag">${H(l.kind)}</span>${l.date ? `<span class="qn-tag">${esc(l.date)}${l.no ? " · " + esc(l.no) : ""}</span>` : ""}<span class="qn-tag ${status}">${H(l.state)}</span></div>
+      <div class="qn-meta"><span class="qn-tag">${H(l.kind)}</span>${l.date ? `<span class="qn-tag">${esc(l.date)}${l.no ? " · " + esc(noL(l.no)) : ""}</span>` : ""}<span class="qn-tag ${status}">${H(l.state)}</span></div>
       ${l.short ? `<p>${H(l.short)}</p>` : ""}
       ${l.arts && l.arts.length ? `<h4>📌 ${H(t3("Муҳим моддалар", "Ключевые статьи", "Key articles"))}</h4><ul>${l.arts.map(([n, t]) => `<li><b>${H(n)}</b> — ${H(t)}</li>`).join("")}</ul>` : ""}
       ${l.who ? `<h4>👥 ${H(t3("Кимга қандай ҳуқуқ ёки мажбурият", "Чьи права и обязанности", "Whose rights and duties"))}</h4><p>${H(l.who)}</p>` : ""}
@@ -228,9 +229,9 @@
           why: t3("Суд ўлчанган ва такрорланадиган далилга таянади: чиқиш жойидан юқори ва пастдаги фарқ ифлосланиш манбасини кўрсатади. Видео ва гувоҳлар фақат қўшимча далил.", "Суд опирается на измеренные и воспроизводимые доказательства: разница выше и ниже выпуска показывает источник. Видео и свидетели — лишь дополнительные доказательства.", "Courts rely on measured, repeatable evidence: the difference above and below the outlet shows the source. Videos and witnesses are only supporting evidence.") },
         { q: t3("Қайси нормалар асосий?", "Какие нормы основные?", "Which norms apply first?"),
           o: [t3("Фақат Ер кодекси", "Только Земельный кодекс", "Only the Land Code"),
-            t3("Конституциянинг 49-моддаси (қулай атроф-муҳит ҳуқуқи) ва сув ҳамда табиатни муҳофаза қилиш тўғрисидаги қонунлар (тозаланмаган оқова сувни ташлаш тақиқи)", "Статья 49 Конституции (право на благоприятную среду) и законы о воде и об охране природы (запрет сброса неочищенных стоков)", "Article 49 of the Constitution (right to a favourable environment) and the water and nature protection laws (ban on discharging untreated wastewater)"),
+            t3("Конституциянинг 49-моддаси (қулай атроф-муҳит ҳуқуқи), Сув кодекси ва «Табиатни муҳофаза қилиш тўғрисида»ги қонун", "Статья 49 Конституции (право на благоприятную среду), Водный кодекс и закон «Об охране природы»", "Article 49 of the Constitution (right to a favourable environment), the Water Code and the Nature Protection Law"),
             t3("Фақат Солиқ кодекси", "Только Налоговый кодекс", "Only the Tax Code")], c: 1,
-          why: t3("Сув объектларига тозаланмаган оқова сув ташлаш сув тўғрисидаги ва табиатни муҳофаза қилиш тўғрисидаги қонунларда тақиқланган; Конституция ҳар кимнинг қулай атроф-муҳитга бўлган ҳуқуқини кафолатлайди.", "Сброс неочищенных стоков в водные объекты запрещён законами о воде и об охране природы; Конституция гарантирует каждому право на благоприятную среду.", "Discharging untreated wastewater into water bodies is prohibited by the water and nature protection laws; the Constitution guarantees everyone the right to a favourable environment.") },
+          why: t3("Сув объектларини ифлослантириш Сув кодекси (2025) ва табиатни муҳофаза қилиш тўғрисидаги қонунда тақиқланган, МЖтК 72-моддаси бўйича жарима солинади; Конституция ҳар кимнинг қулай атроф-муҳитга бўлган ҳуқуқини кафолатлайди.", "Загрязнение водных объектов запрещено Водным кодексом (2025) и законом об охране природы, штраф — по ст. 72 КоАО; Конституция гарантирует право на благоприятную среду.", "Polluting water bodies is banned by the Water Code (2025) and the Nature Protection Law and fined under Admin Code Art. 72; the Constitution guarantees the right to a favourable environment.") },
         { q: t3("Қандай жавобгарлик тўғри?", "Какая ответственность правильна?", "Which liability fits?"),
           o: [t3("Мансабдор шахсга маъмурий жарима ва етказилган зарарни қоплаш; оғир оқибат исботланса — жиноий жавобгарлик масаласи", "Административный штраф должностному лицу и возмещение ущерба; при доказанных тяжких последствиях — вопрос уголовной ответственности", "An administrative fine for the official and compensation for the damage; if serious consequences are proven, criminal liability is considered"),
             t3("Ҳеч қандай: балиқлар ўзи нобуд бўлган", "Никакой: рыба погибла сама", "None: the fish died on their own"),
@@ -270,7 +271,7 @@
         { q: t3("Экспертиза «кейин» бўлиши мумкинми?", "Может ли экспертиза быть «потом»?", "Can the review happen “later”?"),
           o: [t3("Ҳа, асосийси — иш ўрни", "Да, главное — рабочие места", "Yes, jobs come first"),
             t3("Йўқ: давлат экологик экспертизасининг ижобий хулосасисиз лойиҳани молиялаштириш ва амалга ошириш тақиқланади", "Нет: без положительного заключения государственной экологической экспертизы финансирование и реализация проекта запрещены", "No: without a positive state environmental review the project may not be financed or carried out")], c: 1,
-          why: t3("Экологик экспертиза тўғрисидаги қонун экспертизани мажбурий ва олдиндан ўтказиладиган деб белгилайди. Таъсирни баҳолаш (ОВОС/EIA) тартиби Вазирлар Маҳкамаси қарори билан тасдиқланади.", "Закон об экологической экспертизе устанавливает её обязательной и предварительной. Порядок оценки воздействия (ОВОС) утверждается постановлением Кабмина.", "The environmental review law makes the review mandatory and prior. The impact assessment (EIA) procedure is approved by a Cabinet resolution.") },
+          why: t3("«Экологик экспертиза, атроф-муҳитга таъсирни баҳолаш ва стратегик экологик баҳолаш тўғрисида»ги қонун (ЎРҚ-1036, 2025) давлат экспертизасини мажбурий қилади (11-модда), буюртмачи олдиндан жамоатчилик тингловини ўтказади (17-модда), ижобий хулосасиз лойиҳани молиялаштириш мумкин эмас (22-модда). ОВОС тартиби ВМнинг 11.05.2026 йилдаги 234-сон қарори билан белгиланган.", "Закон «Об экологической экспертизе, ОВОС и СЭО» (ЗРУ-1036, 2025) делает госэкспертизу обязательной (ст. 11), заказчик заранее проводит общественные слушания (ст. 17), без положительного заключения финансирование запрещено (ст. 22). Порядок ОВОС — постановление КМ №234 от 11.05.2026.", "The law on environmental review, EIA and SEA (ZRU-1036, 2025) makes the state review mandatory (Art. 11), requires prior public hearings (Art. 17) and bans financing without a positive opinion (Art. 22). The EIA procedure is set by Cabinet Resolution No. 234 of 11.05.2026.") },
         { q: t3("Аҳолининг қайси ҳуқуқи бузилган?", "Какое право жителей нарушено?", "Which right of the residents was violated?"),
           o: [t3("Ахборот олиш ва қарор қабул қилишда иштирок этиш (жамоатчилик муҳокамаси, жамоатчилик экологик экспертизаси)", "Право на информацию и участие в принятии решений (общественное обсуждение, общественная экологическая экспертиза)", "The right to information and to take part in decisions (public hearings, public environmental review)"),
             t3("Ҳеч қандай ҳуқуқ бузилмаган", "Никакое право не нарушено", "No right was violated")], c: 0,
@@ -461,10 +462,10 @@
   /* ========== 8. Корхона симулятори ========== */
   const SIM = [
     { k: "exp", t: t3("Давлат экологик экспертизаси", "Государственная экологическая экспертиза", "State environmental review"), o: [
-      [t3("Ўтказилмаган", "Не проводилась", "Not done"), { p: 0, c: 0, r: 3, law: t3("Экологик экспертиза тўғрисидаги қонун: хулосасиз лойиҳани амалга ошириш тақиқланади", "Закон об экологической экспертизе: реализация без заключения запрещена", "Environmental review law: projects may not proceed without a positive opinion") }],
+      [t3("Ўтказилмаган", "Не проводилась", "Not done"), { p: 0, c: 0, r: 3, law: t3("ЎРҚ-1036 (экологик экспертиза ва ОВОС): хулосасиз лойиҳани амалга ошириш ва молиялаштириш тақиқланади; МЖтК 96-модда", "ЗРУ-1036 (экоэкспертиза и ОВОС): реализация и финансирование без заключения запрещены; ст. 96 КоАО", "ZRU-1036 (review and EIA): no implementation or financing without a positive opinion; Admin Code Art. 96") }],
       [t3("Ижобий хулоса олинган, жамоатчилик муҳокамаси ўтказилган", "Получено положительное заключение, проведено общественное обсуждение", "Positive opinion obtained, public hearing held"), { p: 0, c: 1, r: 0 }]] },
     { k: "water", t: t3("Оқова сув", "Сточные воды", "Wastewater"), o: [
-      [t3("Тозаламасдан ариққа", "В арык без очистки", "Into the canal untreated"), { p: 35, c: 0, r: 3, law: t3("Сув тўғрисидаги қонун: тозаланмаган оқова сувни ташлаш тақиқланади", "Закон о воде: сброс неочищенных стоков запрещён", "Water law: discharging untreated wastewater is prohibited") }],
+      [t3("Тозаламасдан ариққа", "В арык без очистки", "Into the canal untreated"), { p: 35, c: 0, r: 3, law: t3("Сув кодекси (2025) ва МЖтК 72-модда: сув объектларини ифлослантириш тақиқланади", "Водный кодекс (2025) и ст. 72 КоАО: загрязнение водных объектов запрещено", "Water Code (2025) and Admin Code Art. 72: polluting water bodies is prohibited") }],
       [t3("Механик тозалаш", "Механическая очистка", "Mechanical treatment"), { p: 15, c: 2, r: 1 }],
       [t3("Механик + биологик тозалаш ва сувни қайта ишлатиш", "Механическая + биологическая очистка и оборотное водоснабжение", "Mechanical + biological treatment and water reuse"), { p: 4, c: 4, r: 0 }]] },
     { k: "air", t: t3("Ҳавога чиқиндилар", "Выбросы в атмосферу", "Air emissions"), o: [

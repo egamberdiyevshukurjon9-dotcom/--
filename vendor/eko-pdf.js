@@ -159,12 +159,13 @@
 
     const list = blocks(root, meta);
     const qs = [];
-    let prevBox = 0;
+    let prevBox = 0, skipT = false;
     for (const o of list) {
       if (o.box && !prevBox) y += 2;
       if (!o.box && prevBox) y += 3;
       prevBox = o.box ? 1 : 0;
-      if (o.t === "title") { if (clean(meta.title) === o.s) continue; y += 3; para(o.s, { size: 15, bold: true }); y += 1; }
+      if ((o.t === "title" || o.t === "h") && !skipT && clean(meta.title) === o.s) { skipT = true; continue; }
+      if (o.t === "title") { y += 3; para(o.s, { size: 15, bold: true }); y += 1; }
       else if (o.t === "h") { y += o.box ? 1 : 4; room(lh(13) + lh(11) * 2); para(o.s, { size: 13, bold: true, col: GREEN, box: o.box }); y += 1; }
       else if (o.t === "li") para(o.s, { ind: 6, bullet: o.num ? o.num + "." : "•", box: o.box });
       else if (o.t === "small") para(o.s, { size: 9.5, col: MUTE, box: o.box });

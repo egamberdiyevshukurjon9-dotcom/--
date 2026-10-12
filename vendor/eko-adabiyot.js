@@ -433,7 +433,7 @@ window.EKO_ADABIYOT = {
    "cite": "FAO, ITPS. Status of the World's Soil Resources: Main Report. — Rome: FAO, 2015.",
    "title_uz": "Дунё тупроқ ресурсларининг ҳолати: асосий ҳисобот",
    "doi": "",
-   "url": "https://openknowledge.fao.org/items/3a0f6f92-3186-4c6a-9adf-09a90db06e75",
+   "url": "https://openknowledge.fao.org/handle/20.500.14283/i5199e",
    "open": true,
    "lang": "en",
    "summary": "БМТ Озиқ-овқат ва қишлоқ хўжалиги ташкилоти (ФАО) ва Тупроқлар бўйича ҳукуматлараро техник панел (ITPS) тайёрлаган тупроқ ресурсларининг 2015 йилги глобал баҳолаши. Ҳисоботда тупроқ учун ўнта асосий таҳдид глобал миқёсда ва минтақалар кесимида аҳамияти бўйича саралаб баҳоланган.",
