@@ -1,0 +1,1 @@
+window.EKO_QONUN = { ASOF: "test", CONST: [], CONST_OLD: [], LAWS: [], TOPICS: [], QUIZ: [{q:{uz:"Савол?",ru:"Вопрос?",en:"Q?"},a:[{uz:"А",ru:"А",en:"A"},{uz:"Б",ru:"Б",en:"B"}],c:1,why:{uz:"Чунки",ru:"Потому",en:"Because"}}] };

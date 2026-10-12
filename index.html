@@ -796,6 +796,7 @@ a { text-underline-offset: 3px; }
   .app:hover, .app:focus-visible { box-shadow: none; transform: translateY(-2px); }
   .app-ic { width: 60px; height: 60px; border-radius: 19px; font-size: 1.85rem; }
   .app b { font-size: .76rem; font-weight: 650; line-height: 1.2; }
+  .app b.long { font-size: .66rem; letter-spacing: -.01em; overflow-wrap: normal; }
   .stats { gap: 10px; }
   .page-bar-in { height: 54px; }
 }
@@ -1028,6 +1029,7 @@ html.no-profile body { overflow: hidden; }
 .profile-card .pc-main { flex: 1 1 220px; min-width: 0; }
 .profile-card .pc-main b { font-size: 1.05rem; }
 .profile-card .pc-sub { color: var(--muted); font-size: .88rem; }
+.pc-last { max-width: 100%; overflow: hidden; } .pc-last span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 22ch; display: inline-block; vertical-align: bottom; }
 .pc-bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; margin-top: 6px; }
 .pc-bar i { display: block; height: 100%; background: var(--grad); border-radius: 99px; }
 .stage-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 99px; font-size: .8rem; font-weight: 700; background: var(--primary-soft); color: var(--primary); }
@@ -1359,6 +1361,62 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
 
 /* ===== 🎓 Лойиҳалар ===== */
 .ly-tabs .chip { font-weight: 600; }
+/* 🎓 Экологик ҳуқуқ (vendor/eko-qonun.js) */
+.qn-head { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+.qn-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 10px; margin: 14px 0 8px; scrollbar-width: thin; }
+.qn-tabs .chip { flex: none; font-weight: 600; white-space: nowrap; }
+.qn-tabs .chip i { margin-right: 6px; }
+.qn-panel { display: grid; gap: 16px; }
+.qn-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+.qn-card h3 { margin: 0 0 8px; font-size: 1.08rem; line-height: 1.3; }
+.qn-card h4 { margin: 14px 0 6px; font-size: .95rem; color: var(--primary); }
+.qn-card p, .qn-card li { line-height: 1.6; }
+.qn-card ul, .qn-card ol { padding-left: 20px; margin: 6px 0; }
+.qn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.qn-quote { margin: 8px 0; padding: 12px 14px; border-left: 4px solid var(--primary); background: var(--primary-soft); border-radius: 0 12px 12px 0; color: var(--text); font-weight: 500; }
+.qn-meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.qn-tag { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; font-weight: 650; padding: 3px 10px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); }
+.qn-tag.warn { background: #fef3c7; color: #92400e; }
+.qn-tag.old { background: #e5e7eb; color: #374151; }
+.qn-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.qn-src { font-size: .85rem; overflow-wrap: anywhere; }
+.qn-opts { display: grid; gap: 8px; margin: 10px 0; }
+.qn-opts .sg-opt { text-align: left; font-size: .95rem; font-weight: 550; padding: 11px 14px; border-bottom-width: 3px; }
+.qn-fb { margin: 8px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--primary-soft); color: var(--text); line-height: 1.55; }
+.qn-fb.bad { background: #fee2e2; color: #7f1d1d; }
+.qn-steps { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 12px; padding: 0; list-style: none; }
+.qn-steps li { font-size: .8rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.qn-steps li.on { border-color: var(--primary); color: var(--primary); font-weight: 700; }
+.qn-steps li.ok { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.qn-roles { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.qn-score { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+.qn-sort { display: grid; gap: 8px; margin: 10px 0; padding: 0; list-style: none; }
+.qn-sort li { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+.qn-sort li.ok { border-color: #16a34a; } .qn-sort li.bad { border-color: #dc2626; }
+.qn-sort li > span { flex: 1 1 220px; }
+.qn-table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 8px 0; }
+.qn-table th, .qn-table td { border-bottom: 1px solid var(--line); padding: 7px 6px; text-align: left; vertical-align: top; }
+.qn-table td.hi { color: #b91c1c; font-weight: 700; }
+.qn-wrap-x { overflow-x: auto; }
+.qn-river { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 10px 0; }
+.qn-river button { min-height: 64px; border-radius: 14px; border: 2px dashed var(--primary-2); background: color-mix(in srgb, var(--primary-2) 10%, var(--card)); color: var(--text); font: inherit; font-weight: 700; cursor: pointer; }
+.qn-river button[disabled] { border-style: solid; cursor: default; }
+.qn-river small { display: block; font-weight: 500; font-size: .75rem; color: var(--muted); }
+.qn-sim { display: grid; gap: 12px; }
+.qn-sim fieldset { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin: 0; }
+.qn-sim legend { font-weight: 700; padding: 0 6px; }
+.qn-sim label { display: flex; gap: 8px; align-items: flex-start; padding: 4px 0; cursor: pointer; }
+.qn-meter { height: 10px; border-radius: 9px; background: var(--line); overflow: hidden; margin: 4px 0 10px; }
+.qn-meter i { display: block; height: 100%; border-radius: 9px; transition: width .3s; }
+.qn-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.qn-kpi div { padding: 10px 12px; border-radius: 14px; border: 1px solid var(--line); }
+.qn-kpi b { display: block; font-size: 1.25rem; }
+.qn-ta { width: 100%; min-height: 72px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; resize: vertical; }
+.qn-timer { font-variant-numeric: tabular-nums; font-size: 1.4rem; font-weight: 800; }
+.qn-prog { display: flex; align-items: center; gap: 10px; }
+.qn-prog .qn-meter { flex: 1; margin: 0; }
+@media (max-width: 600px) { .qn-card { padding: 14px; } .qn-river { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 900px) { .qn-tabs { flex-wrap: wrap; overflow: visible; } }
 .ly-ic { display: inline-grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 13px; font-size: 1.35rem; background: color-mix(in srgb, var(--c, var(--primary)) 18%, var(--card)); }
 .ly-card { display: flex; flex-direction: column; gap: 6px; text-align: left; font: inherit; color: var(--text); cursor: pointer; border-top: 4px solid var(--c, var(--primary)); transition: transform .15s; }
 .ly-card:hover { transform: translateY(-2px); }
@@ -1528,6 +1586,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
         <a href="#ilmiy" data-stage="uni">Илмий лаборатория</a>
         <a href="#lab3d">3D лаборатория</a>
         <a href="#loyiha" data-stage="uni">Лойиҳалар</a>
+        <a href="#qonun" data-stage="uni">Экологик ҳуқуқ</a>
         <a href="#monografiya" data-stage="uni">Сув ва ҳаво</a>
         <a href="#oyinlar" data-stage="maktab">Ўйинлар</a>
         <a href="#dunyo3d" data-stage="maktab">3D Эко-дунё</a>
@@ -1609,6 +1668,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
           <h3 class="app-cat" data-cat="learn"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Ўрганиш</h3>
           <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#f97316"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
           <a class="app" data-cat="learn" href="#kurslar" style="--c:#16a34a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#b45309"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
           <a class="app" data-cat="learn" href="#adabiyot" style="--c:#4f46e5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#0ea5e9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
@@ -2022,6 +2082,11 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
     <!-- UNIVERSITET: LOYIHALAR (PBL, Design Thinking, Capstone...) — vendor/eko-loyiha.js -->
     <section class="section" id="loyiha" data-stage="uni">
       <div class="wrap" id="lyRoot" data-notr></div>
+    </section>
+
+    <!-- UNIVERSITET: EKOLOGIK HUQUQ (Konstitutsiya, qonunlar, ekologik sud, keys, debat...) — vendor/eko-qonun.js -->
+    <section class="section alt" id="qonun" data-stage="uni">
+      <div class="wrap" id="qnRoot" data-notr></div>
     </section>
 
     <!-- UNIVERSITET: ONLAYN DARSLIKLAR -->
@@ -32287,11 +32352,11 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     if (lessonXw) { lessonXw.destroy(); lessonXw = null; }
     modalBody.innerHTML = `
       <div class="lesson ${state.big ? "lesson-big" : ""}">
-      <div class="lesson-top">
+      <div class="lesson-top" data-pdf-skip>
         <span class="pill">${course.icon} ${esc(course.title)} · ${li + 1}/${course.lessons.length}-дарс</span>
-        <span class="lesson-steps ${course.lessons.length > 12 ? "many" : ""}" aria-label="Дарслар">${course.lessons.map((_, i) => `<i class="${i === li ? "cur" : lessonDone(cid, i) ? "done" : ""}"></i>`).join("")}</span>
+        <span data-pdf-skip class="lesson-steps ${course.lessons.length > 12 ? "many" : ""}" aria-label="Дарслар">${course.lessons.map((_, i) => `<i class="${i === li ? "cur" : lessonDone(cid, i) ? "done" : ""}"></i>`).join("")}</span>
       </div>
-      ${deep && course.chapters[lesson.ch] ? `<p class="lesson-ch">${esc(course.chapters[lesson.ch])}</p>` : ""}
+      ${deep && course.chapters[lesson.ch] ? `<p class="lesson-ch" data-pdf-skip>${esc(course.chapters[lesson.ch])}</p>` : ""}
       <h2>${esc(lesson.title)}</h2>
       <p class="small muted lesson-meta">⏱ ${lesson.minutes} дақиқа · 🐢 ўз суръатингизда${lesson.bloom ? ` · <span class="bloom" title="Блум таксономияси бўйича фикрлаш босқичи">🧠 ${BLOOM[lesson.bloom]}</span>` : ""}</p>
       ${lesson.goal ? `<div class="lesson-goal">🎯 <b>Бугун нимани биласиз:</b> ${esc(lesson.goal)}</div>` : ""}
@@ -32302,13 +32367,14 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
           <button class="${easy ? "on" : ""}" data-mode="easy">🧒 Осон тилда</button>
         </div>` : ""}
         <button class="seg-one ${state.big ? "on" : ""}" id="bigText" aria-pressed="${state.big}" title="Ҳарфларни катталаштириш">Aa</button>
+        <button class="seg-one lesson-pdf" id="lessonPdf" title="Дарс матнини PDF қилиб юклаб олиш"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF</button>
       </div>
-      ${insOn ? `<div class="ins-legend" role="note"><b>✍️ Инсерт:</b> ўқиб, ҳар бир хатбошига белги қўйинг — ${INS.map(([, i, t]) => `<span><b>${i}</b> ${esc(t)}</span>`).join(" · ")}</div>` : ""}
+      ${insOn ? `<div class="ins-legend" role="note" data-pdf-skip><b>✍️ Инсерт:</b> ўқиб, ҳар бир хатбошига белги қўйинг — ${INS.map(([, i, t]) => `<span><b>${i}</b> ${esc(t)}</span>`).join(" · ")}</div>` : ""}
       <div class="lesson-body ${easy ? "easy" : ""}">${insOn
         ? paras.map((p, pi) => `<div class="ins-p" data-pi="${pi}" ${ins[pi] ? `data-m="${ins[pi]}"` : ""}><p>${esc(p)}</p>
             <div class="ins-m" role="group" aria-label="${pi + 1}-хатбошига белги">${INS.map(([k, i, t]) => `<button data-ins="${k}" class="${ins[pi] === k ? "on" : ""}" aria-pressed="${ins[pi] === k}" title="${esc(t)}">${i} <span class="small">${esc(t)}</span></button>`).join("")}</div></div>`).join("")
         : paras.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
-      ${insOn ? `<p class="ins-sum" id="insSum" aria-live="polite"></p>` : ""}
+      ${insOn ? `<p class="ins-sum" id="insSum" aria-live="polite" data-pdf-skip></p>` : ""}
       ${lesson.flow ? flowHtml(lesson.flow) : ""}
       ${lesson.bars ? barsHtml(lesson.bars) : ""}
       <div class="lesson-tip">💡 <b>Амалий маслаҳат:</b> ${esc(lesson.tip)}</div>
@@ -32330,7 +32396,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         <ul>${lesson.evidence.map((e) => `<li>${esc(e.f)}<cite>— ${esc(e.s)}</cite></li>`).join("")}</ul>
       </div>` : ""}
       ${lessonRefs(lk, lesson)}
-      ${lesson.words && lesson.words.length > 2 ? `<div class="lesson-method">
+      ${lesson.words && lesson.words.length > 2 ? `<div class="lesson-method" data-pdf-skip>
         <h3>🕸 Кластер</h3>
         <p class="small muted">Марказда — мавзу, тармоқларда — калит тушунчалар. Тармоқни босинг: изоҳи чиқади. Ўзингиз ҳам тармоқ қўшинг.</p>
         <div id="clusBox">${clusterHtml(lk, lesson)}</div>
@@ -32353,7 +32419,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         <p>${esc(lesson.task)}</p>
         <label class="task-done"><input type="checkbox" id="taskDone" ${state.tasks[lk] ? "checked" : ""}> Бажардим (+5 XP)</label>
       </div>` : ""}
-      ${lesson.words ? `<div class="lesson-xw">
+      ${lesson.words ? `<div class="lesson-xw" data-pdf-skip>
         <h3>🧩 Мини-кроссворд</h3>
         <p class="xw-uz-note small" data-notr><span class="ru">Кроссворд составлен на узбекском языке.</span><span class="en">The crossword is in Uzbek.</span></p>
         <p class="small muted">Дарсдаги асосий сўзларни эслаб қолиш учун.</p>
@@ -32377,7 +32443,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         <div class="m-btns"><button class="btn btn-primary btn-sm" id="cerSave">💾 Сақлаш (+5 XP)</button></div>
         <p class="small" id="cerMsg" aria-live="polite"></p>
       </div>` : ""}
-      ${deep ? `<div class="lesson-method">
+      ${deep ? `<div class="lesson-method" data-pdf-skip>
         <h3>📝 Синквейн</h3>
         <p class="small muted">Дарсни беш қаторли шеърда якунланг. Бу мавзуни ўз сўзларингиз билан қисқа ифодалашга ўргатади.</p>
         <div class="sink-f">${SINK.map((t, k) => `<label>${esc(t)}<input data-sink="${k}" maxlength="80" value="${esc(sinkV[k] || "")}"></label>`).join("")}</div>
@@ -32385,7 +32451,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         <p class="small" id="sinkMsg" aria-live="polite"></p>
         ${lesson.sink ? `<div class="sink-ex" id="sinkEx" hidden><ol>${lesson.sink.map((x) => `<li>${esc(x)}</li>`).join("")}</ol></div>` : ""}
       </div>` : ""}
-      <div class="lesson-self">
+      <div class="lesson-self" data-pdf-skip>
         <h3>🪞 Ўзингизни баҳоланг</h3>
         <p class="small muted">Бу дарсни қанчалик тушундингиз? Жавобингизни фақат сиз кўрасиз.</p>
         <div class="self-opts">${SELF.map(([v, i, t]) => `<button class="self-opt ${state.self[lk] === v ? "on" : ""}" data-self="${v}"><span aria-hidden="true">${i}</span>${esc(t)}</button>`).join("")}</div>
@@ -32409,6 +32475,16 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
       $(".lesson", modalBody).classList.toggle("lesson-big", state.big);
       e.currentTarget.classList.toggle("on", state.big);
       e.currentTarget.setAttribute("aria-pressed", state.big);
+    });
+    $("#lessonPdf", modalBody).addEventListener("click", () => {
+      if (!window.EkoPDF) return;
+      const box = $(".lesson", modalBody);
+      EkoPDF.save(box, {
+        title: $("h2", box).textContent,
+        sub: $(".lesson-top .pill", box).textContent + (deep && course.chapters[lesson.ch] ? " · " + $(".lesson-ch", box).textContent : ""),
+        file: `Ekomun ${$(".lesson-top .pill", box).textContent.split("·")[0]} ${li + 1} ${$("h2", box).textContent}`,
+        answers: lesson.quiz.map((q) => q.c)
+      });
     });
     const task = $("#taskDone", modalBody);
     if (task) task.addEventListener("change", () => {
@@ -35156,6 +35232,24 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     }).catch(() => { /* сервер йўқ — фақат қурилмадаги профил */ });
   }
 
+  /* ---------- «Ўқишни давом эттириш»: охирги очилган дарс ---------- */
+  const LAST = "ekotalim:last";
+  function lastLesson() {
+    try {
+      const v = JSON.parse(localStorage.getItem(LAST) || "null");
+      const c = v && window.EkoApp && EkoApp.courses.find((x) => x.id === v.cid);
+      const l = c && c.lessons[v.li];
+      if (!l || (c.stage ? c.stage !== stage() : (stage() === "maktab") !== (c.audience === "bola"))) return null;
+      return { cid: v.cid, li: v.li, title: l.title };
+    } catch (e) { return null; }
+  }
+  window.addEventListener("eko:lesson", (e) => {
+    const [cid, li] = String(e.detail && e.detail.key || "").split(":");
+    if (!cid) return;
+    try { localStorage.setItem(LAST, JSON.stringify({ cid, li: +li })); } catch (x) { /* ignore */ }
+    setTimeout(renderProfile, 0);
+  });
+
   /* ---------- Профил картаси (бош саҳифа) ---------- */
   function renderProfile() {
     const box = $("#profileCard");
@@ -35179,9 +35273,12 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
       <div class="pc-main"><b>${esc(profile.name)}</b> <span class="stage-badge">${st === "maktab" ? "🎒 Мактаб" : "🎓 Университет"}</span>
         <div class="pc-sub">${esc(sub)}</div>${bar}</div>
       <a class="btn btn-primary btn-sm" href="${st === "maktab" ? "#sayohat" : "#ilmiy"}">${st === "maktab" ? "🎒 Саёҳатни давом эттириш" : "🔬 Лабораторияга"}</a>
-      <button class="btn btn-ghost btn-sm" id="profEdit" type="button">✏️ Профил</button>`;
+      <button class="btn btn-ghost btn-sm" id="profEdit" type="button">✏️ Профил</button>
+      ${lastLesson() ? `<button class="btn btn-ghost btn-sm pc-last" id="profLast" type="button" title="${esc(lastLesson().title)}">▶ Давом эттириш: <span>${esc(lastLesson().title)}</span></button>` : ""}`;
     box.hidden = false;
     $("#profEdit").addEventListener("click", openProfile);
+    const pl = $("#profLast");
+    if (pl) pl.addEventListener("click", () => { const l = lastLesson(); if (l && window.EkoApp) EkoApp.openLesson(l.cid, l.li); });
     $("#profileBtn").hidden = false;
     $("#profileBtnName").textContent = profile.name;
   }
@@ -36076,7 +36173,9 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   });
   viewBtn.addEventListener("click", () => { const l = !box.classList.contains("apps-list"); setView(l); put(VKEY, l ? "list" : "grid"); });
   setView(get(VKEY) === "list");
-  const refresh = () => { filter(); renderRecent(); };
+  /* Узун бир сўзли номлар (масалан, «Кроссвордлар») тор плиткада бўлиниб кетмаслиги учун кичрайтирилади */
+  const fit = () => tiles.forEach((a) => { const b = a.querySelector("b"); b.classList.toggle("long", b.textContent.split(/\s+/).some((w) => w.length >= 11)); });
+  const refresh = () => { filter(); renderRecent(); fit(); };
   window.addEventListener("eko:stage", () => setTimeout(refresh, 0));
   window.addEventListener("eko:lang", () => { setView(box.classList.contains("apps-list")); setTimeout(refresh, 0); });
   refresh();
@@ -36090,5 +36189,8 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   <script src="/vendor/eko-stat.js" defer></script>
   <script src="/vendor/eko-oyin.js" defer></script>
   <script src="/vendor/eko-ilova.js" defer></script>
+  <script src="/vendor/eko-pdf.js" defer></script>
+  <script src="/vendor/eko-qonun-data.js" defer></script>
+  <script src="/vendor/eko-qonun.js" defer></script>
 </body>
 </html>

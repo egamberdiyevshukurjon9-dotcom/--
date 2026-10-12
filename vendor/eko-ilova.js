@@ -4,7 +4,7 @@
    Матнлар uz/ru/en шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
   "use strict";
-  const APP = { version: "2.0", date: "2026-10-12" };
+  const APP = { version: "2.1", date: "2026-10-12" };
   window.EKO_VERSION = APP;
 
   const EL = () => (typeof EkoLang !== "undefined" ? EkoLang : null);
@@ -44,6 +44,12 @@
     close: t3("Ёпиш", "Закрыть", "Close")
   };
   const CHANGES = [
+    { v: "2.1", d: "2026-10-12", items: [
+      t3("«Экологик ҳуқуқ» бўлими: Конституциянинг экологик моддалари, қонунлар кутубхонаси, экологик суд, кейс, дебат, эко-детектив, симулятор ва тест", "Раздел «Экологическое право»: экологические статьи Конституции, библиотека законов, экосуд, кейс, дебаты, эко-детектив, симулятор и тест", "Environmental law section: the Constitution's environmental articles, a law library, eco-court, case study, debate, eco-detective, simulator and test"),
+      t3("Ҳар бир дарс матнини PDF қилиб юклаб олиш (интернетсиз ҳам)", "Скачивание текста любого урока в PDF (и без интернета)", "Download any lesson as a PDF (works offline too)"),
+      t3("Хорижий очиқ маълумотлар: NASA Worldview, Global Forest Watch, OpenAQ, Google Earth Engine топшириқлари", "Зарубежные открытые данные: задания с NASA Worldview, Global Forest Watch, OpenAQ, Google Earth Engine", "Global open data: tasks with NASA Worldview, Global Forest Watch, OpenAQ and Google Earth Engine"),
+      t3("Бош саҳифада «Ўқишни давом эттириш» тугмаси, иконка номлари тўғриланди", "Кнопка «Продолжить обучение» на главной, исправлены подписи иконок", "Continue-learning button on the home page; icon labels fixed")
+    ] },
     { v: "2.0", d: "2026-10-12", items: [
       t3("Текшириладиган сертификат: QR код ва текшириш саҳифаси, Telegram'га улашиш", "Проверяемый сертификат: QR-код, страница проверки, отправка в Telegram", "Verifiable certificate: QR code, check page, share to Telegram"),
       t3("Ҳаво сифати: ранг билан бирга шакл белгилари (ранг кўра олмайдиганлар учун)", "Качество воздуха: к цветам добавлены значки-формы (для дальтоников)", "Air quality: shapes added next to colours (colour-blind friendly)"),
