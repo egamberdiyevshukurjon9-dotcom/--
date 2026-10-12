@@ -22,6 +22,7 @@
     sayohat: ["Эко-саёҳат", "play"], oyinlar: ["Ўйинлар", "play"], dunyo3d: ["3D Эко-дунё", "play"],
     lab3d: ["3D лаборатория", "lab"], lab: ["Лаборатория", "lab"], vlab: ["Виртуал лаборатория", "lab"], ilmiy: ["Илмий лаборатория", "lab"],
     loyiha: ["Лойиҳалар", "act"], chellenj: ["Челленж", "act"], hashar: ["Ҳашар", "act"], ekokoz: ["Эко-кўз", "act"], xarita: ["Эко-харита", "act"],
+    oyinmarkaz: ["Ўйин маркази", "play"], takror: ["Такрорлаш хонаси", "learn"],
     internet: ["Онлайн маълумотлар", "data"], havo: ["Ҳаво сифати", "data"], kalkulyator: ["Калькулятор", "data"], yordamchi: ["Ёрдамчи", "data"],
     maktab: ["Мактаб (синф)", "school"]
   };
@@ -221,7 +222,7 @@
   const COURSES = { kichik: "Кичик эколог", yosh: "Ёш тадқиқотчи", tabiat: "Табиат сирлари", steam: "Эко-STEAM лойиҳачи", asoslar: "Экология асослари", korxona: "Корхонада экологик менежмент",
     talaba: "Барқарор ривожланиш", suvhavo: "Сув ва ҳаво", biotoza: "Микроблар сувни тозалайди", monitoring: "Экологик мониторинг", iqlim: "Иқлим ўзгаришини бошқариш",
     qayta: "Қайта ишлаш", ekologiya: "Экология", qollanma: "Амалий қўлланмалар", tadqiqot: "Илмий тадқиқот методологияси" };
-  const lessonName = (k) => { const [c, i] = k.split(":"); return `${COURSES[c] || c} · ${Number(i) + 1}-дарс`; };
+  const lessonName = (k) => { const [c, i, q] = k.split(":"); return `${COURSES[c] || c} · ${Number(i) + 1}-дарс` + (q != null ? ` · ${Number(q) + 1}-савол` : ""); };
   function insights() {
     const t = stats.totals, out = [];
     const d = stats.daily, half = Math.floor(d.length / 2);
@@ -241,6 +242,85 @@
     if (security && security.suspicious.length) out.push(`Сўнгги 24 соатда ${security.suspicious.length} та шубҳали IP бор — «Блок ва хавфсизлик» бўлимини кўринг.`);
     $("#insights").innerHTML = out.length ? out.map((x) => `<li>${esc(x)}</li>`).join("") : "<li>Хулоса учун маълумот ҳали етарли эмас.</li>";
   }
+
+  /* ---------- Ўсиш ва ўқиш ---------- */
+  const FUNNEL = { visit: "👀 Платформага кирди", profile: "🪪 Профил тузди (ёш босқичи)", lesson: "📖 Дарс очди", done: "✅ Дарсни тугатди", exam: "📝 Якуний тест топширди", exampass: "🎯 Тестдан ўтди (80%+)", cert: "🏆 Сертификат олди" };
+  let growth = null, system = null;
+
+  function renderGrowth() {
+    if (!growth) return;
+    const g = growth, k = g.kpi;
+    kpis($("#kpisG"), [
+      [nf(k.dau), "DAU — бугун фаол", true], [nf(k.wau), "WAU — 7 кунда"], [nf(k.mau), "MAU — 30 кунда"],
+      [k.stickiness + "%", "DAU/MAU (ёпишқоқлик)"], [dur(k.avgSecs), "ўртача сессия"], [k.bounce + "%", "дарҳол чиқиб кетганлар"],
+      [nf(k.certs), `сертификат (${g.days} кун)`], [nf(k.certsAll), "жами сертификат"]
+    ]);
+    const top = Math.max(1, g.funnel[0] ? g.funnel[0].n : 1);
+    $("#chFunnel").innerHTML = `<div class="funnel">${g.funnel.map((s, i) => {
+      const prev = i ? g.funnel[i - 1].n : 0, drop = i && prev ? Math.round(((prev - s.n) / prev) * 100) : 0;
+      return `<div class="step"><span>${esc(FUNNEL[s.k] || s.k)}</span><span class="track"><span class="fill" style="width:${((s.n / top) * 100).toFixed(1)}%;display:block"></span></span><span class="v">${nf(s.n)} · ${Math.round((s.n / top) * 100)}%${drop > 0 ? ` <span class="drop">−${drop}%</span>` : ""}</span></div>`;
+    }).join("")}</div>`;
+    bars($("#chRet"), g.retention.map((r) => ({ n: `${r.n}+ кундан кейин`, v: r.pct || 0, c: "var(--c2)", r })), { f: (i) => (i.r.pct == null ? "маълумот кам" : `${i.r.pct}% · ${nf(i.r.back)}/${nf(i.r.base)}`) });
+    const maxW = Math.max(...g.cohorts.map((c) => c.cells.length), 1);
+    $("#tCohort").innerHTML = table(["Ҳафта", "#Янгилар", ...Array.from({ length: maxW }, (_, i) => (i ? `+${i} ҳ` : "0-ҳафта"))],
+      g.cohorts.slice().reverse().map((c) => `<tr><td>${c.week.split("-").reverse().join(".")}</td><td class="num">${nf(c.size)}</td>${Array.from({ length: maxW }, (_, i) => {
+        const v = c.cells[i];
+        return v == null || !c.size ? `<td class="c muted">${i < c.cells.length ? "—" : ""}</td>` : `<td class="c" style="background:rgba(16,185,129,${(0.08 + (v / 100) * 0.8).toFixed(2)})">${v}%</td>`;
+      }).join("")}</tr>`), "Ҳали маълумот йўқ.");
+    $("#tLessons2").innerHTML = table(["Дарс", "#Очилди", "#Тугатди", "Тугатиш", "#Ўрт. вақт"],
+      g.lessons.slice(0, 40).map((l) => `<tr><td>${esc(lessonName(l.k))}</td><td class="num">${nf(l.open)}</td><td class="num">${nf(l.done)}</td><td class="nw">${l.rate == null ? "—" : `<span class="meter good"><i style="width:${l.rate}%"></i></span>${l.rate}%`}</td><td class="num">${l.avg ? dur(l.avg) : "—"}</td></tr>`),
+      "Бу даврда дарс очилмаган.");
+    $("#tHard").innerHTML = table(["Савол", "#Жавоблар", "Хато"],
+      g.hard.map((q) => `<tr><td>${esc(lessonName(q.k))}</td><td class="num">${nf(q.n)}</td><td class="nw"><span class="meter"><i style="width:${q.err}%"></i></span>${q.err}%</td></tr>`),
+      "Камида 3 та жавоб берилган савол ҳали йўқ.");
+    $("#tCerts").innerHTML = table(["Сана", "Эгаси", "Курс", "#Тест", "Код"],
+      g.certList.map((c) => `<tr><td>${fmt(c.at)}</td><td>${esc(c.name)}</td><td>${esc(c.title)}</td><td class="num">${c.pct ? c.pct + "%" : "—"}</td><td><a class="mono" href="/tekshir?c=${encodeURIComponent(c.code)}" target="_blank" rel="noopener">${esc(c.code)}</a></td></tr>`),
+      "Бу даврда сертификат берилмаган.");
+  }
+
+  /* ---------- Тизим ва хатолар ---------- */
+  const bytes = (n) => (n > 1048576 ? (n / 1048576).toFixed(1) + " МБ" : Math.max(1, Math.round(n / 1024)) + " КБ");
+  function renderSystem() {
+    if (!system) return;
+    const s = system, c = s.counts;
+    $("#sysInfo").innerHTML = [
+      ["Ишлаяпти", dur(s.uptime) + ` (${fmt(s.started)} дан)`], ["Node.js", s.node], ["Хотира", bytes(s.mem.rss)],
+      ["Маълумотлар файли", bytes(s.dbSize)], ["Ҳисоблар", nf(c.users)], ["Ташриф ёзувлари", nf(c.visits)], ["Журнал ёзувлари", nf(c.events)],
+      ["Харита хабарлари", nf(c.reports)], ["Сертификатлар", nf(c.certs)], ["Хатолар (турлари)", nf(c.errors)]
+    ].map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("");
+    $("#tBackups").innerHTML = table(["Файл", "Сана", "#Ҳажм"], s.backups.map((b) => `<tr><td class="mono">${esc(b.file)}</td><td>${fmt(b.at)}</td><td class="num">${bytes(b.size)}</td></tr>`),
+      "Ҳали захира нусха йўқ (сервер ишга тушгандан 10 сония кейин биринчиси олинади).");
+    $("#tErrors").innerHTML = table(["Охирги марта", "Хато", "Жой", "#Сони", "Қурилмалар"],
+      s.errors.map((e) => `<tr><td>${fmt(e.last)}<br><small class="muted">биринчи: ${fmt(e.first)}</small></td><td><b>${esc(e.msg)}</b>${e.ver ? `<br><small class="muted">v${esc(e.ver)}${e.sec ? " · " + esc(secName(e.sec)) : ""}</small>` : ""}</td><td class="mono">${esc(e.src || "—")}${e.line ? ":" + e.line : ""}</td><td class="num">${nf(e.count)}</td><td>${(e.devices || []).map((d) => `<span class="tag">${esc(d)}</span>`).join(" ")}</td></tr>`),
+      "Хато йўқ — ҳаммаси жойида 👍");
+    $("#healthUrl").textContent = location.origin + s.health;
+    const n = s.errors.filter((e) => overview && overview.now - e.last < 86400000).length;
+    $("#bErr").hidden = !n; $("#bErr").textContent = n;
+  }
+  async function loadGrowth() { growth = await api("/api/admin/growth?days=" + $("#range").value); }
+  async function loadSystem() { system = await api("/api/admin/system"); }
+
+  /* ---------- Мавзу: авто → ёруғ → тунги ---------- */
+  const THEMES = { auto: "🖥️ Авто мавзу", light: "☀️ Ёруғ мавзу", dark: "🌙 Тунги мавзу" };
+  function paintTheme() {
+    let t = "auto";
+    try { t = localStorage.getItem("eko-admin-theme") || "auto"; } catch (e) { /* ignore */ }
+    if (!THEMES[t]) t = "auto";
+    if (t === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t;
+    $("#themeBtn").textContent = THEMES[t];
+    return t;
+  }
+  $("#themeBtn").addEventListener("click", () => {
+    const order = ["auto", "light", "dark"], next = order[(order.indexOf(paintTheme()) + 1) % 3];
+    try { localStorage.setItem("eko-admin-theme", next); } catch (e) { /* ignore */ }
+    paintTheme();
+  });
+  paintTheme();
+  $("#dlBackup").href = "/api/admin/backup";
+  $("#clearErr").addEventListener("click", async () => {
+    if (!(await confirmBox("Хатолар журналини тозалаш", "Барча хато ёзувлари ўчирилади.", false))) return;
+    try { await api("/api/admin/errors/clear", {}); await loadSystem(); renderSystem(); toast("Тозаланди"); } catch (err) { if (err.message !== "auth") toast(err.message); }
+  });
 
   function renderBlocks() {
     if (!security) return;
@@ -371,10 +451,10 @@
   async function loadSecurity() { security = await api("/api/admin/security"); }
   async function loadReports() { reports = (await api("/api/admin/reports")).reports; }
 
-  function renderAll() { renderDash(); renderOnline(); renderPeople(); renderJournal(); renderStats(); renderBlocks(); renderReports(); }
+  function renderAll() { renderDash(); renderOnline(); renderPeople(); renderJournal(); renderStats(); renderBlocks(); renderReports(); renderGrowth(); renderSystem(); }
   async function reloadAll() {
     try {
-      await Promise.all([loadOverview(), loadStats(), loadSecurity(), loadReports()]);
+      await Promise.all([loadOverview(), loadStats(), loadSecurity(), loadReports(), loadGrowth(), loadSystem()]);
       renderAll();
       if (tab === "journal") { await loadRecent(); renderJournal(); }
     } catch (e) { if (e.message !== "auth") toast(e.message); }
@@ -387,18 +467,21 @@
     }, 15000);
   }
 
-  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси" };
+  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси" };
   $("#tabs").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tab]");
     if (!b) return;
     tab = b.dataset.tab;
     $$("#tabs button").forEach((x) => x.classList.toggle("on", x === b));
+    try { b.scrollIntoView({ block: "nearest", inline: "center" }); } catch (err) { /* ignore */ }
     $$("[data-view]").forEach((s) => (s.hidden = s.dataset.view !== tab));
     $("#title").textContent = TITLES[tab];
     try { history.replaceState(null, "", "#" + tab); } catch (err) { /* ignore */ }
     if (tab === "journal") { try { await loadRecent(); renderJournal(); } catch (err) { /* ignore */ } }
+    if (tab === "system") { try { await loadSystem(); renderSystem(); } catch (err) { /* ignore */ } }
+    if (tab === "growth") { try { await loadGrowth(); renderGrowth(); } catch (err) { /* ignore */ } }
   });
-  $("#range").addEventListener("change", async () => { await loadStats(); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } });
+  $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } });
   $("#refresh").addEventListener("click", reloadAll);
   ["#pSearch", "#pKind"].forEach((s) => $(s).addEventListener("input", renderPeople));
   ["#jSearch", "#jType"].forEach((s) => $(s).addEventListener("input", renderJournal));

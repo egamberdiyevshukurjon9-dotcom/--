@@ -31,7 +31,7 @@
 ```sh
 sudo apt-get install -y openjdk-17-jdk android-sdk-platform-23 aapt zipalign apksigner dalvik-exchange
 KEYSTORE=/йўл/ekotalim-release.jks KS_PASS=парол ./android/build.sh   # версия: version.properties
-cp android/build/Ekomun-1.9.apk app/ && node tools/build-update.js
+cp android/build/Ekomun-2.0.apk app/ && node tools/build-update.js
 ```
 
 Тайёр файл: `android/build/Ekomun-<версия>.apk`. Янгилаш ўрнатилган илова устидан

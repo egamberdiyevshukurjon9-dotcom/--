@@ -78,7 +78,7 @@ a { color: var(--primary); }
 /* Topbar */
 .topbar {
   position: sticky; top: 0; z-index: 50;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  background: var(--bg); background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
 }
 .topbar-inner { display: flex; align-items: center; gap: 16px; height: 64px; }
@@ -200,6 +200,8 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 /* Air quality */
 .aq-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .85rem; color: var(--muted); margin-bottom: 16px; }
 .aq-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.aq-shape { display: inline-block; min-width: 1.1em; margin-right: 4px; text-align: center; font-size: 1.05em; line-height: 1; }
+.aq-grid > p { grid-column: 1 / -1; }
 .aq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
 .aq { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; border-top: 5px solid var(--aq, #999); }
 .aq h4 { margin: 0 0 6px; }
@@ -277,10 +279,21 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .opt.wrong { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
 .modal-actions { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; margin-top: 16px; }
 .cert-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.cert-img { display: block; width: 100%; height: auto; margin: 16px 0 8px; border-radius: 12px; border: 1px solid var(--line); box-shadow: var(--shadow, 0 8px 24px rgba(0,0,0,.08)); }
+.cert-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.about-head { display: flex; gap: 14px; align-items: center; margin: 0 44px 10px 0; }
+.about-head img { border-radius: 14px; box-shadow: 0 6px 18px -8px rgba(4,120,87,.6); }
+.about-head h2 { margin: 0; }
+.about-head p { margin: 2px 0 0; }
+.about-modal h3 { margin: 18px 0 8px; font-size: 1.02rem; }
+.about-ver { margin: 0 0 8px; }
+.about-ver ul { margin: 4px 0 0; padding-left: 20px; }
+.about-ver li { margin: 2px 0; font-size: .92rem; }
+.about-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .cert-form input { flex: 1; min-width: 200px; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; }
 
 /* Toast */
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, 120px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 12px; font-weight: 600; transition: transform .3s, visibility .3s; z-index: 100; max-width: calc(100% - 32px); text-align: center; visibility: hidden; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, 120px); width: max-content; background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 12px; font-weight: 600; transition: transform .3s, visibility .3s; z-index: 100; max-width: calc(100% - 32px); text-align: center; visibility: hidden; }
 .toast.show { transform: translate(-50%, 0); visibility: visible; }
 
 /* Footer */
@@ -615,7 +628,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
   background: color-mix(in srgb, var(--c, var(--primary)) 16%, var(--card)); border: 1px solid color-mix(in srgb, var(--c, var(--primary)) 30%, transparent); }
 .app b { font-size: .95rem; line-height: 1.25; overflow-wrap: anywhere; }
 .app small { color: var(--muted); font-size: .78rem; line-height: 1.3; }
-.page-bar { position: sticky; top: 64px; z-index: 40; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.page-bar { position: sticky; top: 64px; z-index: 40; background: var(--bg); background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .page-bar-in { display: flex; align-items: center; gap: 12px; height: 52px; }
 .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: var(--primary-soft); color: var(--text); text-decoration: none; font-weight: 600; font-size: .92rem; white-space: nowrap; }
 .back-btn:hover { background: var(--primary); color: var(--on-primary); }
@@ -666,17 +679,17 @@ a { text-underline-offset: 3px; }
 .lib-feature { background: linear-gradient(120deg, color-mix(in srgb, var(--primary) 16%, var(--glass-strong)), color-mix(in srgb, var(--primary-2) 16%, var(--glass-strong))); }
 .aud, .course, .news, .lib-card, .mstat, .aq, .tl, .myth { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .aud:hover, .course:hover, .news:hover, .lib-card:hover, .mstat:hover, .aq:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-.section.alt { background: color-mix(in srgb, var(--card) 35%, transparent); border-block: 1px solid var(--glass-line); }
+.section.alt { background: var(--card); background: color-mix(in srgb, var(--card) 35%, transparent); border-block: 1px solid var(--glass-line); }
 .course-icon, .aud-icon { border-radius: 16px; }
 .course-icon { background: linear-gradient(145deg, var(--primary-soft), color-mix(in srgb, var(--primary-2) 18%, var(--card))); }
 .stat b, .mstat b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; letter-spacing: -.02em; }
 
 /* Топ панел */
-.topbar { padding-top: env(safe-area-inset-top); background: color-mix(in srgb, var(--eko-base) 70%, transparent); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); border-bottom: 1px solid var(--glass-line); }
+.topbar { padding-top: env(safe-area-inset-top); background: var(--eko-base); background: color-mix(in srgb, var(--eko-base) 70%, transparent); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); border-bottom: 1px solid var(--glass-line); }
 .brand { font-weight: 800; letter-spacing: -.02em; gap: 10px; min-height: 44px; }
 .brand-mark { width: 34px; height: 34px; flex: none; filter: drop-shadow(0 4px 10px rgba(4, 120, 87, .35)); }
 .nav a { padding: 10px 10px; border-radius: 12px; font-weight: 550; min-height: 44px; display: inline-flex; align-items: center; transition: background .15s, color .15s; }
-.nav a:hover { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.nav a:hover { background: var(--primary-soft); background: color-mix(in srgb, var(--primary) 12%, transparent); }
 .nav a[aria-current="page"] { background: var(--primary-soft); color: var(--primary); }
 .theme-btn, .menu-btn, .lang-btn { height: 44px; min-width: 44px; border-radius: 14px; background: var(--glass); border: 1px solid var(--glass-line); box-shadow: 0 1px 2px rgba(0, 0, 0, .04); display: inline-grid; place-items: center; transition: border-color .15s, background .15s; }
 .theme-btn:hover, .menu-btn:hover, .lang-btn:hover { border-color: var(--primary); }
@@ -715,7 +728,7 @@ a { text-underline-offset: 3px; }
   outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
 }
 .lesson-list button, .opt, .steps button { min-height: 44px; border-radius: 12px; background: var(--glass-strong); }
-.progress, .g-progress, .mq-bar { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+.progress, .g-progress, .mq-bar { background: var(--primary-soft); background: color-mix(in srgb, var(--primary) 12%, transparent); }
 .progress > div, .g-progress div, .irr-bar > div { background: var(--grad); }
 
 /* Бош саҳифа */
@@ -745,7 +758,7 @@ a { text-underline-offset: 3px; }
 .stat { border-radius: 20px; padding: 18px 18px 16px; }
 
 /* Ички саҳифалар */
-.page-bar { top: calc(64px + env(safe-area-inset-top)); background: color-mix(in srgb, var(--eko-base) 62%, transparent); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); border-bottom: 1px solid var(--glass-line); }
+.page-bar { top: calc(64px + env(safe-area-inset-top)); background: var(--eko-base); background: color-mix(in srgb, var(--eko-base) 86%, transparent); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); border-bottom: 1px solid var(--glass-line); }
 .page-bar-in { height: 58px; }
 .back-btn { min-height: 42px; padding: 8px 16px 8px 12px; background: var(--glass-strong); border: 1px solid var(--glass-line); box-shadow: var(--shadow); color: var(--text); transition: background .15s, color .15s; }
 .back-btn:hover { background: var(--btn-grad); color: var(--on-primary); }
@@ -771,7 +784,7 @@ a { text-underline-offset: 3px; }
 .msg.me { background: var(--btn-grad); }
 .chat-log { background: transparent; }
 .mem { background: var(--grad); border-radius: 18px; }
-.footer { border-top: 1px solid var(--glass-line); background: color-mix(in srgb, var(--card) 45%, transparent); padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+.footer { border-top: 1px solid var(--glass-line); background: var(--card); background: color-mix(in srgb, var(--card) 45%, transparent); padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
 .linklike { min-height: 44px; }
 
 @media (max-width: 620px) {
@@ -809,7 +822,7 @@ a { text-underline-offset: 3px; }
 .lesson-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-right: 40px; }
 .lesson-steps { display: flex; gap: 5px; }
 .lesson-steps i { width: 22px; height: 6px; border-radius: 99px; background: var(--line); }
-.lesson-steps i.done { background: color-mix(in srgb, var(--primary) 55%, transparent); }
+.lesson-steps i.done { background: var(--primary); background: color-mix(in srgb, var(--primary) 55%, transparent); }
 .lesson-steps i.cur { background: var(--primary); width: 34px; }
 .lesson-steps.many { flex-wrap: wrap; gap: 3px; max-width: 100%; }
 .lesson-steps.many i { width: 9px; }
@@ -2114,11 +2127,11 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
           <button class="btn btn-ghost" id="aqRefresh">↻ Янгилаш</button>
         </div>
         <div class="aq-legend">
-          <span><i style="background:#22c55e"></i>Яхши (0–50)</span>
-          <span><i style="background:#eab308"></i>Ўртача (51–100)</span>
-          <span><i style="background:#f97316"></i>Сезгирлар учун зарарли (101–150)</span>
-          <span><i style="background:#ef4444"></i>Зарарли (151–200)</span>
-          <span><i style="background:#a855f7"></i>Жуда зарарли (201+)</span>
+          <span><b class="aq-shape" style="color:#22c55e" aria-hidden="true">●</b>Яхши (0–50)</span>
+          <span><b class="aq-shape" style="color:#eab308" aria-hidden="true">▲</b>Ўртача (51–100)</span>
+          <span><b class="aq-shape" style="color:#f97316" aria-hidden="true">◆</b>Сезгирлар учун зарарли (101–150)</span>
+          <span><b class="aq-shape" style="color:#ef4444" aria-hidden="true">■</b>Зарарли (151–200)</span>
+          <span><b class="aq-shape" style="color:#a855f7" aria-hidden="true">✖</b>Жуда зарарли (201+)</span>
         </div>
         <div class="aq-grid" id="aqGrid"><p class="muted">Юкланмоқда…</p></div>
         <p class="muted small" id="aqTime"></p>
@@ -2205,6 +2218,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
       <div class="wrap">
         <h2 class="section-title">Эко-ёрдамчи</h2>
         <p class="muted">Экология бўйича саволингизни ёзинг: пластик, сув, ҳаво, чиқиндилар, корхона, ISO 14001, дарахт экиш ва бошқалар.</p>
+        <p class="small muted">ℹ️ Эко-ёрдамчи тайёр жавоблар базаси асосида ишлайди (сунъий интеллект эмас) ва интернетсиз ҳам жавоб беради.</p>
         <div class="chat">
           <div class="chat-log" id="chatLog" aria-live="polite"></div>
           <div class="chat-suggest" id="chatSuggest"></div>
@@ -2224,7 +2238,9 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
         <p class="muted small">Экологик маданиятни ошириш учун очиқ таълим платформаси. Барча материаллар бепул.</p>
       </div>
       <div class="small muted">
+        <button class="linklike" type="button" data-about data-notr>Ekomun v2.0</button> ·
         <a href="/privacy">Махфийлик сиёсати</a> ·
+        <button class="linklike" type="button" data-export-me>Маълумотларимни юклаб олиш</button> ·
         <button class="linklike" id="resetBtn">Натижаларимни тозалаш</button>
       </div>
     </div>
@@ -32260,6 +32276,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     const lesson = course.lessons[li];
     const lk = `${cid}:${li}`;
     window.dispatchEvent(new CustomEvent("eko:lesson", { detail: { key: lk } }));
+    const openedAt = Date.now();
     const answered = {};
     const easy = state.easy && lesson.simple;
     const paras = easy ? lesson.simple : lesson.body;
@@ -32543,7 +32560,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         if (ai !== q.c) {
           // Форматив баҳолаш: хато жавоб жазоланмайди, яна уриниш мумкин
           opt.classList.add("wrong"); opt.disabled = true;
-          if (!(qi in answered)) { answered[qi] = false; window.dispatchEvent(new CustomEvent("eko:answer", { detail: { ref: { t: "l", cid, li, qi }, ok: false } })); }
+          if (!(qi in answered)) { answered[qi] = false; window.dispatchEvent(new CustomEvent("eko:answer", { detail: { ref: { t: "l", cid, li, qi }, ok: false } })); window.dispatchEvent(new CustomEvent("eko:q", { detail: { k: `${cid}:${li}:${qi}`, ok: false } })); }
           hint.hidden = false;
           hint.textContent = "Деярли! Матнга яна бир қаранг ва бошқа жавобни танланг.";
           return;
@@ -32551,7 +32568,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         $$(".opt", qEl).forEach((o, i) => { o.disabled = true; if (i === q.c) o.classList.add("right"); });
         hint.hidden = false;
         hint.textContent = answered[qi] === false ? "✓ Тўғри! Хатодан ўргандингиз — бу энг яхши ўрганиш." : "✓ Тўғри!";
-        if (!(qi in answered)) answered[qi] = true;
+        if (!(qi in answered)) { answered[qi] = true; window.dispatchEvent(new CustomEvent("eko:q", { detail: { k: `${cid}:${li}:${qi}`, ok: true } })); }
         const k = qKey(cid, li, qi);
         if (!state.correct[k]) { state.correct[k] = true; addXp(10, "тўғри жавоб"); }
         if (answered[qi]) window.EkoGame && EkoGame.track("correct");
@@ -32564,6 +32581,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
       const res = $("#quizResult", modalBody);
       res.innerHTML = `✅ Дарс тугатилди! Биринчи уринишда ${first}/${lesson.quiz.length} тўғри.${first < lesson.quiz.length ? " Энди барчасини биласиз 👏" : " Аъло!"}`;
       const pk = `${cid}:${li}`;
+      window.dispatchEvent(new CustomEvent("eko:lessondone", { detail: { key: pk, secs: Math.round((Date.now() - openedAt) / 1000) } }));
       if (!state.perfect[pk]) {
         state.perfect[pk] = true;
         const share = first / lesson.quiz.length;
@@ -32648,6 +32666,8 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         const first = state.exams[cid] == null || state.exams[cid] < EXAM_PASS;
         state.exams[cid] = Math.max(state.exams[cid] || 0, pct);
         save();
+        window.dispatchEvent(new CustomEvent("eko:fn", { detail: { k: "exam" } }));
+        if (pct >= EXAM_PASS) window.dispatchEvent(new CustomEvent("eko:fn", { detail: { k: "exampass" } }));
         if (pct >= EXAM_PASS && first) addXp(30, "Якуний тестдан ўтдингиз");
         if (pct === 100 && !state.flags["exam100_" + cid]) { state.flags["exam100_" + cid] = true; addXp(50, "Якуний тест · 100%"); }
         qs.forEach((q, i) => { if (pick[i] !== q.c) window.dispatchEvent(new CustomEvent("eko:answer", { detail: { ref: { t: "x", cid, i: q.bi }, ok: false } })); });
@@ -32763,66 +32783,142 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   });
   renderXwPicker();
 
-  /* ---------- Сертификат ---------- */
+  /* ---------- Сертификат ----------
+     Серверда ишлаганда сертификат рўйхатга олинади ва QR код /tekshir саҳифасига олиб боради:
+     ҳар ким сертификат ҳақиқий эканини текшира олади. Интернетсиз (илова) — маҳаллий рақам, QR йўқ. */
+  const hasServer = () => /^https?:$/.test(location.protocol) && location.hostname !== "appassets.androidplatform.net";
+  function loadQr() {
+    if (window.qrcode) return Promise.resolve(window.qrcode);
+    return new Promise((ok, no) => {
+      const s = document.createElement("script");
+      s.src = "/vendor/qrcode.js";
+      s.onload = () => (window.qrcode ? ok(window.qrcode) : no(new Error("qr")));
+      s.onerror = no;
+      document.head.appendChild(s);
+    });
+  }
+  async function issueCertificate(name, course) {
+    state.certs = state.certs || {};
+    const old = state.certs[course.id];
+    if (old && old.name === name && (old.verified || !hasServer())) return old;
+    const pct = state.exams[course.id] != null ? state.exams[course.id] : 100;
+    let cert = { name, date: dayKey(), code: "", verified: false, pct };
+    if (hasServer() && navigator.onLine !== false) {
+      try {
+        const r = await fetch("/api/cert", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin",
+          body: JSON.stringify({ name, cid: course.id, title: course.title, lessons: course.lessons.length, pct }) });
+        const d = r.ok ? await r.json() : null;
+        if (d && d.code) cert = { ...cert, code: d.code, verified: true };
+      } catch (e) { /* интернет йўқ — маҳаллий рақам */ }
+    }
+    if (!cert.code) cert.code = "EKM-L" + Date.now().toString(36).toUpperCase();
+    state.certs[course.id] = cert;
+    save();
+    window.dispatchEvent(new CustomEvent("eko:fn", { detail: { k: "cert" } }));
+    return cert;
+  }
+
   function openCertificate(cid) {
     const course = COURSES.find((c) => c.id === cid);
     if (!state.flags["cert_" + cid]) { state.flags["cert_" + cid] = true; addXp(200, "сертификат олинди"); window.EkoGame && EkoGame.track("cert"); }
     modalBody.innerHTML = `
       <span class="pill">🏆 Табриклаймиз!</span>
-      <h2>«${esc(course.title)}» курси муваффақиятли тугатилди</h2>
-      <p class="muted">Сертификатга ёзиладиган исм-шарифингизни киритинг ва уни PNG шаклида юклаб олинг.</p>
+      <h2><span>Курс муваффақиятли тугатилди</span>: «${esc(course.title)}»</h2>
+      <p class="muted">Сертификатга ёзиладиган исм-шарифингизни киринг. Сертификатда текшириш коди ва QR код бўлади: уни ота-онангиз, ўқитувчингиз ёки иш берувчи текшира олади.</p>
       <form class="cert-form" id="certForm">
         <input id="certName" aria-label="Исм ва фамилия" required maxlength="60" placeholder="Исм Фамилия" value="${esc(state.name)}">
-        <button class="btn btn-primary">⬇ Юклаб олиш</button>
-      </form>`;
-    $("#certForm").addEventListener("submit", (e) => {
+        <button class="btn btn-primary">🏆 Сертификат олиш</button>
+      </form>
+      <div id="certOut"></div>`;
+    $("#certForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = $("#certName").value.trim();
       if (!name) return;
       state.name = name; save();
-      downloadCertificate(name, course);
+      const btn = $("#certForm button");
+      btn.disabled = true;
+      try { await showCertificate(name, course); } finally { btn.disabled = false; }
     });
     if (!modal.open) modal.showModal();
   }
 
-  function downloadCertificate(name, course) {
+  async function showCertificate(name, course) {
+    const cert = await issueCertificate(name, course);
+    const url = cert.verified ? `${location.origin}/tekshir?c=${cert.code}` : "";
+    let qr = null;
+    if (url) { try { const q = (await loadQr())(0, "M"); q.addData(url); q.make(); qr = q; } catch (e) { /* QR'сиз */ } }
+    const cv = drawCertificate(name, course, cert, qr);
+    const file = `Ekomun-sertifikat-${course.id}.png`;
+    const out = $("#certOut");
+    out.innerHTML = `
+      <img class="cert-img" alt="${esc(T("Сертификат"))}" src="${cv.toDataURL("image/png")}">
+      <p class="small muted">${cert.verified ? `Текшириш коди: <b data-notr>${cert.code}</b> · <a href="${esc(url)}" target="_blank" rel="noopener">текшириш саҳифаси ↗</a>` : "Интернетсиз берилди: сертификат рақами шу қурилмада сақланди. Интернет билан қайта очсангиз, QR текшириш коди қўшилади."}</p>
+      <div class="cert-actions">
+        <button class="btn btn-primary" type="button" data-cert-dl>⬇ Юклаб олиш (PNG)</button>
+        <button class="btn btn-ghost" type="button" data-cert-share>📤 Улашиш</button>
+      </div>`;
+    out.querySelector("[data-cert-dl]").onclick = () => {
+      const a = document.createElement("a");
+      a.download = file;
+      a.href = cv.toDataURL("image/png");
+      a.click();
+      toast("🏆 Сертификат юклаб олинди!");
+    };
+    const shareBtn = out.querySelector("[data-cert-share]");
+    const text = T(`Мен Ekomun платформасида «${course.title}» курсини тугатдим! 🌿`) + (url ? " " + url : "");
+    shareBtn.onclick = async () => {
+      try {
+        const blob = await new Promise((r) => cv.toBlob(r, "image/png"));
+        const f = new File([blob], file, { type: "image/png" });
+        if (navigator.canShare && navigator.canShare({ files: [f] })) await navigator.share({ files: [f], text });
+        else if (navigator.share) await navigator.share({ text });
+        else { await navigator.clipboard.writeText(text); toast("Матн нусхаланди — Telegram'га жойлаштиринг"); }
+      } catch (e) { /* бекор қилинди */ }
+    };
+  }
+
+  function drawCertificate(name, course, cert, qr) {
     const W = 1600, H = 1130;
     const cv = document.createElement("canvas");
     cv.width = W; cv.height = H;
     const g = cv.getContext("2d");
+    const F = "Onest, Inter, system-ui, sans-serif";
     const bg = g.createLinearGradient(0, 0, W, H);
     bg.addColorStop(0, "#f0fdf4"); bg.addColorStop(1, "#e0f2fe");
     g.fillStyle = bg; g.fillRect(0, 0, W, H);
-    g.strokeStyle = "#15803d"; g.lineWidth = 14; g.strokeRect(40, 40, W - 80, H - 80);
+    g.strokeStyle = "#047857"; g.lineWidth = 14; g.strokeRect(40, 40, W - 80, H - 80);
     g.strokeStyle = "#86efac"; g.lineWidth = 3; g.strokeRect(70, 70, W - 140, H - 140);
     g.textAlign = "center";
-    g.fillStyle = "#15803d"; g.font = "700 44px Inter, sans-serif";
+    g.fillStyle = "#047857"; g.font = `700 44px ${F}`;
     g.fillText("🌿 Ekomun", W / 2, 180);
-    g.fillStyle = "#13261a"; g.font = "800 96px Inter, sans-serif";
+    g.fillStyle = "#0b1f17"; g.font = `800 96px ${F}`;
     g.fillText(T("СЕРТИФИКАТ"), W / 2, 320);
-    g.fillStyle = "#5b6f61"; g.font = "400 36px Inter, sans-serif";
+    g.fillStyle = "#4a5f56"; g.font = `400 36px ${F}`;
     g.fillText(T("Ушбу сертификат"), W / 2, 420);
-    g.fillStyle = "#0c4a6e"; g.font = "700 76px Inter, sans-serif";
+    g.fillStyle = "#0c4a6e"; g.font = `700 76px ${F}`;
     g.fillText(name, W / 2, 530, W - 240);
-    g.fillStyle = "#15803d"; g.fillRect(W / 2 - 300, 560, 600, 4);
-    g.fillStyle = "#5b6f61"; g.font = "400 36px Inter, sans-serif";
+    g.fillStyle = "#047857"; g.fillRect(W / 2 - 300, 560, 600, 4);
+    g.fillStyle = "#4a5f56"; g.font = `400 36px ${F}`;
     g.fillText(T("га қуйидаги экологик таълим курсини муваффақиятли"), W / 2, 640);
     g.fillText(T("тугатганлиги учун берилди:"), W / 2, 690);
-    g.fillStyle = "#13261a"; g.font = "700 50px Inter, sans-serif";
+    g.fillStyle = "#0b1f17"; g.font = `700 50px ${F}`;
     g.fillText(T(`«${course.title}»`), W / 2, 790, W - 240);
-    g.fillStyle = "#5b6f61"; g.font = "400 30px Inter, sans-serif";
-    g.fillText(T(`${course.lessons.length} та дарс · барча тестлар топширилган`), W / 2, 850);
-    const d = new Date();
-    g.textAlign = "left"; g.fillText(T(`Сана: ${dayKey(d).split("-").reverse().join(".")}`), 160, 990);
-    const id = "ET-" + course.id.toUpperCase() + "-" + d.getTime().toString(36).toUpperCase();
-    g.textAlign = "right"; g.fillText(`№ ${id}`, W - 160, 990);
-    g.font = "120px sans-serif"; g.textAlign = "center"; g.fillText("🌍", W / 2, 1010);
-
-    const a = document.createElement("a");
-    a.download = `Ekomun-sertifikat-${course.id}.png`;
-    a.href = cv.toDataURL("image/png");
-    a.click();
-    toast("🏆 Сертификат юклаб олинди!");
+    g.fillStyle = "#4a5f56"; g.font = `400 30px ${F}`;
+    g.fillText(T(`${course.lessons.length} та дарс · барча тестлар топширилган`) + (state.exams[course.id] != null ? ` · ${T("якуний тест")}: ${state.exams[course.id]}%` : ""), W / 2, 850, W - 240);
+    g.textAlign = "left";
+    g.fillText(T(`Сана: ${cert.date.split("-").reverse().join(".")}`), 160, 990);
+    g.fillText(`№ ${cert.code}`, 160, 1040);
+    if (qr) {
+      const n = qr.getModuleCount(), size = 160, cell = size / n, x0 = W - 170 - size, y0 = 870, q = Math.ceil(cell * 4); // 4 модуль бўш чегара
+      g.fillStyle = "#fff"; g.fillRect(x0 - q, y0 - q, size + 2 * q, size + 2 * q);
+      g.fillStyle = "#0b1f17";
+      for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) g.fillRect(x0 + c * cell, y0 + r * cell, Math.ceil(cell), Math.ceil(cell));
+      g.textAlign = "right"; g.font = `400 22px ${F}`; g.fillStyle = "#4a5f56";
+      g.fillText(T("QR — ҳақиқийлигини текшириш"), x0 - q - 12, y0 + size);
+    } else {
+      g.font = "120px sans-serif"; g.textAlign = "center"; g.fillText("🌍", W / 2, 1010);
+    }
+    return cv;
   }
 
   /* ---------- Янгиликлар ---------- */
@@ -32982,12 +33078,13 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     ["Урганч", 41.55, 60.63], ["Навоий", 40.1, 65.38], ["Жиззах", 40.12, 67.84], ["Гулистон", 40.49, 68.78]
   ];
   function aqiInfo(v) {
-    if (v == null) return ["#999", "Маълумот йўқ"];
-    if (v <= 50) return ["#22c55e", "Яхши"];
-    if (v <= 100) return ["#eab308", "Ўртача"];
-    if (v <= 150) return ["#f97316", "Сезгирлар учун зарарли"];
-    if (v <= 200) return ["#ef4444", "Зарарли"];
-    return ["#a855f7", "Жуда зарарли"];
+    /* Ранг кўра олмайдиганлар учун ҳар даражанинг ўз шакли бор (●, ▲, ◆, ■, ✖) */
+    if (v == null) return ["#999", "Маълумот йўқ", "—"];
+    if (v <= 50) return ["#22c55e", "Яхши", "●"];
+    if (v <= 100) return ["#eab308", "Ўртача", "▲"];
+    if (v <= 150) return ["#f97316", "Сезгирлар учун зарарли", "◆"];
+    if (v <= 200) return ["#ef4444", "Зарарли", "■"];
+    return ["#a855f7", "Жуда зарарли", "✖"];
   }
   async function loadAir() {
     const grid = $("#aqGrid");
@@ -33015,11 +33112,11 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
       const rows = CITIES.map((c, i) => ({ name: c[0], cur: (data[i] || {}).current || {} }))
         .sort((a, b) => (b.cur.us_aqi ?? -1) - (a.cur.us_aqi ?? -1));
       grid.innerHTML = rows.map(({ name, cur }) => {
-        const [col, lbl] = aqiInfo(cur.us_aqi);
+        const [col, lbl, shp] = aqiInfo(cur.us_aqi);
         const f = (v) => (v == null ? "—" : Math.round(v));
         return `<div class="aq" style="--aq:${col}">
           <h4>${esc(name)}</h4>
-          <div class="aqi">${f(cur.us_aqi)}</div><div class="lbl" style="color:${col}">${lbl}</div>
+          <div class="aqi">${f(cur.us_aqi)}</div><div class="lbl"><b class="aq-shape" style="color:${col}" aria-hidden="true">${shp}</b> ${lbl}</div>
           <dl><dt>PM2.5</dt><dd>${f(cur.pm2_5)} мкг/м³</dd><dt>PM10</dt><dd>${f(cur.pm10)} мкг/м³</dd><dt>NO₂</dt><dd>${f(cur.nitrogen_dioxide)} мкг/м³</dd></dl>
         </div>`;
       }).join("");
@@ -33244,7 +33341,8 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   /* Ўйинлар скрипти учун кўприк */
   window.EkoApp = { addXp, flag, save, toast, renderGamification, renderChallenges, streak, openLesson, levelOf, levels: LEVELS, badges: BADGES, cities: CITIES, courses: COURSES, get state() { return state; } };
 
-  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  /* Android иловада платформа файллари APK ичида (appassets) — service worker керак эмас */
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http") && location.hostname !== "appassets.androidplatform.net") {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
 })();
@@ -35991,5 +36089,6 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   <script src="/vendor/eko-adabiyot.js" defer></script>
   <script src="/vendor/eko-stat.js" defer></script>
   <script src="/vendor/eko-oyin.js" defer></script>
+  <script src="/vendor/eko-ilova.js" defer></script>
 </body>
 </html>
