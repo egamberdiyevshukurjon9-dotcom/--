@@ -221,7 +221,7 @@
   }
   const COURSES = { kichik: "Кичик эколог", yosh: "Ёш тадқиқотчи", tabiat: "Табиат сирлари", steam: "Эко-STEAM лойиҳачи", asoslar: "Экология асослари", korxona: "Корхонада экологик менежмент",
     talaba: "Барқарор ривожланиш", suvhavo: "Сув ва ҳаво", biotoza: "Микроблар сувни тозалайди", monitoring: "Экологик мониторинг", iqlim: "Иқлим ўзгаришини бошқариш",
-    qayta: "Қайта ишлаш", ekologiya: "Экология", qollanma: "Амалий қўлланмалар", tadqiqot: "Илмий тадқиқот методологияси" };
+    qayta: "Қайта ишлаш", ekologiya: "Экология", qollanma: "Амалий қўлланмалар", tadqiqot: "Илмий тадқиқот методологияси", litosfera: "Литосферани ҳимоя қилиш", yerqalqon: "Ер қалқони" };
   const lessonName = (k) => { const [c, i, q] = k.split(":"); return `${COURSES[c] || c} · ${Number(i) + 1}-дарс` + (q != null ? ` · ${Number(q) + 1}-савол` : ""); };
   function insights() {
     const t = stats.totals, out = [];

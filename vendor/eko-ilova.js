@@ -4,7 +4,7 @@
    Матнлар uz/ru/en шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
   "use strict";
-  const APP = { version: "2.3", date: "2026-10-15" };
+  const APP = { version: "2.4", date: "2026-10-15" };
   window.EKO_VERSION = APP;
 
   const EL = () => (typeof EkoLang !== "undefined" ? EkoLang : null);
@@ -44,6 +44,11 @@
     close: t3("Ёпиш", "Закрыть", "Close")
   };
   const CHANGES = [
+    { v: "2.4", d: "2026-10-15", items: [
+      t3("Университет учун янги курс «Литосферани чиқиндилардан ҳимоя қилиш» (Ветошкин, 2005; Гарин, Хвостиков, 2010): 6 боб, технологик схемалар, ҳисоблаш масалалари, боб кроссвордлари ва якуний тест", "Новый курс для университета «Защита литосферы от отходов» (Ветошкин, 2005; Гарин, Хвостиков, 2010): 6 глав, технологические схемы, расчётные задачи, кроссворды по главам и итоговый тест", "New university course “Protecting the Lithosphere from Waste” (Vetoshkin, 2005; Garin, Khvostikov, 2010): 6 chapters, process flow diagrams, calculation problems, chapter crosswords and a final test"),
+      t3("Мактаб учун янги курс «Ер қалқони»: худди шу 6 боб 11–15 ёшга мослаб, ҳар дарсда уйда хавфсиз тажриба", "Новый школьный курс «Щит Земли»: те же 6 глав для 11–15 лет, в каждом уроке безопасный домашний опыт", "New school course “Earth Shield”: the same 6 chapters for ages 11–15, with a safe home experiment in every lesson"),
+      t3("Тузатиш: мактаб ўқувчисига университет курсларининг кроссвордлари кўринмайди", "Исправление: школьникам больше не показываются кроссворды университетских курсов", "Fix: school-stage users no longer see university course crosswords")
+    ] },
     { v: "2.3", d: "2026-10-15", items: [
       t3("Мактаб босқичи учун «Табиат ҳимоячиси»: экологик ҳуқуқ болалар тилида — ҳикоялар, Конституция моддалари, «Ҳуқуқ ёки бурч» ўйини, болалар суди, «Сирли дарё» квести, викторина ва гувоҳнома", "«Защитник природы» для школьного этапа: экологическое право детским языком — истории, статьи Конституции, игра «Право или долг», детский суд, квест «Таинственная река», викторина и удостоверение", "Nature Defender for the school stage: environmental law for children — stories, Constitution articles, a rights-or-duties game, a kids’ court, the Mystery river escape room, a quiz and a certificate"),
       t3("Хорижий усуллар: P4C, Think–Pair–Share, Street Law, Breakout EDU, Kahoot услубидаги викторина, «3-2-1» чиқиш чиптаси; матнни овоз билан ўқиш", "Зарубежные методы: P4C, Think–Pair–Share, Street Law, Breakout EDU, викторина в стиле Kahoot, «билет на выход» 3-2-1; озвучивание текста", "Foreign methods: P4C, Think–Pair–Share, Street Law, Breakout EDU, a Kahoot-style quiz, 3-2-1 exit tickets; read-aloud"),
