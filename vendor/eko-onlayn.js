@@ -1,4 +1,4 @@
-/* ЭкоТаълим — 🌐 «Онлайн маълумотлар» бўлими ва интернетсиз режим кўрсаткичи.
+/* Экомун — 🌐 «Онлайн маълумотлар» бўлими ва интернетсиз режим кўрсаткичи.
    Интернет бўлса, очиқ ва бепул манбалардан экологияга доир жонли маълумот олинади:
      • Open-Meteo — шаҳар об-ҳавоси, УБ индекси ва ҳаво сифати;
      • global-warming.org (NOAA, NASA GISS маълумотлари) — CO₂, метан, ҳарорат аномалияси;
@@ -302,7 +302,8 @@
     const near = r.d.filter((q) => nearCA(q.lat, q.lon));
     const big = r.d.filter((q) => !nearCA(q.lat, q.lon)).sort((a, b) => b.m - a.m).slice(0, Math.max(4, 10 - near.length));
     const list = near.sort((a, b) => b.t - a.t).concat(big);
-    const col = (m) => m >= 7 ? "#ef4444" : m >= 6 ? "#f97316" : m >= 5 ? "#eab308" : "#22c55e";
+    // Оқ рақам учун WCAG AA (≥4.5:1) контрастли тўқ тусдаги ранглар
+    const col = (m) => m >= 7 ? "#b91c1c" : m >= 6 ? "#c2410c" : m >= 5 ? "#a16207" : "#15803d";
     return `<p class="muted small">${H(TX.qLead)} <b>${r.d.length} ${H(TX.qCount)}</b>.</p>
       <ul class="net-list">${list.map((q) => `<li class="${nearCA(q.lat, q.lon) ? "near" : ""}">
         <span class="net-mag" style="--m:${col(q.m)}" title="${H(TX.mag)}">${fmtNum(q.m, 1)}</span>

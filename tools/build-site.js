@@ -1,7 +1,7 @@
-/* ЭкоТаълим таништирув сайтини (GitHub Pages, docs/) йиғиш.
+/* Экомун таништирув сайтини (GitHub Pages, docs/) йиғиш.
    Ишлатиш: node tools/build-site.js
    Платформа манзили: PLATFORM_URL=https://... node tools/build-site.js
-   Сайт манзили (бошқа домен бўлса): SITE_URL=https://ekotalim.uz/ node tools/build-site.js */
+   Сайт манзили (бошқа домен бўлса): SITE_URL=https://ekomun.uz/ node tools/build-site.js */
 "use strict";
 const fs = require("fs");
 const path = require("path");
@@ -41,9 +41,9 @@ const tpl = fs.readFileSync(path.join(ROOT, "site-src", "landing.html"), "utf8")
 const jsonld = (url, lang) => JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "WebSite", name: "ЭкоТаълим", alternateName: ["EkoTaʼlim", "Eko Talim"], url: BASE, inLanguage: lang },
+    { "@type": "WebSite", name: "Ekomun", alternateName: ["Экомун", "Eko mun"], url: BASE, inLanguage: lang },
     {
-      "@type": "WebApplication", name: "ЭкоТаълим", url: PLATFORM || url, applicationCategory: "EducationalApplication", operatingSystem: "Web, Android, iOS",
+      "@type": "WebApplication", name: "Ekomun", url: PLATFORM || url, applicationCategory: "EducationalApplication", operatingSystem: "Web, Android, iOS",
       inLanguage: lang, isAccessibleForFree: true, offers: { "@type": "Offer", price: "0", priceCurrency: "UZS" },
       description: "Аҳоли, мактаб ва корхоналар учун бепул онлайн экологик таълим платформаси."
     }

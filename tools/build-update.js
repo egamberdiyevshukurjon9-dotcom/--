@@ -1,4 +1,4 @@
-/* ЭкоТаълим Android иловаси учун янгиланиш маълумотини (app/update.json) йиғиш.
+/* Экомун Android иловаси учун янгиланиш маълумотини (app/update.json) йиғиш.
    Ишлатиш: node tools/build-update.js          — app/update.json ни янгилайди
             node tools/build-update.js --check  — эскирган бўлса хато билан чиқади (CI учун)
 
@@ -42,10 +42,10 @@ entries.forEach(walk);
 const sorted = Object.fromEntries(Object.keys(files).sort().map((k) => [k, files[k]]));
 const version = sha256(Object.entries(sorted).map(([k, v]) => k + ":" + v).join("\n")).slice(0, 16);
 
-/* 2. Энг янги APK (app/EkoTalim-<версия>.apk) */
+/* 2. Энг янги APK (app/Ekomun-<версия>.apk) */
 const appDir = path.dirname(OUT);
 let apk = null;
-const want = `EkoTalim-${props.VERSION_NAME}.apk`;
+const want = `Ekomun-${props.VERSION_NAME}.apk`;
 if (fs.existsSync(path.join(appDir, want))) {
   const buf = fs.readFileSync(path.join(appDir, want));
   const notesFile = path.join(appDir, "notes.txt");

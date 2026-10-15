@@ -1,8 +1,8 @@
-# Render Blueprint — ЭкоТаълим
+# Render Blueprint — Ekomun
 # Render'да: New → Blueprint → шу репозиторийни танланг. ADMIN_PASSWORD ни ўзингиз киритасиз.
 services:
   - type: web
-    name: ekotalim
+    name: ekomun
     runtime: node
     plan: free
     buildCommand: npm install
@@ -29,7 +29,7 @@ services:
     # Маълумотлар сақланиб қолиши учун пулли режимга ўтиб, қуйидаги қаторларни очинг:
     #   plan: starter
     #   disk:
-    #     name: ekotalim-data
+    #     name: ekomun-data
     #     mountPath: /var/data
     #     sizeGB: 1
     # ва envVars га қўшинг:

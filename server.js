@@ -1,4 +1,4 @@
-/* ЭкоТаълим — сервер.
+/* Экомун — сервер.
    Платформани (index.html) ва алоҳида бошқарув марказини (admin/) беради, фойдаланувчилар
    рўйхатдан ўтиши, кириши ва чиқишини қайд этади.
    Ташқи кутубхоналарсиз ишлайди: `node server.js`.
@@ -19,7 +19,7 @@
      REPORTS_DAILY_LIMIT   — бир фойдаланувчи кунига нечта харита хабари юбора олади (асл қиймат 5)
      TRUST_PROXY           — 1 бўлса, мижоз IP си X-Forwarded-For дан олинади (Render каби прокси ортида)
      ADMIN_PATH            — админ сайтнинг махфий манзили (асл қиймат /admin), масалан /boshqaruv-7k2q
-     ADMIN_HOST            — админ сайт учун алоҳида домен (масалан admin.ekotalim.uz). Берилса, админ сайт
+     ADMIN_HOST            — админ сайт учун алоҳида домен (масалан admin.ekomun.uz). Берилса, админ сайт
                              фақат шу доменда очилади, асосий сайтда эса умуман кўринмайди
      ADMIN_TOTP_SECRET     — икки босқичли ҳимоя: Google Authenticator калити (tools/admin-totp.js яратади)
      ADMIN_ALLOW_IPS       — админ сайт фақат шу IP манзиллардан очилсин (вергул билан; бўш — ҳамма жойдан)
@@ -65,7 +65,7 @@ if (!ADMIN_PASSWORD) {
 
 /* ---------- Маълумотлар омбори (JSON файл) ---------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
-let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [] };
+let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [] };
 try {
   db = Object.assign(db, JSON.parse(fs.readFileSync(DB_FILE, "utf8")));
 } catch (e) {
@@ -95,6 +95,30 @@ function flush() {
   saveTimer = null;
   fs.writeFileSync(DB_FILE, JSON.stringify(db));
 }
+/* Кунлик захира нусха: data/backups/db-ЙЙЙЙ-ОО-КК.json, охирги BACKUP_KEEP таси сақланади.
+   Сессия калитлари захирага ёзилмайди. */
+const BACKUP_DIR = path.join(DATA_DIR, "backups");
+const BACKUP_KEEP = Math.max(1, Number(process.env.BACKUP_KEEP) || 14);
+const backupData = () => JSON.stringify({ ...db, sessions: {}, savedAt: new Date().toISOString() });
+function listBackups() {
+  try {
+    return fs.readdirSync(BACKUP_DIR).filter((f) => /^db-\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse()
+      .map((f) => { const st = fs.statSync(path.join(BACKUP_DIR, f)); return { file: f, size: st.size, at: st.mtimeMs }; });
+  } catch (e) { return []; }
+}
+function dailyBackup() {
+  try {
+    const file = path.join(BACKUP_DIR, `db-${new Date().toISOString().slice(0, 10)}.json`);
+    if (fs.existsSync(file)) return;
+    fs.mkdirSync(BACKUP_DIR, { recursive: true });
+    fs.writeFileSync(file, backupData());
+    for (const b of listBackups().slice(BACKUP_KEEP)) fs.unlinkSync(path.join(BACKUP_DIR, b.file));
+  } catch (e) { console.error("Backup failed:", e.message); }
+}
+setTimeout(dailyBackup, 10 * 1000).unref();
+setInterval(dailyBackup, 60 * 60 * 1000).unref();
+const STARTED = Date.now();
+
 process.on("SIGINT", () => { flush(); process.exit(0); });
 process.on("SIGTERM", () => { flush(); process.exit(0); });
 
@@ -261,6 +285,7 @@ function sweep() {
   if (db.visits.length && t - db.visits[0].start > VISIT_KEEP_MS) { db.visits = db.visits.filter((v) => t - v.start <= VISIT_KEEP_MS); changed = true; }
   for (const [token, exp] of adminSessions) if (exp < t) adminSessions.delete(token);
   for (const [ip, r] of visitRate) if (t - r.first > 10 * 60 * 1000) visitRate.delete(ip);
+  for (const [ip, r] of errRate) if (t - r.first > 10 * 60 * 1000) errRate.delete(ip);
   for (const k of usedTotp) if (Number(k) < Math.floor(t / 30000) - 3) usedTotp.delete(k);
   for (const [ip, f] of failures) if (t - f.first > 15 * 60 * 1000) failures.delete(ip);
   for (const [ip, r] of registrations) if (t - r.first > 60 * 60 * 1000) registrations.delete(ip);
@@ -353,6 +378,7 @@ function purgeUser(user) {
   db.reports = db.reports.filter((r) => r.userId !== id);
   db.classes = db.classes.filter((c) => c.teacherId !== id);
   db.visits = db.visits.filter((v) => v.userId !== id);
+  db.certs = db.certs.filter((c) => c.userId !== id);
 }
 
 /* ---------- Ташрифлар (анонимлаштирилган фойдаланиш статистикаси) ----------
@@ -364,7 +390,14 @@ function tooManyVisits(ip) {
   if (!r || now() - r.first > 10 * 60 * 1000) { visitRate.set(ip, { first: now(), count: 1 }); return false; }
   return ++r.count > 300;
 }
+const errRate = new Map();
+function tooManyErrors(ip) {
+  const r = errRate.get(ip);
+  if (!r || now() - r.first > 10 * 60 * 1000) { errRate.set(ip, { first: now(), count: 1 }); return false; }
+  return ++r.count > 30;
+}
 const SEC_RE = /^[a-z0-9-]{1,24}$/;
+const FUNNEL_EVENTS = ["exam", "exampass", "cert", "account"];
 const AGE_BANDS = ["5–7", "8–10", "11–13", "14–15", "16–17", "18–24", "25–34", "35–44", "45–60", "60+"];
 const LANGS = ["cyr", "lat", "ru", "en"];
 function visitView(v) {
@@ -454,6 +487,82 @@ function computeStats(days) {
   };
 }
 
+/* Ўсиш кўрсаткичлари: DAU/WAU/MAU, қайтиш (retention), ҳафталик когорталар, воронка,
+   дарслар ва энг қийин саволлар. Бирлик — қурилма (vid). */
+function computeGrowth(days) {
+  const t = now(), DAY = 86400000;
+  const from = t - days * DAY;
+  const dayNo = (x) => Math.floor((x + STATS_TZ_MS) / DAY);
+  const today = dayNo(t);
+  const activeDays = new Map(); // vid → Set(кун рақами)
+  const first = new Map();
+  for (const v of db.visits) {
+    const d = dayNo(v.start);
+    let s = activeDays.get(v.vid);
+    if (!s) activeDays.set(v.vid, (s = new Set()));
+    s.add(d); if (v.last) s.add(dayNo(v.last));
+    if (!first.has(v.vid) || first.get(v.vid) > d) first.set(v.vid, d);
+  }
+  const activeIn = (n) => { let c = 0; for (const s of activeDays.values()) { for (const d of s) if (d > today - n) { c++; break; } } return c; };
+  const dau = activeIn(1), wau = activeIn(7), mau = activeIn(30);
+  /* Қайтиш: биринчи ташрифдан камида N кун ўтган қурилмалардан қанчаси N-кун ёки ундан кейин қайтди */
+  const retention = [1, 7, 30].map((n) => {
+    let base = 0, back = 0;
+    for (const [vid, f] of first) {
+      if (f > today - n || f < dayNo(from)) continue;
+      base++;
+      for (const d of activeDays.get(vid)) if (d >= f + n) { back++; break; }
+    }
+    return { n, base, back, pct: base ? Math.round((back / base) * 100) : null };
+  });
+  /* Ҳафталик когорталар (охирги 8 ҳафта) */
+  const week = (d) => Math.floor((d + 3) / 7); // ҳафта душанбадан
+  const curW = week(today);
+  const cohorts = [];
+  for (let w = curW - 7; w <= curW; w++) {
+    const members = [...first].filter(([, f]) => week(f) === w).map(([vid]) => vid);
+    const cells = [];
+    for (let k = 0; k <= curW - w && k < 8; k++) {
+      const act = members.filter((vid) => [...activeDays.get(vid)].some((d) => week(d) === w + k)).length;
+      cells.push(members.length ? Math.round((act / members.length) * 100) : null);
+    }
+    const monday = new Date((w * 7 - 3) * DAY).toISOString().slice(0, 10);
+    cohorts.push({ week: monday, size: members.length, cells });
+  }
+  /* Воронка ва дарслар (танланган давр) */
+  const visits = db.visits.filter((v) => v.start >= from);
+  const steps = { visit: new Set(), profile: new Set(), lesson: new Set(), done: new Set(), exam: new Set(), exampass: new Set(), cert: new Set() };
+  const lessons = {}, questions = {};
+  let bounces = 0;
+  for (const v of visits) {
+    steps.visit.add(v.vid);
+    if (v.stage) steps.profile.add(v.vid);
+    if ((v.lessons || []).length) steps.lesson.add(v.vid);
+    if ((v.done || []).length) steps.done.add(v.vid);
+    for (const f of v.fn || []) if (steps[f]) steps[f].add(v.vid);
+    const secs = Object.values(v.sec || {}).reduce((a, b) => a + b, 0);
+    if ((v.path || []).length <= 1 && secs < 30) bounces++;
+    for (const k of v.lessons || []) (lessons[k] || (lessons[k] = { open: 0, done: 0, secs: 0 })).open++;
+    for (const [k, s] of v.done || []) { const x = lessons[k] || (lessons[k] = { open: 0, done: 0, secs: 0 }); x.done++; x.secs += s; }
+    for (const [k, ok] of v.qa || []) { const x = questions[k] || (questions[k] = { ok: 0, bad: 0 }); ok ? x.ok++ : x.bad++; }
+  }
+  const lessonRows = Object.entries(lessons).map(([k, x]) => ({ k, open: x.open, done: x.done, rate: x.open ? Math.min(100, Math.round((x.done / x.open) * 100)) : null, avg: x.done ? Math.round(x.secs / x.done) : 0 }))
+    .sort((a, b) => b.open - a.open).slice(0, 60);
+  const hard = Object.entries(questions).map(([k, x]) => ({ k, ok: x.ok, bad: x.bad, n: x.ok + x.bad, err: Math.round((x.bad / (x.ok + x.bad)) * 100) }))
+    .filter((x) => x.n >= 3).sort((a, b) => b.err - a.err || b.n - a.n).slice(0, 30);
+  const certs = db.certs.filter((c) => c.at >= from);
+  return {
+    now: t, days,
+    kpi: { dau, wau, mau, stickiness: mau ? Math.round((dau / mau) * 100) : 0, bounce: visits.length ? Math.round((bounces / visits.length) * 100) : 0,
+      avgSecs: visits.length ? Math.round(visits.reduce((a, v) => a + Object.values(v.sec || {}).reduce((x, y) => x + y, 0), 0) / visits.length) : 0,
+      certs: certs.length, certsAll: db.certs.length },
+    retention, cohorts,
+    funnel: Object.entries(steps).map(([k, s]) => ({ k, n: s.size })),
+    lessons: lessonRows, hard,
+    certList: certs.slice(-50).reverse().map((c) => ({ code: c.code, name: c.name, title: c.title, pct: c.pct, at: c.at }))
+  };
+}
+
 function csvCell(x) {
   const s = x === null || x === undefined ? "" : String(x);
   /* Excel формулага айлантирмасин */
@@ -479,7 +588,7 @@ function aiCount(userId) { aiRoll(); aiUsage.total++; aiUsage.users.set(userId, 
 function aiRefund(userId) { aiUsage.total = Math.max(0, aiUsage.total - 1); aiUsage.users.set(userId, Math.max(0, (aiUsage.users.get(userId) || 1) - 1)); }
 function aiLeft(userId) { aiRoll(); return Math.max(0, AI_USER_DAILY - (aiUsage.users.get(userId) || 0)); }
 
-const AI_SYSTEM = `Сен «ЭкоТаълим» иловасидаги «Эко-кўз» ёрдамчисисан. Фойдаланувчи Ўзбекистонда телефонда олинган расмни юборади. Вазифанг — расмни ФАҚАТ экологик нуқтаи назардан тушунтириш.
+const AI_SYSTEM = `Сен «Экомун» иловасидаги «Эко-кўз» ёрдамчисисан. Фойдаланувчи Ўзбекистонда телефонда олинган расмни юборади. Вазифанг — расмни ФАҚАТ экологик нуқтаи назардан тушунтириш.
 
 Қоидалар:
 - Фақат ўзбек тилида, кирилл ёзувида, оддий ва тушунарли ёз (ўсмир ҳам тушунсин). Қисқа гаплар.
@@ -596,7 +705,7 @@ const publicReport = (r) => ({ id: r.id, category: r.category, text: r.text, lat
 
 /* ---------- Мактаблар учун ---------- */
 const TASK_TYPES = ["xp", "sort", "quiz", "memory", "tree", "course", "streak"];
-const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "qayta", "ekologiya", "yosh"];
+const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "qayta", "ekologiya", "yosh", "tabiat", "steam", "qollanma", "tadqiqot"];
 const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function newClassCode() {
   for (;;) {
@@ -654,7 +763,8 @@ async function api(req, res, pathname) {
   const method = req.method;
   const ip = clientIp(req);
 
-  if (pathname === "/api/health" && method === "GET") return send(res, 200, { ok: true });
+  /* UptimeRobot каби кузатув хизматлари учун */
+  if (pathname === "/api/health" && (method === "GET" || method === "HEAD")) return send(res, 200, { ok: true, uptime: Math.round(process.uptime()) });
 
   /* Блокланган IP дан келган сўровлар (админ API бундан мустасно) */
   if (!pathname.startsWith("/api/admin/") && db.blockedIps[ip]) return send(res, 403, { error: BLOCK_MSG, blocked: true });
@@ -945,6 +1055,69 @@ async function api(req, res, pathname) {
     return send(res, 200, { user: publicUser(cur.user) });
   }
 
+  /* Хатолар журнали: бравзердаги JavaScript хатолари (Sentry ўрнига оддий ички журнал).
+     Шахсий маълумот юборилмайди: фақат хабар, файл, қатор ва версия. */
+  if (pathname === "/api/err" && method === "POST") {
+    if (tooManyErrors(ip)) return send(res, 429, { error: "Жуда кўп сўров" });
+    const body = await readBody(req, 8 * 1024);
+    const msg = cleanText(body.msg, 300), src = cleanText(String(body.src || "").replace(/^https?:\/\/[^/]+/, ""), 160);
+    if (!msg) return send(res, 400, { error: "Нотўғри сўров" });
+    const line = Math.max(0, Math.min(1e7, Math.floor(Number(body.line) || 0)));
+    const ver = cleanText(body.ver, 20), sec = SEC_RE.test(String(body.sec || "")) ? String(body.sec) : "";
+    const key = crypto.createHash("sha1").update(msg + "|" + src + "|" + line).digest("hex").slice(0, 16);
+    let e = db.errors.find((x) => x.key === key);
+    if (!e) {
+      e = { key, msg, src, line, first: now(), count: 0, devices: [] };
+      db.errors.push(e);
+      if (db.errors.length > 300) db.errors.splice(0, db.errors.length - 300);
+    }
+    e.count++; e.last = now(); e.ver = ver || e.ver; e.sec = sec || e.sec;
+    const dev = describeDevice(req.headers["user-agent"]);
+    if (!e.devices.includes(dev) && e.devices.length < 8) e.devices.push(dev);
+    save();
+    return send(res, 200, { ok: true });
+  }
+
+  /* Сертификат: рўйхатга олиш ва QR код орқали текшириш */
+  if (pathname === "/api/cert" && method === "POST") {
+    if (tooManyErrors(ip)) return send(res, 429, { error: "Жуда кўп сўров" });
+    const body = await readBody(req, 4 * 1024);
+    const name = cleanText(body.name, 60), title = cleanText(body.title, 140), cid = String(body.cid || "");
+    if (!name || !title || !COURSE_IDS.includes(cid)) return send(res, 400, { error: "Нотўғри сўров" });
+    const pct = Math.max(0, Math.min(100, Math.round(Number(body.pct) || 0)));
+    const lessons = Math.max(0, Math.min(200, Math.floor(Number(body.lessons) || 0)));
+    let code;
+    do code = "EKM-" + crypto.randomBytes(5).toString("hex").toUpperCase(); while (db.certs.some((c) => c.code === code));
+    const cur = currentUser(req);
+    db.certs.push({ code, name, title, cid, pct, lessons, at: now(), userId: cur ? cur.user.id : null });
+    if (db.certs.length > 100000) db.certs.splice(0, db.certs.length - 100000);
+    save();
+    return send(res, 200, { code });
+  }
+  if (pathname === "/api/cert" && method === "GET") {
+    const code = String(new URL(req.url, "http://x").searchParams.get("c") || "").trim().toUpperCase();
+    const c = /^EKM-[0-9A-F]{10}$/.test(code) && db.certs.find((x) => x.code === code);
+    if (!c) return send(res, 404, { ok: false });
+    return send(res, 200, { ok: true, code: c.code, name: c.name, title: c.title, pct: c.pct, lessons: c.lessons, at: c.at });
+  }
+
+  /* Ўз маълумотларини юклаб олиш (ҳисоб, кириш журнали, харита хабарлари, ташрифлар) */
+  if (pathname === "/api/account/export" && method === "GET") {
+    const cur = currentUser(req);
+    if (!cur) return send(res, 401, { error: "Аввал ҳисобга киринг" });
+    const u = cur.user;
+    const data = {
+      exportedAt: new Date().toISOString(),
+      account: { ...publicUser(u), createdAt: u.createdAt, lastLogin: u.lastLogin, loginCount: u.loginCount || 0 },
+      events: db.events.filter((e) => e.userId === u.id).map(({ at, type, ip, device }) => ({ at: new Date(at).toISOString(), type, ip, device })),
+      reports: db.reports.filter((r) => r.userId === u.id),
+      visits: db.visits.filter((v) => v.userId === u.id).map(visitView).map(({ user, ...v }) => v),
+      certificates: db.certs.filter((c) => c.userId === u.id).map(({ userId, ...c }) => c)
+    };
+    res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Content-Disposition": 'attachment; filename="ekomun-mening-malumotlarim.json"', "Cache-Control": "no-store" });
+    return res.end(JSON.stringify(data, null, 2));
+  }
+
   /* Ташриф статистикаси: саҳифа очилганда, ҳар дақиқада ва ёпилганда юборилади */
   if (pathname === "/api/visit" && method === "POST") {
     if (tooManyVisits(ip)) return send(res, 429, { error: "Жуда кўп сўров" });
@@ -978,6 +1151,18 @@ async function api(req, res, pathname) {
     }
     for (const k of Array.isArray(body.lessons) ? body.lessons.slice(0, 20) : []) {
       if (/^[a-z0-9-]{1,24}:\d{1,3}$/.test(String(k)) && v.lessons.length < 60) v.lessons.push(String(k));
+    }
+    /* Тугатилган дарслар (калит ва неча сония ўқилгани), тест саволларига биринчи жавоб, воронка қадамлари */
+    for (const d of Array.isArray(body.done) ? body.done.slice(0, 20) : []) {
+      const k = String(d && d[0]), secs = Math.max(0, Math.min(7200, Math.floor(Number(d && d[1]) || 0)));
+      if (/^[a-z0-9-]{1,24}:\d{1,3}$/.test(k) && (v.done || (v.done = [])).length < 60) v.done.push([k, secs]);
+    }
+    for (const q of Array.isArray(body.qa) ? body.qa.slice(0, 60) : []) {
+      const k = String(q && q[0]);
+      if (/^[a-z0-9-]{1,24}:\d{1,3}:\d{1,2}$/.test(k) && (v.qa || (v.qa = [])).length < 300) v.qa.push([k, q[1] ? 1 : 0]);
+    }
+    for (const f of Array.isArray(body.fn) ? body.fn.slice(0, 10) : []) {
+      if (FUNNEL_EVENTS.includes(f) && !(v.fn || (v.fn = [])).includes(f)) v.fn.push(f);
     }
     save();
     return send(res, 200, { sid: v.id });
@@ -1201,21 +1386,56 @@ async function api(req, res, pathname) {
     });
   }
 
+  if (pathname === "/api/admin/growth" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const q = new URL(req.url, "http://x").searchParams;
+    const days = [1, 7, 30, 90, 180].includes(Number(q.get("days"))) ? Number(q.get("days")) : 30;
+    sweep();
+    return send(res, 200, computeGrowth(days));
+  }
+
+  /* Тизим ҳолати: ишлаш вақти, хотира, маълумотлар ҳажми, захира нусхалар, хатолар журнали */
+  if (pathname === "/api/admin/system" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    let dbSize = 0;
+    try { dbSize = fs.statSync(DB_FILE).size; } catch (e) { /* ҳали ёзилмаган */ }
+    const mem = process.memoryUsage();
+    return send(res, 200, {
+      now: now(), started: STARTED, uptime: Math.round(process.uptime()), node: process.version,
+      mem: { rss: mem.rss, heap: mem.heapUsed }, dbSize,
+      counts: { users: db.users.length, visits: db.visits.length, events: db.events.length, reports: db.reports.length, certs: db.certs.length, errors: db.errors.length },
+      backups: listBackups(), backupKeep: BACKUP_KEEP, health: "/api/health",
+      errors: db.errors.slice().sort((a, b) => b.last - a.last).slice(0, 200)
+    });
+  }
+  if (pathname === "/api/admin/errors/clear" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    db.errors = [];
+    save();
+    return send(res, 200, { ok: true });
+  }
+  if (pathname === "/api/admin/backup" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    adminLog(req, true, "захира нусха юклаб олинди");
+    res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Content-Disposition": `attachment; filename="ekomun-zaxira-${new Date().toISOString().slice(0, 10)}.json"`, "Cache-Control": "no-store" });
+    return res.end(backupData());
+  }
+
   /* CSV (Excel) юклаб олиш */
   if (pathname === "/api/admin/export" && method === "GET") {
     if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
     const type = new URL(req.url, "http://x").searchParams.get("type");
     let body, name;
     if (type === "visits") {
-      name = "ekotalim-tashriflar.csv";
+      name = "ekomun-tashriflar.csv";
       body = csv([["Бошланди", "Охирги фаоллик", "Дақиқа", "Қурилма коди", "Фойдаланувчи", "Почта", "Босқич", "Ёш гуруҳи", "Тил", "Қурилма", "IP", "Бўлимлар (сония)", "Йўл", "Дарслар"],
         ...db.visits.slice().reverse().map((v) => { const x = visitView(v); return [iso(x.start), iso(x.last), Math.round(x.secs / 60), x.vid, x.user ? x.user.name : "", x.user ? x.user.email : "", x.stage, x.ag, x.lang, x.device, x.ip,
           Object.entries(x.sec || {}).map(([k, s]) => `${k}:${s}`).join(" "), (x.path || []).join(" > "), (x.lessons || []).join(" ")]; })]);
     } else if (type === "events") {
-      name = "ekotalim-kirish-chiqish.csv";
+      name = "ekomun-kirish-chiqish.csv";
       body = csv([["Вақт", "Ҳодиса", "Исм", "Почта", "Қурилма", "IP"], ...db.events.slice().reverse().map((e) => [iso(e.at), e.type, e.name, e.email, e.device, e.ip])]);
     } else if (type === "users") {
-      name = "ekotalim-foydalanuvchilar.csv";
+      name = "ekomun-foydalanuvchilar.csv";
       body = csv([["Исм", "Почта", "Туғилган йил", "18+", "Рўйхатдан ўтган", "Охирги кириш", "Киришлар", "Блокланган"],
         ...db.users.map((u) => [u.name, u.email, u.by || "", u.adult ? "ҳа" : "йўқ", iso(u.createdAt), iso(u.lastLogin), u.loginCount || 0, u.blocked ? "ҳа: " + (u.blocked.reason || "") : ""])]);
     } else return send(res, 400, { error: "Нотўғри тур" });
@@ -1233,6 +1453,8 @@ const STATIC = {
   "/index.html": { file: "index.html", type: HTML },
   "/privacy": { file: "privacy.html", type: HTML },
   "/privacy.html": { file: "privacy.html", type: HTML },
+  /* Сертификатни QR код орқали текшириш саҳифаси */
+  "/tekshir": { file: "tekshir.html", type: HTML },
   /* «Орол фожиаси» саҳифаси олиб ташланди: эски ҳаволалар бош саҳифани очади */
   "/orol": { file: "index.html", type: HTML },
   "/orol.html": { file: "index.html", type: HTML },
@@ -1265,6 +1487,19 @@ const STATIC = {
   "/vendor/eko-onlayn.js": { file: "vendor/eko-onlayn.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-stat.js": { file: "vendor/eko-stat.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-adabiyot.js": { file: "vendor/eko-adabiyot.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-oyin.js": { file: "vendor/eko-oyin.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-ilova.js": { file: "vendor/eko-ilova.js", type: "text/javascript; charset=utf-8" },
+  /* Дарсни PDF қилиш: jsPDF (MIT) ва Ekomun PDF Sans (Liberation Sans қисми, SIL OFL) */
+  "/vendor/eko-qonun-data.js": { file: "vendor/eko-qonun-data.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-qonun.js": { file: "vendor/eko-qonun.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-qonun-darslik-data.js": { file: "vendor/eko-qonun-darslik-data.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-qonun-darslik.js": { file: "vendor/eko-qonun-darslik.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-pdf.js": { file: "vendor/eko-pdf.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/pdf/jspdf.umd.min.js": { file: "vendor/pdf/jspdf.umd.min.js", type: "text/javascript; charset=utf-8", cache: true },
+  "/vendor/pdf/ekopdf-Regular.ttf": { file: "vendor/pdf/ekopdf-Regular.ttf", type: "font/ttf", cache: true },
+  "/vendor/pdf/ekopdf-Bold.ttf": { file: "vendor/pdf/ekopdf-Bold.ttf", type: "font/ttf", cache: true },
+  /* QR код генератори (Kazuhiko Arase, MIT) — сертификат учун */
+  "/vendor/qrcode.js": { file: "vendor/qrcode.js", type: "text/javascript; charset=utf-8", cache: true },
   "/vendor/eko-ui.css": { file: "vendor/eko-ui.css", type: "text/css; charset=utf-8" },
   /* Рус ва инглиз тили луғатлари (асл кирилл матн → таржима) */
   "/vendor/i18n/keys.js": { file: "vendor/i18n/keys.js", type: "text/javascript; charset=utf-8" },
@@ -1281,7 +1516,10 @@ const ADMIN_FILES = {
   "": { file: "admin/index.html", type: HTML },
   "/": { file: "admin/index.html", type: HTML },
   "/app.js": { file: "admin/app.js", type: "text/javascript; charset=utf-8" },
-  "/app.css": { file: "admin/app.css", type: "text/css; charset=utf-8" }
+  "/app.css": { file: "admin/app.css", type: "text/css; charset=utf-8" },
+  "/theme.js": { file: "admin/theme.js", type: "text/javascript; charset=utf-8" },
+  "/fonts/onest-cyrillic.woff2": { file: "vendor/fonts/onest-cyrillic-wght-normal.woff2", type: "font/woff2" },
+  "/fonts/onest-latin.woff2": { file: "vendor/fonts/onest-latin-wght-normal.woff2", type: "font/woff2" }
 };
 function adminRoute(req, pathname) {
   if (!adminAllowed(req)) return null;
@@ -1293,7 +1531,7 @@ const ADMIN_HEADERS = {
   "Cache-Control": "no-store",
   "X-Frame-Options": "DENY",
   "X-Robots-Tag": "noindex, nofollow",
-  "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
 };
 
@@ -1360,5 +1598,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`🌿 ЭкоТаълим: http://localhost:${PORT}  ·  Бошқарув маркази: ${ADMIN_HOST ? "https://" + ADMIN_HOST + "/" : `http://localhost:${PORT}${ADMIN_PATH}/`}`);
+  console.log(`🌿 Ekomun: http://localhost:${PORT}  ·  Бошқарув маркази: ${ADMIN_HOST ? "https://" + ADMIN_HOST + "/" : `http://localhost:${PORT}${ADMIN_PATH}/`}`);
 });

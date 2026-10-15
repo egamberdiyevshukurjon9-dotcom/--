@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# ЭкоТаълим Android APK'ни йиғади (Android Studio ёки Gradle шарт эмас).
+# Экомун Android APK'ни йиғади (Android Studio ёки Gradle шарт эмас).
 #
 # Керакли воситалар (Ubuntu/Debian):
 #   sudo apt-get install -y openjdk-17-jdk android-sdk-platform-23 aapt zipalign apksigner dalvik-exchange
 #
 # Ишлатиш:
 #   KEYSTORE=/йўл/ekotalim.jks KS_PASS=парол ./android/build.sh
-# Сўнг: cp android/build/EkoTalim-<версия>.apk app/ && node tools/build-update.js
+# Сўнг: cp android/build/Ekomun-<версия>.apk app/ && node tools/build-update.js
 # KEYSTORE берилмаса ёки файл йўқ бўлса, янги калит яратилади. Илованинг кейинги
 # версияларини ўрнатилган илова устидан янгилаш учун ҳар доим ШУ калит билан имзоланг.
 set -euo pipefail
@@ -64,11 +64,11 @@ if [ ! -f "$KEYSTORE" ]; then
   [ -n "$KS_PASS" ] || KS_PASS="$(head -c 18 /dev/urandom | base64 | tr -d '/+=')"
   keytool -genkeypair -v -keystore "$KEYSTORE" -alias "$KS_ALIAS" -keyalg RSA -keysize 4096 \
     -validity 10000 -storepass "$KS_PASS" -keypass "$KS_PASS" \
-    -dname "CN=EkoTalim, O=EkoTalim, C=UZ" >/dev/null 2>&1
+    -dname "CN=Ekomun, O=Ekomun, C=UZ" >/dev/null 2>&1
   echo "Янги калит: $KEYSTORE  (парол: $KS_PASS) — уни сақлаб қўйинг!"
 fi
 [ -n "$KS_PASS" ] || { echo "KS_PASS берилмаган"; exit 1; }
-APK="$OUT/EkoTalim-$VERSION_NAME.apk"
+APK="$OUT/Ekomun-$VERSION_NAME.apk"
 apksigner sign --ks "$KEYSTORE" --ks-key-alias "$KS_ALIAS" \
   --ks-pass "pass:$KS_PASS" --key-pass "pass:$KS_PASS" \
   --min-sdk-version 21 --out "$APK" "$OUT/app.aligned.apk"

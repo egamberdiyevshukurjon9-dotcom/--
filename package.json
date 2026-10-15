@@ -1,7 +1,7 @@
 {
-  "name": "ekotalim",
+  "name": "ekomun",
   "version": "1.0.0",
-  "description": "ЭкоТаълим — экологик таълим платформаси ва админ панел",
+  "description": "Экомун — экологик таълим платформаси ва админ панел",
   "private": true,
   "main": "server.js",
   "scripts": {

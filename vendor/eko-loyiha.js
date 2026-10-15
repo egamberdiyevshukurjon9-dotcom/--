@@ -1,7 +1,9 @@
-/* ЭкоТаълим — 🎓 «Лойиҳалар» бўлими (университет босқичи).
+/* Экомун — 🎓 «Лойиҳалар» бўлими (университет босқичи).
    Талаба хорижий университет методикаларидан бирини танлаб, экологик лойиҳани
    босқичма-босқич бажаради: босқич топшириқлари, канвас, Kanban тахтаси,
    рубрика бўйича ўзини баҳолаш ва ҳисобот (HTML) юклаб олиш.
+   «🏆 Kreativ g‘oya tanlovi»: «Eng yaxshi kreativ g‘oya» танлови низоми (ВМ, 2025) бўйича тақвим,
+   қоидалар, лойиҳани 3- ва 20-бандларга мослаш, ариза ва паспорт, апелляция намунаси.
    «🚀 Стартап» панели: стартап босқичи ва TRL, юнит-иқтисодиёт (зарарсизлик нуқтаси),
    смета (10 % захира, грант/ўз ҳиссаси, CSV) ва питч-дек (HTML слайдлар) экспорти.
    Маълумот фақат қурилмада сақланади (localStorage «ekotalim:projects»).
@@ -269,11 +271,12 @@
     [t3("Жамоавий иш", "Командная работа", "Teamwork"), [t3("Бир киши ишлади", "Работал один", "One person did it"), t3("Роллар ноаниқ", "Роли неясны", "Roles unclear"), t3("Роллар тақсимланган", "Роли распределены", "Roles shared"), t3("Ҳамма ҳисса қўшди, низолар ҳал қилинди", "Вклад всех, конфликты решены", "Everyone contributed, conflicts resolved")]],
     [t3("Тақдимот", "Презентация", "Presentation"), [t3("Тартибсиз", "Беспорядочно", "Disorganised"), t3("Тушунарли", "Понятно", "Understandable"), t3("Ишонарли, CER билан", "Убедительно, с CER", "Convincing, uses CER"), t3("Аудиторияни ҳаракатга ундайди", "Побуждает аудиторию к действию", "Moves the audience to act")]]
   ];
+  const KG_TAB = t3("🏆 Kreativ g‘oya tanlovi", "🏆 Конкурс «Креативная идея»", "🏆 Creative Idea contest");
   const TX = {
     pill: t3("🎓 Университет босқичи · лойиҳа таълими", "🎓 Университетский этап · проектное обучение", "🎓 University stage · project-based learning"),
     title: t3("Лойиҳалар", "Проекты", "Projects"),
     lead: t3("Хорижий университетлар методикаси билан экологик лойиҳа бажаринг: методикани танланг, жамоа тузинг, босқичларни белгилаб боринг ва ҳисоботни юклаб олинг. Ҳар бир якунланган босқич учун +15 XP, лойиҳа учун +50 XP.", "Выполните эко-проект по методикам зарубежных университетов: выберите методику, соберите команду, отмечайте этапы и скачайте отчёт. За каждый этап +15 XP, за проект +50 XP.", "Run an environmental project with methods from universities abroad: pick a method, form a team, tick off stages and download a report. +15 XP per stage, +50 XP per project."),
-    tabs: [["my", t3("📂 Менинг лойиҳаларим", "📂 Мои проекты", "📂 My projects")], ["ideas", t3("💡 Ғоялар банки", "💡 Банк идей", "💡 Idea bank")], ["methods", t3("🌍 Методикалар", "🌍 Методики", "🌍 Methods")], ["rubric", t3("📊 Баҳолаш рубрикаси", "📊 Рубрика оценки", "📊 Assessment rubric")]],
+    tabs: [["my", t3("📂 Менинг лойиҳаларим", "📂 Мои проекты", "📂 My projects")], ["kg", KG_TAB], ["ideas", t3("💡 Ғоялар банки", "💡 Банк идей", "💡 Idea bank")], ["methods", t3("🌍 Методикалар", "🌍 Методики", "🌍 Methods")], ["rubric", t3("📊 Баҳолаш рубрикаси", "📊 Рубрика оценки", "📊 Assessment rubric")]],
     newP: t3("＋ Янги лойиҳа", "＋ Новый проект", "＋ New project"),
     empty: t3("Ҳали лойиҳа йўқ. «Янги лойиҳа» тугмасини босинг ёки ғоялар банкидан танланг.", "Проектов пока нет. Нажмите «Новый проект» или выберите идею из банка.", "No projects yet. Press “New project” or pick one from the idea bank."),
     name: t3("Лойиҳа номи", "Название проекта", "Project title"),
@@ -415,7 +418,7 @@
       <h2 class="section-title">${H(TX.title)}</h2>
       <p class="muted">${H(TX.lead)}</p>
       <div class="filters lab-tabs ly-tabs" role="tablist">${TX.tabs.map(([k, t]) => `<button type="button" role="tab" aria-selected="${k === tab}" class="chip ${k === tab ? "active" : ""}" data-tab="${k}">${H(t)}</button>`).join("")}</div>
-      <div class="ly-body">${tab === "my" ? (openId ? projectView() : listView()) : tab === "ideas" ? ideasView() : tab === "methods" ? methodsView() : rubricView()}</div>`;
+      <div class="ly-body">${tab === "my" ? (openId ? projectView() : listView()) : tab === "ideas" ? ideasView() : tab === "methods" ? methodsView() : tab === "kg" ? kgView() : rubricView()}</div>`;
     bind();
   }
 
@@ -600,7 +603,7 @@
     ];
     return `<!doctype html><html lang="${EL() ? EL().htmlLang : "uz"}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(p.title)}</title>
 <style>*{box-sizing:border-box}body{margin:0;font:20px/1.5 system-ui,sans-serif;background:#0b1f17;color:#0b1f17}section{width:100vw;height:100vh;padding:7vh 8vw;background:linear-gradient(135deg,#ecfdf5,#fff 60%);display:none;flex-direction:column;justify-content:center;position:relative}section.on{display:flex}h1{font-size:3.2em;margin:0;color:#047857;line-height:1.1}h2{font-size:2em;margin:0 0 .6em;color:#047857}.sub{color:#4a5f56;font-size:1.1em}.big{font-size:1.35em;max-width:46em}table{border-collapse:collapse;font-size:1.05em;max-width:52em}th,td{padding:.45em .9em;border-bottom:1px solid #d1fae5;text-align:left}td{text-align:right;font-weight:700}tr.tot th,tr.tot td{color:#047857;font-size:1.15em}.road{display:flex;flex-wrap:wrap;gap:.5em;list-style:none;padding:0}.road li{padding:.4em .9em;border-radius:999px;border:2px solid #a7f3d0;color:#4a5f56}.road li.done{background:#d1fae5;color:#065f46}.road li.now{background:#047857;color:#fff;border-color:#047857}.sdg span{display:inline-block;margin:.25em;padding:.3em .8em;border-radius:999px;background:#d1fae5;color:#065f46;font-size:.85em}.n{position:absolute;right:3vw;bottom:3vh;color:#4a5f56;font-size:.8em}.brand{position:absolute;left:8vw;bottom:3vh;color:#047857;font-weight:700;font-size:.8em}@media print{body{background:#fff}section{display:flex!important;page-break-after:always;height:100vh}}</style>
-${slides.map((x, i) => `<section class="${i ? "" : "on"}">${x}<span class="brand">🌿 ${H(t3("ЭкоТаълим", "ЭкоТаълим", "EkoTa'lim"))}</span><span class="n">${i + 1} / ${slides.length}</span></section>`).join("\n")}
+${slides.map((x, i) => `<section class="${i ? "" : "on"}">${x}<span class="brand">🌿 ${H("Ekomun")}</span><span class="n">${i + 1} / ${slides.length}</span></section>`).join("\n")}
 <script>let i=0;const s=document.querySelectorAll("section");const go=(d)=>{s[i].classList.remove("on");i=Math.max(0,Math.min(s.length-1,i+d));s[i].classList.add("on")};addEventListener("keydown",(e)=>{if(["ArrowRight","PageDown"," "].includes(e.key))go(1);if(["ArrowLeft","PageUp"].includes(e.key))go(-1)});addEventListener("click",(e)=>go(e.clientX>innerWidth/3?1:-1));</script></html>`;
   }
   function bindStartup(p) {
@@ -621,6 +624,211 @@ ${slides.map((x, i) => `<section class="${i ? "" : "on"}">${x}<span class="brand
       download(fileName(p, "-pitch.html"), "text/html", deckHtml(p));
       if (PITCH.every(([k]) => (u.pitch[k] || "").trim()) && u.budget.length) xpOnce(`ly_${p.id}_pitch`, 20, SX.whySu);
     });
+  }
+
+  /* ===================== 🏆 «Eng yaxshi kreativ g‘oya» танлови =====================
+     Вазирлар Маҳкамасининг 2025 йил сентябрдаги мажлиси баёнига 2-илова — Низом.
+     Талаба лойиҳасини низом талабларига мослаб тайёрлайди: муддатлар тақвими, қоидалар,
+     3-банд (креатив ғоя мезонлари) ва 20-банд (механизм, муддат, дастлабки натижалар)
+     бўйича тайёргарлик, ариза ва лойиҳа паспорти, апелляция матни. */
+  const KG = {
+    tab: t3("🏆 Kreativ g‘oya tanlovi", "🏆 Конкурс «Креативная идея»", "🏆 Creative Idea contest"),
+    title: t3("«Eng yaxshi kreativ g‘oya» республика танлови", "Республиканский конкурс «Лучшая креативная идея»", "National contest “Best Creative Idea”"),
+    src: t3("Низом: Вазирлар Маҳкамасининг 2025 йил сентябрдаги мажлиси баёнига 2-илова. Танлов олий таълим ташкилотлари талабалари учун ҳар йили ўтказилади ва креатив ғояни келгусида стартап лойиҳа сифатида амалга оширишни рағбатлантиради (1–2-бандлар).", "Положение: приложение 2 к протоколу заседания Кабинета Министров, сентябрь 2025 г. Конкурс ежегодно проводится для студентов вузов и поощряет дальнейшую реализацию креативной идеи как стартап-проекта (пп. 1–2).", "Regulation: Annex 2 to the minutes of the Cabinet of Ministers meeting, September 2025. The contest is held every year for university students and encourages turning a creative idea into a startup project (items 1–2)."),
+    calH: t3("📅 Танлов тақвими", "📅 Календарь конкурса", "📅 Contest calendar"),
+    annL: t3("Вазирлик эълон қилган сана", "Дата объявления Министерством", "Date announced by the Ministry"),
+    calNote: t3("Эълон октябрнинг биринчи ўн кунлигида берилади (8-банд). Ҳақиқий санани Вазирлик ва ОТМ сайтидаги эълондан олиб, шу ерга киритинг — қолган муддатлар ўзи ҳисобланади.", "Объявление публикуется в первой декаде октября (п. 8). Возьмите точную дату из объявления на сайте Министерства или вуза — остальные сроки рассчитаются сами.", "The announcement is made in the first ten days of October (item 8). Enter the exact date from the Ministry or university announcement and the other deadlines are calculated automatically."),
+    now: t3("ҳозир", "сейчас", "now"),
+    left: t3("кун қолди", "дн. осталось", "days left"),
+    passed: t3("ўтди", "прошло", "passed"),
+    rulesH: t3("📜 Асосий қоидалар", "📜 Основные правила", "📜 Key rules"),
+    prepH: t3("🧭 Лойиҳамни низомга мослаш", "🧭 Подготовка проекта по положению", "🧭 Fit my project to the regulation"),
+    pick: t3("Лойиҳани танланг", "Выберите проект", "Choose a project"),
+    noProj: t3("Аввал «Менинг лойиҳаларим» бўлимида лойиҳа яратинг.", "Сначала создайте проект в разделе «Мои проекты».", "First create a project under “My projects”."),
+    ready: t3("Тайёргарлик", "Готовность", "Readiness"),
+    infoH: t3("Иштирокчи ҳақида", "Об участнике", "About the participant"),
+    critH: t3("Креатив ғоя мезонлари (3-банд)", "Критерии креативной идеи (п. 3)", "Creative idea criteria (item 3)"),
+    implH: t3("Амалга ошириш (20-банд)", "Реализация (п. 20)", "Implementation (item 20)"),
+    checkH: t3("Топширишдан олдин текширинг", "Проверьте перед подачей", "Check before submitting"),
+    words: t3("сўз", "слов", "words"),
+    minW: t3("камида", "минимум", "at least"),
+    docBtn: t3("⬇️ Ариза ва лойиҳа паспорти (HTML, чоп этиш мумкин)", "⬇️ Заявка и паспорт проекта (HTML, можно распечатать)", "⬇️ Application and project passport (HTML, printable)"),
+    deckBtn: t3("🚀 Питч-дек ва смета — «Стартап» панелида", "🚀 Питч-дек и смета — в панели «Стартап»", "🚀 Pitch deck and budget — in the “Startup” panel"),
+    appealH: t3("⚖️ Апелляция (33–35-бандлар)", "⚖️ Апелляция (пп. 33–35)", "⚖️ Appeal (items 33–35)"),
+    appealD: t3("Якуний натижадан норози бўлсангиз, натижа эълон қилинган кундан бошлаб 3 кун ичида Апелляция комиссиясига ёзма мурожаат қиласиз. Комиссия натижалар эълонидан кейин 5 кун ичида 3 кишилик таркибда тузилади ва қарор нусхаси 5 кун ичида берилади.", "Если вы не согласны с итогами, в течение 3 дней со дня объявления результатов подаётся письменная апелляция. Комиссия из 3 человек создаётся в течение 5 дней после объявления, копия решения выдаётся в течение 5 дней.", "If you disagree with the final results, submit a written appeal to the Appeals Commission within 3 days of the announcement. The 3-member commission is formed within 5 days of the announcement, and a copy of its decision is issued within 5 days."),
+    resL: t3("Натижа эълон қилинган сана", "Дата объявления результатов", "Results announcement date"),
+    appealBtn: t3("📋 Апелляция матни намунасини нусхалаш", "📋 Скопировать образец апелляции", "📋 Copy a sample appeal letter"),
+    deadline: t3("Охирги муддат", "Крайний срок", "Deadline"),
+    budgetWarn: t3("«Стартап» сметангиз 1-ўрин мукофотидан (100 млн сўм) катта. Қолган қисм қаердан молиялаштирилишини (ўз ҳисса, инвестор) кўрсатинг.", "Смета в панели «Стартап» больше премии за 1-е место (100 млн сумов). Укажите, откуда будет остальное (собственный вклад, инвестор).", "Your “Startup” budget exceeds the 1st-place prize (100 million soums). Say where the rest will come from (own funds, investor)."),
+    budgetOk: t3("Смета 1-ўрин мукофоти (100 млн сўм) доирасида.", "Смета укладывается в премию за 1-е место (100 млн сумов).", "The budget fits within the 1st-place prize (100 million soums)."),
+    tplNote: t3("Ариза танлов шартларида кўрсатилган шакл ва шаблонга мувофиқ топширилади (9-банд). Ушбу ҳужжат — тайёргарлик учун қоралама: эълондаги расмий шаблонга кўчириб, имзолаб топширинг.", "Заявка подаётся по форме и шаблону из условий конкурса (п. 9). Этот документ — черновик для подготовки: перенесите его в официальный шаблон из объявления и подпишите.", "The application is submitted in the form and template given in the contest terms (item 9). This document is a draft: copy it into the official template from the announcement and sign it."),
+    whyKg: "kreativ g‘oya tayyor"
+  };
+  const KG_STEPS = [
+    ["ann", t3("Эълон", "Объявление", "Announcement"), t3("Вазирлик октябрнинг биринчи ўн кунлигида эълон беради; матн Вазирлик ва ОТМ сайтларида (8-банд).", "Министерство публикует объявление в первой декаде октября на сайтах Министерства и вузов (п. 8).", "The Ministry announces the contest in the first ten days of October on its own and universities’ websites (item 8).")],
+    ["app", t3("Ариза топшириш", "Подача заявок", "Applications"), t3("Эълондан бир ой ичида ўз ОТМингиздаги Саралаш комиссиясига (10-банд). Кечиккан лойиҳа қабул қилинмайди (23-банд).", "В течение месяца после объявления — в отборочную комиссию своего вуза (п. 10). Опоздавшие проекты не принимаются (п. 23).", "Within one month of the announcement, to the selection commission of your own university (item 10). Late projects are not accepted (item 23).")],
+    ["int", t3("Ички танлов (ОТМ)", "Внутренний отбор (вуз)", "Internal round (university)"), t3("Саралаш комиссияси бир ойда кўриб чиқади; энг яхши 3 та лойиҳа республикага юборилади (12-банд). Камчилик бўлса — 1 ҳафтада тузатиш (23-банд). Ҳимоя — тақдимот (24-банд).", "Отборочная комиссия рассматривает за месяц; 3 лучших проекта идут на республиканский этап (п. 12). При недочётах — 1 неделя на доработку (п. 23). Защита — презентация (п. 24).", "The selection commission reviews within a month; the best 3 projects go to the national round (item 12). If there are gaps you get 1 week to fix them (item 23). Defence is a presentation (item 24).")],
+    ["rep", t3("Республика босқичи", "Республиканский этап", "National round"), t3("Танлов комиссияси бир ойда ғолибларни аниқлайди (13-банд): 1 та биринчи, 2 та иккинчи, 4 та учинчи ўрин (27-банд).", "Конкурсная комиссия за месяц определяет победителей (п. 13): 1 первое, 2 вторых и 4 третьих места (п. 27).", "The contest commission chooses the winners within a month (item 13): one 1st, two 2nd and four 3rd places (item 27).")],
+    ["apl", t3("Апелляция", "Апелляция", "Appeal"), t3("Натижа эълонидан 3 кун ичида ёзма апелляция (33-банд).", "Письменная апелляция в течение 3 дней после объявления итогов (п. 33).", "Written appeal within 3 days of the results (item 33).")],
+    ["cer", t3("Тақдирлаш", "Награждение", "Award ceremony"), t3("Январнинг охирги ўн кунлигида Вазирлик тантанали маросим ўтказади (36-банд).", "В последней декаде января Министерство проводит торжественную церемонию (п. 36).", "The Ministry holds the ceremony in the last ten days of January (item 36).")]
+  ];
+  const KG_RULES = [
+    ["🎓", t3("Ким қатнашади", "Кто участвует", "Who can take part"), t3("Олий таълим ташкилотида таълим олаётган талабалар: креатив ғоя ёки унга асосланган стартап лойиҳа билан, ариза бериб (9-банд).", "Студенты вузов — с креативной идеей или стартап-проектом на её основе, через заявку (п. 9).", "Students currently studying at a university, with a creative idea or a startup project based on it, by application (item 9).")],
+    ["☝️", t3("Нечта лойиҳа", "Сколько проектов", "How many projects"), t3("Муаллиф сифатида фақат битта лойиҳа; жамоа аъзоси сифатида кўпи билан иккита лойиҳада (11-банд).", "Как автор — только один проект; как член команды — не более чем в двух (п. 11).", "Only one project as an author; at most two as a team member (item 11).")],
+    ["💰", t3("Мукофотлар", "Премии", "Prizes"), t3("1-ўрин — 100 млн сўм, 2-ўринлар — 50 млн сўмдан, 3-ўринлар — 25 млн сўмдан; жами 300 млн сўмгача, ОТМнинг бюджетдан ташқари маблағидан, муаллифнинг банк картасига (6, 30–32-бандлар).", "1-е место — 100 млн сумов, 2-е — по 50 млн, 3-и — по 25 млн; всего до 300 млн сумов из внебюджетных средств вуза, на банковскую карту автора (пп. 6, 30–32).", "1st place 100 million soums, 2nd places 50 million each, 3rd places 25 million each; up to 300 million in total from the university’s extra-budgetary funds, paid to the author’s bank card (items 6, 30–32).")],
+    ["🧑‍⚖️", t3("Комиссиялар", "Комиссии", "Commissions"), t3("ОТМда 7–9 аъзоли Саралаш комиссияси (раис — илмий ишлар бўйича проректор), республикада камида 7 аъзоли Танлов комиссияси; кворум — 2/3, мажлислар ёпиқ, қарор кўпчилик овоз билан (15–19, 25-бандлар).", "В вузе — отборочная комиссия из 7–9 членов (председатель — проректор по науке), на республиканском этапе — не менее 7 членов; кворум 2/3, заседания закрытые, решение большинством (пп. 15–19, 25).", "At the university a 7–9 member selection commission (chaired by the vice-rector for research); nationally at least 7 members; quorum 2/3, closed sessions, majority vote (items 15–19, 25).")],
+    ["🛠", t3("Нима баҳоланади", "Что оценивается", "What is assessed"), t3("Янги маҳсулот ёки хизмат, муаммога ноанъанавий ечим, инновационлик, амалиётда қўлланиш имконияти ва ижтимоий аҳамият (3-банд); аниқ амалга ошириш механизми, муддати ва дастлабки муваффақиятли натижалар (20-банд).", "Новый продукт или услуга, нестандартное решение проблемы, инновационность, применимость на практике и социальная значимость (п. 3); чёткий механизм реализации, сроки и первые успешные результаты (п. 20).", "A new product or service, an unconventional solution, innovativeness, practical applicability and social value (item 3); a clear implementation mechanism, timeline and first successful results (item 20).")],
+    ["⚠️", t3("Эътибор беринг", "Обратите внимание", "Watch out"), t3("Ҳужжатлар тўлиқ расмийлаштирилган бўлиши шарт (23-банд). Коррупция омиллари ёки суд қарори бўлса, натижа бекор қилинади (38-банд).", "Документы должны быть оформлены полностью (п. 23). При коррупционных факторах или решении суда итоги отменяются (п. 38).", "Documents must be complete (item 23). Results are cancelled if corruption is proven or a court rules so (item 38).")]
+  ];
+  /* [калит, номи, изоҳ, энг кам сўз] */
+  const KG_FIELDS = {
+    info: [
+      ["otm", t3("Олий таълим ташкилоти", "Вуз", "University"), "", 0],
+      ["fac", t3("Факультет, йўналиш, курс", "Факультет, направление, курс", "Faculty, programme, year"), "", 0],
+      ["author", t3("Муаллиф (Ф.И.Ш.)", "Автор (Ф.И.О.)", "Author (full name)"), "", 0],
+      ["contact", t3("Телефон ва почта", "Телефон и почта", "Phone and email"), "", 0]
+    ],
+    crit: [
+      ["problem", t3("Қандай муаммони ҳал қилади?", "Какую проблему решает?", "What problem does it solve?"), t3("Рақам ва манба билан: ким азият чекади, қаерда, қанча.", "С цифрами и источником: кто страдает, где, сколько.", "With numbers and a source: who is affected, where, how much."), 40],
+      ["product", t3("Янги маҳсулот ёки хизмат", "Новый продукт или услуга", "New product or service"), t3("Ғоя нима яратади ва ким фойдаланади.", "Что создаёт идея и кто будет пользоваться.", "What the idea creates and who will use it."), 40],
+      ["novel", t3("Ноанъанавий ечим ва инновационлик", "Нестандартное решение и инновационность", "Unconventional solution and innovation"), t3("Мавжуд ечимлардан фарқи, аналоглар билан солиштириш.", "Отличие от существующих решений, сравнение с аналогами.", "How it differs from existing solutions; comparison with alternatives."), 40],
+      ["practice", t3("Амалиётда қўлланиш имконияти", "Применимость на практике", "Practical applicability"), t3("Ким, қаерда, қандай шароитда жорий этади; TRL.", "Кто, где и в каких условиях внедрит; TRL.", "Who will deploy it, where and under what conditions; TRL."), 30],
+      ["social", t3("Ижтимоий аҳамият", "Социальная значимость", "Social value"), t3("Жамият ва табиатга фойдаси, БМТ барқарор ривожланиш мақсадлари.", "Польза для общества и природы, Цели устойчивого развития ООН.", "Benefit to society and nature; UN Sustainable Development Goals."), 30]
+    ],
+    impl: [
+      ["mech", t3("Амалга ошириш механизми", "Механизм реализации", "Implementation mechanism"), t3("Қадамлар, жамоа роллари, ҳамкорлар, ресурслар.", "Шаги, роли в команде, партнёры, ресурсы.", "Steps, team roles, partners, resources."), 50],
+      ["time", t3("Муддати (тақвим режа)", "Сроки (календарный план)", "Timeline (calendar plan)"), t3("Ой бўйича: нима қилинади ва қандай натижа.", "По месяцам: что делается и какой результат.", "Month by month: what is done and the result."), 30],
+      ["results", t3("Дастлабки муваффақиятли натижалар", "Первые успешные результаты", "First successful results"), t3("Прототип, синов, фойдаланувчилар сони, хат, сертификат.", "Прототип, испытания, число пользователей, письма, сертификаты.", "Prototype, tests, number of users, letters, certificates."), 30]
+    ]
+  };
+  const KG_CHECKS = [
+    t3("Муаллиф сифатида фақат шу битта лойиҳада қатнашаман (11-банд)", "Как автор участвую только в этом проекте (п. 11)", "As an author I take part only in this project (item 11)"),
+    t3("Жамоа аъзоларининг ҳар бири кўпи билан 2 та лойиҳада (11-банд)", "Каждый член команды — не более чем в 2 проектах (п. 11)", "Each team member is in at most 2 projects (item 11)"),
+    t3("Ариза эълондаги шакл ва шаблон бўйича тўлдирилди (9-банд)", "Заявка заполнена по форме и шаблону из объявления (п. 9)", "The application follows the form and template in the announcement (item 9)"),
+    t3("Барча ҳужжатлар тўлиқ ва имзоланган (23-банд)", "Все документы полные и подписаны (п. 23)", "All documents are complete and signed (item 23)"),
+    t3("Тақдимот (презентация) ҳимояга тайёр (24-банд)", "Презентация готова к защите (п. 24)", "The presentation is ready for the defence (item 24)"),
+    t3("Ариза эълондан бир ой ичида топширилади (10-банд)", "Заявка подаётся в течение месяца после объявления (п. 10)", "The application is submitted within a month of the announcement (item 10)")
+  ];
+  const KG_KEY = "ekotalim:kg";
+  let KGS = { ann: "", res: "", pid: "" };
+  try { KGS = Object.assign(KGS, JSON.parse(localStorage.getItem(KG_KEY)) || {}); } catch (e) { /* ignore */ }
+  const kgSave = () => { try { localStorage.setItem(KG_KEY, JSON.stringify(KGS)); } catch (e) { /* ignore */ } };
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const parseD = (s) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
+  const addM = (d, n) => { const x = new Date(d); x.setMonth(x.getMonth() + n); return x; };
+  const addD = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const dShow = (d) => (lang() === "ru" || lang() === "en"
+    ? d.toLocaleDateString(lang() === "en" ? "en-GB" : "ru-RU", { day: "numeric", month: "long", year: "numeric" })
+    : `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`);
+  function defaultAnn() {
+    const t = new Date(), y = t.getMonth() >= 8 ? t.getFullYear() : t.getFullYear() - 1;
+    return iso(new Date(y, 9, 10));
+  }
+  function kgDates() {
+    const ann = parseD(KGS.ann) || parseD(defaultAnn());
+    const app = addM(ann, 1), int = addM(app, 1), rep = addM(int, 1);
+    const cy = ann.getMonth() >= 8 ? ann.getFullYear() + 1 : ann.getFullYear();
+    return { ann: [ann, ann], app: [ann, app], int: [app, int], rep: [int, rep], apl: [rep, addD(rep, 3)], cer: [new Date(cy, 0, 21), new Date(cy, 0, 31)] };
+  }
+  const wc = (s) => (String(s || "").trim().match(/\S+/g) || []).length;
+  const KG_P = (p) => { if (!p.kg) p.kg = { f: {}, c: {} }; return p.kg; };
+  function kgReady(p) {
+    const k = KG_P(p);
+    const fl = [...KG_FIELDS.info, ...KG_FIELDS.crit, ...KG_FIELDS.impl];
+    const ok = fl.filter(([key, , , min]) => (min ? wc(k.f[key]) >= min : String(k.f[key] || "").trim().length > 1)).length;
+    const ch = KG_CHECKS.filter((_, i) => k.c[i]).length;
+    return Math.round(((ok + ch) / (fl.length + KG_CHECKS.length)) * 100);
+  }
+  function kgView() {
+    const D = kgDates(), today = new Date(); today.setHours(0, 0, 0, 0);
+    const cal = KG_STEPS.map(([k, t, d]) => {
+      const [a, b] = D[k]; const st = today > b ? "ok" : today >= a ? "on" : "";
+      const left = Math.round((b - today) / 864e5);
+      return `<li class="kg-step ${st}"><b>${H(t)}</b><span class="kg-date">${k === "ann" ? dShow(a) : `${dShow(a)} — ${dShow(b)}`}</span>
+        <span class="small">${st === "on" ? `🟢 ${H(KG.now)} · ${left} ${H(KG.left)}` : st === "ok" ? `✓ ${H(KG.passed)}` : ""}</span><p class="small muted">${H(d)}</p></li>`;
+    }).join("");
+    const rules = KG_RULES.map(([i, t, d]) => `<article class="lab-card kg-rule"><h4>${i} ${H(t)}</h4><p class="small">${H(d)}</p></article>`).join("");
+    const p = DB.list.find((x) => x.id === KGS.pid) || DB.list[0];
+    let prep = `<p class="muted">${H(KG.noProj)}</p>`;
+    if (p) {
+      const k = KG_P(p), r = kgReady(p);
+      const fld = ([key, t, hint, min], area) => {
+        const n = wc(k.f[key]);
+        return `<label class="ly-cv kg-f"><b>${H(t)}</b>${hint ? `<span class="small muted">${H(hint)}</span>` : ""}${area ? `<textarea rows="4" data-kgf="${key}">${esc(k.f[key] || "")}</textarea>` : `<input data-kgf="${key}" value="${esc(k.f[key] || "")}">`}${min ? `<span class="small kg-wc ${n >= min ? "ok" : ""}" data-kgwc="${key}">${n} ${H(KG.words)} · ${H(KG.minW)} ${min}</span>` : ""}</label>`;
+      };
+      const u = p.su || {}, tot = (u.budget || []).reduce((s, x) => s + num(x.q) * num(x.p), 0) * 1.1;
+      prep = `<label class="kg-pick">${H(KG.pick)} <select data-kgpid>${DB.list.map((x) => `<option value="${x.id}" ${x.id === p.id ? "selected" : ""}>${esc(x.title)}</option>`).join("")}</select></label>
+        <div class="kg-ready"><span>${H(KG.ready)}: <b data-kgr>${r}%</b></span><div class="pc-bar" aria-hidden="true"><i data-kgbar style="width:${r}%"></i></div></div>
+        <h4>${H(KG.infoH)}</h4><div class="ly-canvas">${KG_FIELDS.info.map((f) => fld(f, false)).join("")}</div>
+        <h4>${H(KG.critH)}</h4><div class="ly-canvas big">${KG_FIELDS.crit.map((f) => fld(f, true)).join("")}</div>
+        <h4>${H(KG.implH)}</h4><div class="ly-canvas big">${KG_FIELDS.impl.map((f) => fld(f, true)).join("")}</div>
+        ${tot ? `<p class="small ${tot > 1e8 ? "kg-warn" : "kg-ok"}">${tot > 1e8 ? "⚠️ " + H(KG.budgetWarn) : "✅ " + H(KG.budgetOk)} (${fmt(tot)} ${H(SX.sum)})</p>` : ""}
+        <h4>${H(KG.checkH)}</h4><div class="lab-checks">${KG_CHECKS.map((c, i) => `<label class="l3-check"><input type="checkbox" data-kgc="${i}" ${k.c[i] ? "checked" : ""}> ${H(c)}</label>`).join("")}</div>
+        <p class="small muted">${H(KG.tplNote)}</p>
+        <div class="ev-tools"><button class="btn btn-primary btn-sm" type="button" data-kgdoc>${H(KG.docBtn)}</button><button class="btn btn-ghost btn-sm" type="button" data-kgsu>${H(KG.deckBtn)}</button></div>`;
+    }
+    const resD = parseD(KGS.res);
+    return `<div class="kg">
+      <div class="lab-card kg-head"><h3>${H(KG.title)}</h3><p class="small">${H(KG.src)}</p></div>
+      <h4>${H(KG.calH)}</h4>
+      <label class="kg-pick">${H(KG.annL)} <input type="date" data-kgann value="${esc(KGS.ann || defaultAnn())}"></label>
+      <p class="small muted">${H(KG.calNote)}</p>
+      <ol class="kg-cal">${cal}</ol>
+      <h4>${H(KG.rulesH)}</h4><div class="lab-grid kg-rules">${rules}</div>
+      <h4>${H(KG.prepH)}</h4>${prep}
+      <h4>${H(KG.appealH)}</h4><p class="small">${H(KG.appealD)}</p>
+      <label class="kg-pick">${H(KG.resL)} <input type="date" data-kgres value="${esc(KGS.res || "")}"></label>
+      ${resD ? `<p class="small"><b>${H(KG.deadline)}:</b> ${dShow(addD(resD, 3))}</p>` : ""}
+      <div class="ev-tools"><button class="btn btn-ghost btn-sm" type="button" data-kgapl>${H(KG.appealBtn)}</button></div>
+    </div>`;
+  }
+  function kgDoc(p) {
+    const k = KG_P(p), f = (key) => esc(k.f[key] || "______________________").replace(/\n/g, "<br>");
+    const row = ([key, t]) => `<tr><th>${H(t)}</th><td>${f(key)}</td></tr>`;
+    const D = kgDates();
+    return `<!doctype html><html lang="${EL() ? EL().htmlLang : "uz"}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(p.title)}</title>
+<style>body{font:15px/1.55 "Times New Roman",serif;max-width:800px;margin:24px auto;padding:0 18px;color:#111}h1,h2{text-align:center}h1{font-size:20px;margin:24px 0 4px}h2{font-size:17px;margin-top:30px}p.c{text-align:center}table{border-collapse:collapse;width:100%;margin-top:10px}th,td{border:1px solid #444;padding:7px 9px;vertical-align:top;text-align:left}th{width:34%;background:#f3f3f3}.r{text-align:right}.n{color:#555;font-size:13px}.pb{page-break-before:always}@media print{.n{display:none}}</style>
+<p class="n">⚠️ ${H(KG.tplNote)}</p>
+<p class="r">${f("otm")}<br>${H(t3("Саралаш комиссиясига", "В отборочную комиссию", "To the Selection Commission"))}</p>
+<h1>${H(t3("АРИЗА", "ЗАЯВКА", "APPLICATION"))}</h1>
+<p class="c">${H(KG.title)}</p>
+<p>${H(t3("Мен,", "Я,", "I,"))} ${f("author")}, ${f("fac")}, ${H(t3("«Eng yaxshi kreativ g‘oya» республика танловини ўтказиш тартиби тўғрисидаги Низом билан танишиб чиқдим ва ўзим муаллифи бўлган қуйидаги лойиҳа билан танловда иштирок этишга рухсат беришингизни сўрайман:", "ознакомился(-ась) с Положением о порядке проведения республиканского конкурса «Лучшая креативная идея» и прошу допустить к участию в конкурсе мой авторский проект:", "have read the Regulation on the national contest “Best Creative Idea” and request to take part in the contest with the following project of which I am the author:"))} <b>«${esc(p.title)}»</b>.</p>
+<p>${H(t3("Муаллиф сифатида фақат шу лойиҳа билан қатнашишимни, жамоа аъзолари эса кўпи билан иккита лойиҳада иштирок этишини тасдиқлайман (11-банд). Шахсга доир маълумотларимни танлов доирасида қайта ишлашга розиман.", "Подтверждаю, что как автор участвую только с этим проектом, а члены команды — не более чем в двух проектах (п. 11). Согласен(-на) на обработку персональных данных в рамках конкурса.", "I confirm that as an author I take part only with this project and that team members take part in at most two projects (item 11). I consent to my personal data being processed for the contest."))}</p>
+${p.team.length ? `<p>${H(t3("Жамоа аъзолари:", "Члены команды:", "Team members:"))} ${p.team.map(esc).join("; ")}</p>` : ""}
+<p>${H(t3("Алоқа:", "Контакты:", "Contact:"))} ${f("contact")}</p>
+<p>${H(t3("Сана:", "Дата:", "Date:"))} «___» ____________ ${D.app[1].getFullYear()} &nbsp;&nbsp;&nbsp; ${H(t3("Имзо:", "Подпись:", "Signature:"))} ____________</p>
+<h2 class="pb">${H(t3("ЛОЙИҲА ПАСПОРТИ", "ПАСПОРТ ПРОЕКТА", "PROJECT PASSPORT"))}</h2>
+<table><tr><th>${H(t3("Лойиҳа номи", "Название проекта", "Project title"))}</th><td><b>${esc(p.title)}</b></td></tr>${KG_FIELDS.info.map(row).join("")}</table>
+<h2>${H(KG.critH)}</h2><table>${KG_FIELDS.crit.map(row).join("")}</table>
+<h2>${H(KG.implH)}</h2><table>${KG_FIELDS.impl.map(row).join("")}</table>
+<h2>${H(t3("Низом талабларига мувофиқлик", "Соответствие требованиям положения", "Compliance with the regulation"))}</h2>
+<table>${KG_CHECKS.map((c, i) => `<tr><th>${k.c[i] ? "☑" : "☐"}</th><td>${H(c)}</td></tr>`).join("")}</table>
+<p class="n">Ekomun · ${iso(new Date())}</p></html>`;
+  }
+  const appealText = () => L(t3(
+    "Апелляция комиссиясига\n«Eng yaxshi kreativ g‘oya» республика танлови иштирокчиси __________ (Ф.И.Ш.), __________ (ОТМ, курс)\n\nАПЕЛЛЯЦИЯ\n\n«__________» лойиҳаси бўйича __.__.____ йилда эълон қилинган танлов натижасига рози эмасман. Сабаблари:\n1. __________\n2. __________\nДалиллар (илова): __________\n\nНизомнинг 33–35-бандларига асосан аризамни кўриб чиқишингизни ва қарор нусхасини менга беришингизни сўрайман.\n\nСана: __.__.____      Имзо: ________",
+    "В апелляционную комиссию\nот участника республиканского конкурса «Лучшая креативная идея» __________ (Ф.И.О.), __________ (вуз, курс)\n\nАПЕЛЛЯЦИЯ\n\nНе согласен(-на) с итогами конкурса по проекту «__________», объявленными __.__.____. Причины:\n1. __________\n2. __________\nДоказательства (приложение): __________\n\nНа основании пп. 33–35 Положения прошу рассмотреть заявление и выдать мне копию решения.\n\nДата: __.__.____      Подпись: ________",
+    "To the Appeals Commission\nfrom __________ (full name), __________ (university, year), participant of the national contest “Best Creative Idea”\n\nAPPEAL\n\nI disagree with the contest results for the project “__________” announced on __.__.____. Reasons:\n1. __________\n2. __________\nEvidence (attached): __________\n\nUnder items 33–35 of the Regulation I ask you to review this appeal and give me a copy of the decision.\n\nDate: __.__.____      Signature: ________"));
+  function bindKg() {
+    const $ = (s) => ROOT.querySelector(s), $$ = (s) => ROOT.querySelectorAll(s);
+    const ann = $("[data-kgann]"); if (ann) ann.addEventListener("change", () => { KGS.ann = ann.value; kgSave(); render(); });
+    const res = $("[data-kgres]"); if (res) res.addEventListener("change", () => { KGS.res = res.value; kgSave(); render(); });
+    const pid = $("[data-kgpid]"); if (pid) pid.addEventListener("change", () => { KGS.pid = pid.value; kgSave(); render(); });
+    const p = DB.list.find((x) => x.id === KGS.pid) || DB.list[0];
+    const apl = $("[data-kgapl]"); if (apl) apl.addEventListener("click", async () => { try { await navigator.clipboard.writeText(appealText()); toast(TX.copied); } catch (e) { toast(TX.noCopy); } });
+    if (!p) return;
+    const k = KG_P(p);
+    const upd = () => { const r = kgReady(p); $("[data-kgr]").textContent = r + "%"; $("[data-kgbar]").style.width = r + "%"; if (r === 100) xpOnce(`kg_${p.id}`, 30, KG.whyKg); };
+    const mins = Object.fromEntries([...KG_FIELDS.crit, ...KG_FIELDS.impl].map(([key, , , m]) => [key, m]));
+    $$("[data-kgf]").forEach((i) => i.addEventListener("input", () => {
+      k.f[i.dataset.kgf] = i.value; save();
+      const w = ROOT.querySelector(`[data-kgwc="${i.dataset.kgf}"]`);
+      if (w) { const n = wc(i.value); w.textContent = `${n} ${L(KG.words)} · ${L(KG.minW)} ${mins[i.dataset.kgf]}`; w.classList.toggle("ok", n >= mins[i.dataset.kgf]); }
+      upd();
+    }));
+    $$("[data-kgc]").forEach((c) => c.addEventListener("change", () => { k.c[c.dataset.kgc] = c.checked; save(); upd(); }));
+    $("[data-kgdoc]").addEventListener("click", () => download(fileName(p, "-kreativ-goya.html"), "text/html", kgDoc(p)));
+    $("[data-kgsu]").addEventListener("click", () => { tab = "my"; openId = p.id; p.view = "su"; save(); render(); window.scrollTo({ top: SEC.offsetTop - 60 }); });
   }
 
   function ideasView() {
@@ -652,7 +860,7 @@ ${slides.map((x, i) => `<section class="${i ? "" : "on"}">${x}<span class="brand
       if (p.notes[i]) lines.push("   " + p.notes[i]);
     });
     if (p.tasks.length) { lines.push("\n" + L(TX.board)); p.tasks.forEach((t) => lines.push(`   ${L(TX.cols[t.c])}: ${t.t}`)); }
-    lines.push("\n— ЭкоТаълим");
+    lines.push("\n— Ekomun");
     return lines.join("\n");
   }
   function reportHtml(p) {
@@ -665,7 +873,7 @@ ${(m.canvas || []).length ? `<h2>${H(TX.canvas)}</h2><div class="cv">${m.canvas.
 <h2>${H(TX.stage)}</h2>${m.stages.map((s, i) => `<h3 class="${stageDone(p, i) ? "ok" : ""}">${i + 1}. ${H(s.t)} ${stageDone(p, i) ? "✓" : ""}</h3><ul>${s.o.map((o, j) => `<li>${p.checks[i + "-" + j] ? "☑" : "☐"} ${H(o)}</li>`).join("")}</ul>${p.notes[i] ? `<pre>${esc(p.notes[i])}</pre>` : ""}`).join("")}
 ${p.tasks.length ? `<h2>${H(TX.board)}</h2><table>${[0, 1, 2].map((c) => `<tr><th>${H(TX.cols[c])}</th><td>${p.tasks.filter((t) => t.c === c).map((t) => esc(t.t)).join("<br>") || "—"}</td></tr>`).join("")}</table>` : ""}
 <h2>${H(TX.self)} · ${sc}/20</h2><table>${RUBRIC.map(([c, lv], i) => `<tr><th>${H(c)}</th><td>${p.rubric[i] != null ? `${p.rubric[i] + 1}. ${H(LV[p.rubric[i]])} — ${H(lv[p.rubric[i]])}` : "—"}</td></tr>`).join("")}</table>
-<p class="m" style="margin-top:28px">ЭкоТаълим · ${new Date().toISOString().slice(0, 10)}</p></html>`;
+<p class="m" style="margin-top:28px">Ekomun · ${new Date().toISOString().slice(0, 10)}</p></html>`;
   }
 
   function create(title, method, idea, teamText) {
@@ -691,6 +899,7 @@ ${p.tasks.length ? `<h2>${H(TX.board)}</h2><table>${[0, 1, 2].map((c) => `<tr><t
     $$("[data-open]").forEach((b) => b.addEventListener("click", () => { openId = b.dataset.open; render(); }));
     $$("[data-use]").forEach((b) => b.addEventListener("click", () => { const i = IDEAS.find((x) => x.id === b.dataset.use); creating = { title: L(i.t), method: i.m[0], idea: i.id }; tab = "my"; openId = null; render(); }));
     $$("[data-usem]").forEach((b) => b.addEventListener("click", () => { creating = { method: b.dataset.usem }; tab = "my"; openId = null; render(); }));
+    if (tab === "kg") return bindKg();
     const p = DB.list.find((x) => x.id === openId);
     if (!p || tab !== "my") return;
     const bk = $("[data-back]"); if (bk) bk.addEventListener("click", () => { openId = null; render(); });

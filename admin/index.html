@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
-  <title>ЭкоТаълим · Бошқарув маркази</title>
+  <title>Ekomun · Бошқарув маркази</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23047857'/%3E%3Cpath d='M18 40c0-14 12-22 28-22-1 16-9 28-23 28-2 0-4-1-5-2' fill='none' stroke='white' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <script src="theme.js"></script>
+  <link rel="preload" href="fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="app.css">
   <script src="app.js" defer></script>
 </head>
@@ -14,7 +16,7 @@
   <!-- Кириш ойнаси -->
   <main class="login" id="loginView" hidden>
     <form class="login-card" id="loginForm" autocomplete="off">
-      <div class="brand"><span class="logo" aria-hidden="true">🛡️</span><div><b>Бошқарув маркази</b><small>ЭкоТаълим · фақат эгаси учун</small></div></div>
+      <div class="brand"><span class="logo" aria-hidden="true">🛡️</span><div><b>Бошқарув маркази</b><small>Ekomun · фақат эгаси учун</small></div></div>
       <label for="pw">Парол</label>
       <input id="pw" name="password" type="password" autocomplete="current-password" required>
       <div id="codeRow" hidden>
@@ -30,18 +32,21 @@
   <!-- Асосий ойна -->
   <div class="shell" id="appView" hidden>
     <aside class="side">
-      <div class="brand"><span class="logo" aria-hidden="true">🛡️</span><div><b>Бошқарув маркази</b><small>ЭкоТаълим</small></div></div>
+      <div class="brand"><span class="logo" aria-hidden="true">🛡️</span><div><b>Бошқарув маркази</b><small>Ekomun</small></div></div>
       <nav class="tabs" id="tabs">
         <button data-tab="dash" class="on">📊 <span>Умумий ҳолат</span></button>
         <button data-tab="online">🟢 <span>Ҳозир онлайн</span> <i class="badge" id="bOnline">0</i></button>
         <button data-tab="people">👥 <span>Фойдаланувчилар</span></button>
         <button data-tab="journal">🕓 <span>Кирди-чиқди</span></button>
         <button data-tab="stats">📈 <span>Статистик таҳлил</span></button>
+        <button data-tab="growth">🚀 <span>Ўсиш ва ўқиш</span></button>
         <button data-tab="blocks">⛔ <span>Блок ва хавфсизлик</span> <i class="badge warn" id="bSusp" hidden>0</i></button>
         <button data-tab="reports">🗺️ <span>Эко-харита</span> <i class="badge" id="bPending" hidden>0</i></button>
+        <button data-tab="system">🛠️ <span>Тизим ва хатолар</span> <i class="badge warn" id="bErr" hidden>0</i></button>
       </nav>
       <div class="side-foot">
         <span class="muted small" id="updated"></span>
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="Мавзу"></button>
         <button class="btn ghost sm" id="logout">Чиқиш</button>
       </div>
     </aside>
@@ -124,6 +129,31 @@
           <div class="card"><h2>Браузер</h2><div id="chBr"></div></div>
         </div>
         <div class="card"><h2>Хулоса</h2><ul class="insights" id="insights"></ul></div>
+      </section>
+
+      <section data-view="growth" hidden>
+        <div class="kpis" id="kpisG"></div>
+        <div class="grid2">
+          <div class="card"><h2>Воронка: меҳмондан сертификатгача</h2><p class="small muted">Танланган даврдаги қурилмалар. Ҳар қадамда қанча одам қолгани ва қаерда тўхтагани.</p><div id="chFunnel"></div></div>
+          <div class="card"><h2>Қайтиш (retention)</h2><p class="small muted">Биринчи ташрифдан N кун ва ундан кейин яна кирганлар улуши.</p><div id="chRet"></div></div>
+        </div>
+        <div class="card"><h2>Ҳафталик когорталар</h2><p class="small muted">Сатр — шу ҳафтада биринчи марта келганлар; устун — кейинги ҳафталарда қайтганлар улуши.</p><div class="table cohort" id="tCohort"></div></div>
+        <div class="grid2">
+          <div class="card"><h2>Дарслар: очилди, тугатилди, ўртача вақт</h2><div class="table scroll" id="tLessons2"></div></div>
+          <div class="card"><h2>Энг кўп хато қилинадиган саволлар</h2><p class="small muted">Биринчи уринишдаги жавоблар; камида 3 та жавоб берилган саволлар.</p><div class="table scroll" id="tHard"></div></div>
+        </div>
+        <div class="card"><h2>Берилган сертификатлар</h2><p class="small muted">Ҳар бир сертификат QR код орқали <span class="mono">/tekshir</span> саҳифасида текширилади.</p><div class="table" id="tCerts"></div></div>
+      </section>
+
+      <section data-view="system" hidden>
+        <div class="grid2">
+          <div class="card"><h2>Сервер ҳолати</h2><dl class="sys" id="sysInfo"></dl></div>
+          <div class="card"><h2>Захира нусхалар</h2><p class="small muted">Ҳар куни автоматик олинади (data/backups), сессия калитларисиз. Render'да диск доимий бўлиши учун Persistent Disk улаш керак.</p>
+            <div class="toolbar"><a class="btn primary sm" id="dlBackup" href="#">⬇ Ҳозирги нусхани юклаб олиш</a></div><div class="table" id="tBackups"></div></div>
+        </div>
+        <div class="card"><h2>Хатолар журнали</h2><p class="small muted">Фойдаланувчилар бравзеридаги дастур хатолари (шахсий маълумотсиз). Бир хил хато битта қаторда, сони билан.</p>
+          <div class="toolbar"><button class="btn sm" id="clearErr" type="button">🧹 Журнални тозалаш</button></div><div class="table" id="tErrors"></div></div>
+        <div class="card"><h2>Кузатув (uptime)</h2><p class="small">UptimeRobot ёки шунга ўхшаш хизматда ҳар 5 дақиқада <span class="mono" id="healthUrl"></span> манзилини текширинг: жавоб <span class="mono">{"ok":true}</span> бўлса, сайт ишлаяпти.</p></div>
       </section>
 
       <section data-view="blocks" hidden>

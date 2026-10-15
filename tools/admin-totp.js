@@ -15,12 +15,12 @@ for (const b of bytes) {
 }
 if (bits > 0) secret += A[(val << (5 - bits)) & 31];
 
-const label = encodeURIComponent("ЭкоТаълим:admin");
-const uri = `otpauth://totp/${label}?secret=${secret}&issuer=${encodeURIComponent("ЭкоТаълим")}&algorithm=SHA1&digits=6&period=30`;
+const label = encodeURIComponent("Ekomun:admin");
+const uri = `otpauth://totp/${label}?secret=${secret}&issuer=${encodeURIComponent("Ekomun")}&algorithm=SHA1&digits=6&period=30`;
 console.log("ADMIN_TOTP_SECRET=" + secret);
 console.log("");
 console.log("Илова учун (Google Authenticator → «+» → «Калитни киритиш»):");
-console.log("  Ҳисоб: ЭкоТаълим admin");
+console.log("  Ҳисоб: Ekomun admin");
 console.log("  Калит: " + secret.replace(/(.{4})/g, "$1 ").trim());
 console.log("  Тури: вақтга асосланган");
 console.log("");

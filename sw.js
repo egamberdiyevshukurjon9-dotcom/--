@@ -1,9 +1,9 @@
-/* ЭкоТаълим — service worker.
+/* Экомун — service worker.
    Иловани интернетсиз ҳам очиш учун асосий файлларни сақлайди.
    /api/, /admin ва «Cache-Control: no-store» жавоблар (бошқарув маркази) ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekotalim-v15";
+const CACHE = "ekomun-v19";
 const cacheable = (res) => res.ok && !/no-store/i.test(res.headers.get("Cache-Control") || "");
 const SHELL = [
   "/",
@@ -32,6 +32,17 @@ const SHELL = [
   "/vendor/eko-onlayn.js",
   "/vendor/eko-stat.js",
   "/vendor/eko-adabiyot.js",
+  "/vendor/eko-oyin.js",
+  "/vendor/eko-ilova.js",
+  "/vendor/qrcode.js",
+  "/vendor/eko-pdf.js",
+  "/vendor/eko-qonun-data.js",
+  "/vendor/eko-qonun.js",
+  "/vendor/eko-qonun-darslik-data.js",
+  "/vendor/eko-qonun-darslik.js",
+  "/vendor/pdf/jspdf.umd.min.js",
+  "/vendor/pdf/ekopdf-Regular.ttf",
+  "/vendor/pdf/ekopdf-Bold.ttf",
   "/vendor/i18n/keys.js",
   "/vendor/i18n/ru.js",
   "/vendor/i18n/en.js",

@@ -1,4 +1,4 @@
-/* ЭкоТаълим Android илова ёрдамчиси: WebView'да <a download> ишламайди,
+/* Экомун Android илова ёрдамчиси: WebView'да <a download> ишламайди,
    шунинг учун бундай ҳаволалар илова орқали сақланади. */
 (function () {
   if (window.__ekoAndroid || !window.EkoAndroid) return;
@@ -8,7 +8,7 @@
   function save(a) {
     var href = a.href || "";
     if (!a.hasAttribute("download") || !/^(data|blob):/.test(href)) return false;
-    var name = a.getAttribute("download") || "EkoTalim";
+    var name = a.getAttribute("download") || "Ekomun";
     fetch(href).then(function (r) { return r.blob(); }).then(function (b) {
       var fr = new FileReader();
       fr.onload = function () {
@@ -115,7 +115,7 @@
   window.EkoUpdate = {
     apk: function (info) {
       var cur = window.EkoAndroid.version ? window.EkoAndroid.version() : "";
-      show("⬆️", "ЭкоТаълим " + info.versionName + " чиқди",
+      show("⬆️", "Экомун " + info.versionName + " чиқди",
         (cur ? "Сизда " + cur + " ўрнатилган" : "Янги версия") + mb(info.size), info.notes || "",
         "Янгилаш",
         function (btn, b) {
