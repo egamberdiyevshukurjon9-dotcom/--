@@ -4,7 +4,7 @@
    Матнлар uz/ru/en шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
   "use strict";
-  const APP = { version: "2.2", date: "2026-10-15" };
+  const APP = { version: "2.3", date: "2026-10-15" };
   window.EKO_VERSION = APP;
 
   const EL = () => (typeof EkoLang !== "undefined" ? EkoLang : null);
@@ -44,6 +44,12 @@
     close: t3("Ёпиш", "Закрыть", "Close")
   };
   const CHANGES = [
+    { v: "2.3", d: "2026-10-15", items: [
+      t3("Мактаб босқичи учун «Табиат ҳимоячиси»: экологик ҳуқуқ болалар тилида — ҳикоялар, Конституция моддалари, «Ҳуқуқ ёки бурч» ўйини, болалар суди, «Сирли дарё» квести, викторина ва гувоҳнома", "«Защитник природы» для школьного этапа: экологическое право детским языком — истории, статьи Конституции, игра «Право или долг», детский суд, квест «Таинственная река», викторина и удостоверение", "Nature Defender for the school stage: environmental law for children — stories, Constitution articles, a rights-or-duties game, a kids’ court, the Mystery river escape room, a quiz and a certificate"),
+      t3("Хорижий усуллар: P4C, Think–Pair–Share, Street Law, Breakout EDU, Kahoot услубидаги викторина, «3-2-1» чиқиш чиптаси; матнни овоз билан ўқиш", "Зарубежные методы: P4C, Think–Pair–Share, Street Law, Breakout EDU, викторина в стиле Kahoot, «билет на выход» 3-2-1; озвучивание текста", "Foreign methods: P4C, Think–Pair–Share, Street Law, Breakout EDU, a Kahoot-style quiz, 3-2-1 exit tickets; read-aloud"),
+      t3("Университет учун «Чиқиндилар ҳисоби»: 10 та МРО методикаси, калькуляторлар, EWC кодлари, ЕИ чиқиндилар иерархияси, «сўнувчи» мисоллар ва PDF ҳисобот", "«Расчёт отходов» для университета: 10 методик МРО, калькуляторы, коды EWC, иерархия отходов ЕС, «угасающие» примеры и отчёт в PDF", "Waste calculation for university: 10 MRO methods, calculators, EWC codes, the EU waste hierarchy, faded worked examples and a PDF report"),
+      t3("«Экологик ҳуқуқ»га «Амалий дарслар» таби: экотизим, Орол, экспертиза, Сув кодекси, ISO 14001 ва кампус чиқинди режаси", "Вкладка «Практические уроки» в «Экологическом праве»: экосистема, Арал, экспертиза, Водный кодекс, ISO 14001 и план отходов кампуса", "A Hands-on lessons tab in Environmental law: ecosystems, the Aral Sea, environmental review, the Water Code, ISO 14001 and a campus waste plan")
+    ] },
     { v: "2.2", d: "2026-10-15", items: [
       t3("«Экологик ҳуқуқ: интерактив дарслик»: 24 та қонун ва ҳужжат бир дарсликда — 6 боб, ҳар ҳужжатга алоҳида дарс", "«Экологическое право: интерактивный учебник»: 24 закона и документа в одном учебнике — 6 глав, по уроку на документ", "“Environmental law: an interactive textbook”: 24 laws and documents in one textbook — 6 chapters, one lesson per document"),
       t3("Ҳар дарсда атамалар, моддалар шарҳи, казус, квиз, тўғри/нотўғри, мослаштириш, кроссворд ва мунозара", "В каждом уроке термины, комментарий к статьям, казус, квиз, верно/неверно, сопоставление, кроссворд и дискуссия", "Each lesson has terms, article notes, a case, quiz, true/false, matching, crossword and debate"),

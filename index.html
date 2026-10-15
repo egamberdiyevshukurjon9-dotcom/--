@@ -1417,6 +1417,63 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
 .qn-prog .qn-meter { flex: 1; margin: 0; }
 @media (max-width: 600px) { .qn-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; } .qn-chips .chip { flex: none; white-space: nowrap; } .qn-card { padding: 14px; } .qn-river { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 900px) { .qn-tabs { flex-wrap: wrap; overflow: visible; } }
+/* 🎒 Табиат ҳимоячиси (vendor/eko-bola-huquq.js) ва ♻️ чиқиндилар ҳисоби (vendor/eko-mro.js) */
+.hb-band { display: flex; gap: 6px; flex-wrap: wrap; align-self: center; }
+.hb-hero { display: flex; gap: 16px; align-items: center; }
+.hb-rank { font-size: 3.4rem; line-height: 1; }
+.hb-stars { font-size: 1.5rem; letter-spacing: 2px; margin: 4px 0; }
+.hb-road { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 10px; }
+.hb-road button { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; padding: 12px 14px; border-radius: 16px; border: 2px solid var(--line); border-bottom-width: 4px; background: var(--card); color: var(--text); font: inherit; font-weight: 600; cursor: pointer; }
+.hb-road li.ok button { border-color: #16a34a; background: color-mix(in srgb, #16a34a 10%, var(--card)); }
+.hb-road-n { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); font-weight: 800; }
+.hb-road li.ok .hb-road-n { background: #16a34a; color: #fff; }
+.hb-road-ic { font-size: 1.4rem; }
+.hb-scene { font-size: 2.6rem; letter-spacing: 6px; text-align: center; padding: 10px 0; border-radius: 14px; background: linear-gradient(180deg, color-mix(in srgb, #38bdf8 18%, var(--card)), color-mix(in srgb, #22c55e 14%, var(--card))); margin-bottom: 10px; }
+.hb-text { font-size: 1.08rem; line-height: 1.7; }
+html.stage-maktab .hb-text { font-size: 1.15rem; }
+.hb-art { position: relative; padding-top: 22px; }
+.hb-art-n { position: absolute; top: -10px; right: 14px; min-width: 44px; height: 44px; padding: 0 8px; border-radius: 22px; display: grid; place-items: center; font-weight: 800; font-size: 1.1rem; background: var(--btn-grad, var(--primary)); color: var(--on-primary, #fff); box-shadow: var(--shadow); }
+.hb-two { display: flex; gap: 6px; flex-wrap: wrap; }
+.hb-calc { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.hb-calc input { width: min(220px, 100%); padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; }
+.hb-quiz { padding-left: 20px; }
+.hb-quiz li { margin-bottom: 10px; }
+.chip.hb-good { border-color: #16a34a !important; background: #dcfce7 !important; color: #14532d !important; }
+.chip.hb-bad { border-color: #dc2626 !important; background: #fee2e2 !important; color: #7f1d1d !important; }
+.hb-teacher { margin-top: 12px; padding: 10px 12px; border: 1px dashed var(--line); border-radius: 12px; }
+.hb-teacher summary { cursor: pointer; font-weight: 650; }
+.hb-chest { font-size: 4rem; text-align: center; line-height: 1.2; }
+.hb-win { text-align: center; }
+.hb-locks { font-size: 1.5rem; letter-spacing: 4px; }
+.hb-locks span.on { filter: drop-shadow(0 0 6px var(--primary)); }
+.hb-esc-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.hb-ring { --p: 1; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--primary) calc(var(--p) * 360deg), var(--line) 0); }
+.hb-ring b { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--card); font-variant-numeric: tabular-nums; }
+.hb-kq { font-size: 1.25rem; text-align: center; margin: 12px 0 16px; }
+.hb-kopts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; }
+.hb-kopts button { min-height: 72px; border: 0; border-radius: 14px; padding: 12px 14px; background: var(--k); color: #fff; font: inherit; font-weight: 700; font-size: 1.02rem; text-align: left; cursor: pointer; box-shadow: inset 0 -4px 0 rgba(0,0,0,.2); }
+.hb-kopts button span { margin-right: 6px; }
+.hb-kopts button.dim { opacity: .35; }
+.hb-kopts button.bad { opacity: .55; outline: 3px solid #7f1d1d; }
+.hb-kopts button.ok { outline: 4px solid #16a34a; outline-offset: 2px; }
+.hb-pledge { list-style: none; padding: 0 !important; display: grid; gap: 8px; }
+.hb-pledge label { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; cursor: pointer; }
+.hb-pledge input { width: 20px; height: 20px; flex: none; margin-top: 2px; }
+.hb-cert { padding: 10px; background: linear-gradient(135deg, #fde68a, #86efac); }
+.hb-cert-in { border: 3px double #92400e; border-radius: 14px; padding: 20px; text-align: center; background: var(--card); }
+.hb-cert-in h3 { font-size: 1.6rem; letter-spacing: 3px; }
+.hb-cert-in ul { text-align: left; display: inline-block; }
+.hb-cert-top { font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+.hb-cert-name { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin: 6px 0; }
+.mr-formula { display: grid; gap: 6px; margin: 8px 0; padding: 12px 14px; border-radius: 12px; background: var(--primary-soft); font-family: "Cambria Math", "Times New Roman", serif; font-size: 1.08rem; overflow-x: auto; }
+.mr-inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr)); gap: 10px; margin: 8px 0; }
+.mr-inputs label { display: grid; gap: 4px; font-size: .85rem; font-weight: 600; }
+.mr-inputs input { padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; font-weight: 500; }
+.mr-hier { list-style: none; padding: 0 !important; display: grid; gap: 6px; justify-items: center; }
+.mr-hier li { width: var(--w); text-align: center; padding: 8px 6px; border-radius: 10px; background: color-mix(in srgb, var(--primary) 16%, var(--card)); font-weight: 650; font-size: .9rem; }
+.mr-hier li:first-child { background: color-mix(in srgb, #16a34a 30%, var(--card)); }
+.mr-hier li:last-child { background: color-mix(in srgb, #dc2626 18%, var(--card)); }
+@media (max-width: 600px) { .hb-hero { flex-direction: column; text-align: center; } .hb-scene { font-size: 2.1rem; } }
 /* 📖 Экологик ҳуқуқ дарслиги (vendor/eko-qonun-darslik.js) */
 .dk { display: grid; gap: 16px; scroll-margin-top: 140px; }
 .dk-hero h3 { font-size: 1.25rem; }
@@ -1627,6 +1684,8 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
         <a href="#lab3d">3D лаборатория</a>
         <a href="#loyiha" data-stage="uni">Лойиҳалар</a>
         <a href="#qonun" data-stage="uni">Экологик ҳуқуқ</a>
+        <a href="#bolahuquq" data-stage="maktab">Табиат ҳимоячиси</a>
+        <a href="#mro" data-stage="uni">Чиқиндилар ҳисоби</a>
         <a href="#monografiya" data-stage="uni">Сув ва ҳаво</a>
         <a href="#oyinlar" data-stage="maktab">Ўйинлар</a>
         <a href="#dunyo3d" data-stage="maktab">3D Эко-дунё</a>
@@ -1708,6 +1767,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
           <h3 class="app-cat" data-cat="learn"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Ўрганиш</h3>
           <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#f97316"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
           <a class="app" data-cat="learn" href="#kurslar" style="--c:#16a34a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#b45309"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#b45309"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
           <a class="app" data-cat="learn" href="#adabiyot" style="--c:#4f46e5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small><span class="app-new" aria-hidden="true">Янги</span></a>
@@ -1721,6 +1781,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
           <a class="app" data-cat="lab" href="#lab3d" style="--c:#0891b2"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>Айлантириб кўринг</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#06b6d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
           <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
+          <a class="app" data-cat="lab" href="#mro" data-stage="uni" style="--c:#15803d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-recycle"></i></span><b>Чиқиндилар ҳисоби</b><small>10 методика, калькулятор</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="lab" href="#ilmiy" data-stage="uni" style="--c:#2563eb"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
           <h3 class="app-cat" data-cat="act"><i class="fa-solid fa-seedling" aria-hidden="true"></i> Амалиёт ва лойиҳалар</h3>
           <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#ea580c"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
@@ -1764,6 +1825,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
               <li>🤲 Монтессори: «қилиб ўрган» — саралаш, тартиблаш, жуфтлаш</li>
               <li>🔁 Хато саволлар раунд охирида қайтади (spaced repetition)</li>
               <li>🧊 3D лаборатория: Ер, молекула ва сувни айлантириб кузатиш (PhET усули)</li>
+              <li>⚖️ «Табиат ҳимоячиси»: ҳикоя, болалар суди (Street Law), квест-хона (Breakout EDU), P4C</li>
             </ul>
           </article>
           <article class="aud" id="stageCardUni">
@@ -1777,6 +1839,7 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
               <li>🛠 PBL лойиҳа таълими ва «тескари синф» (flipped classroom)</li>
               <li>🚀 «Лойиҳалар» бўлими: Design Thinking, Capstone, CDIO, Lean Canvas, Scrum, LogFrame</li>
               <li>🧊 3D виртуал лаборатория: формула ва модел билан тажриба</li>
+              <li>♻️ «Чиқиндилар ҳисоби»: 10 методика, EWC кодлари, «сўнувчи» мисоллар (Sweller)</li>
             </ul>
           </article>
         </div>
@@ -2127,6 +2190,16 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
     <!-- UNIVERSITET: EKOLOGIK HUQUQ (Konstitutsiya, qonunlar, ekologik sud, keys, debat...) — vendor/eko-qonun.js -->
     <section class="section alt" id="qonun" data-stage="uni">
       <div class="wrap" id="qnRoot" data-notr></div>
+    </section>
+
+    <!-- MAKTAB: TABIAT HIMOYACHISI (bolalar uchun ekologik huquq) — vendor/eko-bola-huquq.js -->
+    <section class="section alt" id="bolahuquq" data-stage="maktab">
+      <div class="wrap" id="bhRoot" data-notr></div>
+    </section>
+
+    <!-- UNIVERSITET: CHIQINDILAR HOSIL BO'LISHINI HISOBLASH (MRO-1 … MRO-10) — vendor/eko-mro.js -->
+    <section class="section" id="mro" data-stage="uni">
+      <div class="wrap" id="mrRoot" data-notr></div>
     </section>
 
     <!-- UNIVERSITET: ONLAYN DARSLIKLAR -->
@@ -36241,6 +36314,10 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   <script src="/vendor/eko-qonun-data.js" defer></script>
   <script src="/vendor/eko-qonun-darslik-data.js" defer></script>
   <script src="/vendor/eko-qonun-darslik.js" defer></script>
+  <script src="/vendor/eko-qonun-amaliy.js" defer></script>
   <script src="/vendor/eko-qonun.js" defer></script>
+  <script src="/vendor/eko-bola-huquq-data.js" defer></script>
+  <script src="/vendor/eko-bola-huquq.js" defer></script>
+  <script src="/vendor/eko-mro.js" defer></script>
 </body>
 </html>
