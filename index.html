@@ -1417,6 +1417,46 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
 .qn-prog .qn-meter { flex: 1; margin: 0; }
 @media (max-width: 600px) { .qn-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; } .qn-chips .chip { flex: none; white-space: nowrap; } .qn-card { padding: 14px; } .qn-river { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 900px) { .qn-tabs { flex-wrap: wrap; overflow: visible; } }
+/* 📖 Экологик ҳуқуқ дарслиги (vendor/eko-qonun-darslik.js) */
+.dk { display: grid; gap: 16px; scroll-margin-top: 140px; }
+.dk-hero h3 { font-size: 1.25rem; }
+.dk-search { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+.dk-search input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--text); font: inherit; outline: none; }
+.dk-search:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.dk-hits { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; max-height: 420px; overflow-y: auto; }
+.dk-hits button { width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; background: var(--card); color: var(--text); font: inherit; font-size: .9rem; line-height: 1.5; cursor: pointer; }
+.dk-hits button:hover { border-color: var(--primary); }
+.dk-hits mark { background: #fde68a; color: #111827; border-radius: 3px; padding: 0 1px; }
+.dk-list { list-style: none; padding: 0 !important; margin: 8px 0 0; display: grid; gap: 8px; }
+.dk-row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.dk-row:hover { border-color: var(--primary); }
+.dk-row.done { border-left: 4px solid var(--primary); }
+.dk-row-t { flex: 1; min-width: 0; display: grid; gap: 2px; line-height: 1.35; }
+.dk-row-t small { color: var(--muted); font-size: .8rem; }
+.dk-row > i { color: var(--muted); }
+.dk-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.dk-pn { display: flex; gap: 6px; }
+.dk-title { font-size: 1.2rem !important; }
+.dk-goal { margin: 12px 0; padding: 12px 14px; border-radius: 14px; background: var(--primary-soft); }
+.dk-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.dk-terms { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 10px; }
+.dk-term { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; background: color-mix(in srgb, var(--primary) 5%, var(--card)); }
+.dk-term summary { cursor: pointer; font-weight: 700; color: var(--primary); }
+.dk-term p { margin: 8px 0 0; font-size: .92rem; }
+.dk-arts { display: grid; gap: 8px; }
+.dk-art { border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; }
+.dk-art summary { cursor: pointer; font-weight: 700; }
+.dk-art p { margin: 8px 0 2px; }
+.dk-art.dk-flash { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.dk-facts li { margin: 4px 0; }
+.dk-quiz { padding-left: 22px !important; display: grid; gap: 10px; }
+.dk-tfb { display: flex; gap: 6px; flex: none; }
+.dk-bad { color: #b91c1c; }
+.dk-sel { flex: 1 1 240px; min-width: 0; max-width: 100%; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; font-size: .9rem; }
+.dk-deb { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px; }
+.dk-tl { list-style: none; padding: 0 !important; display: grid; gap: 8px; }
+.dk-tl li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.dk-tl li > b { min-width: 48px; }
 .ly-ic { display: inline-grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 13px; font-size: 1.35rem; background: color-mix(in srgb, var(--c, var(--primary)) 18%, var(--card)); }
 .ly-card { display: flex; flex-direction: column; gap: 6px; text-align: left; font: inherit; color: var(--text); cursor: pointer; border-top: 4px solid var(--c, var(--primary)); transition: transform .15s; }
 .ly-card:hover { transform: translateY(-2px); }
@@ -36199,6 +36239,8 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   <script src="/vendor/eko-ilova.js" defer></script>
   <script src="/vendor/eko-pdf.js" defer></script>
   <script src="/vendor/eko-qonun-data.js" defer></script>
+  <script src="/vendor/eko-qonun-darslik-data.js" defer></script>
+  <script src="/vendor/eko-qonun-darslik.js" defer></script>
   <script src="/vendor/eko-qonun.js" defer></script>
 </body>
 </html>

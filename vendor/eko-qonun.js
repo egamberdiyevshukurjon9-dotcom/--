@@ -59,6 +59,7 @@
     progress: t3("Ўзлаштириш", "Прогресс", "Progress"),
     tabs: [
       ["yol", "fa-route", t3("Йўл харитаси", "Маршрут", "Roadmap")],
+      ["darslik", "fa-book-open", t3("Дарслик", "Учебник", "Textbook")],
       ["kons", "fa-landmark", t3("Конституция", "Конституция", "Constitution")],
       ["lib", "fa-book-bookmark", t3("Қонунлар", "Законы", "Laws")],
       ["sud", "fa-gavel", t3("Экологик суд", "Экосуд", "Eco-court")],
@@ -82,6 +83,9 @@
 
   /* ========== 1. Йўл харитаси: teskari sinf (flipped classroom) режаси ========== */
   const ROAD = [
+    { k: "darslik", ic: "📖", t: t3("Интерактив дарслик: қонунлар моддама-модда", "Интерактивный учебник: законы постатейно", "Interactive textbook: laws article by article"),
+      before: t3("Уйда: навбатдаги дарсни ўқинг, атамалар ва моддалар шарҳини кўриб чиқинг, квизни ечинг.", "Дома: прочитайте очередной урок, термины и комментарий к статьям, решите квиз.", "At home: read the next lesson, its terms and article notes, and do the quiz."),
+      during: t3("Аудиторияда: дарсдаги казус ва мунозара, ўқитувчи учун берилган интерактив усул бўйича.", "В аудитории: казус и дискуссия урока по предложенному интерактивному методу.", "In class: the lesson's case and debate, using the suggested interactive method.") },
     { k: "kons", ic: "📜", t: t3("Конституция: ҳуқуқ ва бурчлар", "Конституция: права и обязанности", "Constitution: rights and duties"),
       before: t3("Уйда: экологик моддаларни ўқинг ва «ким? нимага ҳақли? ким кафолатлайди?» жадвалини тўлдиринг.", "Дома: прочитайте экологические статьи и заполните таблицу «кто? на что вправе? кто гарантирует?».", "At home: read the environmental articles and fill in the table “who? what right? who guarantees it?”."),
       during: t3("Аудиторияда: «Ҳуқуқми ёки мажбуриятми?» саралаш ўйини ва жуфтликда муҳокама.", "В аудитории: игра «Право или обязанность?» и обсуждение в парах.", "In class: the “Right or duty?” sorting game and pair discussion.") },
@@ -580,7 +584,7 @@
 
   /* ---------- Чизиш ---------- */
   let tab = "yol";
-  const VIEWS = { yol: roadView, kons: consView, lib: libView, sud: sudView, keys: keysView, debat: debatView, detektiv: detView, sim: simView, xorij: xorijView, test: testView };
+  const VIEWS = { yol: roadView, darslik: () => (window.EkoDarslik ? EkoDarslik.html() : `<p class="muted">…</p>`), kons: consView, lib: libView, sud: sudView, keys: keysView, debat: debatView, detektiv: detView, sim: simView, xorij: xorijView, test: testView };
   function render() {
     const name = (TX.tabs.find((x) => x[0] === tab) || TX.tabs[0])[2];
     ROOT.innerHTML = `
@@ -591,7 +595,7 @@
       </div>
       <div class="qn-tabs" role="tablist">${TX.tabs.map(([k, ic, t]) => `<button type="button" role="tab" aria-selected="${k === tab}" class="chip ${k === tab ? "active" : ""}" data-tab="${k}"><i class="fa-solid ${ic}" aria-hidden="true"></i>${H(t)}</button>`).join("")}</div>
       <div class="qn-panel" id="qnPanel" role="tabpanel" aria-label="${H(name)}">${VIEWS[tab]()}</div>
-      <div class="qn-acts"><button class="btn btn-ghost btn-sm" data-pdf="#qnPanel"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> ${H(TX.pdfAll)}: ${H(name)}</button></div>`;
+      ${tab === "darslik" ? "" : `<div class="qn-acts"><button class="btn btn-ghost btn-sm" data-pdf="#qnPanel"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> ${H(TX.pdfAll)}: ${H(name)}</button></div>`}`;
   }
   function rerender(keepY) {
     const y = window.scrollY;
@@ -699,7 +703,7 @@
     }
   });
   /* Кутубхона ва Конституция бўлимини очганда «кўрилди» деб белгилаймиз */
-  const seen = () => { if (tab === "lib") mark("lib"); if (tab === "xorij") mark("xorij"); };
+  const seen = () => { if (tab === "darslik" && window.EkoDarslik && EkoDarslik.done() > 0) mark("darslik"); if (tab === "lib") mark("lib"); if (tab === "xorij") mark("xorij"); };
   ROOT.addEventListener("click", seen);
 
   render();

@@ -1492,6 +1492,8 @@ const STATIC = {
   /* Дарсни PDF қилиш: jsPDF (MIT) ва Ekomun PDF Sans (Liberation Sans қисми, SIL OFL) */
   "/vendor/eko-qonun-data.js": { file: "vendor/eko-qonun-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun.js": { file: "vendor/eko-qonun.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-qonun-darslik-data.js": { file: "vendor/eko-qonun-darslik-data.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-qonun-darslik.js": { file: "vendor/eko-qonun-darslik.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-pdf.js": { file: "vendor/eko-pdf.js", type: "text/javascript; charset=utf-8" },
   "/vendor/pdf/jspdf.umd.min.js": { file: "vendor/pdf/jspdf.umd.min.js", type: "text/javascript; charset=utf-8", cache: true },
   "/vendor/pdf/ekopdf-Regular.ttf": { file: "vendor/pdf/ekopdf-Regular.ttf", type: "font/ttf", cache: true },

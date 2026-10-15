@@ -4,7 +4,7 @@
    Матнлар uz/ru/en шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
   "use strict";
-  const APP = { version: "2.1", date: "2026-10-12" };
+  const APP = { version: "2.2", date: "2026-10-15" };
   window.EKO_VERSION = APP;
 
   const EL = () => (typeof EkoLang !== "undefined" ? EkoLang : null);
@@ -44,6 +44,12 @@
     close: t3("Ёпиш", "Закрыть", "Close")
   };
   const CHANGES = [
+    { v: "2.2", d: "2026-10-15", items: [
+      t3("«Экологик ҳуқуқ: интерактив дарслик»: 24 та қонун ва ҳужжат бир дарсликда — 6 боб, ҳар ҳужжатга алоҳида дарс", "«Экологическое право: интерактивный учебник»: 24 закона и документа в одном учебнике — 6 глав, по уроку на документ", "“Environmental law: an interactive textbook”: 24 laws and documents in one textbook — 6 chapters, one lesson per document"),
+      t3("Ҳар дарсда атамалар, моддалар шарҳи, казус, квиз, тўғри/нотўғри, мослаштириш, кроссворд ва мунозара", "В каждом уроке термины, комментарий к статьям, казус, квиз, верно/неверно, сопоставление, кроссворд и дискуссия", "Each lesson has terms, article notes, a case, quiz, true/false, matching, crossword and debate"),
+      t3("Дарслик бўйича қидирув, хронология, якуний имтиҳон ва бутун дарсликни PDF қилиш", "Поиск по учебнику, хронология, итоговый экзамен и весь учебник в PDF", "Textbook search, timeline, final exam and the whole textbook as PDF"),
+      t3("2025–2026 йилги янги қонунлар: ЎРҚ-1036, ЎРҚ-1073, ЎРҚ-1124, ЎРҚ-1143, ЎРҚ-1145", "Новые законы 2025–2026: ЗРУ-1036, ЗРУ-1073, ЗРУ-1124, ЗРУ-1143, ЗРУ-1145", "New 2025–2026 laws: ZRU-1036, ZRU-1073, ZRU-1124, ZRU-1143, ZRU-1145")
+    ] },
     { v: "2.1", d: "2026-10-12", items: [
       t3("«Экологик ҳуқуқ» бўлими: Конституциянинг экологик моддалари, қонунлар кутубхонаси, экологик суд, кейс, дебат, эко-детектив, симулятор ва тест", "Раздел «Экологическое право»: экологические статьи Конституции, библиотека законов, экосуд, кейс, дебаты, эко-детектив, симулятор и тест", "Environmental law section: the Constitution's environmental articles, a law library, eco-court, case study, debate, eco-detective, simulator and test"),
       t3("Ҳар бир дарс матнини PDF қилиб юклаб олиш (интернетсиз ҳам)", "Скачивание текста любого урока в PDF (и без интернета)", "Download any lesson as a PDF (works offline too)"),
