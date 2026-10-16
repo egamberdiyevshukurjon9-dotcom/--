@@ -24,6 +24,9 @@
      ADMIN_TOTP_SECRET     — икки босқичли ҳимоя: Google Authenticator калити (tools/admin-totp.js яратади)
      ADMIN_ALLOW_IPS       — админ сайт фақат шу IP манзиллардан очилсин (вергул билан; бўш — ҳамма жойдан)
      STATS_TZ_MINUTES      — статистика кунлари қайси вақт минтақасида (асл қиймат 300 = Тошкент, UTC+5)
+
+   Ўзгарувчиларни .env файлига ҳам ёзиш мумкин (намуна: .env.example), сервер уни ўзи ўқийди.
+   Жойлаштириш қўлланмаси: JOYLASHTIRISH.md
 */
 "use strict";
 
@@ -32,6 +35,20 @@ const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
 const Anthropic = require("@anthropic-ai/sdk");
+
+/* .env файли (бўлса): КАЛИТ=қиймат қаторлари. Муҳитда аллақачон берилган ўзгарувчилар устун туради. */
+try {
+  for (const line of fs.readFileSync(process.env.ENV_FILE || path.join(__dirname, ".env"), "utf8").split(/\r?\n/)) {
+    const m = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
+    if (!m || process.env[m[1]] !== undefined) continue;
+    let v = m[2];
+    if (/^(["']).*\1$/.test(v)) v = v.slice(1, -1);
+    else v = v.replace(/\s+#.*$/, "");
+    process.env[m[1]] = v;
+  }
+} catch (e) {
+  if (e.code !== "ENOENT") console.warn(".env ўқилмади:", e.message);
+}
 
 const PORT = Number(process.env.PORT) || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";

@@ -1,0 +1,22 @@
+# Docker'сиз VPS: systemd хизмати.
+#   sudo cp deploy/ekomun.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now ekomun
+[Unit]
+Description=Ekomun — ekologik ta'lim platformasi
+After=network.target
+
+[Service]
+Type=simple
+User=ekomun
+WorkingDirectory=/opt/ekomun
+EnvironmentFile=/opt/ekomun/.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/ekomun
+
+[Install]
+WantedBy=multi-user.target

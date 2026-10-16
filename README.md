@@ -131,6 +131,16 @@ ADMIN_PASSWORD="кучли-парол" node server.js
 
 Маълумотлар `data/db.json` файлида сақланади (пароллар хэшланган ҳолда). Бу папка репозиторийга юкланмайди.
 
+## Веб-сайт сифатида жойлаштириш
+
+Тўлиқ қўлланма: **[JOYLASHTIRISH.md](JOYLASHTIRISH.md)** — Render, Railway, VPS + Docker (Caddy билан автоматик HTTPS), VPS Docker'сиз (systemd + Nginx) ва бошқарув марказига кириш.
+
+```bash
+cp .env.example .env              # ADMIN_PASSWORD, ADMIN_PATH, ADMIN_TOTP_SECRET
+docker compose up -d --build      # http://localhost:3000
+npm test                          # автоматик текширув
+```
+
 ## Интернетга чиқариш (Render)
 
 Кириш/чиқишни қайд этиш учун сервер керак, шунинг учун **GitHub Pages етарли эмас**. Репозиторийда Render учун тайёр `render.yaml` бор.
