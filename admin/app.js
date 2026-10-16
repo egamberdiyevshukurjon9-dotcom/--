@@ -41,6 +41,11 @@
   const dur = (s) => { s = Math.round(s || 0); if (s < 60) return s + " с"; const m = Math.round(s / 60); if (m < 60) return m + " дақ"; return Math.floor(m / 60) + " соат " + (m % 60) + " дақ"; };
   const ago = (t, n) => { const s = Math.max(0, Math.round((n - t) / 1000)); return s < 60 ? "ҳозиргина" : s < 3600 ? Math.round(s / 60) + " дақ олдин" : Math.round(s / 3600) + " соат олдин"; };
   const short = (v) => (v ? v.slice(0, 8) : "—");
+  /* Ҳудуд ва қурилма битта катакда: «📍 Самарқанд вил. · 📱 Телефон Samsung … · IP» */
+  const placeHtml = (place) => (place ? `<span class="place">📍 ${esc(place)}</span>` : `<span class="muted small">📍 аниқланмоқда…</span>`);
+  const devIcon = (d) => (/^Телефон/.test(d || "") ? "📱" : /^Планшет/.test(d || "") ? "📲" : "💻");
+  const devHtml = (d) => `<span class="dev">${devIcon(d)} ${esc(d || "—")}</span>`;
+  const whereHtml = (o) => `${placeHtml(o.place)}<br>${devHtml(o.device)}<br><span class="mono muted small">${esc(o.ip || "")}</span>`;
 
   let overview = null, stats = null, security = null, reports = [], feedback = [], tab = "dash", timer = null;
 
@@ -123,6 +128,10 @@
     el.innerHTML = `<div class="split"><div id="chSt1"></div><div id="chSt2"></div></div>`;
     bars($("#chSt1"), countBars(stats.stages, STAGE).map((i) => ({ ...i, c: i.n.includes("Мактаб") ? "var(--c3)" : "var(--c2)" })), { f: pctF });
     const order = ["5–7", "8–10", "11–13", "14–15", "16–17", "18–24", "25–34", "35–44", "45–60", "60+", "?"];
+    bars($("#chRegions"), countBars(stats.regions || {}).slice(0, 14).map((i) => ({ ...i, n: "📍 " + i.n, c: "var(--c1)" })), { f: pctF });
+    bars($("#chDevTypes"), countBars(stats.devTypes || {}).map((i) => ({ ...i, n: devIcon(i.n) + " " + i.n, c: "var(--c6)" })), { f: pctF });
+    const mt = (stats.models || []).reduce((a, [, v]) => a + v, 0) || 1;
+    bars($("#chModels"), (stats.models || []).slice(0, 8).map(([n, v]) => ({ n, v, pct: Math.round((v / mt) * 100), c: "var(--c4)" })), { f: pctF });
     bars($("#chSt2"), countBars(stats.ages, { "?": "Номаълум" }).sort((a, b) => order.indexOf(a.n === "Номаълум" ? "?" : a.n) - order.indexOf(b.n === "Номаълум" ? "?" : b.n)).map((i) => ({ ...i, n: i.n === "Номаълум" ? i.n : i.n + " ёш", c: "var(--c4)" })), { f: pctF });
   }
 
@@ -142,12 +151,12 @@
     if (!overview) return;
     const n = overview.now;
     $("#onlineNote").textContent = `Охирги ${overview.onlineMinutes} дақиқада фаол бўлганлар. Ҳар 15 сонияда янгиланади.`;
-    $("#tOnlineUsers").innerHTML = table(["Фойдаланувчи", "Кирган вақти", "Охирги фаоллик", "Қурилма", "IP"],
-      overview.online.map((o) => `<tr><td>${who(o.name, o.email)}</td><td>${fmt(o.since)}</td><td>${ago(o.lastSeen, n)}</td><td>${esc(o.device)}</td><td class="mono">${esc(o.ip)}</td></tr>`),
+    $("#tOnlineUsers").innerHTML = table(["Фойдаланувчи", "Кирган вақти", "Охирги фаоллик", "Ҳудуд · қурилма · IP"],
+      overview.online.map((o) => `<tr><td>${personCell({ userId: o.id, name: o.name, email: o.email })}</td><td>${fmt(o.since)}</td><td>${ago(o.lastSeen, n)}</td><td>${whereHtml(o)}</td></tr>`),
       "Ҳозир ҳисобга кирган ҳеч ким йўқ.");
-    $("#tOnlineGuests").innerHTML = table(["Ким", "Ҳозир қаерда", "Босқич", "Кирди", "#Вақт", "Қурилма", "IP", "Амал"],
+    $("#tOnlineGuests").innerHTML = table(["Ким", "Ҳозир қаерда", "Босқич", "Кирди", "#Вақт", "Ҳудуд · қурилма · IP", "Амал"],
       overview.guests.map((v) => { const cur = (v.path || [])[v.path.length - 1]; const label = v.user ? v.user.name : "Меҳмон " + short(v.vid);
-        return `<tr><td>${personCell({ ...v, user: v.user })}</td><td><span class="tag info">${esc(secName(cur || "bosh"))}</span>${pathHtml(v.path)}</td><td>${esc(STAGE[v.stage || "?"])}${v.ag ? `<br><small class="muted">${esc(v.ag)} ёш</small>` : ""}</td><td>${fmt(v.start)}</td><td class="num">${dur(v.secs)}</td><td>${esc(v.device)}</td><td class="mono">${esc(v.ip)}</td><td>${v.user ? actBtns("user", v.user.id, false, label) : actBtns("vid", v.vid, false, label)}</td></tr>`; }),
+        return `<tr><td>${personCell({ ...v, user: v.user })}</td><td><span class="tag info">${esc(secName(cur || "bosh"))}</span>${pathHtml(v.path)}</td><td>${esc(STAGE[v.stage || "?"])}${v.ag ? `<br><small class="muted">${esc(v.ag)} ёш</small>` : ""}</td><td>${fmt(v.start)}</td><td class="num">${dur(v.secs)}</td><td>${whereHtml(v)}</td><td>${v.user ? actBtns("user", v.user.id, false, label) : actBtns("vid", v.vid, false, label)}</td></tr>`; }),
       "Ҳозир сайтда ҳеч ким йўқ.");
   }
 
@@ -164,12 +173,12 @@
       if (kind === "acc" && !p.userId) return false;
       if (kind === "guest" && p.userId) return false;
       if (kind === "blocked" && !p.blocked) return false;
-      return !q || `${p.name} ${p.email} ${p.vid} ${p.ip}`.toLowerCase().includes(q);
+      return !q || `${p.name} ${p.email} ${p.vid} ${p.ip} ${p.place} ${p.device}`.toLowerCase().includes(q);
     });
-    $("#tPeople").innerHTML = table(["Ким", "Босқич", "Биринчи", "Охирги", "#Ташриф", "#Жами вақт", "Кўпроқ нима қилади", "Қурилма / IP", "Амал"],
+    $("#tPeople").innerHTML = table(["Ким", "Босқич", "Биринчи", "Охирги", "#Ташриф", "#Жами вақт", "Кўпроқ нима қилади", "Ҳудуд · қурилма · IP", "Амал"],
       people.slice(0, 400).map((p) => { const label = p.userId ? p.name : "Меҳмон " + short(p.vid);
         return `<tr><td>${personCell(p)}</td><td>${esc(STAGE[p.stage || "?"])}${p.ag ? `<br><small class="muted">${esc(p.ag)} ёш</small>` : ""}</td><td>${fmt(p.first)}</td><td>${fmt(p.last)}</td><td class="num">${p.visits}</td><td class="num">${dur(p.secs)}</td>
-        <td>${p.top.map((k) => `<span class="tag">${esc(secName(k))}</span>`).join(" ")}</td><td>${esc(p.device)}<br><span class="mono muted">${esc(p.ip)}</span></td>
+        <td>${p.top.map((k) => `<span class="tag">${esc(secName(k))}</span>`).join(" ")}</td><td>${whereHtml(p)}</td>
         <td>${p.blocked ? `<span class="tag bad">Блокланган</span><br>` : ""}${p.userId ? actBtns("user", p.userId, p.blocked, label) : actBtns("vid", p.vid, p.blocked, label)}</td></tr>`; }),
       "Бу даврда ташриф йўқ.");
   }
@@ -177,17 +186,17 @@
   function renderJournal() {
     if (!overview) return;
     const q = $("#jSearch").value.trim().toLowerCase(), type = $("#jType").value;
-    const evs = overview.events.filter((e) => (!type || JGROUPS[type].includes(e.type)) && (!q || `${e.name} ${e.email} ${e.ip}`.toLowerCase().includes(q)));
-    $("#tEvents").innerHTML = table(["Вақт", "Ҳодиса", "Фойдаланувчи", "Қурилма", "IP"],
-      evs.map((e) => { const [c, l] = EVENTS[e.type] || ["", e.type]; return `<tr><td>${fmt(e.at)}</td><td><span class="tag ${c}">${esc(l)}</span>${e.reason ? `<br><small class="muted">${esc(e.reason)}</small>` : ""}</td><td>${who(e.name, e.email)}</td><td>${esc(e.device)}</td><td class="mono">${esc(e.ip)}</td></tr>`; }),
+    const evs = overview.events.filter((e) => (!type || JGROUPS[type].includes(e.type)) && (!q || `${e.name} ${e.email} ${e.ip} ${e.place} ${e.device}`.toLowerCase().includes(q)));
+    $("#tEvents").innerHTML = table(["Вақт", "Ҳодиса", "Фойдаланувчи", "Ҳудуд · қурилма · IP"],
+      evs.map((e) => { const [c, l] = EVENTS[e.type] || ["", e.type]; return `<tr><td>${fmt(e.at)}</td><td><span class="tag ${c}">${esc(l)}</span>${e.reason ? `<br><small class="muted">${esc(e.reason)}</small>` : ""}</td><td>${e.userId ? personCell({ userId: e.userId, name: e.name, email: e.email }) : who(e.name, e.email)}</td><td>${whereHtml(e)}</td></tr>`; }),
       "Ҳодиса йўқ.");
     $("#tVisits").innerHTML = recentVisitsHtml(q);
   }
   let recent = [];
   function recentVisitsHtml(q) {
-    const list = recent.filter((v) => !q || `${v.user ? v.user.name + " " + v.user.email : ""} ${v.vid} ${v.ip}`.toLowerCase().includes(q));
-    return table(["Кирди", "Чиқди", "Ким", "#Вақт", "Нималар қилди", "Қурилма", "IP"],
-      list.map((v) => `<tr><td>${fmt(v.start)}</td><td>${v.ended ? fmt(v.last) : `<span class="tag ok">ҳозир сайтда</span>`}</td><td>${personCell(v)}</td><td class="num">${dur(v.secs)}</td><td>${pathHtml(v.path)}${v.lessons && v.lessons.length ? `<small class="muted">📖 ${v.lessons.length} та дарс очди</small>` : ""}</td><td>${esc(v.device)}</td><td class="mono">${esc(v.ip)}</td></tr>`),
+    const list = recent.filter((v) => !q || `${v.user ? v.user.name + " " + v.user.email : ""} ${v.vid} ${v.ip} ${v.place} ${v.device}`.toLowerCase().includes(q));
+    return table(["Кирди", "Чиқди", "Ким", "#Вақт", "Нималар қилди", "Ҳудуд · қурилма · IP"],
+      list.map((v) => `<tr><td>${fmt(v.start)}</td><td>${v.ended ? fmt(v.last) : `<span class="tag ok">ҳозир сайтда</span>`}</td><td>${personCell(v)}</td><td class="num">${dur(v.secs)}</td><td>${pathHtml(v.path)}${v.lessons && v.lessons.length ? `<small class="muted">📖 ${v.lessons.length} та дарс очди</small>` : ""}</td><td>${whereHtml(v)}</td></tr>`),
       "Ҳали ташриф йўқ.");
   }
 
@@ -214,6 +223,8 @@
       secs.map(([k, v]) => `<tr><td>${esc(secName(k))}</td><td><small>${esc(PURPOSES[purposeOf(k)][0])}</small></td><td class="num">${nf(v.views)}</td><td class="num">${dur(v.secs)}</td><td class="num">${Math.round((v.secs / totalS) * 100)}%</td></tr>`),
       "Ҳали маълумот йўқ.");
     $("#tLessons").innerHTML = table(["Дарс", "#Очилди"], stats.lessons.map(([k, n]) => `<tr><td>${esc(lessonName(k))}</td><td class="num">${n}</td></tr>`), "Ҳали дарс очилмаган.");
+    bars($("#chRegions2"), countBars(stats.regions || {}).map((i) => ({ ...i, c: "var(--c1)" })), { f: pctF });
+    bars($("#chCountries"), countBars(stats.countries || {}).map((i) => ({ ...i, c: "var(--c2)" })), { f: pctF });
     bars($("#chLang"), countBars(stats.langs, LANG).map((i) => ({ ...i, c: "var(--c2)" })), { f: pctF });
     bars($("#chOs"), countBars(stats.os).map((i) => ({ ...i, c: "var(--c6)" })), { f: pctF });
     bars($("#chBr"), countBars(stats.browsers).map((i) => ({ ...i, c: "var(--c4)" })), { f: pctF });
@@ -221,7 +232,8 @@
   }
   const COURSES = { kichik: "Кичик эколог", yosh: "Ёш тадқиқотчи", tabiat: "Табиат сирлари", steam: "Эко-STEAM лойиҳачи", asoslar: "Экология асослари", korxona: "Корхонада экологик менежмент",
     talaba: "Барқарор ривожланиш", suvhavo: "Сув ва ҳаво", biotoza: "Микроблар сувни тозалайди", monitoring: "Экологик мониторинг", iqlim: "Иқлим ўзгаришини бошқариш",
-    qayta: "Қайта ишлаш", ekologiya: "Экология", qollanma: "Амалий қўлланмалар", tadqiqot: "Илмий тадқиқот методологияси", litosfera: "Литосферани ҳимоя қилиш", yerqalqon: "Ер қалқони" };
+    qayta: "Қайта ишлаш", ekologiya: "Экология", qollanma: "Амалий қўлланмалар", tadqiqot: "Илмий тадқиқот методологияси", litosfera: "Литосферани ҳимоя қилиш", yerqalqon: "Ер қалқони",
+    xalqaro: "Халқаро экологик тажриба", dunyo: "Дунё бўйлаб эко-саёҳат" };
   const lessonName = (k) => { const [c, i, q] = k.split(":"); return `${COURSES[c] || c} · ${Number(i) + 1}-дарс` + (q != null ? ` · ${Number(q) + 1}-савол` : ""); };
   function insights() {
     const t = stats.totals, out = [];
@@ -234,6 +246,10 @@
     if (pt.length) out.push(`Асосий мақсад — ${PURPOSES[pt[0][0]][0].replace(/^\S+\s/, "").toLowerCase()}: вақтнинг ${Math.round((pt[0][1] / (pt.reduce((s, x) => s + x[1], 0) || 1)) * 100)}% шунга кетмоқда.`);
     const peak = stats.heat.flatMap((r, di) => r.map((v, h) => [v, di, h])).sort((a, b) => b[0] - a[0])[0];
     if (peak && peak[0]) out.push(`Энг гавжум вақт — ${["душанба", "сешанба", "чоршанба", "пайшанба", "жума", "шанба", "якшанба"][peak[1]]}, соат ${peak[2]}:00–${peak[2] + 1}:00.`);
+    const rg = Object.entries(stats.regions || {}).filter(([k]) => !/Аниқланмоқда|Номаълум|Локал/.test(k)).sort((a, b) => b[1] - a[1]);
+    if (rg.length) out.push(`Энг кўп ташрифчи ${rg[0][0]} дан (${rg[0][1]} та)${rg[1] ? `, кейин ${rg[1][0]} (${rg[1][1]})` : ""}.`);
+    const dv = stats.devTypes || {}, dvt = Object.values(dv).reduce((a, b) => a + b, 0);
+    if (dvt) out.push(`Ташрифчиларнинг ${Math.round(((dv["Телефон"] || 0) / dvt) * 100)}% и телефондан киради.`);
     const st = stats.stages;
     if ((st.maktab || 0) + (st.uni || 0)) out.push(`Ташрифчиларнинг ${Math.round(((st.maktab || 0) / ((st.maktab || 0) + (st.uni || 0))) * 100)}% и мактаб, ${Math.round(((st.uni || 0) / ((st.maktab || 0) + (st.uni || 0))) * 100)}% и университет босқичида.`);
     if (t.visitors) out.push(`Ташрифчиларнинг ${Math.round((t.returning / t.visitors) * 100)}% и платформага қайтиб келган.${t.returning / t.visitors < 0.25 ? " Бу паст: кун маслаҳати, челленж ва эслатмалар орқали қайтишни кучайтириш мумкин." : ""}`);
@@ -330,12 +346,12 @@
       security.blocks.map((b) => `<tr><td><span class="tag bad">${KL[b.kind]}</span></td><td>${b.kind === "user" ? `<button class="link" data-person-user="${esc(b.id)}">${esc(b.label)}</button>` : b.kind === "vid" ? `<button class="link" data-person-vid="${esc(b.id)}">${esc(b.label)}</button>` : `<span class="mono">${esc(b.id)}</span>`}</td><td>${fmt(b.at)}</td><td>${esc(b.reason || "—")}</td>
         <td><button class="btn sm" data-unblock="${b.kind}" data-id="${esc(b.id)}">↺ Блокдан чиқариш</button></td></tr>`),
       "Ҳеч ким блокланмаган.");
-    $("#tSusp").innerHTML = table(["IP", "#Хато парол", "#Янги ҳисоб", "#Ташриф", "Қайси почталарга", "Амал"],
-      security.suspicious.map((s) => `<tr><td class="mono">${esc(s.ip)}</td><td class="num">${s.failed}</td><td class="num">${s.registers}</td><td class="num">${s.visits}</td><td><small>${s.emails.map(esc).join(", ") || "—"}</small></td>
+    $("#tSusp").innerHTML = table(["IP · ҳудуд", "#Хато парол", "#Янги ҳисоб", "#Ташриф", "Қайси почталарга", "Амал"],
+      security.suspicious.map((s) => `<tr><td><span class="mono">${esc(s.ip)}</span><br>${placeHtml(s.place)}</td><td class="num">${s.failed}</td><td class="num">${s.registers}</td><td class="num">${s.visits}</td><td><small>${s.emails.map(esc).join(", ") || "—"}</small></td>
         <td>${s.blocked ? `<span class="tag bad">Блокланган</span>` : `<button class="btn sm" data-block="ip" data-id="${esc(s.ip)}" data-label="IP ${esc(s.ip)}">⛔ Блоклаш</button>`}</td></tr>`),
       "Шубҳали фаоллик йўқ. 👍");
-    $("#tAdminLog").innerHTML = table(["Вақт", "Натижа", "Қурилма", "IP"],
-      security.log.map((l) => `<tr><td>${fmt(l.at)}</td><td>${l.ok ? `<span class="tag ok">Кирилди</span>` : `<span class="tag bad">Рад этилди: ${esc(l.note)}</span>`}</td><td>${esc(l.device)}</td><td class="mono">${esc(l.ip)}</td></tr>`),
+    $("#tAdminLog").innerHTML = table(["Вақт", "Натижа", "Ҳудуд · қурилма · IP"],
+      security.log.map((l) => `<tr><td>${fmt(l.at)}</td><td>${l.ok ? `<span class="tag ok">Кирилди</span>` : `<span class="tag bad">Рад этилди: ${esc(l.note)}</span>`}</td><td>${whereHtml(l)}</td></tr>`),
       "Журнал бўш.");
     const c = security.config;
     const li = (ok, text) => `<li>${ok ? "✅" : "⚠️"} <span>${text}</span></li>`;
@@ -406,6 +422,49 @@
   }
   async function loadFeedback() { feedback = (await api("/api/admin/feedback")).feedback; }
 
+  /* ---------- Натижалар ---------- */
+  const GRADE = { gold: "🥇 Олтин", silver: "🥈 Кумуш", bronze: "🥉 Бронза" };
+  const courseName = (c) => COURSES[c] || c;
+  const pctMeter = (v, good) => (v == null ? "—" : `<span class="meter${good ? " good" : ""}"><i style="width:${v}%"></i></span>${v}%`);
+  function resultsHtml(r) {
+    if (!r || (!r.opened && !r.done && !r.qaN && !r.courses.length && !r.certs.length)) return `<h2>🎓 Натижалари</h2><p class="empty">Ҳали дарс ёки тест топширмаган.</p>`;
+    const pass = (results && results.pass) || 80;
+    return `<h2>🎓 Натижалари</h2>
+      <div class="kpis">
+        <div class="kpi hl"><b>${r.done}</b><span>тугатилган дарс</span></div><div class="kpi"><b>${r.opened}</b><span>очилган дарс</span></div>
+        <div class="kpi"><b>${r.qaPct == null ? "—" : r.qaPct + "%"}</b><span>тўғри жавоб (${r.qaOk}/${r.qaN})</span></div><div class="kpi"><b>${r.certs.length}</b><span>сертификат</span></div>
+      </div>
+      <div class="table">${table(["Курс", "#Тугатилган дарс", "Якуний тест (энг яхши)", "#Уриниш", "Сертификат"], r.courses.map((c) => `<tr><td>${esc(courseName(c.cid))}</td><td class="num">${c.done}</td>
+        <td class="nw">${c.exam ? pctMeter(c.exam.best, c.exam.best >= pass) + (c.exam.best >= pass ? ` <span class="tag ok">ўтди</span>` : ` <span class="tag warn">ўтмади</span>`) : "—"}</td><td class="num">${c.exam ? c.exam.tries : "—"}</td>
+        <td>${c.cert ? `${GRADE[c.cert.grade] || ""} <a class="mono" href="/tekshir?c=${encodeURIComponent(c.cert.code)}" target="_blank" rel="noopener">${esc(c.cert.code)}</a>` : "—"}</td></tr>`), "Курс бошланмаган.")}</div>
+      ${r.lastDone.length ? `<details style="margin-top:8px"><summary>Тугатилган дарслар рўйхати (${r.lastDone.length})</summary><div class="table">${table(["Дарс", "Қачон", "#Ўқиш вақти"], r.lastDone.map((x) => `<tr><td>${esc(lessonName(x.k))}</td><td>${fmt(x.at)}</td><td class="num">${x.secs ? dur(x.secs) : "—"}</td></tr>`), "")}</div></details>` : ""}`;
+  }
+  let results = null;
+  async function loadResults() { results = await api("/api/admin/results?days=" + $("#range").value); }
+  function renderResults() {
+    if (!results) return;
+    const k = results.kpi;
+    $("#rPass").textContent = results.pass;
+    kpis($("#kpisR"), [
+      [nf(k.learners), `ўқувчи (${results.days} кун)`, true], [nf(k.done), "тугатилган дарс"], [k.qaPct == null ? "—" : k.qaPct + "%", `тўғри жавоб (${nf(k.qaN)} та)`],
+      [nf(k.examPeople), "якуний тест топширди"], [k.examAvg == null ? "—" : k.examAvg + "%", "тестнинг ўртача натижаси"], [k.passPct == null ? "—" : k.passPct + "%", "тестдан ўтганлар"],
+      [nf(k.certs), `сертификат · 🥇 ${k.gold} · 🥈 ${k.silver} · 🥉 ${k.bronze}`]
+    ]);
+    $("#tCourses").innerHTML = table(["Курс", "#Ўқувчилар", "#Тугатилган дарслар", "#Тест топширди", "Ўртача натижа", "Ўтганлар", "#Сертификат"],
+      results.courses.map((c) => `<tr><td>${esc(courseName(c.cid))}</td><td class="num">${nf(c.learners)}</td><td class="num">${nf(c.done)}</td><td class="num">${nf(c.examPeople)}</td><td class="nw">${pctMeter(c.examAvg, c.examAvg >= results.pass)}</td><td class="nw">${pctMeter(c.passPct, true)}</td><td class="num">${nf(c.certs)}</td></tr>`),
+      "Бу даврда курслар ўқилмаган.");
+    const q = $("#rSearch").value.trim().toLowerCase(), sort = $("#rSort").value;
+    const best = (p) => Math.max(-1, ...p.exams.map((e) => e.best));
+    const list = results.people.filter((p) => !q || `${p.name} ${p.email} ${p.vid} ${p.place} ${p.device}`.toLowerCase().includes(q))
+      .sort((a, b) => (sort === "exam" ? best(b) - best(a) : sort === "qa" ? b.qaOk - a.qaOk : sort === "last" ? b.last - a.last : b.done - a.done || b.qaN - a.qaN));
+    $("#tResults").innerHTML = table(["Ким", "Босқич", "#Тугатилган дарс", "Тест жавоблари", "Якуний тестлар", "#Сертификат", "Ҳудуд · қурилма", "Охирги фаоллик"],
+      list.slice(0, 500).map((p) => `<tr><td>${personCell(p)}</td><td>${esc(STAGE[p.stage || "?"])}${p.ag ? `<br><small class="muted">${esc(p.ag)} ёш</small>` : ""}</td><td class="num">${p.done}<br><small class="muted">очди: ${p.opened}</small></td>
+        <td class="nw">${p.qaN ? pctMeter(p.qaPct, p.qaPct >= 70) + `<br><small class="muted">${p.qaOk} / ${p.qaN}</small>` : "—"}</td>
+        <td>${p.exams.length ? p.exams.map((e) => `<span class="tag ${e.best >= results.pass ? "ok" : "warn"}" title="${e.tries} марта топширди">${esc(courseName(e.cid))}: ${e.best}%</span>`).join(" ") : "—"}</td>
+        <td class="num">${p.certs || "—"}</td><td>${placeHtml(p.place)}<br>${devHtml(p.device)}</td><td>${fmt(p.last)}</td></tr>`),
+      "Бу даврда ҳеч ким дарс ёки тест топширмаган.");
+  }
+
   /* ---------- Бир одам тафсилоти ---------- */
   async function openPerson(q) {
     const d = await api("/api/admin/person?" + q);
@@ -417,6 +476,7 @@
     const pt = purposeTotals(Object.fromEntries(Object.entries(secTotals).map(([k, s]) => [k, { secs: s }])));
     const yr = new Date().getFullYear();
     const blocked = u ? u.blocked : d.vidBlocked;
+    const lastV = d.visits[0];
     $("#pBody").innerHTML = `
       <div class="kpis">
         <div class="kpi"><b>${d.visits.length}</b><span>ташриф</span></div>
@@ -424,11 +484,13 @@
         ${u ? `<div class="kpi"><b>${u.loginCount}</b><span>ҳисобга кириш</span></div><div class="kpi"><b>${u.by ? yr - u.by : "—"}</b><span>ёши</span></div><div class="kpi"><b>${u.approved}</b><span>тасдиқланган харита хабари</span></div>` : ""}
       </div>
       <p>${blocked ? `<span class="tag bad">Блокланган ${fmt(blocked.at)}${blocked.reason ? ": " + esc(blocked.reason) : ""}</span>` : `<span class="tag ok">Фаол</span>`} ${u ? `· Рўйхатдан ўтган: ${fmt(u.createdAt)} · Охирги кириш: ${fmt(u.lastLogin)}` : `· Код: <span class="mono">${esc(d.vid)}</span>`}</p>
+      ${lastV ? `<p class="small">Охирги марта: ${placeHtml(lastV.place)} · ${devHtml(lastV.device)} · <span class="mono">${esc(lastV.ip)}</span></p>` : ""}
       <div class="acts" style="margin-bottom:14px">${u ? actBtns("user", u.id, !!u.blocked, u.name + " · " + u.email) : actBtns("vid", d.vid, !!d.vidBlocked, "Меҳмон " + short(d.vid))}</div>
+      ${resultsHtml(d.results)}
       <div class="split"><div><h2>Нима мақсадда</h2><div id="pPurp"></div></div><div><h2>Бўлимлар</h2><div id="pSecs"></div></div></div>
       <h2 style="margin-top:16px">Ташрифлар</h2>
-      <div class="table">${table(["Кирди", "Чиқди", "#Вақт", "Йўл", "Қурилма", "IP"], d.visits.map((v) => `<tr><td>${fmt(v.start)}</td><td>${v.ended ? fmt(v.last) : `<span class="tag ok">сайтда</span>`}</td><td class="num">${dur(v.secs)}</td><td>${pathHtml(v.path)}</td><td>${esc(v.device)}</td><td class="mono">${esc(v.ip)}</td></tr>`), "Ташриф ёзилмаган.")}</div>
-      ${u ? `<h2 style="margin-top:16px">Кирди-чиқди</h2><div class="table">${table(["Вақт", "Ҳодиса", "Қурилма", "IP"], d.events.map((e) => { const [c, l] = EVENTS[e.type] || ["", e.type]; return `<tr><td>${fmt(e.at)}</td><td><span class="tag ${c}">${esc(l)}</span></td><td>${esc(e.device)}</td><td class="mono">${esc(e.ip)}</td></tr>`; }), "Ҳодиса йўқ.")}</div>` : ""}`;
+      <div class="table">${table(["Кирди", "Чиқди", "#Вақт", "Йўл", "Ҳудуд · қурилма · IP"], d.visits.map((v) => `<tr><td>${fmt(v.start)}</td><td>${v.ended ? fmt(v.last) : `<span class="tag ok">сайтда</span>`}</td><td class="num">${dur(v.secs)}</td><td>${pathHtml(v.path)}</td><td>${whereHtml(v)}</td></tr>`), "Ташриф ёзилмаган.")}</div>
+      ${u ? `<h2 style="margin-top:16px">Кирди-чиқди</h2><div class="table">${table(["Вақт", "Ҳодиса", "Ҳудуд · қурилма · IP"], d.events.map((e) => { const [c, l] = EVENTS[e.type] || ["", e.type]; return `<tr><td>${fmt(e.at)}</td><td><span class="tag ${c}">${esc(l)}</span></td><td>${whereHtml(e)}</td></tr>`; }), "Ҳодиса йўқ.")}</div>` : ""}`;
     const ptot = Object.values(pt).reduce((a, b) => a + b, 0) || 1;
     bars($("#pPurp"), Object.entries(pt).sort((a, b) => b[1] - a[1]).map(([k, v]) => ({ n: PURPOSES[k][0], v, c: PURPOSES[k][1], pct: Math.round((v / ptot) * 100) })), { f: (i) => `${dur(i.v)} · ${i.pct}%` });
     bars($("#pSecs"), Object.entries(secTotals).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, v]) => ({ n: secName(k), v, c: PURPOSES[purposeOf(k)][1] })), { f: (i) => dur(i.v) });
@@ -493,10 +555,10 @@
   async function loadSecurity() { security = await api("/api/admin/security"); }
   async function loadReports() { reports = (await api("/api/admin/reports")).reports; }
 
-  function renderAll() { renderDash(); renderOnline(); renderPeople(); renderJournal(); renderStats(); renderBlocks(); renderReports(); renderFeedback(); renderGrowth(); renderSystem(); }
+  function renderAll() { renderDash(); renderOnline(); renderPeople(); renderJournal(); renderStats(); renderResults(); renderBlocks(); renderReports(); renderFeedback(); renderGrowth(); renderSystem(); }
   async function reloadAll() {
     try {
-      await Promise.all([loadOverview(), loadStats(), loadSecurity(), loadReports(), loadFeedback(), loadGrowth(), loadSystem()]);
+      await Promise.all([loadOverview(), loadStats(), loadSecurity(), loadReports(), loadFeedback(), loadGrowth(), loadSystem(), loadResults()]);
       renderAll();
       if (tab === "journal") { await loadRecent(); renderJournal(); }
     } catch (e) { if (e.message !== "auth") toast(e.message); }
@@ -509,7 +571,7 @@
     }, 15000);
   }
 
-  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар" };
+  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар" };
   $("#tabs").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tab]");
     if (!b) return;
@@ -522,12 +584,15 @@
     if (tab === "journal") { try { await loadRecent(); renderJournal(); } catch (err) { /* ignore */ } }
     if (tab === "system") { try { await loadSystem(); renderSystem(); } catch (err) { /* ignore */ } }
     if (tab === "growth") { try { await loadGrowth(); renderGrowth(); } catch (err) { /* ignore */ } }
+    if (tab === "results") { try { await loadResults(); renderResults(); } catch (err) { /* ignore */ } }
     if (tab === "feedback") { try { await loadFeedback(); renderFeedback(); } catch (err) { /* ignore */ } }
   });
-  $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } });
+  $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth(), loadResults()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } });
   $("#refresh").addEventListener("click", reloadAll);
   ["#pSearch", "#pKind"].forEach((s) => $(s).addEventListener("input", renderPeople));
   ["#jSearch", "#jType"].forEach((s) => $(s).addEventListener("input", renderJournal));
+  ["#rSearch", "#rSort"].forEach((s) => $(s).addEventListener("input", renderResults));
+  $("#expResults").href = "/api/admin/export?type=results";
   $("#repStatus").addEventListener("change", renderReports);
   ["#fbState", "#fbKind", "#fbRate", "#fbSec"].forEach((s) => $(s).addEventListener("change", () => { fbShow = 50; renderFeedback(); }));
   $("#fbSearch").addEventListener("input", () => { fbShow = 50; renderFeedback(); });

@@ -24,6 +24,7 @@
      ADMIN_TOTP_SECRET     — икки босқичли ҳимоя: Google Authenticator калити (tools/admin-totp.js яратади)
      ADMIN_ALLOW_IPS       — админ сайт фақат шу IP манзиллардан очилсин (вергул билан; бўш — ҳамма жойдан)
      STATS_TZ_MINUTES      — статистика кунлари қайси вақт минтақасида (асл қиймат 300 = Тошкент, UTC+5)
+     GEO_PROVIDER          — IP бўйича ҳудудни аниқлаш: ipwho (асл қиймат, ipwho.is + ip-api.com) ёки off
 
    Ўзгарувчиларни .env файлига ҳам ёзиш мумкин (намуна: .env.example), сервер уни ўзи ўқийди.
    Жойлаштириш қўлланмаси: JOYLASHTIRISH.md
@@ -82,7 +83,7 @@ if (!ADMIN_PASSWORD) {
 
 /* ---------- Маълумотлар омбори (JSON файл) ---------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
-let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [] };
+let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {} };
 try {
   db = Object.assign(db, JSON.parse(fs.readFileSync(DB_FILE, "utf8")));
 } catch (e) {
@@ -187,14 +188,113 @@ function clientIp(req) {
   return ip.trim().replace(/^::ffff:/, "");
 }
 
-function describeDevice(ua = "") {
-  const os = /Android/i.test(ua) ? "Android" : /iPhone|iPad|iOS/i.test(ua) ? "iOS"
-    : /Windows/i.test(ua) ? "Windows" : /Mac OS X|Macintosh/i.test(ua) ? "macOS"
-    : /Linux/i.test(ua) ? "Linux" : "Номаълум";
-  const br = /Edg\//.test(ua) ? "Edge" : /OPR\/|Opera/.test(ua) ? "Opera" : /YaBrowser/.test(ua) ? "Яндекс"
-    : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "Браузер";
-  return `${br}, ${os}`;
+/* Қурилма: тури (телефон / планшет / компьютер), ишлаб чиқарувчи ва модели, тизим ва браузер.
+   Android Chrome модель номини User-Agent да яширади — уни Client Hints (Sec-CH-UA-Model) беради. */
+const BRANDS = [[/^SM-|^GT-|Galaxy|Samsung/i, "Samsung"], [/Redmi|POCO|^M\d{4}|^2\d{3}[0-9A-Z]{3,}|Xiaomi|^MI /i, "Xiaomi"], [/^CPH|^RMX|OPPO|realme/i, "Oppo/Realme"],
+  [/^V\d{4}|vivo/i, "Vivo"], [/Infinix/i, "Infinix"], [/TECNO/i, "Tecno"], [/itel/i, "itel"], [/HUAWEI|^[A-Z]{3}-L\w\d/i, "Huawei"], [/Honor/i, "Honor"],
+  [/Pixel/i, "Google"], [/moto|Motorola/i, "Motorola"], [/Nokia/i, "Nokia"], [/OnePlus/i, "OnePlus"], [/ZTE|Blade/i, "ZTE"], [/Lenovo/i, "Lenovo"]];
+function describeDevice(ua = "", h = {}) {
+  ua = String(ua || "");
+  const hint = (k) => String(h[k] || "").replace(/^"|"$/g, "").trim();
+  const ipad = /iPad/.test(ua) || (/Macintosh/.test(ua) && /Mobile\//.test(ua));
+  const mobile = /Mobi|iPhone|Android.*Mobile/i.test(ua) || hint("sec-ch-ua-mobile") === "?1";
+  const type = ipad || (/Android/i.test(ua) && !/Mobile/i.test(ua)) || /Tablet/i.test(ua) ? "Планшет" : mobile ? "Телефон" : /Android|iPhone/i.test(ua) ? "Телефон" : "Компьютер";
+  let os = /Android/i.test(ua) ? "Android" : /iPhone|iPad|iOS/i.test(ua) || ipad ? "iOS" : /Windows/i.test(ua) ? "Windows" : /CrOS/.test(ua) ? "ChromeOS"
+    : /Mac OS X|Macintosh/i.test(ua) ? "macOS" : /Linux/i.test(ua) ? "Linux" : "Номаълум";
+  let ver = "";
+  const av = ua.match(/Android (\d+)/), iv = ua.match(/(?:iPhone|CPU) OS (\d+)/), pv = hint("sec-ch-ua-platform-version").split(".")[0];
+  if (os === "Android") ver = av && av[1] !== "10" ? av[1] : pv || (av ? av[1] : "");
+  else if (os === "iOS" && iv) ver = iv[1];
+  else if (os === "Windows" && pv) ver = Number(pv) >= 13 ? "11" : Number(pv) > 0 ? "10" : "";
+  if (ver) os += " " + ver;
+  const br = /Edg\//.test(ua) ? "Edge" : /OPR\/|Opera/.test(ua) ? "Opera" : /YaBrowser/.test(ua) ? "Яндекс" : /SamsungBrowser/.test(ua) ? "Samsung Internet"
+    : /; wv\)/.test(ua) ? "Илова" : /CriOS|Chrome\//.test(ua) ? "Chrome" : /FxiOS|Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "Браузер";
+  let model = hint("sec-ch-ua-model");
+  if (!model) { const m = ua.match(/Android [\d.]+; (?:[a-z]{2}[-_][a-zA-Z]{2}; )?([^;)]+?)(?: Build\/[^;)]*)?[;)]/); if (m && m[1] !== "K" && !/^wv$/i.test(m[1])) model = m[1].trim(); }
+  if (/iPhone/.test(ua)) model = "iPhone"; else if (ipad) model = "iPad";
+  if (model) { const b = BRANDS.find(([re]) => re.test(model)); if (b && !model.toLowerCase().startsWith(b[1].toLowerCase())) model = b[1] + " " + model; }
+  return [type + (model ? " " + model.slice(0, 40) : ""), os, br].join(" · ");
 }
+/* Эски ёзувлар «Chrome, Android» шаклида — статистика учун тизим ва браузерни ажратиш */
+function deviceParts(d = "") {
+  if (d.includes(" · ")) { const [t, o, b] = d.split(" · "); return { type: t.split(" ")[0], model: t.split(" ").slice(1).join(" "), os: (o || "").split(" ")[0], browser: b || "" }; }
+  const [b, o] = d.split(", ");
+  return { type: /Android|iOS/.test(o || "") ? "Телефон" : "Компьютер", model: "", os: o || "", browser: b || "" };
+}
+const devOf = (req) => describeDevice(req.headers["user-agent"], req.headers);
+
+/* ---------- Ҳудуд (IP манзил бўйича тахминий жойлашув) ----------
+   IP → мамлакат, вилоят, шаҳар. Натижа db.geo да 30 кун сақланади, сўровлар навбат билан
+   (секундига 1 тадан кўп эмас) юборилади. GEO_PROVIDER=off бўлса, умуман сўралмайди. */
+const GEO_PROVIDER = String(process.env.GEO_PROVIDER || "ipwho").toLowerCase();
+const GEO_TTL = 30 * 86400000;
+const UZ_REGIONS = [[/qoraqalp|karakalp|nukus/i, "Қорақалпоғистон Р."], [/andij/i, "Андижон вил."], [/bukh|buxor/i, "Бухоро вил."], [/ferg|farg/i, "Фарғона вил."],
+  [/jizz/i, "Жиззах вил."], [/namang/i, "Наманган вил."], [/navo/i, "Навоий вил."], [/kashk|qashq|karshi|qarshi/i, "Қашқадарё вил."], [/samar/i, "Самарқанд вил."],
+  [/sird|syrd|guliston|gulistan/i, "Сирдарё вил."], [/surk|surx|termez|termiz/i, "Сурхондарё вил."], [/khorez|xorazm|khwar|urgench|urganch/i, "Хоразм вил."], [/tashk|toshk/i, "Тошкент вил."]];
+const UZ_CITIES = { tashkent: "Тошкент", toshkent: "Тошкент", samarkand: "Самарқанд", samarqand: "Самарқанд", bukhara: "Бухоро", buxoro: "Бухоро", andijan: "Андижон", andijon: "Андижон",
+  namangan: "Наманган", fergana: "Фарғона", "farg'ona": "Фарғона", kokand: "Қўқон", "qo'qon": "Қўқон", margilan: "Марғилон", nukus: "Нукус", urgench: "Урганч", termez: "Термиз",
+  karshi: "Қарши", qarshi: "Қарши", navoiy: "Навоий", navoi: "Навоий", jizzakh: "Жиззах", jizzax: "Жиззах", gulistan: "Гулистон", guliston: "Гулистон", chirchiq: "Чирчиқ",
+  angren: "Ангрен", almalyk: "Олмалиқ", olmaliq: "Олмалиқ", shahrisabz: "Шаҳрисабз", khiva: "Хива", denov: "Денов", chust: "Чуст", zarafshan: "Зарафшон", nurafshon: "Нурафшон" };
+const COUNTRIES = { UZ: "Ўзбекистон", KZ: "Қозоғистон", KG: "Қирғизистон", TJ: "Тожикистон", TM: "Туркманистон", AF: "Афғонистон", RU: "Россия", TR: "Туркия", US: "АҚШ",
+  DE: "Германия", GB: "Буюк Британия", KR: "Жанубий Корея", JP: "Япония", CN: "Хитой", AE: "БАА", IN: "Ҳиндистон", FR: "Франция", NL: "Нидерландия", PL: "Польша", UA: "Украина", BY: "Беларусь", AZ: "Озарбайжон" };
+function isPrivateIp(ip) {
+  return !ip || /^(10\.|127\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.|0\.)/.test(ip) || /^(::1?$|f[cd]|fe80)/i.test(ip);
+}
+function geoShape(cc, country, region, city) {
+  cc = String(cc || "").toUpperCase();
+  const g = { cc, country: COUNTRIES[cc] || String(country || "").slice(0, 40), region: "", city: "" };
+  if (cc === "UZ") {
+    const c = String(city || "").toLowerCase().replace(/[‘’`ʻʼ]/g, "'").trim();
+    g.city = UZ_CITIES[c] || String(city || "").slice(0, 40);
+    if (/tashkent|toshkent/i.test(c) && !/region|viloyat|oblast/i.test(String(region || ""))) g.region = "Тошкент ш.";
+    else { const r = UZ_REGIONS.find(([re]) => re.test(String(region || "")) || re.test(c)); g.region = r ? r[1] : String(region || "").slice(0, 40); }
+    if (g.region === "Тошкент ш.") g.city = "";
+  } else {
+    g.region = String(region || "").slice(0, 40);
+    g.city = String(city || "").slice(0, 40);
+  }
+  return g;
+}
+const geoLabel = (g) => (!g ? "" : g.local ? "Локал тармоқ" : g.err ? "" :
+  g.cc === "UZ" ? [g.region, g.city && g.city !== g.region.replace(/ вил\.$/, "") ? g.city : ""].filter(Boolean).join(", ") || "Ўзбекистон"
+    : [g.city, g.country].filter(Boolean).join(", "));
+const geoQueue = [];
+let geoBusy = false;
+async function geoFetch(ip) {
+  const get = async (url) => { const r = await fetch(url, { signal: AbortSignal.timeout(6000), headers: { "User-Agent": "Ekomun" } }); if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); };
+  try {
+    const d = await get("https://ipwho.is/" + encodeURIComponent(ip) + "?fields=success,country,country_code,region,city");
+    if (d && d.success !== false && d.country_code) return geoShape(d.country_code, d.country, d.region, d.city);
+  } catch (e) { /* иккинчи манбага ўтамиз */ }
+  const d = await get("http://ip-api.com/json/" + encodeURIComponent(ip) + "?fields=status,country,countryCode,regionName,city");
+  if (d && d.status === "success") return geoShape(d.countryCode, d.country, d.regionName, d.city);
+  throw new Error("geo failed");
+}
+async function geoWork() {
+  if (geoBusy) return;
+  geoBusy = true;
+  while (geoQueue.length) {
+    const ip = geoQueue.shift();
+    try { db.geo[ip] = { ...(await geoFetch(ip)), at: now() }; }
+    catch (e) { db.geo[ip] = { err: 1, at: now() - GEO_TTL + 3600000 }; } // бир соатдан кейин яна уринади
+    const keys = Object.keys(db.geo);
+    if (keys.length > 30000) for (const k of keys.slice(0, keys.length - 30000)) delete db.geo[k];
+    save();
+    await new Promise((r) => setTimeout(r, 1100));
+  }
+  geoBusy = false;
+}
+/* Кешдан қайтаради; йўқ бўлса навбатга қўяди (жавоб кейинги янгиланишда кўринади) */
+function geoOf(ip) {
+  if (!ip) return null;
+  if (isPrivateIp(ip)) return { local: 1 };
+  const g = db.geo[ip];
+  if (g && now() - g.at < GEO_TTL) return g;
+  if (GEO_PROVIDER !== "off" && !geoQueue.includes(ip) && geoQueue.length < 500) { geoQueue.push(ip); geoWork(); }
+  return g || null;
+}
+const placeOf = (ip) => geoLabel(geoOf(ip));
+const withPlace = (o) => ({ ...o, place: placeOf(o.ip) });
 
 function logEvent(type, user, req, extra = {}) {
   db.events.push({
@@ -205,7 +305,7 @@ function logEvent(type, user, req, extra = {}) {
     name: user ? user.name : extra.name || "",
     email: user ? user.email : extra.email || "",
     ip: req ? clientIp(req) : "",
-    device: req ? describeDevice(req.headers["user-agent"]) : "",
+    device: req ? devOf(req) : "",
     ...extra
   });
   trimEvents();
@@ -276,7 +376,7 @@ function currentUser(req) {
 }
 function startSession(user, req, res) {
   const token = newToken();
-  db.sessions[token] = { userId: user.id, createdAt: now(), lastSeen: now(), ip: clientIp(req), device: describeDevice(req.headers["user-agent"]), online: true };
+  db.sessions[token] = { userId: user.id, createdAt: now(), lastSeen: now(), ip: clientIp(req), device: devOf(req), online: true };
   user.lastLogin = now();
   user.loginCount = (user.loginCount || 0) + 1;
   logEvent("login", user, req);
@@ -333,7 +433,7 @@ function adminAllowed(req) {
   return true;
 }
 function adminLog(req, ok, note = "") {
-  db.adminLog.push({ at: now(), ok, ip: clientIp(req), device: describeDevice(req.headers["user-agent"]), note });
+  db.adminLog.push({ at: now(), ok, ip: clientIp(req), device: devOf(req), note });
   if (db.adminLog.length > 500) db.adminLog.splice(0, db.adminLog.length - 500);
   save();
 }
@@ -437,7 +537,7 @@ const LANGS = ["cyr", "lat", "ru", "en"];
 function visitView(v) {
   const u = v.userId ? db.users.find((x) => x.id === v.userId) : null;
   const secs = Object.values(v.sec || {}).reduce((a, b) => a + b, 0);
-  return { id: v.id, vid: v.vid, user: u ? { id: u.id, name: u.name, email: u.email } : null, ip: v.ip, device: v.device,
+  return { id: v.id, vid: v.vid, user: u ? { id: u.id, name: u.name, email: u.email } : null, ip: v.ip, place: placeOf(v.ip), device: v.device,
     stage: v.stage, ag: v.ag, lang: v.lang, start: v.start, last: v.last, ended: !!v.ended, secs, sec: v.sec, path: v.path, lessons: v.lessons };
 }
 const dayKey = (t) => new Date(t + STATS_TZ_MS).toISOString().slice(0, 10);
@@ -452,7 +552,7 @@ function computeStats(days) {
   const dayList = [];
   for (let i = days - 1; i >= 0; i--) dayList.push(dayKey(t - i * 86400000));
   const daily = Object.fromEntries(dayList.map((d) => [d, { d, visitors: new Set(), visits: 0, secs: 0, newV: 0, logins: 0, registers: 0, accounts: new Set() }]));
-  const sections = {}, stages = {}, ages = {}, langs = {}, os = {}, browsers = {}, lessons = {};
+  const sections = {}, stages = {}, ages = {}, langs = {}, os = {}, browsers = {}, lessons = {}, regions = {}, countries = {}, devTypes = {}, models = {};
   const heat = Array.from({ length: 7 }, () => Array(24).fill(0));
   const dur = [0, 0, 0, 0, 0]; // <1, 1–5, 5–15, 15–60, 60+ дақиқа
   const people = new Map();
@@ -469,7 +569,8 @@ function computeStats(days) {
     heat[(local.getUTCDay() + 6) % 7][local.getUTCHours()]++;
     const m = secs / 60;
     dur[m < 1 ? 0 : m < 5 ? 1 : m < 15 ? 2 : m < 60 ? 3 : 4]++;
-    const [br, o] = String(v.device || "").split(", ");
+    const dp = deviceParts(String(v.device || ""));
+    const br = dp.browser, o = dp.os;
     const key = v.userId ? "u:" + v.userId : "v:" + v.vid;
     let p = people.get(key);
     if (!p) {
@@ -480,6 +581,12 @@ function computeStats(days) {
       langs[v.lang || "?"] = (langs[v.lang || "?"] || 0) + 1;
       os[o || "?"] = (os[o || "?"] || 0) + 1;
       browsers[br || "?"] = (browsers[br || "?"] || 0) + 1;
+      const g = geoOf(v.ip);
+      const reg = !g ? "Аниқланмоқда…" : g.local ? "Локал тармоқ" : g.err ? "Номаълум" : g.cc === "UZ" ? g.region || "Ўзбекистон" : g.country || "Номаълум";
+      regions[reg] = (regions[reg] || 0) + 1;
+      if (g && g.cc) countries[g.country || g.cc] = (countries[g.country || g.cc] || 0) + 1;
+      devTypes[dp.type || "?"] = (devTypes[dp.type || "?"] || 0) + 1;
+      if (dp.model) models[dp.model] = (models[dp.model] || 0) + 1;
     }
     p.visits++; p.secs += secs;
     if (v.last > p.last) { p.last = v.last; p.ip = v.ip; p.device = v.device; p.stage = v.stage || p.stage; p.ag = v.ag || p.ag; }
@@ -500,7 +607,7 @@ function computeStats(days) {
   const list = [...people.values()].map((p) => {
     const u = p.userId ? db.users.find((x) => x.id === p.userId) : null;
     const top = Object.entries(p.top).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => k);
-    return { ...p, top, name: u ? u.name : "", email: u ? u.email : "",
+    return { ...p, top, place: placeOf(p.ip), name: u ? u.name : "", email: u ? u.email : "",
       blocked: !!(u ? u.blocked : db.blockedVids[p.vid]) || !!db.blockedIps[p.ip] };
   }).sort((a, b) => b.last - a.last);
   return {
@@ -515,7 +622,8 @@ function computeStats(days) {
       blocked: db.users.filter((u) => u.blocked).length + Object.keys(db.blockedVids).length + Object.keys(db.blockedIps).length
     },
     daily: dayList.map((k) => { const d = daily[k]; return { d: k, visitors: d.visitors.size, visits: d.visits, secs: d.secs, newV: d.newV, logins: d.logins, registers: d.registers, accounts: d.accounts.size }; }),
-    sections, stages, ages, langs, os, browsers, heat, dur,
+    sections, stages, ages, langs, os, browsers, heat, dur, regions, countries, devTypes,
+    models: Object.entries(models).sort((a, b) => b[1] - a[1]).slice(0, 15),
     lessons: Object.entries(lessons).sort((a, b) => b[1] - a[1]).slice(0, 20),
     people: list.slice(0, 1000)
   };
@@ -594,6 +702,84 @@ function computeGrowth(days) {
     funnel: Object.entries(steps).map(([k, s]) => ({ k, n: s.size })),
     lessons: lessonRows, hard,
     certList: certs.slice(-50).reverse().map((c) => ({ code: c.code, name: c.name, title: c.title, pct: c.pct, grade: c.grade || null, at: c.at }))
+  };
+}
+
+/* ---------- Натижалар: ким қайси дарсларни тугатди, тестлар, якуний тест ва сертификатлар ---------- */
+const EXAM_PASS = 80; // index.html даги EXAM_PASS билан бир хил
+const courseOf = (k) => String(k).split(":")[0];
+function addResults(r, v) {
+  for (const k of v.lessons || []) r.opened.add(k);
+  for (const [k, s] of v.done || []) { if (!r.done.has(k)) r.done.set(k, { at: v.start, secs: s }); }
+  for (const [, ok] of v.qa || []) { r.qaN++; if (ok) r.qaOk++; }
+  for (const [cid, pct, at] of v.ex || []) {
+    const e = r.exams[cid] || (r.exams[cid] = { best: 0, tries: 0, last: 0, at: 0 });
+    e.tries++; e.best = Math.max(e.best, pct);
+    if ((at || v.start) >= e.at) { e.last = pct; e.at = at || v.start; }
+  }
+}
+const newResults = () => ({ opened: new Set(), done: new Map(), qaOk: 0, qaN: 0, exams: {} });
+function resultsView(r, rawCerts) {
+  const certs = rawCerts.map((c) => ({ code: c.code, cid: c.cid, title: c.title, pct: c.pct, grade: c.grade, at: c.at }));
+  const byCourse = {};
+  for (const k of r.done.keys()) byCourse[courseOf(k)] = (byCourse[courseOf(k)] || 0) + 1;
+  for (const k of r.opened) byCourse[courseOf(k)] = byCourse[courseOf(k)] || 0;
+  for (const cid of Object.keys(r.exams)) byCourse[cid] = byCourse[cid] || 0;
+  return {
+    opened: r.opened.size, done: r.done.size, qaOk: r.qaOk, qaN: r.qaN, qaPct: r.qaN ? Math.round((r.qaOk / r.qaN) * 100) : null,
+    courses: Object.entries(byCourse).map(([cid, done]) => ({ cid, done, exam: r.exams[cid] || null, cert: certs.find((c) => c.cid === cid) || null }))
+      .sort((a, b) => b.done - a.done),
+    lastDone: [...r.done.entries()].sort((a, b) => b[1].at - a[1].at).slice(0, 30).map(([k, x]) => ({ k, at: x.at, secs: x.secs })),
+    certs
+  };
+}
+function personResults(match, u) {
+  const r = newResults();
+  for (const v of db.visits) if (match(v)) addResults(r, v);
+  return resultsView(r, u ? db.certs.filter((c) => c.userId === u.id) : []);
+}
+function computeResults(days) {
+  const t = now(), from = t - days * 86400000;
+  const people = new Map(), courses = {};
+  for (const v of db.visits) {
+    if (v.start < from) continue;
+    const key = v.userId ? "u:" + v.userId : "v:" + v.vid;
+    let p = people.get(key);
+    if (!p) people.set(key, (p = { key, userId: v.userId || null, vid: v.vid, stage: v.stage, ag: v.ag, ip: v.ip, device: v.device, last: v.last, r: newResults() }));
+    if (v.last >= p.last) { p.last = v.last; p.ip = v.ip; p.device = v.device; p.stage = v.stage || p.stage; p.ag = v.ag || p.ag; }
+    addResults(p.r, v);
+  }
+  const certs = db.certs.filter((c) => c.at >= from);
+  const C = (cid) => courses[cid] || (courses[cid] = { cid, learners: 0, done: 0, examPeople: 0, examSum: 0, passed: 0, certs: 0 });
+  let qaOk = 0, qaN = 0, examPeople = 0, examSum = 0, passed = 0, doneAll = 0;
+  const rows = [];
+  for (const p of people.values()) {
+    const r = p.r;
+    if (!r.opened.size && !r.done.size && !r.qaN && !Object.keys(r.exams).length) continue;
+    const touched = new Set([...r.opened].map(courseOf).concat([...r.done.keys()].map(courseOf), Object.keys(r.exams)));
+    for (const cid of touched) C(cid).learners++;
+    for (const k of r.done.keys()) C(courseOf(k)).done++;
+    for (const [cid, e] of Object.entries(r.exams)) {
+      const c = C(cid); c.examPeople++; c.examSum += e.best; if (e.best >= EXAM_PASS) c.passed++;
+      examPeople++; examSum += e.best; if (e.best >= EXAM_PASS) passed++;
+    }
+    qaOk += r.qaOk; qaN += r.qaN; doneAll += r.done.size;
+    const u = p.userId ? db.users.find((x) => x.id === p.userId) : null;
+    const ex = Object.entries(r.exams).map(([cid, e]) => ({ cid, best: e.best, tries: e.tries }));
+    rows.push({ key: p.key, userId: p.userId, vid: p.vid, name: u ? u.name : "", email: u ? u.email : "", stage: p.stage, ag: p.ag, place: placeOf(p.ip), device: p.device, last: p.last,
+      opened: r.opened.size, done: r.done.size, qaOk: r.qaOk, qaN: r.qaN, qaPct: r.qaN ? Math.round((r.qaOk / r.qaN) * 100) : null, exams: ex,
+      certs: u ? db.certs.filter((c) => c.userId === u.id).length : 0 });
+  }
+  for (const c of certs) C(c.cid).certs++;
+  rows.sort((a, b) => b.done - a.done || b.qaN - a.qaN || b.last - a.last);
+  return {
+    now: t, days, pass: EXAM_PASS,
+    kpi: { learners: rows.length, done: doneAll, qaN, qaPct: qaN ? Math.round((qaOk / qaN) * 100) : null, examPeople, examAvg: examPeople ? Math.round(examSum / examPeople) : null,
+      passPct: examPeople ? Math.round((passed / examPeople) * 100) : null, certs: certs.length,
+      gold: certs.filter((c) => c.grade === "gold").length, silver: certs.filter((c) => c.grade === "silver").length, bronze: certs.filter((c) => c.grade === "bronze").length },
+    courses: Object.values(courses).map((c) => ({ ...c, examAvg: c.examPeople ? Math.round(c.examSum / c.examPeople) : null, passPct: c.examPeople ? Math.round((c.passed / c.examPeople) * 100) : null }))
+      .sort((a, b) => b.learners - a.learners),
+    people: rows.slice(0, 1000)
   };
 }
 
@@ -792,6 +978,18 @@ function validTask(body) {
 
 /* ---------- API ---------- */
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
+/* Кириш учун почта ёки телефон рақам. Телефон +998XXXXXXXXX кўринишига келтирилади
+   (бошқа давлат рақами + билан ёзилса, 8–15 рақам). Ҳисобда у email майдонида сақланади. */
+function loginId(raw) {
+  const v = String(raw || "").trim().slice(0, 254);
+  if (v.includes("@")) { const e = v.toLowerCase(); return EMAIL_RE.test(e) ? { id: e, kind: "email" } : null; }
+  if (!/^[+\d\s()\-.]{7,24}$/.test(v)) return null;
+  const d = v.replace(/\D/g, "");
+  if (d.length === 9) return { id: "+998" + d, kind: "phone" };
+  if (d.length === 12 && d.startsWith("998")) return { id: "+" + d, kind: "phone" };
+  if (v.startsWith("+") && d.length >= 8 && d.length <= 15 && !d.startsWith("998")) return { id: "+" + d, kind: "phone" };
+  return null;
+}
 
 async function api(req, res, pathname) {
   const method = req.method;
@@ -812,10 +1010,11 @@ async function api(req, res, pathname) {
     if (tooManyRegistrations(ip)) return send(res, 429, { error: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг" });
     const body = await readBody(req);
     const name = String(body.name || "").trim().slice(0, 60);
-    const email = String(body.email || "").trim().toLowerCase().slice(0, 254);
+    const lid = loginId(body.email || body.phone);
+    const email = lid ? lid.id : "";
     const password = String(body.password || "");
     if (name.length < 2) return send(res, 400, { error: "Исмингизни киритинг" });
-    if (!EMAIL_RE.test(email)) return send(res, 400, { error: "Электрон почта нотўғри" });
+    if (!lid) return send(res, 400, { error: "Электрон почта ёки телефон рақам нотўғри. Масалан: name@mail.uz ёки +998 90 123 45 67" });
     if (password.length < 6) return send(res, 400, { error: "Парол камида 6 белгидан иборат бўлсин" });
     /* Ёш текшируви: 13 ёшгача болалардан онлайн ҳисоб очилмайди (уларнинг профили фақат қурилмада). */
     const birthYear = Math.floor(Number(body.birthYear) || 0);
@@ -825,13 +1024,13 @@ async function api(req, res, pathname) {
     /* Туғилган ой ҳали тугамаган деб ҳисобланади (эҳтиёткор баҳо) */
     const age = thisYear - birthYear - (today.getMonth() + 1 <= birthMonth ? 1 : 0);
     if (age < 13) return send(res, 403, { error: "Ҳисоб очиш учун 13 ёш тўлган бўлиши керак. Барча дарслар ва ўйинлар ҳисобсиз ҳам ишлайди!" });
-    if (db.users.some((u) => u.email === email)) return send(res, 409, { error: "Бу почта билан аллақачон рўйхатдан ўтилган" });
+    if (db.users.some((u) => u.email === email)) return send(res, 409, { error: lid.kind === "phone" ? "Бу рақам билан аллақачон рўйхатдан ўтилган" : "Бу почта билан аллақачон рўйхатдан ўтилган" });
     /* «18 ёшдан катта» белгиси (Эко-кўз учун) ва туғилган йил-ой (босқични бошқа қурилмада тиклаш учун) сақланади */
     const adult = age >= 18;
     const hashed = await hashPassword(password);
     /* Хэшлаш вақтида шу почта билан бошқа сўров рўйхатдан ўтган бўлиши мумкин */
-    if (db.users.some((u) => u.email === email)) return send(res, 409, { error: "Бу почта билан аллақачон рўйхатдан ўтилган" });
-    const user = { id: newId(), name, email, password: hashed, adult, by: birthYear, bm: birthMonth, createdAt: now(), lastLogin: null, loginCount: 0 };
+    if (db.users.some((u) => u.email === email)) return send(res, 409, { error: lid.kind === "phone" ? "Бу рақам билан аллақачон рўйхатдан ўтилган" : "Бу почта билан аллақачон рўйхатдан ўтилган" });
+    const user = { id: newId(), name, email, kind: lid.kind, password: hashed, adult, by: birthYear, bm: birthMonth, createdAt: now(), lastLogin: null, loginCount: 0 };
     db.users.push(user);
     logEvent("register", user, req);
     startSession(user, req, res);
@@ -841,14 +1040,15 @@ async function api(req, res, pathname) {
   if (pathname === "/api/login" && method === "POST") {
     if (tooManyFailures(ip)) return send(res, 429, { error: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг" });
     const body = await readBody(req);
-    const email = String(body.email || "").trim().toLowerCase();
+    const lid = loginId(body.email || body.phone);
+    const email = lid ? lid.id : String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
     const user = db.users.find((u) => u.email === email);
     const ok = await checkPassword(password, user ? user.password : undefined);
     if (!user || !ok) {
       noteFailure(ip);
       logEvent("login_failed", null, req, { email: email.slice(0, 254) });
-      return send(res, 401, { error: "Почта ёки парол нотўғри" });
+      return send(res, 401, { error: "Почта (телефон) ёки парол нотўғри" });
     }
     if (user.blocked) {
       logEvent("login_blocked", user, req);
@@ -1106,7 +1306,7 @@ async function api(req, res, pathname) {
       if (db.errors.length > 300) db.errors.splice(0, db.errors.length - 300);
     }
     e.count++; e.last = now(); e.ver = ver || e.ver; e.sec = sec || e.sec;
-    const dev = describeDevice(req.headers["user-agent"]);
+    const dev = devOf(req);
     if (!e.devices.includes(dev) && e.devices.length < 8) e.devices.push(dev);
     save();
     return send(res, 200, { ok: true });
@@ -1166,7 +1366,7 @@ async function api(req, res, pathname) {
       contact: stage === "maktab" ? "" : cleanText(body.contact, 100),
       stage, lang: ["cyr", "lat", "ru", "en"].includes(String(body.lang)) ? String(body.lang) : "",
       ver: cleanText(body.ver, 20), vid, userId: cur ? cur.user.id : null, name: cur ? cur.user.name : "", email: cur ? cur.user.email : "",
-      ip, device: describeDevice(req.headers["user-agent"]), read: false, readAt: 0, reply: "", replyAt: 0, archived: false
+      ip, device: devOf(req), read: false, readAt: 0, reply: "", replyAt: 0, archived: false
     };
     db.feedback.push(f);
     if (db.feedback.length > MAX_FEEDBACK) db.feedback.splice(0, db.feedback.length - MAX_FEEDBACK);
@@ -1216,7 +1416,7 @@ async function api(req, res, pathname) {
     let v = body.sid ? db.visits.find((x) => x.id === String(body.sid) && x.vid === vid) : null;
     if (v && v.ended && t - v.last > 30 * 60 * 1000) v = null; // узоқ танаффусдан кейин — янги ташриф
     if (!v) {
-      v = { id: newId(), vid, userId: null, ip, device: describeDevice(req.headers["user-agent"]), stage: "", ag: "", lang: "", start: t, last: t, ended: false, sec: {}, path: [], lessons: [] };
+      v = { id: newId(), vid, userId: null, ip, device: devOf(req), stage: "", ag: "", lang: "", start: t, last: t, ended: false, sec: {}, path: [], lessons: [] };
       db.visits.push(v);
       if (db.visits.length > MAX_VISITS) db.visits.splice(0, db.visits.length - MAX_VISITS);
     }
@@ -1245,6 +1445,11 @@ async function api(req, res, pathname) {
     for (const q of Array.isArray(body.qa) ? body.qa.slice(0, 60) : []) {
       const k = String(q && q[0]);
       if (/^[a-z0-9-]{1,24}:\d{1,3}:\d{1,2}$/.test(k) && (v.qa || (v.qa = [])).length < 300) v.qa.push([k, q[1] ? 1 : 0]);
+    }
+    /* Якуний тест натижаси: [курс, фоиз] */
+    for (const x of Array.isArray(body.ex) ? body.ex.slice(0, 10) : []) {
+      const cid = String(x && x[0]), pct = Math.round(Number(x && x[1]));
+      if (COURSE_IDS.includes(cid) && pct >= 0 && pct <= 100 && (v.ex || (v.ex = [])).length < 40) v.ex.push([cid, pct, t]);
     }
     for (const f of Array.isArray(body.fn) ? body.fn.slice(0, 10) : []) {
       if (FUNNEL_EVENTS.includes(f) && !(v.fn || (v.fn = [])).includes(f)) v.fn.push(f);
@@ -1295,10 +1500,11 @@ async function api(req, res, pathname) {
     const online = Object.values(db.sessions)
       .filter((s) => s.online && t - s.lastSeen <= ONLINE_MS)
       .map((s) => {
-        const u = db.users.find((x) => x.id === s.userId);
-        return { name: u.name, email: u.email, since: s.createdAt, lastSeen: s.lastSeen, ip: s.ip, device: s.device };
+        const u = db.users.find((x) => x.id === s.userId) || { name: "—", email: "" };
+        return { id: s.userId, name: u.name, email: u.email, since: s.createdAt, lastSeen: s.lastSeen, ip: s.ip, place: placeOf(s.ip), device: s.device };
       })
-      .sort((a, b) => b.lastSeen - a.lastSeen);
+      .sort((a, b) => b.lastSeen - a.lastSeen)
+      .filter((o, i, arr) => arr.findIndex((x) => x.id === o.id) === i); // бир одамнинг бир нечта сессияси — битта қатор
     const users = db.users
       .map((u) => ({ id: u.id, name: u.name, email: u.email, createdAt: u.createdAt, lastLogin: u.lastLogin, loginCount: u.loginCount || 0,
         adult: !!u.adult, by: u.by || 0, blocked: u.blocked || null, approved: u.approved || 0,
@@ -1322,7 +1528,7 @@ async function api(req, res, pathname) {
       online,
       guests: db.visits.filter((v) => !v.ended && t - v.last <= ONLINE_MS).sort((a, b) => b.last - a.last).map(visitView),
       users,
-      events: db.events.slice(-600).sort((a, b) => b.at - a.at).slice(0, 500)
+      events: db.events.slice(-600).sort((a, b) => b.at - a.at).slice(0, 500).map(withPlace)
     });
   }
 
@@ -1424,10 +1630,11 @@ async function api(req, res, pathname) {
     const uid = q.get("user"), vid = q.get("vid");
     const u = uid ? db.users.find((x) => x.id === uid) : null;
     const visits = db.visits.filter((v) => (u ? v.userId === u.id : v.vid === vid)).slice(-300).reverse().map(visitView);
-    const events = u ? db.events.filter((e) => e.userId === u.id).slice(-200).reverse() : [];
+    const events = u ? db.events.filter((e) => e.userId === u.id).slice(-200).reverse().map(withPlace) : [];
+    const results = personResults(u ? (v) => v.userId === u.id : (v) => v.vid === vid, u);
     return send(res, 200, {
       user: u ? { id: u.id, name: u.name, email: u.email, createdAt: u.createdAt, lastLogin: u.lastLogin, loginCount: u.loginCount || 0, adult: !!u.adult, by: u.by || 0, blocked: u.blocked || null, approved: u.approved || 0 } : null,
-      vid: vid || null, vidBlocked: vid ? db.blockedVids[vid] || null : null, visits, events
+      vid: vid || null, vidBlocked: vid ? db.blockedVids[vid] || null : null, visits, events, results
     });
   }
 
@@ -1492,8 +1699,8 @@ async function api(req, res, pathname) {
     for (const v of db.visits) if (t - v.start <= day) visitsByIp[v.ip] = (visitsByIp[v.ip] || 0) + 1;
     const suspicious = Object.values(byIp)
       .filter((x) => x.failed >= 5 || x.registers >= 3)
-      .map((x) => ({ ...x, emails: [...x.emails].slice(0, 10), visits: visitsByIp[x.ip] || 0, blocked: !!db.blockedIps[x.ip] }));
-    for (const [vip, n] of Object.entries(visitsByIp)) if (n >= 150 && !byIp[vip]) suspicious.push({ ip: vip, failed: 0, registers: 0, logins: 0, emails: [], visits: n, blocked: !!db.blockedIps[vip] });
+      .map((x) => ({ ...x, place: placeOf(x.ip), emails: [...x.emails].slice(0, 10), visits: visitsByIp[x.ip] || 0, blocked: !!db.blockedIps[x.ip] }));
+    for (const [vip, n] of Object.entries(visitsByIp)) if (n >= 150 && !byIp[vip]) suspicious.push({ ip: vip, place: placeOf(vip), failed: 0, registers: 0, logins: 0, emails: [], visits: n, blocked: !!db.blockedIps[vip] });
     suspicious.sort((a, b) => b.failed + b.registers * 3 + b.visits / 50 - (a.failed + a.registers * 3 + a.visits / 50));
     const userBlocks = db.users.filter((u) => u.blocked).map((u) => ({ kind: "user", id: u.id, label: `${u.name} · ${u.email}`, ...u.blocked }));
     const vidBlocks = Object.entries(db.blockedVids).map(([id, b]) => ({ kind: "vid", id, label: "Қурилма " + id.slice(0, 8), ...b }));
@@ -1501,7 +1708,7 @@ async function api(req, res, pathname) {
     return send(res, 200, {
       now: t, yourIp: ip,
       config: { totp: !!ADMIN_TOTP_SECRET, host: ADMIN_HOST || "", path: ADMIN_PATH, allowIps: ADMIN_ALLOW_IPS.length, trustProxy: TRUST_PROXY },
-      log: db.adminLog.slice(-200).reverse(),
+      log: db.adminLog.slice(-200).reverse().map(withPlace),
       suspicious: suspicious.slice(0, 100),
       blocks: [...userBlocks, ...vidBlocks, ...ipBlocks].sort((a, b) => b.at - a.at)
     });
@@ -1513,6 +1720,13 @@ async function api(req, res, pathname) {
     const days = [1, 7, 30, 90, 180].includes(Number(q.get("days"))) ? Number(q.get("days")) : 30;
     sweep();
     return send(res, 200, computeGrowth(days));
+  }
+
+  if (pathname === "/api/admin/results" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const q = new URL(req.url, "http://x").searchParams;
+    const days = [1, 7, 30, 90, 180].includes(Number(q.get("days"))) ? Number(q.get("days")) : 30;
+    return send(res, 200, computeResults(days));
   }
 
   /* Тизим ҳолати: ишлаш вақти, хотира, маълумотлар ҳажми, захира нусхалар, хатолар журнали */
@@ -1549,16 +1763,21 @@ async function api(req, res, pathname) {
     let body, name;
     if (type === "visits") {
       name = "ekomun-tashriflar.csv";
-      body = csv([["Бошланди", "Охирги фаоллик", "Дақиқа", "Қурилма коди", "Фойдаланувчи", "Почта", "Босқич", "Ёш гуруҳи", "Тил", "Қурилма", "IP", "Бўлимлар (сония)", "Йўл", "Дарслар"],
-        ...db.visits.slice().reverse().map((v) => { const x = visitView(v); return [iso(x.start), iso(x.last), Math.round(x.secs / 60), x.vid, x.user ? x.user.name : "", x.user ? x.user.email : "", x.stage, x.ag, x.lang, x.device, x.ip,
+      body = csv([["Бошланди", "Охирги фаоллик", "Дақиқа", "Қурилма коди", "Фойдаланувчи", "Почта", "Босқич", "Ёш гуруҳи", "Тил", "Қурилма", "IP", "Ҳудуд", "Бўлимлар (сония)", "Йўл", "Дарслар"],
+        ...db.visits.slice().reverse().map((v) => { const x = visitView(v); return [iso(x.start), iso(x.last), Math.round(x.secs / 60), x.vid, x.user ? x.user.name : "", x.user ? x.user.email : "", x.stage, x.ag, x.lang, x.device, x.ip, x.place,
           Object.entries(x.sec || {}).map(([k, s]) => `${k}:${s}`).join(" "), (x.path || []).join(" > "), (x.lessons || []).join(" ")]; })]);
     } else if (type === "events") {
       name = "ekomun-kirish-chiqish.csv";
-      body = csv([["Вақт", "Ҳодиса", "Исм", "Почта", "Қурилма", "IP"], ...db.events.slice().reverse().map((e) => [iso(e.at), e.type, e.name, e.email, e.device, e.ip])]);
+      body = csv([["Вақт", "Ҳодиса", "Исм", "Почта / телефон", "Қурилма", "IP", "Ҳудуд"], ...db.events.slice().reverse().map((e) => [iso(e.at), e.type, e.name, e.email, e.device, e.ip, placeOf(e.ip)])]);
     } else if (type === "users") {
       name = "ekomun-foydalanuvchilar.csv";
-      body = csv([["Исм", "Почта", "Туғилган йил", "18+", "Рўйхатдан ўтган", "Охирги кириш", "Киришлар", "Блокланган"],
+      body = csv([["Исм", "Почта / телефон", "Туғилган йил", "18+", "Рўйхатдан ўтган", "Охирги кириш", "Киришлар", "Блокланган"],
         ...db.users.map((u) => [u.name, u.email, u.by || "", u.adult ? "ҳа" : "йўқ", iso(u.createdAt), iso(u.lastLogin), u.loginCount || 0, u.blocked ? "ҳа: " + (u.blocked.reason || "") : ""])]);
+    } else if (type === "results") {
+      name = "ekomun-natijalar.csv";
+      const r = computeResults(180);
+      body = csv([["Исм", "Почта / телефон", "Қурилма коди", "Босқич", "Ёш гуруҳи", "Ҳудуд", "Қурилма", "Охирги фаоллик", "Очилган дарслар", "Тугатилган дарслар", "Тест жавоблари", "Тўғри %", "Якуний тестлар (курс:энг яхши %)", "Сертификатлар"],
+        ...r.people.map((p) => [p.name, p.email, p.vid, p.stage, p.ag, p.place, p.device, iso(p.last), p.opened, p.done, p.qaN, p.qaPct == null ? "" : p.qaPct, p.exams.map((e) => `${e.cid}:${e.best}`).join(" "), p.certs])]);
     } else if (type === "feedback") {
       name = "ekomun-fikr-mulohazalar.csv";
       body = csv([["Вақт", "Тури", "Баҳо", "Бўлим", "Мулоҳаза", "Алоқа", "Исм", "Почта", "Босқич", "Тил", "Версия", "Ўқилди", "Жавоб", "Жавоб вақти", "Архив", "Қурилма", "IP"],
@@ -1730,6 +1949,8 @@ const server = http.createServer(async (req, res) => {
     if (err) return send(res, 500, "Файл ўқилмади");
     const headers = { "Content-Type": entry.type, "Cache-Control": entry.cache ? "public, max-age=604800" : "no-cache" };
     if (entry.file === "sw.js") headers["Service-Worker-Allowed"] = "/";
+    /* Телефон модели ва тизим версиясини сўраш (бошқарув марказидаги «Қурилма» учун) */
+    if (entry.file === "index.html") headers["Accept-CH"] = "Sec-CH-UA-Model, Sec-CH-UA-Platform-Version";
     if (entry.file === "privacy.html") {
       const contact = CONTACT_EMAIL.replace(/[&<>"']/g, "") || "сайт администратори";
       data = Buffer.from(data.toString("utf8").replaceAll("{{CONTACT_EMAIL}}", contact));

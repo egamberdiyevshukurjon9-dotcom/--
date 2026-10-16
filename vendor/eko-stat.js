@@ -1,7 +1,7 @@
 /* Экомун — анонимлаштирилган фойдаланиш статистикаси (бошқарув маркази учун).
    Серверга фақат: тасодифий қурилма коди, босқич, ёш гуруҳи, тил, қайси бўлим неча сония
    очиқ тургани, очилган ва тугатилган дарслар рақами, тест саволларига биринчи жавоб тўғри ёки
-   хатолиги ва воронка қадамлари (якуний тест, сертификат) юборилади. Исм ва профил юборилмайди.
+   хатолиги, якуний тест фоизи ва воронка қадамлари (якуний тест, сертификат) юборилади. Исм ва профил юборилмайди.
    Сервер бўлмаса (Android илова, файлдан очилганда) ҳеч нарса қилмайди. */
 "use strict";
 (() => {
@@ -37,7 +37,7 @@
 
   let sid = null, stopped = false, cur = sectionOf(), since = Date.now();
   let visible = document.visibilityState === "visible";
-  let acc = {}, path = [cur], lessons = [], done = [], qa = [], fn = [];
+  let acc = {}, path = [cur], lessons = [], done = [], qa = [], fn = [], ex = [];
 
   function tick() {
     const t = Date.now();
@@ -46,8 +46,8 @@
   }
   function body(end) {
     tick();
-    const b = { vid, sid, ...profileInfo(), sec: acc, path, lessons, done, qa, fn, end: !!end };
-    acc = {}; path = []; lessons = []; done = []; qa = []; fn = [];
+    const b = { vid, sid, ...profileInfo(), sec: acc, path, lessons, done, qa, fn, ex, end: !!end };
+    acc = {}; path = []; lessons = []; done = []; qa = []; fn = []; ex = [];
     return b;
   }
   function blocked(msg) {
@@ -91,7 +91,11 @@
   window.addEventListener("eko:lesson", (e) => { if (e.detail && e.detail.key) lessons.push(e.detail.key); });
   window.addEventListener("eko:lessondone", (e) => { if (e.detail && e.detail.key) done.push([e.detail.key, e.detail.secs || 0]); });
   window.addEventListener("eko:q", (e) => { if (e.detail && e.detail.k && qa.length < 60) qa.push([e.detail.k, e.detail.ok ? 1 : 0]); });
-  window.addEventListener("eko:fn", (e) => { const k = e.detail && e.detail.k; if (k && !fn.includes(k)) fn.push(k); });
+  window.addEventListener("eko:fn", (e) => {
+    const d = e.detail || {}, k = d.k;
+    if (k && !fn.includes(k)) fn.push(k);
+    if (k === "exam" && d.cid && ex.length < 10) ex.push([d.cid, d.pct]);
+  });
   window.addEventListener("eko:user", (e) => { if (e.detail && e.detail.user && !fn.includes("account")) fn.push("account"); });
   document.addEventListener("visibilitychange", () => {
     tick();
