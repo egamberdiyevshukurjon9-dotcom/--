@@ -1313,6 +1313,63 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
 .l3-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 40px; padding: 8px 10px; border-radius: 12px; border: 1px dashed var(--line); font-size: .9rem; }
 .l3-chain span { padding: 4px 9px; border-radius: 999px; background: var(--primary-soft); font-weight: 600; }
 .l3-chain b { color: var(--primary); }
+/* 3D лаборатория 2.5: галерея, асбоблар, мақсадлар, журнал */
+.l3-progress { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 14px 0 4px; padding: 12px 16px; border-radius: 18px; background: linear-gradient(120deg, color-mix(in srgb, #0891b2 14%, var(--card)), color-mix(in srgb, #8b5cf6 12%, var(--card))); border: 1px solid var(--glass-line, var(--line)); }
+.l3-progress > div { display: flex; flex-direction: column; gap: 2px; }
+.l3-progress small { color: var(--muted); }
+.l3-pbar { flex: 1 1 200px; height: 10px; border-radius: 99px; background: color-mix(in srgb, var(--text) 10%, transparent); overflow: hidden; }
+.l3-pbar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22d3ee, #8b5cf6, #f472b6); transition: width .4s; }
+.l3-gallery { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 14px 0; }
+.l3-cat { min-width: 0; }
+.l3-cath { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: .95rem; font-weight: 750; }
+.l3-cath small { margin-left: auto; color: var(--muted); font-weight: 600; }
+.l3-rail { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 10px; scroll-snap-type: x proximity; scrollbar-width: thin; }
+.chip.l3-card { position: relative; flex: none; scroll-snap-align: start; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; width: 150px; min-height: 96px; padding: 12px; border-radius: 18px; text-align: left; white-space: normal; background: var(--glass, var(--card)); border: 1px solid var(--glass-line, var(--line)); box-shadow: var(--shadow); transition: transform .18s, box-shadow .18s, border-color .18s; }
+.chip.l3-card:hover { transform: translateY(-3px); }
+.chip.l3-card.active { border-color: transparent; background: linear-gradient(140deg, #0e7490, #6d28d9); color: #fff; box-shadow: 0 14px 30px -14px #6d28d9; }
+.l3-ci { font-size: 1.7rem; line-height: 1; }
+.l3-cn { font-size: .85rem; font-weight: 700; line-height: 1.25; }
+.l3-new { position: absolute; top: 8px; right: 8px; font-style: normal; font-size: .6rem; font-weight: 800; padding: 1px 6px; border-radius: 99px; background: #dc2626; color: #fff; }
+.l3-ok { position: absolute; bottom: 9px; right: 10px; color: #16a34a; }
+.chip.l3-card.active .l3-ok { color: #86efac; }
+.l3-tools { max-height: calc(100% - 20px); overflow-y: auto; scrollbar-width: none; }
+.l3-tb[aria-pressed="true"] { background: #f59e0b; color: #1c1917; border-color: transparent; }
+.l3-readout { position: absolute; left: 10px; bottom: 34px; max-width: calc(100% - 70px); margin: 0; padding: 7px 11px; border-radius: 12px; background: rgba(15, 23, 42, .78); color: #fef9c3; font-size: .82rem; font-weight: 600; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); pointer-events: none; }
+.l3-full { position: fixed !important; inset: 0; z-index: 400; background: #020617; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+.l3-full .l3-view { aspect-ratio: auto; height: 100%; border-radius: 0; border: 0; }
+.l3-full .l3-hint { display: none; }
+.l3-full .l3-readout { bottom: 16px; }
+html.l3-noscroll, html.l3-noscroll body { overflow: hidden; }
+.l3-goals { margin-top: 14px; padding: 12px 16px; border-radius: 16px; border: 1px solid color-mix(in srgb, #8b5cf6 40%, var(--line)); background: color-mix(in srgb, #8b5cf6 7%, var(--card)); }
+.l3-goals h4 { margin: 0 0 2px; }
+.l3-goals p { margin: 0 0 6px; }
+.l3-goals ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.l3-goals li { display: flex; gap: 8px; align-items: flex-start; font-size: .92rem; }
+.l3-goals li i { margin-top: 3px; color: #8b5cf6; }
+.l3-goals li.ok { color: var(--muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, #16a34a 60%, transparent); }
+.l3-goals li.ok i { color: #16a34a; }
+.l3-goal-ok { font-weight: 700; color: #7c3aed; animation: eko-in .3s ease both; }
+.l3-log, .l3-quiz { margin-top: 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+.l3-log > summary, .l3-quiz > summary { cursor: pointer; padding: 10px 14px; }
+.l3-log > div, .l3-quiz > div { padding: 0 14px 12px; }
+.l3-logp { font-size: .78rem; color: var(--muted); white-space: normal !important; min-width: 160px; }
+.l3-chart { display: block; max-width: 420px; margin: 8px 0; color: var(--muted); }
+.l3-quiz .exam-q { margin: 8px 0; }
+.l3-poe { margin: -4px 0 12px; padding: 10px 12px; border-radius: 14px; border: 1px dashed color-mix(in srgb, #f59e0b 60%, var(--line)); background: color-mix(in srgb, #f59e0b 6%, var(--card)); }
+.l3-poe small { font-weight: 700; color: var(--muted); }
+.l3-poe-o { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.l3-poe-o .sg-opt { padding: 6px 12px; font-size: .88rem; }
+.l3-poe-o .sg-opt.right { border-color: #16a34a; background: #dcfce7; color: #14532d; }
+.l3-poe p { margin: 8px 0 0; }
+.l3-cls { display: inline-grid; place-items: center; min-width: 34px; height: 34px; padding: 0 6px; border-radius: 10px; color: #fff; font-weight: 900; font-size: 1.1rem; vertical-align: middle; }
+.l3-mats { grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); }
+.l3-mats .sg-opt { font-size: .82rem; padding: 8px 6px; }
+.l3-mats .sg-opt small { display: block; font-size: .68rem; font-weight: 500; color: var(--muted); }
+.l3-mats .sg-opt.g { border-color: color-mix(in srgb, #16a34a 50%, var(--line)); }
+.l3-mats .sg-opt.b { border-color: color-mix(in srgb, #a16207 50%, var(--line)); }
+.l3-panel .lab-bar { grid-template-columns: 110px 1fr 40px; margin: 2px 0; }
+.l3-panel .lab-bar + small { display: block; margin: -2px 0 4px; font-size: .74rem; }
+@media (max-width: 620px) { .chip.l3-card { width: 128px; min-height: 88px; padding: 10px; } .l3-readout { bottom: 30px; font-size: .76rem; } }
 /* Курс бўйича якуний тест */
 .exam-list { padding-left: 22px; margin: 16px 0; }
 .exam-q { margin: 0 0 18px; padding: 12px 14px; border-radius: 16px; border: 1px solid var(--line); }
@@ -1610,6 +1667,61 @@ html.stage-maktab .hb-text { font-size: 1.15rem; }
 .ly-m summary { align-items: center; }
 .ly-m summary b { flex: 1 1 200px; }
 @media (max-width: 640px) { .ly-board { grid-template-columns: 1fr; } }
+
+/* =====================================================================
+   Дизайн 3.0 (Ekomun 2.5): жонли икки рангли иконкалар, рангли карточкалар,
+   ялтироқ ва 3D эгилиш эффекти, анимацияли сарлавҳа. Ранглар: --c (тўқ) ва --c1 (оч).
+   ===================================================================== */
+.app { --c1: color-mix(in srgb, var(--c, var(--primary)) 45%, #fff); isolation: isolate; overflow: hidden;
+  background: linear-gradient(165deg, color-mix(in srgb, var(--c1) 22%, var(--glass, var(--card))) 0%, var(--glass, var(--card)) 58%); }
+.app::before { content: ""; position: absolute; z-index: -1; width: 120px; height: 120px; top: -50px; left: 50%; transform: translateX(-50%); border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--c1) 55%, transparent), transparent 70%); opacity: .55; transition: opacity .25s, transform .35s; }
+.app:hover::before, .app:focus-visible::before { opacity: .95; transform: translateX(-50%) scale(1.25); }
+.app-ic { position: relative; overflow: hidden; border-radius: 22px; transform: perspective(300px) rotateX(0) rotateY(0); transition: transform .3s cubic-bezier(.2, .8, .3, 1.4), box-shadow .3s;
+  background: radial-gradient(120% 90% at 25% 15%, color-mix(in srgb, var(--c1) 85%, #fff) 0%, transparent 55%), linear-gradient(145deg, var(--c1) 0%, var(--c, var(--primary)) 78%);
+  box-shadow: 0 12px 22px -10px color-mix(in srgb, var(--c, var(--primary)) 85%, transparent), 0 3px 6px -3px color-mix(in srgb, var(--c, var(--primary)) 60%, transparent), inset 0 1.5px 0 rgba(255, 255, 255, .55), inset 0 -3px 8px color-mix(in srgb, var(--c, var(--primary)) 70%, #000 0%); }
+.app-ic::before { content: ""; position: absolute; inset: 2px 2px 52% 2px; border-radius: 20px 20px 60% 60% / 20px 20px 30% 30%; background: linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0)); pointer-events: none; }
+.app-ic::after { content: ""; position: absolute; top: -20%; bottom: -20%; width: 40%; left: -60%; transform: skewX(-20deg); background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent); pointer-events: none; }
+.app-ic i { position: relative; z-index: 1; filter: drop-shadow(0 2px 2px color-mix(in srgb, var(--c, var(--primary)) 70%, #000)); }
+.app:hover .app-ic, .app:focus-visible .app-ic { transform: perspective(300px) rotateX(10deg) rotateY(-12deg) translateY(-3px) scale(1.07);
+  box-shadow: 0 18px 30px -12px color-mix(in srgb, var(--c, var(--primary)) 95%, transparent), inset 0 1.5px 0 rgba(255, 255, 255, .6); }
+@media (prefers-reduced-motion: no-preference) {
+  .app:hover .app-ic::after, .app:focus-visible .app-ic::after { animation: eko-shine .8s ease; }
+  .app-new { animation: eko-pulse 2.4s ease-in-out infinite; }
+  .hero .grad { background-size: 200% 100%; animation: eko-flow 8s ease-in-out infinite alternate; }
+}
+@keyframes eko-shine { from { left: -60%; } to { left: 130%; } }
+@keyframes eko-pulse { 0%, 100% { box-shadow: 0 4px 10px -4px #dc2626; } 50% { box-shadow: 0 0 0 4px rgba(220, 38, 38, .18), 0 4px 12px -4px #dc2626; } }
+@keyframes eko-flow { from { background-position: 0 50%; } to { background-position: 100% 50%; } }
+.app b { color: var(--text); }
+.app-new { background: linear-gradient(135deg, #fb7185, #e11d48); }
+.hero .grad { background-image: linear-gradient(90deg, #059669, #0891b2, #7c3aed, #db2777, #059669); }
+:root[data-theme="dark"] .hero .grad { background-image: linear-gradient(90deg, #34d399, #22d3ee, #a78bfa, #f472b6, #34d399); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero .grad { background-image: linear-gradient(90deg, #34d399, #22d3ee, #a78bfa, #f472b6, #34d399); } }
+/* Бўлим сарлавҳалари: рангли нишон */
+.app-cat { color: var(--text); font-size: .98rem; }
+.app-cat i { width: 30px; height: 30px; display: inline-grid; place-items: center; border-radius: 10px; color: #fff; font-size: .85rem; box-shadow: 0 6px 14px -6px currentColor; }
+.app-cat[data-cat="learn"] i { background: linear-gradient(140deg, #34d399, #059669); }
+.app-cat[data-cat="lab"] i { background: linear-gradient(140deg, #22d3ee, #7c3aed); }
+.app-cat[data-cat="act"] i { background: linear-gradient(140deg, #fdba74, #ea580c); }
+.app-cat[data-cat="tool"] i { background: linear-gradient(140deg, #f9a8d4, #db2777); }
+.app-cat::after { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 35%, transparent), transparent); }
+/* Тунги режим: карточкалар қоронғи шиша, иконка ёғдуси кучлироқ */
+:root[data-theme="dark"] .app { background: linear-gradient(165deg, color-mix(in srgb, var(--c, var(--primary)) 20%, rgba(10, 25, 20, .7)) 0%, rgba(10, 25, 20, .55) 60%); border-color: color-mix(in srgb, var(--c1) 18%, transparent); }
+:root[data-theme="dark"] .app::before { opacity: .35; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .app { background: linear-gradient(165deg, color-mix(in srgb, var(--c, var(--primary)) 20%, rgba(10, 25, 20, .7)) 0%, rgba(10, 25, 20, .55) 60%); border-color: color-mix(in srgb, var(--c1) 18%, transparent); }
+  :root:not([data-theme="light"]) .app::before { opacity: .35; }
+}
+@media (max-width: 620px) {
+  .app, :root[data-theme="dark"] .app { background: none; overflow: visible; }
+  .app::before { display: none; }
+  .app-ic { border-radius: 20px; }
+  .app-recent a .app-ic { border-radius: 11px; }
+}
+@media (prefers-color-scheme: dark) and (max-width: 620px) { :root:not([data-theme="light"]) .app { background: none; } }
+.apps-list .app { overflow: hidden; }
+.apps-list .app::before { left: 40px; top: -60px; }
 </style>
 </head>
 <body>
@@ -1765,38 +1877,38 @@ html.stage-maktab .hb-text { font-size: 1.15rem; }
         <div class="app-recent" id="appRecent" hidden></div>
         <nav class="app-grid" aria-label="Бўлимлар">
           <h3 class="app-cat" data-cat="learn"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Ўрганиш</h3>
-          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#f97316"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
-          <a class="app" data-cat="learn" href="#kurslar" style="--c:#16a34a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
-          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#b45309"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#b45309"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
-          <a class="app" data-cat="learn" href="#adabiyot" style="--c:#4f46e5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#0ea5e9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
-          <a class="app" data-cat="learn" href="#takror" style="--c:#0f766e"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-brain"></i></span><b>Такрорлаш хонаси</b><small>Карталар, хатолар дафтари</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#krossvord" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
-          <a class="app" data-cat="learn" href="#kutubxona" style="--c:#a16207"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
-          <a class="app" data-cat="learn" href="#yangiliklar" style="--c:#64748b"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
-          <a class="app" data-cat="learn" href="#internet" style="--c:#2563eb"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#f43f5e;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
+          <a class="app" data-cat="learn" href="#kurslar" style="--c:#059669;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#16a34a;--c1:#bef264"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#d97706;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
+          <a class="app" data-cat="learn" href="#adabiyot" style="--c:#4f46e5;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#0284c7;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
+          <a class="app" data-cat="learn" href="#takror" style="--c:#db2777;--c1:#f9a8d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-brain"></i></span><b>Такрорлаш хонаси</b><small>Карталар, хатолар дафтари</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#krossvord" style="--c:#9333ea;--c1:#d8b4fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
+          <a class="app" data-cat="learn" href="#kutubxona" style="--c:#c2410c;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
+          <a class="app" data-cat="learn" href="#yangiliklar" style="--c:#e11d48;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
+          <a class="app" data-cat="learn" href="#internet" style="--c:#2563eb;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <h3 class="app-cat" data-cat="lab"><i class="fa-solid fa-flask" aria-hidden="true"></i> Лабораториялар</h3>
-          <a class="app" data-cat="lab" href="#lab3d" style="--c:#0891b2"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>Айлантириб кўринг</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#06b6d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
-          <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
-          <a class="app" data-cat="lab" href="#mro" data-stage="uni" style="--c:#15803d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-recycle"></i></span><b>Чиқиндилар ҳисоби</b><small>10 методика, калькулятор</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="lab" href="#ilmiy" data-stage="uni" style="--c:#2563eb"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
+          <a class="app" data-cat="lab" href="#lab3d" style="--c:#7c3aed;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>16 тажриба, ўлчов асбоблари</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#0891b2;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
+          <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#7c3aed;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
+          <a class="app" data-cat="lab" href="#mro" data-stage="uni" style="--c:#15803d;--c1:#86efac"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-recycle"></i></span><b>Чиқиндилар ҳисоби</b><small>10 методика, калькулятор</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="lab" href="#ilmiy" data-stage="uni" style="--c:#2563eb;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
           <h3 class="app-cat" data-cat="act"><i class="fa-solid fa-seedling" aria-hidden="true"></i> Амалиёт ва лойиҳалар</h3>
-          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#ea580c"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="act" href="#oyinmarkaz" style="--c:#7c3aed"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span><b>Ўйин маркази</b><small>Вазифа, танга, босс жанги</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="act" href="#chellenj" style="--c:#ea580c"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
-          <a class="app" data-cat="act" href="#hashar" style="--c:#14b8a6"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
-          <a class="app" data-cat="act" href="#maktab" style="--c:#6366f1"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
-          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8b5cf6"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
-          <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#ef4444"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
+          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#ea580c;--c1:#fed7aa"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="act" href="#oyinmarkaz" style="--c:#a21caf;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span><b>Ўйин маркази</b><small>Вазифа, танга, босс жанги</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="act" href="#chellenj" style="--c:#f59e0b;--c1:#fde047"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
+          <a class="app" data-cat="act" href="#hashar" style="--c:#0d9488;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
+          <a class="app" data-cat="act" href="#maktab" style="--c:#6366f1;--c1:#c7d2fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
+          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8b5cf6;--c1:#ddd6fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
+          <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#dc2626;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
           <h3 class="app-cat" data-cat="tool"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Ўйин ва асбоблар</h3>
-          <a class="app" data-cat="tool" href="#dunyo3d" data-stage="maktab" style="--c:#16a34a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>3D Эко-дунё</b><small>Саралаш, орол, Ер шари</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#d97706"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
-          <a class="app" data-cat="tool" href="#havo" style="--c:#0284c7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
-          <a class="app" data-cat="tool" href="#kalkulyator" style="--c:#db2777"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
-          <a class="app" data-cat="tool" href="#yordamchi" style="--c:#0d9488"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
+          <a class="app" data-cat="tool" href="#dunyo3d" data-stage="maktab" style="--c:#0891b2;--c1:#86efac"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>3D Эко-дунё</b><small>Саралаш, орол, Ер шари</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#ea580c;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
+          <a class="app" data-cat="tool" href="#havo" style="--c:#0369a1;--c1:#bae6fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
+          <a class="app" data-cat="tool" href="#kalkulyator" style="--c:#be185d;--c1:#fbcfe8"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
+          <a class="app" data-cat="tool" href="#yordamchi" style="--c:#0d9488;--c1:#a7f3d0"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
         </nav>
         <p class="muted app-none" id="appNone" hidden>Бундай бўлим топилмади.</p>
       </div>
