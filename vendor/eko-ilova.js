@@ -4,7 +4,7 @@
    Матнлар uz/ru/en шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
   "use strict";
-  const APP = { version: "2.4", date: "2026-10-15" };
+  const APP = { version: "2.5", date: "2026-10-16" };
   window.EKO_VERSION = APP;
 
   const EL = () => (typeof EkoLang !== "undefined" ? EkoLang : null);
@@ -44,6 +44,12 @@
     close: t3("Ёпиш", "Закрыть", "Close")
   };
   const CHANGES = [
+    { v: "2.5", d: "2026-10-16", items: [
+      t3("3D лаборатория кенгайди: 16 тажриба (янги: шамол турбинаси, фотосинтез, энергия тежайдиган уй, ер ости суви, циклон, компост), мавзулар бўйича галерея ва умумий ютуқлар", "3D-лаборатория расширена: 16 опытов (новые: ветряк, фотосинтез, энергоэффективный дом, подземные воды, циклон, компост), галерея по темам и общий прогресс", "3D lab expanded: 16 experiments (new: wind turbine, photosynthesis, energy-efficient house, groundwater, cyclone, compost), a topic gallery and overall progress"),
+      t3("3D лабда янги асбоблар: чизғич ва зонд (саҳнада ўлчаш), расмга олиш, катта экран, лаборатория журнали (жадвал, график, CSV), мақсадли топшириқлар, тахмин (POE) ва тест саволлари", "Новые инструменты 3D-лаборатории: линейка и зонд, снимок, полный экран, лабораторный журнал (таблица, график, CSV), целевые задания, прогноз (POE) и тесты", "New 3D-lab tools: ruler and probe, snapshot, full screen, lab notebook (table, chart, CSV), goal challenges, predictions (POE) and quizzes"),
+      t3("Дизайн 3.0: жонли икки рангли иконкалар, рангли карточкалар, топографик фон ва учқунлар, тунги режим янгиланди", "Дизайн 3.0: яркие двухцветные иконки, цветные карточки, топографический фон, обновлённый ночной режим", "Design 3.0: vivid two-tone icons, tinted cards, a topographic background and a refreshed dark mode"),
+      t3("Тузатиш: телефонда 3D лаборатория экрандан четга чиқмайди", "Исправление: 3D-лаборатория больше не выходит за край экрана телефона", "Fix: the 3D lab no longer overflows on phones")
+    ] },
     { v: "2.4", d: "2026-10-15", items: [
       t3("Университет учун янги курс «Литосферани чиқиндилардан ҳимоя қилиш» (Ветошкин, 2005; Гарин, Хвостиков, 2010): 6 боб, технологик схемалар, ҳисоблаш масалалари, боб кроссвордлари ва якуний тест", "Новый курс для университета «Защита литосферы от отходов» (Ветошкин, 2005; Гарин, Хвостиков, 2010): 6 глав, технологические схемы, расчётные задачи, кроссворды по главам и итоговый тест", "New university course “Protecting the Lithosphere from Waste” (Vetoshkin, 2005; Garin, Khvostikov, 2010): 6 chapters, process flow diagrams, calculation problems, chapter crosswords and a final test"),
       t3("Мактаб учун янги курс «Ер қалқони»: худди шу 6 боб 11–15 ёшга мослаб, ҳар дарсда уйда хавфсиз тажриба", "Новый школьный курс «Щит Земли»: те же 6 глав для 11–15 лет, в каждом уроке безопасный домашний опыт", "New school course “Earth Shield”: the same 6 chapters for ages 11–15, with a safe home experiment in every lesson"),

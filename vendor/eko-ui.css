@@ -1,4 +1,4 @@
-/* Экомун дизайн тизими (2.0): шрифт, жонли фон ва умумий қоидалар.
+/* Экомун дизайн тизими (2.0 → 3.0, Ekomun 2.5): шрифт, жонли фон ва умумий қоидалар.
    Барча саҳифалар (платформа, Орол, админ, махфийлик) шу файлни улайди.
    Ташқи CDN йўқ: шрифт vendor/fonts ичида, интернетсиз (APK) ҳам ишлайди. */
 
@@ -40,6 +40,10 @@
   --eko-glow-2: rgba(56, 189, 248, .30);
   --eko-glow-3: rgba(250, 204, 21, .16);
   --eko-grid: rgba(6, 78, 59, .07);
+  --eko-glow-4: rgba(167, 139, 250, .20);
+  --eko-glow-5: rgba(251, 113, 133, .12);
+  --eko-spark: rgba(255, 255, 255, .9);
+  --eko-topo: rgba(5, 150, 105, .10);
   --eko-ring: #0284c7;
   color-scheme: light;
 }
@@ -50,6 +54,10 @@
     --eko-glow-2: rgba(14, 165, 233, .18);
     --eko-glow-3: rgba(45, 212, 191, .10);
     --eko-grid: rgba(167, 243, 208, .05);
+    --eko-glow-4: rgba(139, 92, 246, .16);
+    --eko-glow-5: rgba(236, 72, 153, .08);
+    --eko-spark: rgba(224, 242, 254, .75);
+    --eko-topo: rgba(110, 231, 183, .06);
     --eko-ring: #7dd3fc;
     color-scheme: dark;
   }
@@ -60,6 +68,10 @@
   --eko-glow-2: rgba(14, 165, 233, .18);
   --eko-glow-3: rgba(45, 212, 191, .10);
   --eko-grid: rgba(167, 243, 208, .05);
+  --eko-glow-4: rgba(139, 92, 246, .16);
+  --eko-glow-5: rgba(236, 72, 153, .08);
+  --eko-spark: rgba(224, 242, 254, .75);
+  --eko-topo: rgba(110, 231, 183, .06);
   --eko-ring: #7dd3fc;
   color-scheme: dark;
 }
@@ -75,7 +87,9 @@ html.eko-aurora body::before {
     radial-gradient(38vmax 34vmax at 18% 14%, var(--eko-glow-1), transparent 70%),
     radial-gradient(42vmax 36vmax at 88% 10%, var(--eko-glow-2), transparent 70%),
     radial-gradient(46vmax 40vmax at 72% 92%, var(--eko-glow-3), transparent 70%),
-    radial-gradient(36vmax 30vmax at 6% 86%, var(--eko-glow-2), transparent 72%);
+    radial-gradient(36vmax 30vmax at 6% 86%, var(--eko-glow-2), transparent 72%),
+    radial-gradient(30vmax 26vmax at 52% 46%, var(--eko-glow-4), transparent 70%),
+    radial-gradient(26vmax 22vmax at 30% 60%, var(--eko-glow-5), transparent 70%);
   will-change: transform;
 }
 html.eko-aurora body::after {
@@ -84,9 +98,33 @@ html.eko-aurora body::after {
   -webkit-mask-image: linear-gradient(to bottom, #000 0, transparent 70vh);
   mask-image: linear-gradient(to bottom, #000 0, transparent 70vh);
 }
+/* Дизайн 3.0: топографик чизиқлар (тоғ ва дарё харитаси) ва учқунлар — фақат CSS, расм файлисиз */
+html.eko-aurora::before, html.eko-aurora::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -2; }
+html.eko-aurora::before {
+  background-color: var(--eko-topo);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.4'%3E%3Cpath d='M-20 120c80-40 150 30 230 0s140-70 230-30 120 60 180 20'/%3E%3Cpath d='M-20 160c80-40 150 30 230 0s140-70 230-30 120 60 180 20'/%3E%3Cpath d='M-20 200c90-30 160 40 240 10s130-60 220-20 120 50 180 10'/%3E%3Cpath d='M-20 400c70 30 140-40 220-10s150 60 230 20 110-50 190-20'/%3E%3Cpath d='M-20 440c70 30 140-40 220-10s150 60 230 20 110-50 190-20'/%3E%3Cpath d='M-20 480c80 20 150-30 230 0s140 50 220 10 120-40 190-10'/%3E%3Ccircle cx='450' cy='300' r='40'/%3E%3Ccircle cx='450' cy='300' r='70'/%3E%3Ccircle cx='450' cy='300' r='100'/%3E%3Ccircle cx='110' cy='310' r='30'/%3E%3Ccircle cx='110' cy='310' r='55'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 600px 600px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.4'%3E%3Cpath d='M-20 120c80-40 150 30 230 0s140-70 230-30 120 60 180 20'/%3E%3Cpath d='M-20 160c80-40 150 30 230 0s140-70 230-30 120 60 180 20'/%3E%3Cpath d='M-20 200c90-30 160 40 240 10s130-60 220-20 120 50 180 10'/%3E%3Cpath d='M-20 400c70 30 140-40 220-10s150 60 230 20 110-50 190-20'/%3E%3Cpath d='M-20 440c70 30 140-40 220-10s150 60 230 20 110-50 190-20'/%3E%3Cpath d='M-20 480c80 20 150-30 230 0s140 50 220 10 120-40 190-10'/%3E%3Ccircle cx='450' cy='300' r='40'/%3E%3Ccircle cx='450' cy='300' r='70'/%3E%3Ccircle cx='450' cy='300' r='100'/%3E%3Ccircle cx='110' cy='310' r='30'/%3E%3Ccircle cx='110' cy='310' r='55'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 600px 600px;
+}
+html.eko-aurora::after {
+  background:
+    radial-gradient(2px 2px at 12% 22%, var(--eko-spark), transparent 60%),
+    radial-gradient(1.5px 1.5px at 78% 14%, var(--eko-spark), transparent 60%),
+    radial-gradient(2.5px 2.5px at 64% 68%, var(--eko-spark), transparent 60%),
+    radial-gradient(1.5px 1.5px at 28% 82%, var(--eko-spark), transparent 60%),
+    radial-gradient(2px 2px at 90% 52%, var(--eko-spark), transparent 60%),
+    radial-gradient(1.5px 1.5px at 42% 38%, var(--eko-spark), transparent 60%),
+    radial-gradient(2px 2px at 6% 58%, var(--eko-spark), transparent 60%),
+    radial-gradient(1.5px 1.5px at 56% 8%, var(--eko-spark), transparent 60%);
+  background-size: 520px 520px;
+  opacity: .8;
+}
+html.eko-aurora.no-fx::before, html.eko-aurora.no-fx::after { display: none; }
+@media print { html.eko-aurora::before, html.eko-aurora::after { display: none; } }
 @media (prefers-reduced-motion: no-preference) {
   html.eko-aurora body::before { animation: eko-drift 40s ease-in-out infinite alternate; }
+  html.eko-aurora::after { animation: eko-twinkle 7s ease-in-out infinite alternate; }
 }
+@keyframes eko-twinkle { from { opacity: .35; transform: translateY(0); } to { opacity: .95; transform: translateY(-12px); } }
 @keyframes eko-drift {
   0% { transform: translate3d(0, 0, 0) rotate(0deg); }
   50% { transform: translate3d(3vmax, -2vmax, 0) rotate(6deg); }
