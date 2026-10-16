@@ -1,0 +1,6 @@
+# Caddy: DOMAIN учун Let's Encrypt HTTPS сертификатини ўзи олади ва янгилайди.
+# ADMIN_HOST ишлатсангиз, қуйидаги блокни {$DOMAIN}, {$ADMIN_HOST} кўринишида ёзинг.
+{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy ekomun:3000
+}

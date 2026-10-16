@@ -408,7 +408,7 @@
     { id: "s100", icon: "💯", name: "100 кун серия", test: () => streak() >= 100 },
     { id: "air5", icon: "🌬️", name: "Ҳаво мутахассиси", hint: "Ҳаво ва иқлим курсларидан 5 та дарс", test: () => lessonsIn(["iqlim", "monitoring"]) >= 5 },
     { id: "water5", icon: "🚰", name: "Сув ҳимоячиси", hint: "Сув курсларидан 5 та дарс", test: () => lessonsIn(["suvhavo", "biotoza"]) >= 5 },
-    { id: "waste5", icon: "🗑️", name: "Чиқинди мутахассиси", hint: "Қайта ишлаш курсидан 5 та дарс", test: () => lessonsIn(["qayta"]) >= 5 },
+    { id: "waste5", icon: "🗑️", name: "Чиқинди мутахассиси", hint: "Қайта ишлаш курсидан 5 та дарс", test: () => lessonsIn(["qayta", "litosfera", "yerqalqon"]) >= 5 },
     { id: "eco5", icon: "🌐", name: "Экотизим билимдони", hint: "Экология курсларидан 5 та дарс", test: () => lessonsIn(["asoslar", "ekologiya"]) >= 5 },
     { id: "xw10", icon: "🧩", name: "Кроссворд устаси", hint: "10 та кроссворд", test: () => Object.keys(App.state.xw || {}).length >= 10 },
     { id: "lab3d", icon: "🧊", name: "3D тадқиқотчи", hint: "Барча 3D лабораториялар", test: () => L3.every((id) => (App.state.flags || {})["l3t_" + id] || (App.state.flags || {})["l3k_" + id]) },

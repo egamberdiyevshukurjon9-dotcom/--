@@ -22,7 +22,7 @@
     sayohat: ["Эко-саёҳат", "play"], oyinlar: ["Ўйинлар", "play"], dunyo3d: ["3D Эко-дунё", "play"],
     lab3d: ["3D лаборатория", "lab"], lab: ["Лаборатория", "lab"], vlab: ["Виртуал лаборатория", "lab"], ilmiy: ["Илмий лаборатория", "lab"],
     loyiha: ["Лойиҳалар", "act"], chellenj: ["Челленж", "act"], hashar: ["Ҳашар", "act"], ekokoz: ["Эко-кўз", "act"], xarita: ["Эко-харита", "act"],
-    oyinmarkaz: ["Ўйин маркази", "play"], takror: ["Такрорлаш хонаси", "learn"],
+    oyinmarkaz: ["Ўйин маркази", "play"], takror: ["Такрорлаш хонаси", "learn"], video: ["Видео дарслар", "learn"], fikr: ["Фикр-мулоҳаза", "data"],
     internet: ["Онлайн маълумотлар", "data"], havo: ["Ҳаво сифати", "data"], kalkulyator: ["Калькулятор", "data"], yordamchi: ["Ёрдамчи", "data"],
     maktab: ["Мактаб (синф)", "school"]
   };
@@ -42,7 +42,7 @@
   const ago = (t, n) => { const s = Math.max(0, Math.round((n - t) / 1000)); return s < 60 ? "ҳозиргина" : s < 3600 ? Math.round(s / 60) + " дақ олдин" : Math.round(s / 3600) + " соат олдин"; };
   const short = (v) => (v ? v.slice(0, 8) : "—");
 
-  let overview = null, stats = null, security = null, reports = [], tab = "dash", timer = null;
+  let overview = null, stats = null, security = null, reports = [], feedback = [], tab = "dash", timer = null;
 
   const toast = (m) => { const t = $("#toast"); t.textContent = m; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 2600); };
   async function api(url, body) {
@@ -221,7 +221,7 @@
   }
   const COURSES = { kichik: "Кичик эколог", yosh: "Ёш тадқиқотчи", tabiat: "Табиат сирлари", steam: "Эко-STEAM лойиҳачи", asoslar: "Экология асослари", korxona: "Корхонада экологик менежмент",
     talaba: "Барқарор ривожланиш", suvhavo: "Сув ва ҳаво", biotoza: "Микроблар сувни тозалайди", monitoring: "Экологик мониторинг", iqlim: "Иқлим ўзгаришини бошқариш",
-    qayta: "Қайта ишлаш", ekologiya: "Экология", qollanma: "Амалий қўлланмалар", tadqiqot: "Илмий тадқиқот методологияси" };
+    qayta: "Қайта ишлаш", ekologiya: "Экология", qollanma: "Амалий қўлланмалар", tadqiqot: "Илмий тадқиқот методологияси", litosfera: "Литосферани ҳимоя қилиш", yerqalqon: "Ер қалқони" };
   const lessonName = (k) => { const [c, i, q] = k.split(":"); return `${COURSES[c] || c} · ${Number(i) + 1}-дарс` + (q != null ? ` · ${Number(q) + 1}-савол` : ""); };
   function insights() {
     const t = stats.totals, out = [];
@@ -274,7 +274,7 @@
       g.hard.map((q) => `<tr><td>${esc(lessonName(q.k))}</td><td class="num">${nf(q.n)}</td><td class="nw"><span class="meter"><i style="width:${q.err}%"></i></span>${q.err}%</td></tr>`),
       "Камида 3 та жавоб берилган савол ҳали йўқ.");
     $("#tCerts").innerHTML = table(["Сана", "Эгаси", "Курс", "#Тест", "Код"],
-      g.certList.map((c) => `<tr><td>${fmt(c.at)}</td><td>${esc(c.name)}</td><td>${esc(c.title)}</td><td class="num">${c.pct ? c.pct + "%" : "—"}</td><td><a class="mono" href="/tekshir?c=${encodeURIComponent(c.code)}" target="_blank" rel="noopener">${esc(c.code)}</a></td></tr>`),
+      g.certList.map((c) => `<tr><td>${fmt(c.at)}</td><td>${esc(c.name)}</td><td>${esc(c.title)}</td><td class="num">${({ gold: "🥇 ", silver: "🥈 ", bronze: "🥉 " })[c.grade] || ""}${c.pct ? c.pct + "%" : "—"}</td><td><a class="mono" href="/tekshir?c=${encodeURIComponent(c.code)}" target="_blank" rel="noopener">${esc(c.code)}</a></td></tr>`),
       "Бу даврда сертификат берилмаган.");
   }
 
@@ -364,6 +364,48 @@
     $("#bPending").hidden = !p; $("#bPending").textContent = p;
   }
 
+  /* ---------- Фикр-мулоҳазалар ---------- */
+  const FB_KINDS = { idea: ["info", "💡 Таклиф"], bug: ["bad", "🐞 Хато"], content: ["", "📚 Дарс/маълумот"], question: ["warn", "❓ Савол"], praise: ["ok", "❤️ Миннатдорлик"] };
+  let fbShow = 50;
+  const fbSecName = (k) => (!k ? "Умуман платформа" : k.startsWith("video:") ? "Видео: " + k.slice(6) : secName(k));
+  function fbFiltered() {
+    const st = $("#fbState").value, kind = $("#fbKind").value, rate = $("#fbRate").value, sec = $("#fbSec").value, q = $("#fbSearch").value.trim().toLowerCase();
+    return feedback.filter((f) => (st === "archived" ? f.archived : !f.archived) &&
+      (st !== "unread" || !f.read) && (st !== "read" || (f.read && !f.reply)) && (st !== "replied" || f.reply) &&
+      (!kind || f.kind === kind) && (rate === "" || String(f.rating || 0) === rate) && (!sec || (sec === "video" ? f.sec.startsWith("video:") : f.sec === sec)) &&
+      (!q || [f.text, f.email, f.name, f.contact, f.sec, fbSecName(f.sec), f.reply].join(" ").toLowerCase().includes(q)));
+  }
+  function renderFeedback() {
+    const live = feedback.filter((f) => !f.archived), unread = live.filter((f) => !f.read).length;
+    $("#bFeedback").hidden = !unread; $("#bFeedback").textContent = unread;
+    const rated = live.filter((f) => f.rating), avg = rated.length ? (rated.reduce((a, f) => a + f.rating, 0) / rated.length).toFixed(1) : "—";
+    const week = live.filter((f) => f.at > Date.now() - 7 * 864e5).length;
+    kpis($("#fbKpis"), [[nf(live.length), "Жами мулоҳаза"], [nf(unread), "Ўқилмаган", unread > 0], [avg + (rated.length ? " ★" : ""), `Ўртача баҳо (${rated.length} та)`], [nf(week), "Охирги 7 кунда"], [nf(live.filter((f) => f.reply).length), "Жавоб берилган"]]);
+    const kc = {}; live.forEach((f) => (kc[f.kind] = (kc[f.kind] || 0) + 1));
+    bars($("#chFbKinds"), Object.entries(kc).sort((a, b) => b[1] - a[1]).map(([k, n]) => ({ n: (FB_KINDS[k] || ["", k])[1], v: n })));
+    const sc = {}; live.forEach((f) => { const k = f.sec.startsWith("video:") ? "video" : f.sec; sc[k] = (sc[k] || 0) + 1; });
+    const secs = Object.entries(sc).sort((a, b) => b[1] - a[1]);
+    bars($("#chFbSecs"), secs.slice(0, 10).map(([k, n]) => ({ n: k === "video" ? "Видео дарслар" : fbSecName(k), v: n })));
+    const sel = $("#fbSec"), cur = sel.value;
+    sel.innerHTML = `<option value="">Барча бўлимлар</option>` + secs.map(([k, n]) => `<option value="${esc(k)}">${esc(k === "video" ? "Видео дарслар" : fbSecName(k))} (${n})</option>`).join("");
+    sel.value = cur;
+    const kSel = $("#fbKind");
+    if (kSel.options.length === 1) kSel.innerHTML += Object.entries(FB_KINDS).map(([k, [, l]]) => `<option value="${k}">${esc(l)}</option>`).join("");
+    const list = fbFiltered();
+    const STG = { maktab: "🎒 Мактаб", uni: "🎓 Университет" };
+    $("#fbList").innerHTML = !list.length ? `<p class="empty">${$("#fbState").value === "unread" ? "Ўқилмаган мулоҳаза йўқ. 👍" : "Мулоҳаза йўқ."}</p>` :
+      `<ul class="fb-list">${list.slice(0, fbShow).map((f) => { const [c, l] = FB_KINDS[f.kind] || ["", f.kind];
+        return `<li class="fb-item${f.read ? "" : " unread"}">
+          <div class="fb-head"><span class="tag ${c}">${esc(l)}</span>${f.rating ? `<span class="stars" title="${f.rating}/5">${"★".repeat(f.rating)}${"☆".repeat(5 - f.rating)}</span>` : ""}<span class="tag">${esc(fbSecName(f.sec))}</span>${f.read ? "" : `<span class="tag info">янги</span>`}${f.reply ? `<span class="tag ok">жавоб берилган</span>` : ""}<span class="muted">${fmt(f.at)}</span></div>
+          <p class="fb-text">${esc(f.text)}</p>
+          <div class="fb-meta">${f.name || f.email ? `<span>👤 ${esc(f.name)} ${esc(f.email)}</span>` : `<span>👤 Меҳмон</span>`}${f.contact ? `<span>✉️ ${esc(f.contact)}</span>` : ""}${f.stage ? `<span>${STG[f.stage] || esc(f.stage)}</span>` : ""}${f.lang ? `<span>${esc(LANG[f.lang] || f.lang)}</span>` : ""}${f.ver ? `<span>v${esc(f.ver)}</span>` : ""}<span>${esc(f.device)}</span><span class="mono">${esc(f.ip)}</span>${f.vid ? `<a href="#" data-fbp="vid=${esc(f.vid)}">тарихи</a>` : ""}</div>
+          ${f.reply ? `<div class="fb-reply"><b>Жавоб (${fmt(f.replyAt)}):</b> ${esc(f.reply)}</div>` : ""}
+          <div class="acts" style="margin-top:8px">${f.read ? `<button class="btn sm ghost" data-fb="unread" data-id="${f.id}">Ўқилмаган қилиш</button>` : `<button class="btn sm" data-fb="read" data-id="${f.id}">✓ Ўқилди</button>`}<button class="btn sm" data-fbreply="${f.id}">↩ ${f.reply ? "Жавобни ўзгартириш" : "Жавоб ёзиш"}</button>${f.archived ? `<button class="btn sm ghost" data-fb="unarchive" data-id="${f.id}">Архивдан чиқариш</button>` : `<button class="btn sm ghost" data-fb="archive" data-id="${f.id}">🗄 Архив</button>`}<button class="btn sm ghost" data-fb="delete" data-id="${f.id}">🗑️</button></div>
+          <form class="fb-form" data-fbform="${f.id}" hidden><textarea maxlength="1000" placeholder="Жавоб фойдаланувчининг «Менинг мулоҳазаларим» рўйхатида кўринади">${esc(f.reply)}</textarea><div class="acts"><button class="btn sm primary" type="submit">Юбориш</button><button class="btn sm ghost" type="button" data-fbcancel>Бекор қилиш</button></div></form>
+        </li>`; }).join("")}</ul>${list.length > fbShow ? `<div class="fb-more"><button class="btn ghost sm" id="fbMore">Яна кўрсатиш (${list.length - fbShow})</button></div>` : ""}`;
+  }
+  async function loadFeedback() { feedback = (await api("/api/admin/feedback")).feedback; }
+
   /* ---------- Бир одам тафсилоти ---------- */
   async function openPerson(q) {
     const d = await api("/api/admin/person?" + q);
@@ -451,10 +493,10 @@
   async function loadSecurity() { security = await api("/api/admin/security"); }
   async function loadReports() { reports = (await api("/api/admin/reports")).reports; }
 
-  function renderAll() { renderDash(); renderOnline(); renderPeople(); renderJournal(); renderStats(); renderBlocks(); renderReports(); renderGrowth(); renderSystem(); }
+  function renderAll() { renderDash(); renderOnline(); renderPeople(); renderJournal(); renderStats(); renderBlocks(); renderReports(); renderFeedback(); renderGrowth(); renderSystem(); }
   async function reloadAll() {
     try {
-      await Promise.all([loadOverview(), loadStats(), loadSecurity(), loadReports(), loadGrowth(), loadSystem()]);
+      await Promise.all([loadOverview(), loadStats(), loadSecurity(), loadReports(), loadFeedback(), loadGrowth(), loadSystem()]);
       renderAll();
       if (tab === "journal") { await loadRecent(); renderJournal(); }
     } catch (e) { if (e.message !== "auth") toast(e.message); }
@@ -467,7 +509,7 @@
     }, 15000);
   }
 
-  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси" };
+  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар" };
   $("#tabs").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tab]");
     if (!b) return;
@@ -480,12 +522,41 @@
     if (tab === "journal") { try { await loadRecent(); renderJournal(); } catch (err) { /* ignore */ } }
     if (tab === "system") { try { await loadSystem(); renderSystem(); } catch (err) { /* ignore */ } }
     if (tab === "growth") { try { await loadGrowth(); renderGrowth(); } catch (err) { /* ignore */ } }
+    if (tab === "feedback") { try { await loadFeedback(); renderFeedback(); } catch (err) { /* ignore */ } }
   });
   $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } });
   $("#refresh").addEventListener("click", reloadAll);
   ["#pSearch", "#pKind"].forEach((s) => $(s).addEventListener("input", renderPeople));
   ["#jSearch", "#jType"].forEach((s) => $(s).addEventListener("input", renderJournal));
   $("#repStatus").addEventListener("change", renderReports);
+  ["#fbState", "#fbKind", "#fbRate", "#fbSec"].forEach((s) => $(s).addEventListener("change", () => { fbShow = 50; renderFeedback(); }));
+  $("#fbSearch").addEventListener("input", () => { fbShow = 50; renderFeedback(); });
+  $("#expFeedback").href = "/api/admin/export?type=feedback";
+  $("#fbReadAll").addEventListener("click", async () => {
+    try { const r = await api("/api/admin/feedback/read-all", {}); toast(`${r.count} та мулоҳаза ўқилди деб белгиланди`); await loadFeedback(); renderFeedback(); }
+    catch (err) { if (err.message !== "auth") toast(err.message); }
+  });
+  $("#fbList").addEventListener("click", async (e) => {
+    const t = e.target;
+    if (t.id === "fbMore") { fbShow += 50; renderFeedback(); return; }
+    const p = t.closest("[data-fbp]");
+    if (p) { e.preventDefault(); try { await openPerson(p.dataset.fbp); } catch (err) { if (err.message !== "auth") toast(err.message); } return; }
+    const rb = t.closest("[data-fbreply]");
+    if (rb) { const f = $(`[data-fbform="${rb.dataset.fbreply}"]`); f.hidden = !f.hidden; if (!f.hidden) f.querySelector("textarea").focus(); return; }
+    if (t.closest("[data-fbcancel]")) { t.closest("form").hidden = true; return; }
+    const b = t.closest("[data-fb]");
+    if (!b) return;
+    if (b.dataset.fb === "delete" && !(await confirmBox("Мулоҳазани ўчириш", "Бу мулоҳаза бутунлай ўчирилади. Давом этасизми?"))) return;
+    try { await api("/api/admin/feedback/" + b.dataset.id, { action: b.dataset.fb }); await loadFeedback(); renderFeedback(); }
+    catch (err) { if (err.message !== "auth") toast(err.message); }
+  });
+  $("#fbList").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target.closest("[data-fbform]");
+    if (!f) return;
+    try { await api("/api/admin/feedback/" + f.dataset.fbform, { action: "reply", text: f.querySelector("textarea").value }); toast("Жавоб сақланди"); await loadFeedback(); renderFeedback(); }
+    catch (err) { if (err.message !== "auth") toast(err.message); }
+  });
   $("#expUsers").href = "/api/admin/export?type=users";
   $("#expEvents").href = "/api/admin/export?type=events";
   $("#expVisits").href = "/api/admin/export?type=visits";

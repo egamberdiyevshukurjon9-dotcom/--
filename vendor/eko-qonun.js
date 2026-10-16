@@ -60,6 +60,7 @@
     tabs: [
       ["yol", "fa-route", t3("Йўл харитаси", "Маршрут", "Roadmap")],
       ["darslik", "fa-book-open", t3("Дарслик", "Учебник", "Textbook")],
+      ["amaliy", "fa-person-chalkboard", t3("Амалий дарслар", "Практические уроки", "Hands-on lessons")],
       ["kons", "fa-landmark", t3("Конституция", "Конституция", "Constitution")],
       ["lib", "fa-book-bookmark", t3("Қонунлар", "Законы", "Laws")],
       ["sud", "fa-gavel", t3("Экологик суд", "Экосуд", "Eco-court")],
@@ -584,7 +585,7 @@
 
   /* ---------- Чизиш ---------- */
   let tab = "yol";
-  const VIEWS = { yol: roadView, darslik: () => (window.EkoDarslik ? EkoDarslik.html() : `<p class="muted">…</p>`), kons: consView, lib: libView, sud: sudView, keys: keysView, debat: debatView, detektiv: detView, sim: simView, xorij: xorijView, test: testView };
+  const VIEWS = { yol: roadView, darslik: () => (window.EkoDarslik ? EkoDarslik.html() : `<p class="muted">…</p>`), amaliy: () => (window.EkoAmaliy ? EkoAmaliy.html() : `<p class="muted">…</p>`), kons: consView, lib: libView, sud: sudView, keys: keysView, debat: debatView, detektiv: detView, sim: simView, xorij: xorijView, test: testView };
   function render() {
     const name = (TX.tabs.find((x) => x[0] === tab) || TX.tabs[0])[2];
     ROOT.innerHTML = `
@@ -595,7 +596,7 @@
       </div>
       <div class="qn-tabs" role="tablist">${TX.tabs.map(([k, ic, t]) => `<button type="button" role="tab" aria-selected="${k === tab}" class="chip ${k === tab ? "active" : ""}" data-tab="${k}"><i class="fa-solid ${ic}" aria-hidden="true"></i>${H(t)}</button>`).join("")}</div>
       <div class="qn-panel" id="qnPanel" role="tabpanel" aria-label="${H(name)}">${VIEWS[tab]()}</div>
-      ${tab === "darslik" ? "" : `<div class="qn-acts"><button class="btn btn-ghost btn-sm" data-pdf="#qnPanel"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> ${H(TX.pdfAll)}: ${H(name)}</button></div>`}`;
+      ${tab === "darslik" || tab === "amaliy" ? "" : `<div class="qn-acts"><button class="btn btn-ghost btn-sm" data-pdf="#qnPanel"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> ${H(TX.pdfAll)}: ${H(name)}</button></div>`}`;
   }
   function rerender(keepY) {
     const y = window.scrollY;

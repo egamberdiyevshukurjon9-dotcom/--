@@ -1,0 +1,40 @@
+# Ekomun — VPS учун.
+#   cp .env.example .env   (ADMIN_PASSWORD ни ёзинг; HTTPS учун DOMAIN, TRUST_PROXY=1, APP_BIND=127.0.0.1)
+#   docker compose up -d --build                       # фақат сайт: http://SERVER_IP:3000
+#   docker compose --profile https up -d --build       # + Caddy: https://DOMAIN (автоматик HTTPS)
+name: ekomun
+
+services:
+  ekomun:
+    build: .
+    image: ekomun:latest
+    container_name: ekomun
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATA_DIR: /data
+      PORT: "3000"
+    volumes:
+      - ekomun-data:/data
+    ports:
+      - "${APP_BIND:-0.0.0.0}:3000:3000"
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: ekomun-caddy
+    profiles: ["https"]
+    restart: unless-stopped
+    depends_on: [ekomun]
+    env_file: .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  ekomun-data:
+  caddy-data:
+  caddy-config:
