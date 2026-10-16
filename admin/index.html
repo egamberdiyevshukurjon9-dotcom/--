@@ -41,6 +41,7 @@
         <button data-tab="stats">📈 <span>Статистик таҳлил</span></button>
         <button data-tab="growth">🚀 <span>Ўсиш ва ўқиш</span></button>
         <button data-tab="blocks">⛔ <span>Блок ва хавфсизлик</span> <i class="badge warn" id="bSusp" hidden>0</i></button>
+        <button data-tab="feedback">💬 <span>Фикр-мулоҳазалар</span> <i class="badge" id="bFeedback" hidden>0</i></button>
         <button data-tab="reports">🗺️ <span>Эко-харита</span> <i class="badge" id="bPending" hidden>0</i></button>
         <button data-tab="system">🛠️ <span>Тизим ва хатолар</span> <i class="badge warn" id="bErr" hidden>0</i></button>
       </nav>
@@ -170,6 +171,24 @@
         <div class="card"><h2>Шубҳали фаоллик (сўнгги 24 соат)</h2><p class="small muted">Кўп марта хато парол киритган, кўп ҳисоб очган ёки жуда кўп сўров юборган IP манзиллар.</p><div class="table" id="tSusp"></div></div>
         <div class="card"><h2>Бошқарув марказига кириш журнали</h2><div class="table" id="tAdminLog"></div></div>
         <div class="card"><h2>Ҳимоя созламалари</h2><ul class="checks" id="secConfig"></ul></div>
+      </section>
+
+      <section data-view="feedback" hidden>
+        <div class="kpis" id="fbKpis"></div>
+        <div class="toolbar">
+          <input type="search" id="fbSearch" placeholder="Матн, почта ёки бўлим бўйича қидириш" aria-label="Қидириш">
+          <select id="fbState" aria-label="Ҳолат"><option value="unread">Ўқилмаганлар</option><option value="read">Ўқилганлар</option><option value="replied">Жавоб берилганлар</option><option value="archived">Архив</option><option value="">Ҳаммаси (архивсиз)</option></select>
+          <select id="fbKind" aria-label="Тури"><option value="">Барча турлар</option></select>
+          <select id="fbRate" aria-label="Баҳо"><option value="">Ҳар қандай баҳо</option><option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option><option value="2">★★</option><option value="1">★</option><option value="0">Баҳосиз</option></select>
+          <select id="fbSec" aria-label="Бўлим"><option value="">Барча бўлимлар</option></select>
+          <button class="btn sm" id="fbReadAll" type="button">✓ Ҳаммасини ўқилди қилиш</button>
+          <a class="btn ghost sm" id="expFeedback" href="#" download>⬇ CSV</a>
+        </div>
+        <div class="grid2">
+          <div class="card"><h2>Турлари бўйича</h2><div id="chFbKinds"></div></div>
+          <div class="card"><h2>Энг кўп ёзилган бўлимлар</h2><div id="chFbSecs"></div></div>
+        </div>
+        <div class="card"><div id="fbList"></div></div>
       </section>
 
       <section data-view="reports" hidden>

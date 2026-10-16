@@ -4,7 +4,7 @@
    Матнлар uz/ru/en шу файлда; лотин алифбоси EkoLang.tr орқали олинади. */
 (() => {
   "use strict";
-  const APP = { version: "2.5", date: "2026-10-16" };
+  const APP = { version: "2.8", date: "2026-10-16" };
   window.EKO_VERSION = APP;
 
   const EL = () => (typeof EkoLang !== "undefined" ? EkoLang : null);
@@ -44,6 +44,19 @@
     close: t3("Ёпиш", "Закрыть", "Close")
   };
   const CHANGES = [
+    { v: "2.8", d: "2026-10-16", items: [
+      t3("🎬 «Видео дарслар» бўлими: Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, БМТ, IPCC ва ўзбек ҳужжатли фильмларидан 31 та текширилган видео; ҳар бирида савол, конспект, тест, амалий топшириқ ва рефлексия", "Раздел «Видеоуроки»: 31 проверенное видео (Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, ООН, IPCC, узбекские фильмы) с вопросами, конспектом, тестом и заданием", "New Video lessons section: 31 checked videos (Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, UN, IPCC, Uzbek documentaries) with questions, notes, quiz and tasks"),
+      t3("💬 «Фикр-мулоҳаза» бўлими: ҳар бир фойдаланувчи таклиф, хато ёки савол юбора олади; жамоа жавоби шу ерда кўринади, интернетсиз ёзилса кейин ўзи юборилади", "Раздел «Отзывы»: любой пользователь может отправить предложение или сообщить об ошибке; ответ команды виден там же; офлайн-отзывы отправляются позже", "New Feedback section: anyone can send ideas or bug reports; team replies appear there; offline messages are sent later"),
+      t3("Иконкалар халқаро талабларга мос: WCAG 2.2 бўйича оқ белги контрасти камида 4.5:1, бир хил шакл ва ўлчам, аниқ клавиатура фокуси; Android иловада видео тўлиқ экранда очилади", "Иконки по международным требованиям: контраст WCAG 2.2 не ниже 4.5:1, единая форма, видимый фокус; видео на весь экран в Android", "Icons meet WCAG 2.2 (white glyph contrast ≥ 4.5:1), one consistent shape, visible keyboard focus; full-screen video in the Android app")
+    ] },
+    { v: "2.7", d: "2026-10-16", items: [
+      t3("Сертификат тизими янгиланди: ҳар бир тугатилган курс учун талабанинг ўз исми ва ягона рақами билан алоҳида сертификат", "Обновлена система сертификатов: отдельный сертификат за каждый пройденный курс с именем ученика и уникальным номером", "New certificate system: a separate certificate for every completed course, with the learner’s name and a unique number"),
+      t3("Сертификат якуний тест натижасига қараб берилади: 🥇 Аъло (90 % дан), 🥈 Яхши (75 % дан), 🥉 Қониқарли (60 % дан); 60 % дан паст бўлса берилмайди. Ҳар бир курсда якуний тест бор", "Сертификат выдаётся по итоговому тесту: 🥇 Отлично (от 90 %), 🥈 Хорошо (от 75 %), 🥉 Удовлетворительно (от 60 %); ниже 60 % не выдаётся. Итоговый тест есть в каждом курсе", "Certificates follow the final test: 🥇 Excellent (90 %+), 🥈 Good (75 %+), 🥉 Satisfactory (60 %+); below 60 % no certificate. Every course now has a final test"),
+      t3("Янги чиройли дизайн: гильош нақшли фон, барг безакли рамка, олтин/кумуш/бронза муҳр ва QR код (/tekshir саҳифасида текширилади); PDF ва PNG юклаб олиш; «Менинг сертификатларим» рўйхати", "Новый дизайн: фон с гильошем, рамка с листьями, золотая/серебряная/бронзовая печать и QR-код (проверка на /tekshir); скачивание PDF и PNG; список «Мои сертификаты»", "New design: guilloche background, leaf frame, gold/silver/bronze seal and a QR code (verified at /tekshir); PDF and PNG download; a “My certificates” list")
+    ] },
+    { v: "2.6", d: "2026-10-16", items: [
+      t3("Халқаро экологик тажриба курси (АҚШ, Германия, Япония, Корея), 3D лабда 20 тажриба, глобал қидирув, қулайлик созламалари, Дизайн 3.1", "Курс «Международный экологический опыт» (США, Германия, Япония, Корея), 20 опытов в 3D-лаборатории, глобальный поиск, настройки доступности, Дизайн 3.1", "International environmental experience course (USA, Germany, Japan, Korea), 20 experiments in the 3D lab, global search, accessibility settings, Design 3.1")
+    ] },
     { v: "2.5", d: "2026-10-16", items: [
       t3("3D лаборатория кенгайди: 16 тажриба (янги: шамол турбинаси, фотосинтез, энергия тежайдиган уй, ер ости суви, циклон, компост), мавзулар бўйича галерея ва умумий ютуқлар", "3D-лаборатория расширена: 16 опытов (новые: ветряк, фотосинтез, энергоэффективный дом, подземные воды, циклон, компост), галерея по темам и общий прогресс", "3D lab expanded: 16 experiments (new: wind turbine, photosynthesis, energy-efficient house, groundwater, cyclone, compost), a topic gallery and overall progress"),
       t3("3D лабда янги асбоблар: чизғич ва зонд (саҳнада ўлчаш), расмга олиш, катта экран, лаборатория журнали (жадвал, график, CSV), мақсадли топшириқлар, тахмин (POE) ва тест саволлари", "Новые инструменты 3D-лаборатории: линейка и зонд, снимок, полный экран, лабораторный журнал (таблица, график, CSV), целевые задания, прогноз (POE) и тесты", "New 3D-lab tools: ruler and probe, snapshot, full screen, lab notebook (table, chart, CSV), goal challenges, predictions (POE) and quizzes"),

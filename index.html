@@ -1397,6 +1397,27 @@ html.l3-noscroll, html.l3-noscroll body { overflow: hidden; }
 .exam-score { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; padding: 14px 16px; border-radius: 16px; background: #fee2e2; color: #7f1d1d; margin: 10px 0; }
 .exam-score.ok { background: #dcfce7; color: #14532d; }
 .exam-score b { font-size: 1.6rem; } .exam-score span { font-weight: 700; }
+/* Сертификат даражалари (2.7) */
+.grade-scale { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; padding: 0; list-style: none; }
+.grade-scale li { display: inline-flex; gap: 6px; align-items: center; padding: 6px 12px; border-radius: 999px; font-size: .9rem; font-weight: 600; border: 1px solid var(--line); background: var(--card); }
+.grade-scale li.gold, .gchip.gold { background: linear-gradient(135deg, #fff7d6, #f5d77a); border-color: #d4a017; color: #6b4e00; }
+.grade-scale li.silver, .gchip.silver { background: linear-gradient(135deg, #f8fafc, #d5dde5); border-color: #94a3b8; color: #334155; }
+.grade-scale li.bronze, .gchip.bronze { background: linear-gradient(135deg, #fdf0e6, #e8b48c); border-color: #b06a35; color: #6a3510; }
+.grade-scale li.none { color: var(--muted); }
+.gchip { display: inline-flex; gap: 6px; align-items: center; padding: 4px 12px; border-radius: 999px; font-weight: 700; border: 1px solid; font-size: .9rem; }
+.cert-grade { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 14px 16px; border-radius: 16px; margin: 12px 0; border: 1px solid var(--line); background: color-mix(in srgb, var(--primary) 7%, var(--card)); }
+.cert-grade .big { font-size: 2.2rem; line-height: 1; }
+.cert-grade > div { flex: 1 1 220px; min-width: 0; }
+.cert-grade b { font-size: 1.05rem; }
+.exam-cert { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.my-certs { margin: 0 0 18px; padding: 16px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); }
+.my-certs h3 { margin: 0 0 10px; font-size: 1.05rem; }
+.my-certs ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.my-certs li button { width: 100%; display: flex; gap: 10px; align-items: center; text-align: left; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; cursor: pointer; min-height: 44px; }
+.my-certs li button:hover { border-color: var(--primary); }
+.my-certs .m { font-size: 1.7rem; line-height: 1; flex: none; }
+.my-certs small { display: block; color: var(--muted); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .grade-scale li.gold, :root:not([data-theme="light"]) .gchip.gold { color: #4a3600; } }
 /* 3D Эко-дунё (болалар) — vendor/eko-dunyo3d.js */
 .d3-games { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 14px 0 4px; }
 .d3-game { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 14px 14px 12px; border-radius: 18px; border: 2px solid var(--line); background: var(--card); color: var(--text); text-align: left; cursor: pointer; font: inherit; transition: transform .15s, border-color .15s, box-shadow .15s; }
@@ -1839,6 +1860,104 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
 }
 @keyframes plus-spin { to { transform: rotate(360deg); } }
 @keyframes plus-bounce { 40% { transform: translateY(-4px) scale(1.1); } }
+/* Дизайн 3.2 (Ekomun 2.8): иконкалар халқаро талабларга мос.
+   WCAG 2.2: оқ белги ва фон контрасти ≥ 4.5:1 (1.4.11 «матн бўлмаган контраст» 3:1 дан юқори),
+   градиентнинг энг оч нуқтаси ҳам ≥ 3:1. Ранглар --c (тўқ) дан олинади; --c1 фақат карточка ёғдуси учун.
+   Material Design 3 / Apple HIG: барча иконкалар бир хил шакл (сквиркл), белги майдоннинг ~50 % и,
+   ялтироқ қатлам белгини хиралаштирмайди. Клавиатура фокуси аниқ кўринади (2.4.7, 2.4.11). */
+.app-ic, .app[data-cat] .app-ic { border-radius: 28%; background:
+    linear-gradient(145deg, color-mix(in srgb, var(--c, var(--primary)) 88%, #fff) 0%, var(--c, var(--primary)) 55%, color-mix(in srgb, var(--c, var(--primary)) 80%, #000) 100%); }
+.app-ic::before { background: linear-gradient(180deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, 0)); inset: 1px 1px 58% 1px; }
+.app-ic::after { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .28), transparent); }
+.app-ic i { color: #fff; font-size: 1.62rem; width: 1.25em; text-align: center; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .35)); }
+@media (max-width: 720px) { .app-ic i { font-size: 1.5rem; } }
+@media (max-width: 620px) { .app-ic, .app[data-cat] .app-ic { border-radius: 28%; } }
+.app-recent a .app-ic i { font-size: .95rem; }
+.app:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+.app-new { background: #be123c; color: #fff; }
+.app-cat i, .app-cat[data-cat] i { border-radius: 28%; color: #fff; }
+.app-cat[data-cat="learn"] i { background: #047857; }
+.app-cat[data-cat="lab"] i { background: #6d28d9; }
+.app-cat[data-cat="act"] i { background: #c2410c; }
+.app-cat[data-cat="tool"] i { background: #be185d; }
+html.a11y-hc .app-ic::before, html.a11y-hc .app-ic::after { display: none; }
+html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2px var(--text); }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+/* 🎬 Видео дарслар (vendor/eko-video.js) */
+.vd-status { display: inline-flex; align-items: center; gap: 8px; margin: 6px 0 0; padding: 6px 12px; border-radius: 999px; font-size: .88rem; font-weight: 600; }
+.vd-status.on { background: color-mix(in srgb, #15803d 12%, var(--card)); color: color-mix(in srgb, #15803d 75%, var(--text)); }
+.vd-status.off { background: color-mix(in srgb, #b45309 14%, var(--card)); color: color-mix(in srgb, #b45309 70%, var(--text)); }
+.vd-prog { margin: 6px 0 14px; }
+.vd-prog-txt { display: flex; justify-content: space-between; gap: 10px; font-size: .92rem; margin-bottom: 6px; }
+.vd-bar { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.vd-bar i { display: block; height: 100%; background: var(--primary); border-radius: inherit; }
+.vd-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
+.vd-search { flex: 1 1 220px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.vd-search input { flex: 1; min-width: 0; border: 0; background: none; color: var(--text); font: inherit; padding: 10px 0; }
+.vd-search input:focus { outline: none; } .vd-search:focus-within { outline: 2px solid var(--primary); outline-offset: 1px; }
+.vd-tools select { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; }
+.vd-chk { display: inline-flex; gap: 8px; align-items: center; font-size: .92rem; cursor: pointer; }
+.vd-chk input { width: 18px; height: 18px; accent-color: var(--primary); }
+.vd-topics { margin-bottom: 14px; }
+.vd-n { opacity: .75; font-size: .82em; margin-left: 2px; }
+.vd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 16px; }
+.vd-card { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.vd-card.is-done { border-color: color-mix(in srgb, #15803d 55%, var(--line)); }
+.vd-thumb, .vd-start { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; padding: 0; border: 0; cursor: pointer; overflow: hidden;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--tc) 70%, #000), var(--tc)); color: #fff; }
+.vd-thumb img, .vd-start img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.vd-ph { position: absolute; right: 14px; top: 10px; font-size: 2.2rem; opacity: .45; }
+.vd-playic, .vd-bigplay { position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 56px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(0, 0, 0, .72); color: #fff; font-size: 1.1rem; transition: background .2s; }
+.vd-bigplay { width: 76px; height: 54px; font-size: 1.5rem; background: #cc0000; }
+.vd-thumb:hover .vd-playic, .vd-thumb:focus-visible .vd-playic { background: #cc0000; }
+.vd-thumb:focus-visible, .vd-start:focus-visible, .vd-link:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+.vd-lng { position: absolute; z-index: 2; left: 8px; bottom: 8px; padding: 2px 8px; border-radius: 6px; background: rgba(0, 0, 0, .78); color: #fff; font-size: .75rem; font-weight: 700; }
+.vd-badge { position: absolute; z-index: 2; right: 8px; top: 8px; padding: 2px 8px; border-radius: 6px; background: rgba(0, 0, 0, .78); color: #fff; font-size: .75rem; font-weight: 700; }
+.vd-badge.ok { background: #15803d; }
+.vd-badge.static { position: static; display: inline-flex; gap: 6px; align-items: center; padding: 6px 10px; font-size: .85rem; }
+.vd-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+.vd-body h3 { margin: 0; font-size: 1rem; line-height: 1.35; }
+.vd-link { all: unset; cursor: pointer; color: var(--text); }
+.vd-link:hover { color: var(--primary); text-decoration: underline; }
+.vd-ch { margin: 0; color: var(--muted); font-size: .85rem; }
+.vd-top { display: inline-flex; gap: 6px; align-items: center; align-self: flex-start; font-size: .78rem; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+  background: color-mix(in srgb, var(--tc) 14%, var(--card)); color: color-mix(in srgb, var(--tc) 80%, var(--text)); }
+.vd-lesson h4 { margin: 22px 0 8px; }
+.vd-player { border-radius: 16px; overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
+.vd-player iframe { width: 100%; height: 100%; border: 0; display: block; }
+.vd-net { padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, #b45309 14%, var(--card)); }
+.vd-notes { padding-left: 20px; line-height: 1.65; } .vd-notes li { margin-bottom: 6px; }
+.vd-ref { display: grid; gap: 10px; } .vd-ref label { display: grid; gap: 4px; font-weight: 600; font-size: .92rem; }
+/* 💬 Фикр-мулоҳаза (vendor/eko-fikr.js) */
+.fk-form { display: grid; gap: 14px; max-width: 760px; }
+.fk-form fieldset { border: 0; padding: 0; margin: 0; }
+.fk-form legend { font-weight: 700; margin-bottom: 8px; }
+.fk-kinds { display: flex; flex-wrap: wrap; gap: 8px; }
+.fk-kind input, .fk-stars input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.fk-kind span { display: inline-flex; gap: 8px; align-items: center; padding: 9px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); cursor: pointer; font-weight: 600; font-size: .92rem; }
+.fk-kind input:checked + span { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 14%, var(--card)); color: var(--text); box-shadow: inset 0 0 0 1px var(--primary); }
+.fk-kind input:focus-visible + span, .fk-stars input:focus-visible + span { outline: 3px solid var(--primary); outline-offset: 2px; }
+.fk-stars { display: flex; align-items: center; gap: 2px; }
+.fk-stars label { cursor: pointer; }
+.fk-stars span[aria-hidden] { font-size: 2rem; line-height: 1; color: color-mix(in srgb, var(--muted) 55%, transparent); padding: 2px; border-radius: 8px; display: inline-block; }
+.fk-stars span.on { color: #b45309; }
+.fk-rate-t { margin-left: 10px; }
+.fk-field { display: grid; gap: 6px; font-weight: 600; }
+.fk-field textarea, .fk-field input, .fk-field select { font: inherit; font-weight: 400; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.fk-field textarea:focus, .fk-field input:focus, .fk-field select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.fk-field > span { display: flex; justify-content: space-between; gap: 10px; }
+.fk-err { color: #b91c1c; margin: 0; min-height: 0; }
+:root[data-theme="dark"] .fk-err { color: #fca5a5; }
+.fk-mine { margin-top: 16px; max-width: 760px; }
+.fk-mine-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.fk-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.fk-item { padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
+.fk-item p { margin: 6px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fk-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: .88rem; }
+.fk-tag { font-weight: 700; }
+.fk-st { margin-left: auto; padding: 2px 9px; border-radius: 999px; font-size: .78rem; font-weight: 700; background: var(--line); color: var(--text); }
+.st-replied .fk-st { background: #15803d; color: #fff; } .st-read .fk-st { background: #1d4ed8; color: #fff; } .st-queue .fk-st { background: #b45309; color: #fff; }
+.fk-reply { margin-top: 8px; padding: 10px 12px; border-radius: 12px; border-left: 4px solid #15803d; background: color-mix(in srgb, #15803d 10%, var(--card)); }
 </style>
 </head>
 <body>
@@ -1923,9 +2042,11 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
         <a href="#hashar">Ҳашар</a>
         <a href="#maktab">Мактаб</a>
         <a href="#kurslar">Курслар</a>
+        <a href="#video">Видео дарслар</a>
         <a class="nav-x" href="#yangiliklar">Янгиликлар</a>
         <a href="#kutubxona">Кутубхона</a>
         <a href="#havo">Ҳаво</a>
+        <a class="nav-x" href="#fikr">Фикр-мулоҳаза</a>
         <a class="nav-x" href="#kalkulyator">Калькулятор</a>
         <a class="nav-x" href="#chellenj">Челленж</a>
         <a class="nav-x" href="#yordamchi">Ёрдамчи</a>
@@ -1994,15 +2115,16 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
         <div class="app-recent" id="appRecent" hidden></div>
         <nav class="app-grid" aria-label="Бўлимлар">
           <h3 class="app-cat" data-cat="learn"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Ўрганиш</h3>
-          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#f43f5e;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
+          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#e80d33;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
           <a class="app" data-cat="learn" href="#kurslar" data-crs="xalqaro" data-stage="uni" style="--c:#0369a1;--c1:#fcd34d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-americas"></i></span><b>Халқаро тажриба</b><small>АҚШ, Германия, Япония, Корея</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#kurslar" data-crs="dunyo" data-stage="maktab" style="--c:#0369a1;--c1:#fcd34d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>Дунё саёҳати</b><small>4 давлат тажрибаси</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#kurslar" style="--c:#059669;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
-          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#16a34a;--c1:#bef264"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#d97706;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#video" style="--c:#b91c1c;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>31 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#kurslar" style="--c:#05875f;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#12883e;--c1:#bef264"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#b16105;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
           <a class="app" data-cat="learn" href="#adabiyot" style="--c:#4f46e5;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#0284c7;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
+          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#027ab8;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
           <a class="app" data-cat="learn" href="#takror" style="--c:#db2777;--c1:#f9a8d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-brain"></i></span><b>Такрорлаш хонаси</b><small>Карталар, хатолар дафтари</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#krossvord" style="--c:#9333ea;--c1:#d8b4fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
           <a class="app" data-cat="learn" href="#kutubxona" style="--c:#c2410c;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
@@ -2010,23 +2132,24 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
           <a class="app" data-cat="learn" href="#internet" style="--c:#2563eb;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <h3 class="app-cat" data-cat="lab"><i class="fa-solid fa-flask" aria-hidden="true"></i> Лабораториялар</h3>
           <a class="app" data-cat="lab" href="#lab3d" style="--c:#7c3aed;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>20 тажриба, 4 давлат тажрибаси</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#0891b2;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
+          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#07819e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
           <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#6d28d9;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
           <a class="app" data-cat="lab" href="#mro" data-stage="uni" style="--c:#15803d;--c1:#86efac"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-recycle"></i></span><b>Чиқиндилар ҳисоби</b><small>10 методика, калькулятор</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="lab" href="#ilmiy" data-stage="uni" style="--c:#2563eb;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
           <h3 class="app-cat" data-cat="act"><i class="fa-solid fa-seedling" aria-hidden="true"></i> Амалиёт ва лойиҳалар</h3>
-          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#ea580c;--c1:#fed7aa"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#cd4d0b;--c1:#fed7aa"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="act" href="#oyinmarkaz" style="--c:#a21caf;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span><b>Ўйин маркази</b><small>Вазифа, танга, босс жанги</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="act" href="#chellenj" style="--c:#f59e0b;--c1:#fde047"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
-          <a class="app" data-cat="act" href="#hashar" style="--c:#0d9488;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
-          <a class="app" data-cat="act" href="#maktab" style="--c:#6366f1;--c1:#c7d2fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
-          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8b5cf6;--c1:#ddd6fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
+          <a class="app" data-cat="act" href="#chellenj" style="--c:#a36907;--c1:#fde047"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
+          <a class="app" data-cat="act" href="#hashar" style="--c:#0b8177;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
+          <a class="app" data-cat="act" href="#maktab" style="--c:#5e61f1;--c1:#c7d2fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
+          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8452f5;--c1:#ddd6fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
           <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#dc2626;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
           <h3 class="app-cat" data-cat="tool"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Ўйин ва асбоблар</h3>
           <a class="app" data-cat="tool" href="#dunyo3d" data-stage="maktab" style="--c:#047857;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>3D Эко-дунё</b><small>Саралаш, орол, Ер шари</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#ea580c;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
+          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#cd4d0b;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
           <a class="app" data-cat="tool" href="#havo" style="--c:#0369a1;--c1:#bae6fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
           <a class="app" data-cat="tool" href="#kalkulyator" style="--c:#be185d;--c1:#fbcfe8"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
+          <a class="app" data-cat="tool" href="#fikr" style="--c:#0f766e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></span><b>Фикр-мулоҳаза</b><small>Таклиф ва хатоларни ёзинг</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="tool" href="#yordamchi" style="--c:#0e7490;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
         </nav>
         <p class="muted app-none" id="appNone" hidden>Бундай бўлим топилмади.</p>
@@ -2428,6 +2551,16 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
       <div class="wrap" id="bhRoot" data-notr></div>
     </section>
 
+    <!-- VIDEO DARSLAR: ochiq ta'lim videolari asosida dars — vendor/eko-video.js -->
+    <section class="section alt" id="video">
+      <div class="wrap" id="vdRoot" data-notr></div>
+    </section>
+
+    <!-- FIKR-MULOHAZA: foydalanuvchi fikri serverga, admin panelda ko'rinadi — vendor/eko-fikr.js -->
+    <section class="section" id="fikr">
+      <div class="wrap" id="fkRoot" data-notr></div>
+    </section>
+
     <!-- UNIVERSITET: CHIQINDILAR HOSIL BO'LISHINI HISOBLASH (MRO-1 … MRO-10) — vendor/eko-mro.js -->
     <section class="section" id="mro" data-stage="uni">
       <div class="wrap" id="mrRoot" data-notr></div>
@@ -2463,6 +2596,7 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
             <button class="chip" data-f="talaba">Таълим</button>
           </div>
         </div>
+        <div class="my-certs" id="myCerts" hidden></div>
         <div class="fin-intro" id="finIntro"></div>
         <div class="course-grid" id="courseGrid"></div>
       </div>
@@ -4525,7 +4659,7 @@ const ASSISTANT_KB = [
   { k: ["қизил китоб", "йўқолиб", "ноёб", "iucn"], a: "Қизил китоб — йўқолиб кетиш хавфи остидаги ҳайвон ва ўсимликлар рўйхати. Халқаро миқёсда IUCN Қизил рўйхати юритилади, Ўзбекистоннинг ҳам ўз Қизил китоби бор. Бундай турларни овлаш ва сотиш қонун билан тақиқланган. «Эко-кутубхона» бўлимида Ўзбекистон ва дунёнинг ноёб ҳайвонлари ҳақида ўқинг." },
   { k: ["қонун", "жарима", "жавобгарлик", "ҳуқуқ", "конституция"], a: "Ўзбекистонда табиатни муҳофаза қилиш, атмосфера ҳавоси, сув, чиқиндилар, ҳайвонот ва ўсимлик дунёси тўғрисида қонунлар амал қилади. Уларнинг оммабоп мазмунини «Эко-кутубхона» → «Қонунлар» бўлимида ўқинг. Расмий ва амалдаги матн — lex.uz сайтида." },
   { k: ["китоб", "ўқиш", "адабиёт", "айтматов"], a: "«Эко-кутубхона» → «Китоблар» бўлимида экологияга оид машҳур китоблар бор: Рейчел Карсоннинг «Сокин баҳор»и, Чингиз Айтматовнинг «Қиёмат» ва «Оқ кема» асарлари, Дэвид Аттенборонинг «Сайёрамиздаги ҳаётим» китоби ва бошқалар." },
-  { k: ["сертификат", "курс", "тест", "балл", "даража"], a: "Ҳар бир дарсни ўқиб, тестдан ўтсангиз балл (XP) оласиз ва даражангиз ошади. Курснинг барча дарсларини тугатгач, исмингиз ёзилган сертификатни юклаб олишингиз мумкин." }
+  { k: ["сертификат", "курс", "тест", "балл", "даража"], a: "Ҳар бир дарсни ўқиб, тестдан ўтсангиз балл (XP) оласиз ва даражангиз ошади. Курснинг барча дарсларини тугатиб, якуний тестдан камида 60 % тўпласангиз, исмингиз, QR коди ва даражаси ёзилган сертификат оласиз: 🥇 Аъло (90 % дан), 🥈 Яхши (75 % дан), 🥉 Қониқарли (60 % дан). Натижани яхшиласангиз, сертификат юқорироқ даража билан янгиланади." }
 ];
 </script>
   <script>
@@ -49715,6 +49849,27 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const T = (s) => EkoLang.t(s);
+  /* Сертификат даражаси якуний тест натижасига қараб: 60 % дан паст — сертификат берилмайди */
+  const CERT_MIN = 60;
+  const GRADES = [
+    { id: "gold", min: 90, medal: "🥇", name: "Аъло", title: "Олтин сертификат", rank: "ОЛТИН ДАРАЖА", m: ["#fff6c9", "#f1cf5a", "#b8860b", "#7a5600"] },
+    { id: "silver", min: 75, medal: "🥈", name: "Яхши", title: "Кумуш сертификат", rank: "КУМУШ ДАРАЖА", m: ["#ffffff", "#dfe5ec", "#8d9aa8", "#46525f"] },
+    { id: "bronze", min: CERT_MIN, medal: "🥉", name: "Қониқарли", title: "Бронза сертификат", rank: "БРОНЗА ДАРАЖА", m: ["#fde7d4", "#e3a272", "#a35a26", "#5e2d0c"] }
+  ];
+  const gradeOf = (pct) => (pct == null ? null : GRADES.find((g) => pct >= g.min) || null);
+  const gradeScale = () => `<ul class="grade-scale">${GRADES.map((g) => `<li class="${g.id}">${g.medal} <span>${esc(g.name)}</span> · ${g.min}${g.id === "gold" ? "–100" : "–" + (GRADES[GRADES.indexOf(g) - 1].min - 1)} %</li>`).join("")}<li class="none">✕ ${CERT_MIN} % <span>дан паст — сертификат берилмайди</span></li></ul>`;
+  /* Якуний тест банки: махсус банк бўлмаса, курснинг барча дарс саволларидан тузилади */
+  const bankCache = {};
+  function examBank(cid) {
+    const own = (window.EKO_EXAMS || {})[cid];
+    if (own && own.length) return own;
+    if (bankCache[cid]) return bankCache[cid];
+    const course = COURSES.find((c) => c.id === cid);
+    if (!course) return null;
+    return (bankCache[cid] = course.lessons.flatMap((l, li) => (l.quiz || [])
+      .map((q, qi) => ({ q: q.q, a: q.a, c: q.c, li, qi }))
+      .filter((q) => Array.isArray(q.a) && q.a.length > 1 && q.a[q.c] != null)));
+  }
   const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
   /* ---------- Ҳолат (браузерда сақланади) ---------- */
@@ -49818,11 +49973,13 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
           ? `<button class="btn btn-primary" data-cert="${c.id}">🏆 Сертификат олиш</button>`
           : `<button class="btn btn-primary" data-c="${c.id}" data-l="${next}">${p.done ? "Давом эттириш" : "Бошлаш"} →</button>`}
           <button class="btn btn-ghost" data-book="${c.id}">📖 Дарслик</button>
-          ${(window.EKO_EXAMS || {})[c.id] ? `<button class="btn btn-ghost" data-exam="${c.id}">📝 Якуний тест${state.exams[c.id] != null ? `<span> · ${state.exams[c.id]} %</span>` : ""}</button>` : ""}
+          <button class="btn btn-ghost" data-exam="${c.id}">📝 Якуний тест${state.exams[c.id] != null ? `<span> · ${state.exams[c.id]} %</span>` : ""}</button>
         </div>
+        ${complete && gradeOf(state.exams[c.id]) ? `<p class="small course-grade"><span class="gchip ${gradeOf(state.exams[c.id]).id}">${gradeOf(state.exams[c.id]).medal} <span>${esc(gradeOf(state.exams[c.id]).name)}</span></span></p>` : complete ? `<p class="small muted">🏆 <span>Сертификат учун якуний тестдан камида 60 % тўпланг</span></p>` : ""}
       </article>`;
     }).join("");
 
+    renderMyCerts();
     const all = COURSES.reduce((s, c) => s + courseProgress(c.id).done, 0);
     $("#progressPct").textContent = Math.round((all / totalLessons) * 100) + "%";
     $("#lessonCount").textContent = totalLessons;
@@ -50260,8 +50417,14 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   /* ---------- Дарслик: курсни китоб каби бир саҳифада ўқиш ---------- */
   /* Курс бўйича якуний тест: банкдан 20 та тасодифий савол, вариантлар аралаштирилади, 80 % ва ундан юқори — +30 XP (бир марта) */
   const EXAM_N = 20, EXAM_PASS = 80;
+  function examCertNote(cid) {
+    const p = courseProgress(cid), g = gradeOf(state.exams[cid]);
+    if (!g) return "";
+    if (p.done < p.total) return `<p class="small muted exam-cert">🏆 <span>Сертификат олиш учун курснинг барча дарсларини ҳам тугатинг</span> (${p.done}/${p.total})</p>`;
+    return `<div class="exam-cert"><button class="btn btn-primary" type="button" data-exam-cert>🏆 Сертификат олиш</button><span class="small muted">${g.medal} <span>${esc(g.title)}</span> · <span>энг яхши натижа</span> ${state.exams[cid]} %</span></div>`;
+  }
   function openExam(cid) {
-    const bank = (window.EKO_EXAMS || {})[cid];
+    const bank = examBank(cid);
     const course = COURSES.find((c) => c.id === cid);
     if (!bank || !course) return;
     if (lessonXw) { lessonXw.destroy(); lessonXw = null; }
@@ -50270,7 +50433,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
       const last = /барчаси|ҳаммаси|юқоридагиларнинг/i.test(q.a[q.a.length - 1]) ? q.a.length - 1 : -1;
       const order = shuffle(q.a.map((_, i) => i).filter((i) => i !== last));
       if (last >= 0) order.push(last);
-      return { q: q.q, s: q.s, a: order.map((i) => q.a[i]), c: order.indexOf(q.c), bi: bank.indexOf(q) };
+      return { q: q.q, s: q.s, li: q.li, qi: q.qi, a: order.map((i) => q.a[i]), c: order.indexOf(q.c), bi: bank.indexOf(q) };
     });
     const pick = new Array(qs.length).fill(-1);
     let checked = false;
@@ -50282,14 +50445,15 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         <div class="exam">
           <span class="pill">📝 Якуний тест</span>
           <h2>${course.icon} ${esc(course.title)}</h2>
-          <p class="muted">Ҳар сафар банкдан тасодифий саволлар танланади ва жавоб вариантлари аралаштирилади. 80 % ва ундан юқори натижа — имтиҳондан ўтдингиз.</p>
+          <p class="muted">Ҳар сафар банкдан тасодифий саволлар танланади ва жавоб вариантлари аралаштирилади. Сертификат даражаси тест натижасига қараб берилади:</p>
+          ${gradeScale()}
           <p class="small muted">📚 <span>Саволлар банки</span>: <b>${bank.length}</b> · <span>Тестда</span>: <b>${qs.length}</b></p>
-          ${checked ? `<div class="exam-score ${pct >= EXAM_PASS ? "ok" : ""}" role="status"><b>${right} / ${qs.length}</b><span>${pct} %</span><small>${pct >= EXAM_PASS ? "🎉 Имтиҳондан ўтдингиз!" : "🤔 Хатоларни кўриб чиқинг ва яна уриниб кўринг."}</small></div>` : ""}
+          ${checked ? `<div class="exam-score ${pct >= CERT_MIN ? "ok" : ""}" role="status"><b>${right} / ${qs.length}</b><span>${pct} %</span><small>${gradeOf(pct) ? `🎉 <span>Натижа</span>: ${gradeOf(pct).medal} <span>${esc(gradeOf(pct).name)}</span> · <span>${esc(gradeOf(pct).title)}</span>` : "🤔 Хатоларни кўриб чиқинг ва яна уриниб кўринг."}</small></div>${examCertNote(cid)}` : ""}
           <ol class="exam-list">${qs.map((q, i) => `
             <li class="exam-q${checked ? (pick[i] === q.c ? " ok" : " bad") : ""}">
               <p><b>${esc(q.q)}</b></p>
               <div class="exam-opts" role="radiogroup">${q.a.map((o, j) => `<button type="button" role="radio" aria-checked="${pick[i] === j}" class="sg-opt${pick[i] === j ? " picked" : ""}${checked && j === q.c ? " right" : ""}${checked && pick[i] === j && j !== q.c ? " wrong" : ""}" data-q="${i}" data-o="${j}" ${checked ? "disabled" : ""}>${esc(o)}</button>`).join("")}</div>
-              ${checked ? `<small class="muted">📗 <span>${esc(q.s)}</span></small>` : ""}
+              ${checked ? `<small class="muted">📗 ${q.li != null ? `${q.li + 1}-<span>дарс</span> · <span>${esc(course.lessons[q.li].title)}</span>` : `<span>${esc(q.s)}</span>`}</small>` : ""}
             </li>`).join("")}</ol>
           <div class="exam-bar">
             ${checked
@@ -50311,7 +50475,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         if (pct >= EXAM_PASS) window.dispatchEvent(new CustomEvent("eko:fn", { detail: { k: "exampass" } }));
         if (pct >= EXAM_PASS && first) addXp(30, "Якуний тестдан ўтдингиз");
         if (pct === 100 && !state.flags["exam100_" + cid]) { state.flags["exam100_" + cid] = true; addXp(50, "Якуний тест · 100%"); }
-        qs.forEach((q, i) => { if (pick[i] !== q.c) window.dispatchEvent(new CustomEvent("eko:answer", { detail: { ref: { t: "x", cid, i: q.bi }, ok: false } })); });
+        qs.forEach((q, i) => { if (pick[i] !== q.c) window.dispatchEvent(new CustomEvent("eko:answer", { detail: { ref: q.li != null ? { t: "l", cid, li: q.li, qi: q.qi } : { t: "x", cid, i: q.bi }, ok: false } })); });
         window.EkoGame && EkoGame.track("test");
         renderGamification();
         render();
@@ -50319,6 +50483,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         return;
       }
       if (e.target.closest("[data-exam-new]")) { modalBody.onclick = null; openExam(cid); }
+      if (e.target.closest("[data-exam-cert]")) { modalBody.onclick = null; openCertificate(cid); }
     };
     render();
     if (!modal.open) modal.showModal();
@@ -50426,93 +50591,157 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   renderXwPicker();
   window.addEventListener("eko:stage", renderXwPicker);
 
-  /* ---------- Сертификат ----------
-     Серверда ишлаганда сертификат рўйхатга олинади ва QR код /tekshir саҳифасига олиб боради:
-     ҳар ким сертификат ҳақиқий эканини текшира олади. Интернетсиз (илова) — маҳаллий рақам, QR йўқ. */
+  /* ---------- Сертификат (2.7) ----------
+     Ҳар бир талабага ҳар бир тугатилган курс учун алоҳида сертификат: исм-шариф, курс, якуний тест
+     натижаси ва даражаси (🥇 Аъло ≥ 90 %, 🥈 Яхши ≥ 75 %, 🥉 Қониқарли ≥ 60 %; пастида берилмайди),
+     ягона рақам ва QR код. Серверда ишлаганда сертификат рўйхатга олинади ва QR /tekshir саҳифасига
+     олиб боради: ҳар ким сертификат ҳақиқий эканини текшира олади. Интернетсиз (илова) — маҳаллий рақам, QR йўқ.
+     Натижа яхшиланса, сертификат янги даража билан қайта берилади (эскиси ҳам ҳақиқий қолади). */
   const hasServer = () => /^https?:$/.test(location.protocol) && location.hostname !== "appassets.androidplatform.net";
-  function loadQr() {
-    if (window.qrcode) return Promise.resolve(window.qrcode);
+  function loadScript(src, ready) {
+    if (ready()) return Promise.resolve(ready());
     return new Promise((ok, no) => {
       const s = document.createElement("script");
-      s.src = "/vendor/qrcode.js";
-      s.onload = () => (window.qrcode ? ok(window.qrcode) : no(new Error("qr")));
+      s.src = src;
+      s.onload = () => (ready() ? ok(ready()) : no(new Error(src)));
       s.onerror = no;
       document.head.appendChild(s);
     });
   }
-  async function issueCertificate(name, course) {
+  const loadQr = () => loadScript("/vendor/qrcode.js", () => window.qrcode);
+  const loadPdf = () => loadScript("/vendor/pdf/jspdf.umd.min.js", () => window.jspdf && window.jspdf.jsPDF);
+
+  async function issueCertificate(name, course, pct, g) {
     state.certs = state.certs || {};
     const old = state.certs[course.id];
-    if (old && old.name === name && (old.verified || !hasServer())) return old;
-    const pct = state.exams[course.id] != null ? state.exams[course.id] : 100;
-    let cert = { name, date: dayKey(), code: "", verified: false, pct };
+    if (old && old.name === name && old.pct === pct && old.grade === g.id && (old.verified || !hasServer() || navigator.onLine === false)) return old;
+    let cert = { name, date: dayKey(), code: "", verified: false, pct, grade: g.id, lessons: course.lessons.length };
     if (hasServer() && navigator.onLine !== false) {
       try {
         const r = await fetch("/api/cert", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin",
           body: JSON.stringify({ name, cid: course.id, title: course.title, lessons: course.lessons.length, pct }) });
         const d = r.ok ? await r.json() : null;
-        if (d && d.code) cert = { ...cert, code: d.code, verified: true };
+        if (d && d.code) cert = { ...cert, code: d.code, verified: true, date: d.at ? dayKey(new Date(d.at)) : cert.date };
       } catch (e) { /* интернет йўқ — маҳаллий рақам */ }
     }
-    if (!cert.code) cert.code = "EKM-L" + Date.now().toString(36).toUpperCase();
+    if (!cert.code) cert.code = old && old.name === name && old.pct === pct && old.grade === g.id ? old.code : "EKM-L" + Date.now().toString(36).toUpperCase();
     state.certs[course.id] = cert;
     save();
     window.dispatchEvent(new CustomEvent("eko:fn", { detail: { k: "cert" } }));
+    renderMyCerts();
     return cert;
   }
 
+  /* «Менинг сертификатларим» — курслар бўлими тепасида */
+  function renderMyCerts() {
+    const box = $("#myCerts");
+    if (!box) return;
+    const list = Object.entries(state.certs || {}).map(([cid, c]) => ({ cid, c, course: COURSES.find((x) => x.id === cid) })).filter((x) => x.course);
+    box.hidden = !list.length;
+    if (!list.length) { box.innerHTML = ""; return; }
+    box.innerHTML = `<h3>🏆 <span>Менинг сертификатларим</span> · ${list.length}</h3>
+      <ul>${list.map(({ cid, c, course }) => {
+        const g = GRADES.find((x) => x.id === c.grade);
+        return `<li><button type="button" data-mycert="${cid}"><span class="m" aria-hidden="true">${g ? g.medal : "📜"}</span>
+          <span><b>${esc(course.title)}</b><small>${g ? `<span>${esc(g.title)}</span> · ${c.pct} %` : `<span>Олдинги сертификат — даража учун якуний тестни топширинг</span>`} · ${c.date.split("-").reverse().join(".")}</small></span></button></li>`;
+      }).join("")}</ul>`;
+  }
+  $("#myCerts").addEventListener("click", (e) => { const b = e.target.closest("[data-mycert]"); if (b) openCertificate(b.dataset.mycert); });
+
   function openCertificate(cid) {
     const course = COURSES.find((c) => c.id === cid);
+    if (!course) return;
+    if (lessonXw) { lessonXw.destroy(); lessonXw = null; }
+    modalBody.onclick = null;
+    const p = courseProgress(cid), best = state.exams[cid], g = gradeOf(best);
+    if (p.done < p.total || !g) {
+      modalBody.innerHTML = `
+        <span class="pill">🏆 Сертификат</span>
+        <h2>${course.icon} ${esc(course.title)}</h2>
+        ${p.done < p.total
+          ? `<p><span>Сертификат учун аввал курснинг барча дарсларини тугатинг</span>: <b>${p.done} / ${p.total}</b></p>`
+          : `<p><b>🎉 <span>Барча дарслар тугатилди!</span></b> <span>Энди якуний тестни топширинг — сертификат тест натижасига қараб берилади.</span></p>`}
+        ${gradeScale()}
+        ${best != null ? `<p class="small muted"><span>Энг яхши натижангиз</span>: <b>${best} %</b></p>` : ""}
+        <div class="cert-actions"><button class="btn btn-primary" type="button" data-cert-exam>📝 Якуний тестни бошлаш</button></div>`;
+      $("[data-cert-exam]", modalBody).addEventListener("click", () => openExam(cid));
+      if (!modal.open) modal.showModal();
+      modal.scrollTop = 0;
+      return;
+    }
     if (!state.flags["cert_" + cid]) { state.flags["cert_" + cid] = true; addXp(200, "сертификат олинди"); window.EkoGame && EkoGame.track("cert"); }
+    if (g.id === "gold" && !state.flags["certgold_" + cid]) { state.flags["certgold_" + cid] = true; addXp(100, "олтин сертификат"); }
     modalBody.innerHTML = `
       <span class="pill">🏆 Табриклаймиз!</span>
       <h2><span>Курс муваффақиятли тугатилди</span>: «${esc(course.title)}»</h2>
+      <div class="cert-grade"><span class="big" aria-hidden="true">${g.medal}</span><div><b>${esc(g.title)}</b> · <span>${esc(g.name)}</span><br>
+        <span class="small muted"><span>Якуний тест натижаси</span>: ${best} %${g.id !== "gold" ? ` · <span>натижани яхшиласангиз, сертификат юқорироқ даража билан янгиланади</span>` : ""}</span></div></div>
       <p class="muted">Сертификатга ёзиладиган исм-шарифингизни киринг. Сертификатда текшириш коди ва QR код бўлади: уни ота-онангиз, ўқитувчингиз ёки иш берувчи текшира олади.</p>
       <form class="cert-form" id="certForm">
-        <input id="certName" aria-label="Исм ва фамилия" required maxlength="60" placeholder="Исм Фамилия" value="${esc(state.name)}">
+        <input id="certName" aria-label="Исм ва фамилия" required maxlength="60" placeholder="Исм Фамилия" value="${esc((state.certs && state.certs[cid] && state.certs[cid].name) || state.name)}">
         <button class="btn btn-primary">🏆 Сертификат олиш</button>
+        ${g.id !== "gold" ? `<button class="btn btn-ghost" type="button" data-cert-exam>🔁 Тестни қайта топшириш</button>` : ""}
       </form>
       <div id="certOut"></div>`;
+    const again = $("[data-cert-exam]", modalBody);
+    if (again) again.addEventListener("click", () => openExam(cid));
     $("#certForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const name = $("#certName").value.trim();
+      const name = $("#certName").value.trim().replace(/\s+/g, " ");
       if (!name) return;
       state.name = name; save();
       const btn = $("#certForm button");
       btn.disabled = true;
-      try { await showCertificate(name, course); } finally { btn.disabled = false; }
+      try { await showCertificate(name, course, best, g); } finally { btn.disabled = false; }
     });
     if (!modal.open) modal.showModal();
+    modal.scrollTop = 0;
+    const old = state.certs && state.certs[cid];
+    if (old && old.grade === g.id && old.pct === best) $("#certForm").requestSubmit();
   }
 
-  async function showCertificate(name, course) {
-    const cert = await issueCertificate(name, course);
+  async function showCertificate(name, course, pct, g) {
+    const out = $("#certOut");
+    out.innerHTML = `<p class="muted">⏳ <span>Сертификат тайёрланмоқда…</span></p>`;
+    const cert = await issueCertificate(name, course, pct, g);
     const url = cert.verified ? `${location.origin}/tekshir?c=${cert.code}` : "";
     let qr = null;
     if (url) { try { const q = (await loadQr())(0, "M"); q.addData(url); q.make(); qr = q; } catch (e) { /* QR'сиз */ } }
-    const cv = drawCertificate(name, course, cert, qr);
-    const file = `Ekomun-sertifikat-${course.id}.png`;
-    const out = $("#certOut");
+    try { await Promise.all([document.fonts.load(`800 40px Onest`), document.fonts.load(`400 40px Onest`)]); } catch (e) { /* тизим шрифти */ }
+    const cv = drawCertificate(name, course, cert, qr, g);
+    const file = `Ekomun-sertifikat-${course.id}-${cert.code}`;
     out.innerHTML = `
-      <img class="cert-img" alt="${esc(T("Сертификат"))}" src="${cv.toDataURL("image/png")}">
-      <p class="small muted">${cert.verified ? `Текшириш коди: <b data-notr>${cert.code}</b> · <a href="${esc(url)}" target="_blank" rel="noopener">текшириш саҳифаси ↗</a>` : "Интернетсиз берилди: сертификат рақами шу қурилмада сақланди. Интернет билан қайта очсангиз, QR текшириш коди қўшилади."}</p>
+      <img class="cert-img" alt="${esc(T("Сертификат"))}" src="${cv.toDataURL("image/jpeg", 0.9)}">
+      <p class="small muted">${cert.verified ? `<span>Текшириш коди</span>: <b data-notr>${cert.code}</b> · <a href="${esc(url)}" target="_blank" rel="noopener"><span>текшириш саҳифаси</span> ↗</a>` : "Интернетсиз берилди: сертификат рақами шу қурилмада сақланди. Интернет билан қайта очсангиз, QR текшириш коди қўшилади."}</p>
       <div class="cert-actions">
-        <button class="btn btn-primary" type="button" data-cert-dl>⬇ Юклаб олиш (PNG)</button>
+        <button class="btn btn-primary" type="button" data-cert-pdf>⬇ PDF</button>
+        <button class="btn btn-ghost" type="button" data-cert-dl>🖼 <span>Расм</span> (PNG)</button>
         <button class="btn btn-ghost" type="button" data-cert-share>📤 Улашиш</button>
       </div>`;
-    out.querySelector("[data-cert-dl]").onclick = () => {
-      const a = document.createElement("a");
-      a.download = file;
-      a.href = cv.toDataURL("image/png");
-      a.click();
-      toast("🏆 Сертификат юклаб олинди!");
+    const dl = (href, name) => { const a = document.createElement("a"); a.download = name; a.href = href; a.click(); };
+    out.querySelector("[data-cert-dl]").onclick = () => { dl(cv.toDataURL("image/png"), file + ".png"); toast("🏆 Сертификат юклаб олинди!"); };
+    out.querySelector("[data-cert-pdf]").onclick = async (e) => {
+      const b = e.currentTarget;
+      b.disabled = true;
+      try {
+        const JsPDF = await loadPdf();
+        const doc = new JsPDF({ orientation: "landscape", unit: "mm", format: "a4", compress: true });
+        doc.setProperties({ title: `${T("Сертификат")} ${cert.code}`, subject: course.title, author: "Ekomun", creator: "Ekomun" });
+        doc.addImage(cv.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, 297, 210);
+        if (url) doc.link(297 - 70, 210 - 62, 50, 50, { url });
+        const blobUrl = URL.createObjectURL(doc.output("blob"));
+        dl(blobUrl, file + ".pdf");
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+        toast("🏆 Сертификат юклаб олинди!");
+      } catch (err) { toast("PDF тайёрлаб бўлмади. Расм (PNG) сифатида юклаб олинг."); }
+      finally { b.disabled = false; }
     };
     const shareBtn = out.querySelector("[data-cert-share]");
-    const text = T(`Мен Ekomun платформасида «${course.title}» курсини тугатдим! 🌿`) + (url ? " " + url : "");
+    const text = T(`Мен Ekomun платформасида «${course.title}» курсини тугатдим! 🌿`) + ` ${g.medal} ${T(g.title)} · ${pct} %` + (url ? " " + url : "");
     shareBtn.onclick = async () => {
       try {
         const blob = await new Promise((r) => cv.toBlob(r, "image/png"));
-        const f = new File([blob], file, { type: "image/png" });
+        const f = new File([blob], file + ".png", { type: "image/png" });
         if (navigator.canShare && navigator.canShare({ files: [f] })) await navigator.share({ files: [f], text });
         else if (navigator.share) await navigator.share({ text });
         else { await navigator.clipboard.writeText(text); toast("Матн нусхаланди — Telegram'га жойлаштиринг"); }
@@ -50520,46 +50749,192 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     };
   }
 
-  function drawCertificate(name, course, cert, qr) {
-    const W = 1600, H = 1130;
+  /* Сертификат расми: A4 (албом), гильош нақшли фон, барг безакли рамка, даража муҳри ва QR код */
+  function drawCertificate(name, course, cert, qr, g) {
+    const W = 1600, H = 1131, K = 1.4;
     const cv = document.createElement("canvas");
-    cv.width = W; cv.height = H;
-    const g = cv.getContext("2d");
+    cv.width = Math.round(W * K); cv.height = Math.round(H * K);
+    const x = cv.getContext("2d");
+    x.scale(K, K);
     const F = "Onest, Inter, system-ui, sans-serif";
-    const bg = g.createLinearGradient(0, 0, W, H);
-    bg.addColorStop(0, "#f0fdf4"); bg.addColorStop(1, "#e0f2fe");
-    g.fillStyle = bg; g.fillRect(0, 0, W, H);
-    g.strokeStyle = "#047857"; g.lineWidth = 14; g.strokeRect(40, 40, W - 80, H - 80);
-    g.strokeStyle = "#86efac"; g.lineWidth = 3; g.strokeRect(70, 70, W - 140, H - 140);
-    g.textAlign = "center";
-    g.fillStyle = "#047857"; g.font = `700 44px ${F}`;
-    g.fillText("🌿 Ekomun", W / 2, 180);
-    g.fillStyle = "#0b1f17"; g.font = `800 96px ${F}`;
-    g.fillText(T("СЕРТИФИКАТ"), W / 2, 320);
-    g.fillStyle = "#4a5f56"; g.font = `400 36px ${F}`;
-    g.fillText(T("Ушбу сертификат"), W / 2, 420);
-    g.fillStyle = "#0c4a6e"; g.font = `700 76px ${F}`;
-    g.fillText(name, W / 2, 530, W - 240);
-    g.fillStyle = "#047857"; g.fillRect(W / 2 - 300, 560, 600, 4);
-    g.fillStyle = "#4a5f56"; g.font = `400 36px ${F}`;
-    g.fillText(T("га қуйидаги экологик таълим курсини муваффақиятли"), W / 2, 640);
-    g.fillText(T("тугатганлиги учун берилди:"), W / 2, 690);
-    g.fillStyle = "#0b1f17"; g.font = `700 50px ${F}`;
-    g.fillText(T(`«${course.title}»`), W / 2, 790, W - 240);
-    g.fillStyle = "#4a5f56"; g.font = `400 30px ${F}`;
-    g.fillText(T(`${course.lessons.length} та дарс · барча тестлар топширилган`) + (state.exams[course.id] != null ? ` · ${T("якуний тест")}: ${state.exams[course.id]}%` : ""), W / 2, 850, W - 240);
-    g.textAlign = "left";
-    g.fillText(T(`Сана: ${cert.date.split("-").reverse().join(".")}`), 160, 990);
-    g.fillText(`№ ${cert.code}`, 160, 1040);
+    const [m0, m1, m2, m3] = g.m;
+    const GREEN = "#065f46", DEEP = "#052e22", INK = "#0b1f17", MUTED = "#4a5f56";
+    const sp = (v) => { try { x.letterSpacing = v; } catch (e) { /* эски браузер */ } };
+    const metal = (x0, y0, x1, y1) => { const gr = x.createLinearGradient(x0, y0, x1, y1); gr.addColorStop(0, m2); gr.addColorStop(0.35, m0); gr.addColorStop(0.55, m1); gr.addColorStop(1, m2); return gr; };
+
+    /* 1. Қоғоз: илиқ фил суяги ранги ва юмшоқ виньетка */
+    let gr = x.createRadialGradient(W / 2, H / 2, 100, W / 2, H / 2, W * 0.75);
+    gr.addColorStop(0, "#fffdf5"); gr.addColorStop(0.7, "#f7f3e6"); gr.addColorStop(1, "#ece4cc");
+    x.fillStyle = gr; x.fillRect(0, 0, W, H);
+
+    /* 2. Гильош: марказда нозик розетка ва фон бўйлаб тўлқинли чизиқлар (ҳимоя нақши) */
+    x.save();
+    x.globalAlpha = 0.10; x.strokeStyle = GREEN; x.lineWidth = 0.8;
+    for (let row = 0; row < 46; row++) {
+      const y0 = 60 + row * 23;
+      x.beginPath();
+      for (let px = 0; px <= W; px += 8) x.lineTo(px, y0 + Math.sin(px / 46 + row * 0.6) * 7 + Math.sin(px / 13) * 1.5);
+      x.stroke();
+    }
+    x.globalAlpha = 0.12; x.strokeStyle = m2;
+    const cx0 = W / 2, cy0 = 560;
+    for (let k = 0; k < 18; k++) {
+      x.beginPath();
+      for (let t = 0; t <= Math.PI * 2 + 0.01; t += 0.01) {
+        const r = 250 + 46 * Math.sin(12 * t + k * 0.35) + 18 * Math.cos(30 * t);
+        x.lineTo(cx0 + r * Math.cos(t + k * 0.017), cy0 + r * 0.62 * Math.sin(t + k * 0.017));
+      }
+      x.stroke();
+    }
+    x.restore();
+
+    /* 3. Сув белгиси: катта барг */
+    function leaf(cx, cy, len, ang, fill, vein) {
+      x.save(); x.translate(cx, cy); x.rotate(ang);
+      x.beginPath(); x.moveTo(0, 0);
+      x.bezierCurveTo(len * 0.3, -len * 0.32, len * 0.75, -len * 0.3, len, 0);
+      x.bezierCurveTo(len * 0.75, len * 0.3, len * 0.3, len * 0.32, 0, 0);
+      x.fillStyle = fill; x.fill();
+      if (vein) { x.strokeStyle = vein; x.lineWidth = Math.max(1, len / 40); x.beginPath(); x.moveTo(len * 0.04, 0); x.lineTo(len * 0.92, 0); x.stroke(); }
+      x.restore();
+    }
+    x.save(); x.globalAlpha = 0.05;
+    leaf(W / 2 - 230, 760, 470, -0.9, GREEN); leaf(W / 2 + 230, 760, 470, Math.PI + 0.9, GREEN);
+    x.restore();
+
+    /* 4. Рамка: тўқ яшил қалин чизиқ, металл ички чизиқ, гильош тасма */
+    x.save();
+    x.lineJoin = "round";
+    x.strokeStyle = GREEN; x.lineWidth = 22; x.strokeRect(34, 34, W - 68, H - 68);
+    x.strokeStyle = metal(0, 0, W, H); x.lineWidth = 5; x.strokeRect(52, 52, W - 104, H - 104);
+    x.strokeStyle = m2; x.lineWidth = 1.5; x.strokeRect(92, 92, W - 184, H - 184);
+    x.globalAlpha = 0.55; x.strokeStyle = GREEN; x.lineWidth = 1;
+    const band = (len, draw) => { for (let ph = 0; ph < 2; ph++) { x.beginPath(); for (let t = 0; t <= len; t += 3) draw(t, Math.sin(t / 9 + ph * Math.PI) * 10); x.stroke(); } };
+    x.save(); x.translate(0, 72); band(W - 200, (t, d) => x.lineTo(100 + t, d)); x.restore();
+    x.save(); x.translate(0, H - 72); band(W - 200, (t, d) => x.lineTo(100 + t, d)); x.restore();
+    x.save(); x.translate(72, 0); band(H - 200, (t, d) => x.lineTo(d, 100 + t)); x.restore();
+    x.save(); x.translate(W - 72, 0); band(H - 200, (t, d) => x.lineTo(d, 100 + t)); x.restore();
+    x.restore();
+    /* бурчак безаклари: барг шохчалари ва металл ромб */
+    [[92, 92, 0], [W - 92, 92, Math.PI / 2], [W - 92, H - 92, Math.PI], [92, H - 92, -Math.PI / 2]].forEach(([cx, cy, a]) => {
+      x.save(); x.translate(cx, cy); x.rotate(a);
+      leaf(6, 6, 74, 0.12, "#047857", "rgba(255,255,255,.45)");
+      leaf(6, 6, 74, Math.PI / 2 - 0.12, "#047857", "rgba(255,255,255,.45)");
+      leaf(10, 10, 52, Math.PI / 4, "#10b981", "rgba(255,255,255,.5)");
+      x.fillStyle = metal(-14, -14, 14, 14);
+      x.beginPath(); x.moveTo(0, -16); x.lineTo(16, 0); x.lineTo(0, 16); x.lineTo(-16, 0); x.closePath(); x.fill();
+      x.strokeStyle = m3; x.lineWidth = 1.2; x.stroke();
+      x.restore();
+    });
+
+    /* 5. Сарлавҳа: логотип, СЕРТИФИКАТ, даража тасмаси */
+    x.textAlign = "center"; x.textBaseline = "alphabetic";
+    leaf(W / 2 - 112, 150, 34, -2.4, "#047857"); leaf(W / 2 - 112, 150, 26, -1.5, "#10b981");
+    x.fillStyle = GREEN; x.font = `800 34px ${F}`; sp("8px");
+    x.fillText("EKOMUN", W / 2 + 4, 162);
+    sp("2px"); x.font = `500 18px ${F}`; x.fillStyle = MUTED;
+    x.fillText(T("Экологик таълим платформаси").toUpperCase(), W / 2, 192);
+    sp("14px"); x.font = `800 92px ${F}`;
+    gr = x.createLinearGradient(0, 220, 0, 310); gr.addColorStop(0, "#0b5d45"); gr.addColorStop(1, DEEP);
+    x.fillStyle = gr; x.fillText(T("СЕРТИФИКАТ"), W / 2 + 7, 300);
+    sp("0px");
+    /* даража тасмаси */
+    const rank = T(g.rank) + " · " + T(g.name).toUpperCase();
+    x.font = `700 22px ${F}`; sp("4px");
+    const rw = x.measureText(rank).width + 90, ry = 326;
+    x.fillStyle = m2;
+    x.beginPath(); x.moveTo(W / 2 - rw / 2 - 26, ry); x.lineTo(W / 2 - rw / 2, ry); x.lineTo(W / 2 - rw / 2, ry + 44); x.lineTo(W / 2 - rw / 2 - 26, ry + 44); x.lineTo(W / 2 - rw / 2 - 14, ry + 22); x.closePath(); x.fill();
+    x.beginPath(); x.moveTo(W / 2 + rw / 2 + 26, ry); x.lineTo(W / 2 + rw / 2, ry); x.lineTo(W / 2 + rw / 2, ry + 44); x.lineTo(W / 2 + rw / 2 + 26, ry + 44); x.lineTo(W / 2 + rw / 2 + 14, ry + 22); x.closePath(); x.fill();
+    x.fillStyle = metal(W / 2 - rw / 2, ry, W / 2 + rw / 2, ry + 44);
+    x.fillRect(W / 2 - rw / 2, ry - 4, rw, 52);
+    x.fillStyle = m3; x.fillText(rank, W / 2 + 2, ry + 31);
+    sp("0px");
+
+    /* 6. Матн */
+    x.fillStyle = MUTED; x.font = `400 30px ${F}`;
+    x.fillText(T("Ушбу сертификат"), W / 2, 424);
+    let fs = 78; x.font = `800 ${fs}px ${F}`;
+    while (x.measureText(name).width > W - 420 && fs > 44) { fs -= 2; x.font = `800 ${fs}px ${F}`; }
+    gr = x.createLinearGradient(0, 460, 0, 540); gr.addColorStop(0, "#0c4a6e"); gr.addColorStop(1, "#082f49");
+    x.fillStyle = gr; x.fillText(name, W / 2, 508);
+    const nw = Math.min(W - 420, Math.max(520, x.measureText(name).width + 80));
+    gr = x.createLinearGradient(W / 2 - nw / 2, 0, W / 2 + nw / 2, 0);
+    gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(0.2, m2); gr.addColorStop(0.8, m2); gr.addColorStop(1, "rgba(0,0,0,0)");
+    x.fillStyle = gr; x.fillRect(W / 2 - nw / 2, 532, nw, 3);
+    leaf(W / 2 - 10, 533, 22, Math.PI, m2); leaf(W / 2 + 10, 533, 22, 0, m2);
+    x.fillStyle = MUTED; x.font = `400 28px ${F}`;
+    x.fillText(T("га қуйидаги экологик таълим курсини муваффақиятли"), W / 2, 590);
+    x.fillText(T("тугатганлиги учун берилди:"), W / 2, 627);
+    const ttl = T(`«${course.title}»`);
+    fs = 46; x.font = `700 ${fs}px ${F}`;
+    const words = ttl.split(" "), lines = [];
+    let ln = "";
+    words.forEach((w) => { const t = ln ? ln + " " + w : w; if (x.measureText(t).width > W - 380 && ln) { lines.push(ln); ln = w; } else ln = t; });
+    lines.push(ln);
+    if (lines.length > 2) { fs = 38; x.font = `700 ${fs}px ${F}`; lines.splice(2, lines.length, lines.slice(1).join(" ")); }
+    x.fillStyle = INK;
+    lines.slice(0, 2).forEach((l, i) => x.fillText(l, W / 2, 694 + i * (fs + 10), W - 360));
+    const yInfo = 694 + (Math.min(lines.length, 2) - 1) * (fs + 10) + 56;
+    x.fillStyle = MUTED; x.font = `500 25px ${F}`;
+    x.fillText(`${cert.lessons || course.lessons.length} ${T("та дарс")}  ·  ${T("Якуний тест натижаси")}: ${cert.pct} %  ·  ${T("Баҳо")}: ${T(g.name)}`, W / 2, yInfo, W - 380);
+
+    /* 7. Пастки қатор: сана ва рақам (чапда), муҳр (марказда), QR (ўнгда) */
+    const by = H - 200;
+    x.textAlign = "left"; x.fillStyle = INK; x.font = `700 24px ${F}`;
+    x.fillText(cert.date.split("-").reverse().join("."), 190, by - 40);
+    x.fillStyle = MUTED; x.font = `400 19px ${F}`;
+    x.fillText(T("Берилган сана"), 190, by - 14);
+    x.fillStyle = INK; x.font = `700 24px ${F}`;
+    x.fillText(cert.code, 190, by + 36);
+    x.fillStyle = MUTED; x.font = `400 19px ${F}`;
+    x.fillText(T("Сертификат рақами"), 190, by + 62);
+    x.strokeStyle = m2; x.lineWidth = 1.5;
+    x.beginPath(); x.moveTo(190, by - 2); x.lineTo(480, by - 2); x.moveTo(190, by + 74); x.lineTo(480, by + 74); x.stroke();
+
+    /* муҳр: тасмалар, тишли медаль, ичида натижа ва доира бўйлаб ёзув */
+    const sx = W / 2, sy = by + 6, R = 84;
+    x.save();
+    [[-1, "#047857"], [1, "#065f46"]].forEach(([d, c]) => {
+      x.fillStyle = c;
+      x.beginPath(); x.moveTo(sx + d * 16, sy + 40); x.lineTo(sx + d * 54, sy + 112); x.lineTo(sx + d * 36, sy + 104); x.lineTo(sx + d * 30, sy + 126); x.lineTo(sx + d * -8, sy + 50); x.closePath(); x.fill();
+    });
+    x.shadowColor = "rgba(0,0,0,.25)"; x.shadowBlur = 14; x.shadowOffsetY = 4;
+    x.beginPath();
+    for (let i = 0; i <= 72; i++) { const a = (i / 72) * Math.PI * 2, r = i % 2 ? R : R + 9; x.lineTo(sx + r * Math.cos(a), sy + r * Math.sin(a)); }
+    x.closePath(); x.fillStyle = metal(sx - R, sy - R, sx + R, sy + R); x.fill();
+    x.restore();
+    x.strokeStyle = m3; x.lineWidth = 1.5;
+    x.beginPath(); x.arc(sx, sy, R - 10, 0, Math.PI * 2); x.stroke();
+    x.beginPath(); x.arc(sx, sy, R - 40, 0, Math.PI * 2); x.stroke();
+    gr = x.createRadialGradient(sx - 20, sy - 20, 5, sx, sy, R - 40); gr.addColorStop(0, m0); gr.addColorStop(1, m1);
+    x.fillStyle = gr; x.beginPath(); x.arc(sx, sy, R - 41, 0, Math.PI * 2); x.fill();
+    const ring = `EKOMUN · ${T(g.title).toUpperCase()} · `;
+    x.fillStyle = m3; x.font = `700 15px ${F}`; x.textAlign = "center";
+    const tw = ring.split("").reduce((s, ch) => s + x.measureText(ch).width + 1.5, 0), rr = R - 25;
+    let a0 = -Math.PI / 2 - (tw / rr) / 2;
+    if (tw / rr < Math.PI * 2) ring.split("").forEach((ch) => { const w = x.measureText(ch).width + 1.5; a0 += w / 2 / rr; x.save(); x.translate(sx + rr * Math.cos(a0), sy + rr * Math.sin(a0)); x.rotate(a0 + Math.PI / 2); x.fillText(ch, 0, 5); x.restore(); a0 += w / 2 / rr; });
+    x.fillStyle = m3; x.font = `800 40px ${F}`; x.textBaseline = "middle";
+    x.fillText(cert.pct + "%", sx, sy - 4);
+    x.font = `700 12px ${F}`; sp("1px");
+    x.fillText(T(g.name).toUpperCase(), sx + 1, sy + 26, (R - 46) * 2);
+    sp("0px"); x.textBaseline = "alphabetic";
+
+    /* QR ёки офлайн белги */
+    const qs = 150, qx = W - 196 - qs, qy = by - 66;
+    x.fillStyle = "#fff"; x.strokeStyle = m2; x.lineWidth = 2;
+    x.beginPath(); (x.roundRect ? x.roundRect(qx - 14, qy - 14, qs + 28, qs + 28, 14) : x.rect(qx - 14, qy - 14, qs + 28, qs + 28)); x.fill(); x.stroke();
     if (qr) {
-      const n = qr.getModuleCount(), size = 160, cell = size / n, x0 = W - 170 - size, y0 = 870, q = Math.ceil(cell * 4); // 4 модуль бўш чегара
-      g.fillStyle = "#fff"; g.fillRect(x0 - q, y0 - q, size + 2 * q, size + 2 * q);
-      g.fillStyle = "#0b1f17";
-      for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) g.fillRect(x0 + c * cell, y0 + r * cell, Math.ceil(cell), Math.ceil(cell));
-      g.textAlign = "right"; g.font = `400 22px ${F}`; g.fillStyle = "#4a5f56";
-      g.fillText(T("QR — ҳақиқийлигини текшириш"), x0 - q - 12, y0 + size);
+      const n = qr.getModuleCount(), cell = qs / n;
+      x.fillStyle = DEEP;
+      for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) x.fillRect(qx + c * cell, qy + r * cell, Math.ceil(cell), Math.ceil(cell));
+      x.textAlign = "right"; x.font = `400 18px ${F}`; x.fillStyle = MUTED;
+      x.fillText(T("QR код орқали"), qx - 28, qy + qs - 34);
+      x.fillText(T("ҳақиқийлигини текширинг"), qx - 28, qy + qs - 10);
     } else {
-      g.font = "120px sans-serif"; g.textAlign = "center"; g.fillText("🌍", W / 2, 1010);
+      leaf(qx + qs / 2 - 40, qy + qs / 2 + 30, 80, -0.9, "#047857", "rgba(255,255,255,.5)");
+      leaf(qx + qs / 2 - 40, qy + qs / 2 + 30, 60, -0.2, "#10b981", "rgba(255,255,255,.5)");
+      x.textAlign = "right"; x.font = `400 18px ${F}`; x.fillStyle = MUTED;
+      x.fillText(T("Интернетсиз берилган"), qx - 28, qy + qs - 10);
     }
     return cv;
   }
@@ -53776,5 +54151,8 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   <script src="/vendor/eko-bola-huquq-data.js" defer></script>
   <script src="/vendor/eko-bola-huquq.js" defer></script>
   <script src="/vendor/eko-mro.js" defer></script>
+  <script src="/vendor/eko-video-data.js" defer></script>
+  <script src="/vendor/eko-video.js" defer></script>
+  <script src="/vendor/eko-fikr.js" defer></script>
 </body>
 </html>
