@@ -65,7 +65,7 @@ if (!ADMIN_PASSWORD) {
 
 /* ---------- Маълумотлар омбори (JSON файл) ---------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
-let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [] };
+let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [] };
 try {
   db = Object.assign(db, JSON.parse(fs.readFileSync(DB_FILE, "utf8")));
 } catch (e) {
@@ -286,6 +286,7 @@ function sweep() {
   for (const [token, exp] of adminSessions) if (exp < t) adminSessions.delete(token);
   for (const [ip, r] of visitRate) if (t - r.first > 10 * 60 * 1000) visitRate.delete(ip);
   for (const [ip, r] of errRate) if (t - r.first > 10 * 60 * 1000) errRate.delete(ip);
+  for (const [ip, r] of fbRate) if (t - r.first > 60 * 60 * 1000) fbRate.delete(ip);
   for (const k of usedTotp) if (Number(k) < Math.floor(t / 30000) - 3) usedTotp.delete(k);
   for (const [ip, f] of failures) if (t - f.first > 15 * 60 * 1000) failures.delete(ip);
   for (const [ip, r] of registrations) if (t - r.first > 60 * 60 * 1000) registrations.delete(ip);
@@ -379,6 +380,8 @@ function purgeUser(user) {
   db.classes = db.classes.filter((c) => c.teacherId !== id);
   db.visits = db.visits.filter((v) => v.userId !== id);
   db.certs = db.certs.filter((c) => c.userId !== id);
+  /* Фикр-мулоҳаза матни қолади (жамоа учун), лекин муаллифи билан алоқаси узилади */
+  for (const f of db.feedback) if (f.userId === id) { f.userId = null; f.name = ""; f.email = ""; f.contact = ""; }
 }
 
 /* ---------- Ташрифлар (анонимлаштирилган фойдаланиш статистикаси) ----------
@@ -397,6 +400,17 @@ function tooManyErrors(ip) {
   return ++r.count > 30;
 }
 const SEC_RE = /^[a-z0-9-]{1,24}$/;
+/* Фикр-мулоҳаза: бир IP дан соатига 12 та, бир қурилмадан кунига 10 та */
+const fbRate = new Map();
+function tooManyFeedback(ip) {
+  const r = fbRate.get(ip);
+  if (!r || now() - r.first > 60 * 60 * 1000) { fbRate.set(ip, { first: now(), count: 1 }); return false; }
+  return ++r.count > 12;
+}
+const FB_KINDS = ["idea", "bug", "content", "question", "praise"];
+const FB_SEC_RE = /^(?:[a-z0-9-]{1,24}|video:[a-z0-9-]{1,30})$/;
+const MAX_FEEDBACK = 20000;
+const fbHash = (key) => crypto.createHash("sha256").update(String(key)).digest("hex");
 /* Сертификат даражаси якуний тест натижасига қараб (index.html даги GRADES билан бир хил) */
 const CERT_MIN = 60;
 const certGrade = (pct) => (pct >= 90 ? "gold" : pct >= 75 ? "silver" : pct >= CERT_MIN ? "bronze" : null);
@@ -1111,6 +1125,50 @@ async function api(req, res, pathname) {
   }
 
   /* Ўз маълумотларини юклаб олиш (ҳисоб, кириш журнали, харита хабарлари, ташрифлар) */
+  /* ---------- Фикр-мулоҳаза ----------
+     Ҳисобсиз ҳам юбориш мумкин. Жавоб калити (key) фақат юборувчининг қурилмасида туради,
+     серверда унинг хеши сақланади — бошқа одам жавобни ўқий олмайди. */
+  if (pathname === "/api/feedback" && method === "POST") {
+    if (tooManyFeedback(ip)) return send(res, 429, { error: "Жуда кўп мулоҳаза. Бироздан сўнг қайта ёзинг" });
+    const body = await readBody(req, 8 * 1024);
+    const kind = FB_KINDS.includes(String(body.kind)) ? String(body.kind) : "idea";
+    const text = cleanText(body.text, 1000);
+    if (text.length < 10) return send(res, 400, { error: "Камида 10 та белги ёзинг" });
+    const vid = /^[a-z0-9]{12,32}$/.test(String(body.vid || "")) ? String(body.vid) : "";
+    if (vid && db.blockedVids[vid]) return send(res, 403, { error: BLOCK_MSG, blocked: true });
+    const dayAgo = now() - 24 * 60 * 60 * 1000;
+    if (vid && db.feedback.filter((f) => f.vid === vid && f.at > dayAgo).length >= 10) return send(res, 429, { error: "Бугун кўп мулоҳаза юбордингиз. Эртага яна ёзинг" });
+    const cur = currentUser(req);
+    const stage = ["maktab", "uni"].includes(String(body.stage)) ? String(body.stage) : "";
+    const key = crypto.randomBytes(16).toString("hex");
+    const f = {
+      id: newId(), keyHash: fbHash(key), at: now(), kind, text,
+      rating: Math.max(0, Math.min(5, Math.floor(Number(body.rating) || 0))),
+      sec: FB_SEC_RE.test(String(body.sec || "")) ? String(body.sec) : "",
+      /* Мактаб босқичидаги болалардан алоқа маълумоти олинмайди */
+      contact: stage === "maktab" ? "" : cleanText(body.contact, 100),
+      stage, lang: ["cyr", "lat", "ru", "en"].includes(String(body.lang)) ? String(body.lang) : "",
+      ver: cleanText(body.ver, 20), vid, userId: cur ? cur.user.id : null, name: cur ? cur.user.name : "", email: cur ? cur.user.email : "",
+      ip, device: describeDevice(req.headers["user-agent"]), read: false, readAt: 0, reply: "", replyAt: 0, archived: false
+    };
+    db.feedback.push(f);
+    if (db.feedback.length > MAX_FEEDBACK) db.feedback.splice(0, db.feedback.length - MAX_FEEDBACK);
+    save();
+    return send(res, 201, { id: f.id, key });
+  }
+  if (pathname === "/api/feedback/status" && method === "POST") {
+    if (tooManyErrors(ip)) return send(res, 429, { error: "Жуда кўп сўров" });
+    const body = await readBody(req, 8 * 1024);
+    const items = Array.isArray(body.items) ? body.items.slice(0, 30) : [];
+    const out = items.map((x) => {
+      const id = String((x && x.id) || ""), key = String((x && x.key) || "");
+      const f = /^[a-f0-9]{16}$/.test(id) && /^[a-f0-9]{32}$/.test(key) && db.feedback.find((y) => y.id === id);
+      if (!f || f.keyHash !== fbHash(key)) return { id, gone: true };
+      return { id, read: !!f.read, reply: f.reply || "", replyAt: f.replyAt || 0 };
+    });
+    return send(res, 200, { items: out });
+  }
+
   if (pathname === "/api/account/export" && method === "GET") {
     const cur = currentUser(req);
     if (!cur) return send(res, 401, { error: "Аввал ҳисобга киринг" });
@@ -1121,7 +1179,8 @@ async function api(req, res, pathname) {
       events: db.events.filter((e) => e.userId === u.id).map(({ at, type, ip, device }) => ({ at: new Date(at).toISOString(), type, ip, device })),
       reports: db.reports.filter((r) => r.userId === u.id),
       visits: db.visits.filter((v) => v.userId === u.id).map(visitView).map(({ user, ...v }) => v),
-      certificates: db.certs.filter((c) => c.userId === u.id).map(({ userId, ...c }) => c)
+      certificates: db.certs.filter((c) => c.userId === u.id).map(({ userId, ...c }) => c),
+      feedback: db.feedback.filter((f) => f.userId === u.id).map(({ at, kind, rating, sec, text, contact, reply, replyAt }) => ({ at: new Date(at).toISOString(), kind, rating, sec, text, contact, reply, replyAt: replyAt ? new Date(replyAt).toISOString() : null }))
     };
     res.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Content-Disposition": 'attachment; filename="ekomun-mening-malumotlarim.json"', "Cache-Control": "no-store" });
     return res.end(JSON.stringify(data, null, 2));
@@ -1240,7 +1299,8 @@ async function api(req, res, pathname) {
         registersToday: today.filter((e) => e.type === "register").length,
         failedToday: today.filter((e) => e.type === "login_failed").length,
         aiToday: today.filter((e) => e.type === "ai").length,
-        pendingReports: db.reports.filter((r) => r.status === "pending").length
+        pendingReports: db.reports.filter((r) => r.status === "pending").length,
+        newFeedback: db.feedback.filter((f) => !f.read && !f.archived).length
       },
       online,
       guests: db.visits.filter((v) => !v.ended && t - v.last <= ONLINE_MS).sort((a, b) => b.last - a.last).map(visitView),
@@ -1283,6 +1343,41 @@ async function api(req, res, pathname) {
       if (u && r.status === "approved") u.approved = Math.max(0, (u.approved || 0) - 1);
       db.reports = db.reports.filter((x) => x !== r);
     } else return send(res, 400, { error: "Нотўғри амал" });
+    save();
+    return send(res, 200, { ok: true });
+  }
+
+  /* Фикр-мулоҳазалар: рўйхат, ўқилди/ўқилмади, жавоб, архив, ўчириш */
+  if (pathname === "/api/admin/feedback" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const list = db.feedback.slice().sort((a, b) => b.at - a.at).slice(0, 3000)
+      .map(({ keyHash, ...f }) => f);
+    return send(res, 200, { feedback: list, total: db.feedback.length });
+  }
+  if (pathname === "/api/admin/feedback/read-all" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const t = now();
+    let n = 0;
+    for (const f of db.feedback) if (!f.read) { f.read = true; f.readAt = t; n++; }
+    save();
+    return send(res, 200, { ok: true, count: n });
+  }
+  const fbm = /^\/api\/admin\/feedback\/([a-f0-9]{16})$/.exec(pathname);
+  if (fbm && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const body = await readBody(req, 8 * 1024);
+    const f = db.feedback.find((x) => x.id === fbm[1]);
+    if (!f) return send(res, 404, { error: "Мулоҳаза топилмади" });
+    const action = String(body.action || "");
+    if (action === "read") { f.read = true; f.readAt = now(); }
+    else if (action === "unread") { f.read = false; f.readAt = 0; }
+    else if (action === "archive") { f.archived = true; f.read = true; f.readAt = f.readAt || now(); }
+    else if (action === "unarchive") f.archived = false;
+    else if (action === "reply") {
+      const reply = cleanText(body.text, 1000);
+      f.reply = reply; f.replyAt = reply ? now() : 0; f.read = true; f.readAt = f.readAt || now();
+    } else if (action === "delete") db.feedback = db.feedback.filter((x) => x !== f);
+    else return send(res, 400, { error: "Нотўғри амал" });
     save();
     return send(res, 200, { ok: true });
   }
@@ -1447,6 +1542,10 @@ async function api(req, res, pathname) {
       name = "ekomun-foydalanuvchilar.csv";
       body = csv([["Исм", "Почта", "Туғилган йил", "18+", "Рўйхатдан ўтган", "Охирги кириш", "Киришлар", "Блокланган"],
         ...db.users.map((u) => [u.name, u.email, u.by || "", u.adult ? "ҳа" : "йўқ", iso(u.createdAt), iso(u.lastLogin), u.loginCount || 0, u.blocked ? "ҳа: " + (u.blocked.reason || "") : ""])]);
+    } else if (type === "feedback") {
+      name = "ekomun-fikr-mulohazalar.csv";
+      body = csv([["Вақт", "Тури", "Баҳо", "Бўлим", "Мулоҳаза", "Алоқа", "Исм", "Почта", "Босқич", "Тил", "Версия", "Ўқилди", "Жавоб", "Жавоб вақти", "Архив", "Қурилма", "IP"],
+        ...db.feedback.slice().reverse().map((f) => [iso(f.at), f.kind, f.rating || "", f.sec, f.text, f.contact, f.name, f.email, f.stage, f.lang, f.ver, f.read ? "ҳа" : "йўқ", f.reply, iso(f.replyAt), f.archived ? "ҳа" : "", f.device, f.ip])]);
     } else return send(res, 400, { error: "Нотўғри тур" });
     res.writeHead(200, { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": `attachment; filename="${name}"`, "Cache-Control": "no-store" });
     return res.end(body);
@@ -1505,6 +1604,9 @@ const STATIC = {
   "/vendor/eko-bola-huquq-data.js": { file: "vendor/eko-bola-huquq-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-bola-huquq.js": { file: "vendor/eko-bola-huquq.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-mro.js": { file: "vendor/eko-mro.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-video-data.js": { file: "vendor/eko-video-data.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-video.js": { file: "vendor/eko-video.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-fikr.js": { file: "vendor/eko-fikr.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-plus.js": { file: "vendor/eko-plus.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun-darslik-data.js": { file: "vendor/eko-qonun-darslik-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun-darslik.js": { file: "vendor/eko-qonun-darslik.js", type: "text/javascript; charset=utf-8" },
