@@ -83,7 +83,7 @@ if (!ADMIN_PASSWORD) {
 
 /* ---------- Маълумотлар омбори (JSON файл) ---------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
-let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {} };
+let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {}, turnir: {}, refs: {}, refClaimed: {}, news: [] };
 try {
   db = Object.assign(db, JSON.parse(fs.readFileSync(DB_FILE, "utf8")));
 } catch (e) {
@@ -499,6 +499,7 @@ function purgeUser(user) {
   db.certs = db.certs.filter((c) => c.userId !== id);
   /* Фикр-мулоҳаза матни қолади (жамоа учун), лекин муаллифи билан алоқаси узилади */
   for (const f of db.feedback) if (f.userId === id) { f.userId = null; f.name = ""; f.email = ""; f.contact = ""; }
+  for (const list of Object.values(db.turnir)) for (const e of list) if (e.userId === id) e.userId = null;
 }
 
 /* ---------- Ташрифлар (анонимлаштирилган фойдаланиш статистикаси) ----------
@@ -976,6 +977,113 @@ function validTask(body) {
   return { id: newId(), type, target, course, title, due, createdAt: now() };
 }
 
+/* ---------- Open Badges 3.0 (1EdTech): сертификатни рақамли имзолаш ----------
+   Ed25519 калити бир марта яратилиб data/ob3-key.json да сақланади (ёки OB3_PRIVATE_JWK).
+   Имзоланган нусха — VC-JWT (alg EdDSA), очиқ калит — /api/ob3/jwks. */
+const OB3_KEY_FILE = path.join(DATA_DIR, "ob3-key.json");
+let ob3Key = null;
+function ob3Keys() {
+  if (ob3Key) return ob3Key;
+  let jwk = null;
+  try { jwk = JSON.parse(process.env.OB3_PRIVATE_JWK || fs.readFileSync(OB3_KEY_FILE, "utf8")); } catch (e) { jwk = null; }
+  if (!jwk || jwk.kty !== "OKP" || !jwk.d) {
+    jwk = crypto.generateKeyPairSync("ed25519").privateKey.export({ format: "jwk" });
+    try { fs.writeFileSync(OB3_KEY_FILE, JSON.stringify(jwk), { mode: 0o600 }); } catch (e) { console.error("OB3 key save failed:", e.message); }
+  }
+  const priv = crypto.createPrivateKey({ key: jwk, format: "jwk" });
+  const pub = crypto.createPublicKey(priv).export({ format: "jwk" });
+  ob3Key = { priv, pub: { kty: pub.kty, crv: pub.crv, x: pub.x, kid: "key-1", alg: "EdDSA", use: "sig" } };
+  return ob3Key;
+}
+const b64url = (buf) => Buffer.from(buf).toString("base64").replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
+function publicOrigin(req) {
+  const env = String(process.env.PUBLIC_URL || "").replace(/\/+$/, "");
+  if (/^https?:\/\/[^/\s]+$/.test(env)) return env;
+  const host = String(req.headers.host || "localhost").replace(/[^\w.:-]/g, "");
+  const proto = req.headers["x-forwarded-proto"] === "https" || req.socket.encrypted ? "https" : "http";
+  return proto + "://" + host;
+}
+/* Курс → БМТ Барқарор ривожланиш мақсадлари (vendor/eko-pasport.js даги META билан бир хил) */
+const COURSE_SDG = { yerqalqon: [12, 11, 4], yosh: [4, 15, 13], tabiat: [15, 14, 4], steam: [9, 4, 12], dunyo: [17, 11, 4], kichik: [4, 15, 12], asoslar: [13, 15, 6, 4], korxona: [12, 9, 8, 13], talaba: [4, 7, 11, 13], suvhavo: [6, 3, 13], biotoza: [6, 14, 3], monitoring: [15, 3, 13, 6], iqlim: [13, 7, 11], qayta: [12, 9, 11], ekologiya: [15, 14, 13, 4], litosfera: [12, 15, 3], xalqaro: [17, 13, 12], qollanma: [16, 12, 9], tadqiqot: [4, 9, 17] };
+const SDG_EN = { 3: "Good health and well-being", 4: "Quality education", 6: "Clean water and sanitation", 7: "Affordable and clean energy", 8: "Decent work and economic growth", 9: "Industry, innovation and infrastructure", 11: "Sustainable cities and communities", 12: "Responsible consumption and production", 13: "Climate action", 14: "Life below water", 15: "Life on land", 16: "Peace, justice and strong institutions", 17: "Partnerships for the goals" };
+const ob3Issuer = (o) => ({ "@context": ["https://www.w3.org/ns/credentials/v2", "https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json"], id: o + "/api/ob3/issuer", type: ["Profile"], name: "Ekomun", url: o, description: "Ekomun — environmental education platform (Uzbekistan)" });
+function ob3Achievement(o, cid, title) {
+  const gs = COURSE_SDG[cid] || [];
+  return {
+    id: `${o}/api/ob3/achievement/${cid}`, type: ["Achievement"], achievementType: "Certificate", name: title,
+    description: `Ekomun course certificate: ${title}`, criteria: { narrative: "All course lessons completed and the final test passed with at least 60 %." },
+    alignment: gs.map((g) => ({ type: ["Alignment"], targetName: `SDG ${g}: ${SDG_EN[g]}`, targetUrl: `https://sdgs.un.org/goals/goal${g}`, targetType: "ext:UN-SDG" })),
+    resultDescription: [{ id: `urn:ekomun:result:${cid}:score`, type: ["ResultDescription"], name: "Final test score", resultType: "Percent" }],
+    tag: ["ecology", "ESD"].concat(gs.map((g) => "SDG" + g))
+  };
+}
+function ob3Credential(o, c) {
+  const salt = crypto.randomBytes(8).toString("hex");
+  return {
+    "@context": ["https://www.w3.org/ns/credentials/v2", "https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json"],
+    id: `${o}/tekshir?c=${c.code}`, type: ["VerifiableCredential", "OpenBadgeCredential"],
+    issuer: { id: o + "/api/ob3/issuer", type: ["Profile"], name: "Ekomun", url: o },
+    validFrom: new Date(c.at).toISOString(), name: `Ekomun: ${c.title}`,
+    credentialSubject: {
+      type: ["AchievementSubject"],
+      identifier: [{ type: ["IdentityObject"], identityHash: "sha256$" + crypto.createHash("sha256").update(c.name + salt).digest("hex"), identityType: "name", hashed: true, salt }],
+      achievement: ob3Achievement(o, c.cid, c.title),
+      result: [{ type: ["Result"], resultDescription: `urn:ekomun:result:${c.cid}:score`, value: String(c.pct) }]
+    },
+    evidence: [{ type: ["Evidence"], name: c.grade || "certificate", narrative: `Grade: ${c.grade || "-"}, ${c.lessons} lessons` }]
+  };
+}
+function ob3Jwt(o, cred) {
+  const k = ob3Keys();
+  const head = { alg: "EdDSA", typ: "JWT", kid: o + "/api/ob3/jwks#key-1" };
+  const payload = { ...cred, iss: cred.issuer.id, jti: cred.id, nbf: Math.floor(Date.parse(cred.validFrom) / 1000), sub: cred.credentialSubject.identifier[0].identityHash };
+  const data = b64url(JSON.stringify(head)) + "." + b64url(JSON.stringify(payload));
+  return data + "." + b64url(crypto.sign(null, Buffer.from(data), k.priv));
+}
+
+/* ---------- Ҳафталик турнир, таклиф ҳаволалари, эълонлар ---------- */
+function isoWeek(d = new Date()) {
+  const t = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const y = t.getUTCFullYear(), w = Math.ceil(((t - Date.UTC(y, 0, 1)) / 864e5 + 1) / 7);
+  return `${y}-W${String(w).padStart(2, "0")}`;
+}
+/* Мижоз маҳаллий вақт (UTC+5) бўйича ҳисоблайди: ҳафта чегарасида ±1 кун фарқни қабул қиламиз */
+const okWeeks = () => [...new Set([-1, 0, 1].map((d) => isoWeek(new Date(now() + d * 864e5))))];
+const TR_REGIONS = ["tsh", "tsv", "and", "bux", "jiz", "qas", "nav", "nam", "sam", "sur", "sir", "far", "xor", "qqr", "oth"];
+const TR_KEEP_WEEKS = 12;
+const trRate = new Map();
+function tooManyTurnir(ip) {
+  const r = trRate.get(ip);
+  if (!r || now() - r.first > 60 * 60 * 1000) { trRate.set(ip, { first: now(), count: 1 }); return false; }
+  return ++r.count > 30;
+}
+/* Лақаб: 2–20 белги; почта, ҳавола ва телефон рақамига ўхшаш матн рад этилади (болалар маълумоти) */
+function cleanNick(s) {
+  const n = cleanText(s, 20).replace(/\s+/g, " ");
+  if (n.length < 2 || /[@<>]|https?:|www\.|\.(com|uz|ru|org)\b/i.test(n) || /\d{6,}/.test(n.replace(/\D+/g, (m) => (m.length < 2 ? "" : m)))) return "";
+  return n;
+}
+function trBoard(week, stage, v) {
+  const list = (db.turnir[week] || []).filter((e) => e.stage === stage && !e.hidden).sort((a, b) => b.score - a.score || a.ms - b.ms || a.at - b.at);
+  const top = list.slice(0, 20).map((e) => ({ nick: e.nick, region: e.region, score: e.score, me: !!v && e.vid === v }));
+  const reg = {};
+  list.forEach((e) => { if (!e.region) return; const r = reg[e.region] || (reg[e.region] = { region: e.region, n: 0, sum: 0 }); r.n++; r.sum += e.score; });
+  const regions = Object.values(reg).map((r) => ({ region: r.region, n: r.n, avg: Math.round(r.sum / r.n) })).sort((a, b) => b.avg - a.avg);
+  const i = v ? list.findIndex((e) => e.vid === v) : -1;
+  return { week, stage, total: list.length, top, regions, me: i >= 0 ? { rank: i + 1, score: list[i].score } : null };
+}
+const refRate = new Map();
+function tooManyRef(ip) {
+  const r = refRate.get(ip);
+  if (!r || now() - r.first > 60 * 60 * 1000) { refRate.set(ip, { first: now(), count: 1 }); return false; }
+  return ++r.count > 20;
+}
+const REF_RE = /^[A-Z2-9]{8}$/, VID_RE = /^[a-z0-9]{12,32}$/;
+const MAX_NEWS = 200;
+const newsView = (n) => ({ id: n.id, title: n.title, body: n.body, link: n.link, stage: n.stage, pinned: !!n.pinned, at: n.at });
+
 /* ---------- API ---------- */
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 /* Кириш учун почта ёки телефон рақам. Телефон +998XXXXXXXXX кўринишига келтирилади
@@ -1386,6 +1494,93 @@ async function api(req, res, pathname) {
     return send(res, 200, { items: out });
   }
 
+
+  /* ---------- Open Badges 3.0 ---------- */
+  if (pathname === "/api/ob3/issuer" && method === "GET") return send(res, 200, ob3Issuer(publicOrigin(req)));
+  if (pathname === "/api/ob3/jwks" && method === "GET") return send(res, 200, { keys: [ob3Keys().pub] });
+  const obm = /^\/api\/ob3\/achievement\/([a-z0-9]{2,20})$/.exec(pathname);
+  if (obm && method === "GET") {
+    if (!COURSE_IDS.includes(obm[1])) return send(res, 404, { error: "Топилмади" });
+    const last = db.certs.slice().reverse().find((c) => c.cid === obm[1]);
+    return send(res, 200, { "@context": ["https://www.w3.org/ns/credentials/v2", "https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json"], ...ob3Achievement(publicOrigin(req), obm[1], last ? last.title : obm[1]) });
+  }
+  if (pathname === "/api/ob3" && method === "GET") {
+    if (tooManyErrors(ip)) return send(res, 429, { error: "Жуда кўп сўров" });
+    const code = String(new URL(req.url, "http://x").searchParams.get("c") || "").trim().toUpperCase();
+    const c = /^EKM-[0-9A-F]{10}$/.test(code) && db.certs.find((x) => x.code === code);
+    if (!c) return send(res, 404, { error: "Сертификат топилмади" });
+    const o = publicOrigin(req), credential = ob3Credential(o, c);
+    return send(res, 200, { credential, jwt: ob3Jwt(o, credential), jwks: o + "/api/ob3/jwks" });
+  }
+
+  /* ---------- Ҳафталик турнир ---------- */
+  if (pathname === "/api/turnir" && method === "POST") {
+    if (tooManyTurnir(ip)) return send(res, 429, { error: "Жуда кўп сўров" });
+    const body = await readBody(req, 4 * 1024);
+    const v = String(body.vid || ""), week = String(body.week || ""), stage = String(body.stage || "");
+    if (!VID_RE.test(v) || !okWeeks().includes(week) || !["maktab", "uni"].includes(stage)) return send(res, 400, { error: "Нотўғри сўров" });
+    if (db.blockedVids[v]) return send(res, 403, { error: BLOCK_MSG, blocked: true });
+    const nick = cleanNick(body.nick);
+    if (!nick) return send(res, 400, { error: "Лақаб 2–20 белги бўлсин (почта, телефон ёки ҳавола ёзманг)" });
+    const correct = Math.floor(Number(body.correct));
+    const score = Math.floor(Number(body.score));
+    if (!(correct >= 0 && correct <= 10) || !(score >= 0 && score <= correct * 200 && score >= correct * 100)) return send(res, 400, { error: "Нотўғри натижа" });
+    const region = TR_REGIONS.includes(String(body.region)) ? String(body.region) : "";
+    const ms = Math.max(0, Math.min(10 * 20000, Math.floor(Number(body.ms) || 0)));
+    const list = db.turnir[week] || (db.turnir[week] = []);
+    let e = list.find((x) => x.vid === v && x.stage === stage);
+    if (!e) {
+      e = { id: newId(), vid: v, stage, nick, region, score, correct, ms, at: now(), ip, userId: (currentUser(req) || { user: {} }).user.id || null };
+      list.push(e);
+      const weeks = Object.keys(db.turnir).sort();
+      while (weeks.length > TR_KEEP_WEEKS) delete db.turnir[weeks.shift()];
+      save();
+    }
+    const b = trBoard(week, stage, v);
+    return send(res, 200, { ok: true, first: e.score === score && e.nick === nick, rank: b.me ? b.me.rank : null, total: b.total });
+  }
+  if (pathname === "/api/turnir" && method === "GET") {
+    const q = new URL(req.url, "http://x").searchParams;
+    const week = /^\d{4}-W\d{2}$/.test(String(q.get("w"))) ? String(q.get("w")) : isoWeek();
+    const stage = q.get("stage") === "maktab" ? "maktab" : "uni";
+    const v = VID_RE.test(String(q.get("v") || "")) ? String(q.get("v")) : "";
+    return send(res, 200, trBoard(week, stage, v));
+  }
+
+  /* ---------- Дўстни таклиф қилиш ---------- */
+  if (pathname === "/api/ref" && method === "GET") {
+    const q = new URL(req.url, "http://x").searchParams;
+    const code = String(q.get("c") || ""), v = String(q.get("v") || "");
+    if (!REF_RE.test(code) || !VID_RE.test(v)) return send(res, 400, { error: "Нотўғри сўров" });
+    let r = db.refs[code];
+    if (!r) { if (tooManyRef(ip)) return send(res, 429, { error: "Жуда кўп сўров" }); r = db.refs[code] = { owner: v, at: now(), claims: [] }; save(); }
+    if (r.owner !== v) return send(res, 403, { error: "Бу код бошқа қурилмага тегишли" });
+    return send(res, 200, { count: r.claims.length });
+  }
+  if (pathname === "/api/ref/claim" && method === "POST") {
+    if (tooManyRef(ip)) return send(res, 429, { error: "Жуда кўп сўров" });
+    const body = await readBody(req, 2 * 1024);
+    const code = String(body.code || ""), v = String(body.vid || "");
+    if (!REF_RE.test(code) || !VID_RE.test(v)) return send(res, 400, { error: "Нотўғри сўров" });
+    const r = db.refs[code];
+    if (!r || r.owner === v) return send(res, 400, { error: "Таклиф коди топилмади" });
+    if (db.refClaimed[v]) return send(res, 409, { error: "Аввал фойдаланилган" });
+    /* Бир IP дан бир кодга кунига кўпи билан 3 та дўст (ўзини ўзи таклиф қилишнинг олдини олиш) */
+    const day = now() - 864e5;
+    if (r.claims.filter((c) => c.ip === ip && c.at > day).length >= 3) return send(res, 429, { error: "Жуда кўп сўров" });
+    db.refClaimed[v] = code;
+    r.claims.push({ vid: v, ip, at: now() });
+    save();
+    return send(res, 200, { ok: true });
+  }
+
+  /* ---------- Эълонлар (бошқарув марказидан) ---------- */
+  if (pathname === "/api/news" && method === "GET") {
+    const t = now();
+    const items = db.news.filter((n) => !n.until || n.until > t).sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.at - a.at).slice(0, 30).map(newsView);
+    return send(res, 200, { items });
+  }
+
   if (pathname === "/api/account/export" && method === "GET") {
     const cur = currentUser(req);
     if (!cur) return send(res, 401, { error: "Аввал ҳисобга киринг" });
@@ -1603,6 +1798,58 @@ async function api(req, res, pathname) {
     else return send(res, 400, { error: "Нотўғри амал" });
     save();
     return send(res, 200, { ok: true });
+  }
+
+
+  /* ---------- Эълонлар ва турнир (админ) ---------- */
+  if (pathname === "/api/admin/news" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    return send(res, 200, { items: db.news.slice().sort((a, b) => b.at - a.at).map((n) => ({ ...newsView(n), until: n.until || 0 })) });
+  }
+  if (pathname === "/api/admin/news" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const body = await readBody(req, 8 * 1024);
+    const title = cleanText(body.title, 140), text = cleanText(body.body, 1200);
+    if (title.length < 3) return send(res, 400, { error: "Сарлавҳа камида 3 белги" });
+    const link = /^https?:\/\/[^\s"'<>]{3,300}$/i.test(String(body.link || "").trim()) ? String(body.link).trim() : "";
+    const stage = ["maktab", "uni"].includes(String(body.stage)) ? String(body.stage) : "all";
+    const days = Math.max(0, Math.min(365, Math.floor(Number(body.days) || 0)));
+    const n = { id: newId(), title, body: text, link, stage, pinned: !!body.pinned, at: now(), until: days ? now() + days * 864e5 : 0 };
+    db.news.push(n);
+    if (db.news.length > MAX_NEWS) db.news.splice(0, db.news.length - MAX_NEWS);
+    save();
+    return send(res, 201, { ok: true, id: n.id });
+  }
+  const nwm = /^\/api\/admin\/news\/([a-f0-9]{16})$/.exec(pathname);
+  if (nwm && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const body = await readBody(req, 2 * 1024);
+    const n = db.news.find((x) => x.id === nwm[1]);
+    if (!n) return send(res, 404, { error: "Эълон топилмади" });
+    const a = String(body.action || "");
+    if (a === "pin") n.pinned = true; else if (a === "unpin") n.pinned = false;
+    else if (a === "delete") db.news = db.news.filter((x) => x !== n);
+    else return send(res, 400, { error: "Нотўғри амал" });
+    save();
+    return send(res, 200, { ok: true });
+  }
+  if (pathname === "/api/admin/turnir" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const weeks = Object.keys(db.turnir).sort().reverse();
+    const w = new URL(req.url, "http://x").searchParams.get("w");
+    const week = weeks.includes(w) ? w : weeks[0] || isoWeek();
+    const list = (db.turnir[week] || []).slice().sort((a, b) => b.score - a.score).map(({ vid: v, ...e }) => ({ ...e, vid: v }));
+    const refs = Object.values(db.refs).reduce((a, r) => a + r.claims.length, 0);
+    return send(res, 200, { weeks, week, list, refs, refCodes: Object.keys(db.refs).length });
+  }
+  if (pathname === "/api/admin/turnir/hide" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const body = await readBody(req, 2 * 1024);
+    const e = (db.turnir[String(body.week)] || []).find((x) => x.id === String(body.id));
+    if (!e) return send(res, 404, { error: "Топилмади" });
+    e.hidden = !e.hidden;
+    save();
+    return send(res, 200, { ok: true, hidden: e.hidden });
   }
 
   if (pathname === "/api/admin/stats" && method === "GET") {
@@ -1843,6 +2090,13 @@ const STATIC = {
   "/vendor/eko-video-data.js": { file: "vendor/eko-video-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-video.js": { file: "vendor/eko-video.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-fikr.js": { file: "vendor/eko-fikr.js", type: "text/javascript; charset=utf-8" },
+  /* Ekomun 2.9: паспорт, шахсий йўл, сайёра саломатлиги, ўқитувчи устахонаси, турнир */
+  "/vendor/eko-global.css": { file: "vendor/eko-global.css", type: "text/css; charset=utf-8" },
+  "/vendor/eko-pasport.js": { file: "vendor/eko-pasport.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-yol.js": { file: "vendor/eko-yol.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-sayyora.js": { file: "vendor/eko-sayyora.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-ustoz.js": { file: "vendor/eko-ustoz.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-turnir.js": { file: "vendor/eko-turnir.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-plus.js": { file: "vendor/eko-plus.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun-darslik-data.js": { file: "vendor/eko-qonun-darslik-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun-darslik.js": { file: "vendor/eko-qonun-darslik.js", type: "text/javascript; charset=utf-8" },

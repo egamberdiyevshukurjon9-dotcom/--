@@ -44,6 +44,7 @@
         <button data-tab="blocks">⛔ <span>Блок ва хавфсизлик</span> <i class="badge warn" id="bSusp" hidden>0</i></button>
         <button data-tab="feedback">💬 <span>Фикр-мулоҳазалар</span> <i class="badge" id="bFeedback" hidden>0</i></button>
         <button data-tab="reports">🗺️ <span>Эко-харита</span> <i class="badge" id="bPending" hidden>0</i></button>
+        <button data-tab="community">📣 <span>Эълон ва турнир</span></button>
         <button data-tab="system">🛠️ <span>Тизим ва хатолар</span> <i class="badge warn" id="bErr" hidden>0</i></button>
       </nav>
       <div class="side-foot">
@@ -218,6 +219,31 @@
           <div class="card"><h2>Энг кўп ёзилган бўлимлар</h2><div id="chFbSecs"></div></div>
         </div>
         <div class="card"><div id="fbList"></div></div>
+      </section>
+
+      <section data-view="community" hidden>
+        <div class="kpis" id="cmKpis"></div>
+        <div class="grid2">
+          <div class="card"><h2>📣 Янги эълон</h2>
+            <form id="newsForm" class="stack">
+              <input type="text" name="title" maxlength="140" placeholder="Сарлавҳа (масалан: 25-октябрь — ҳашар куни)" required aria-label="Сарлавҳа">
+              <textarea name="body" maxlength="1200" rows="4" placeholder="Матн (ихтиёрий)" aria-label="Матн"></textarea>
+              <input type="url" name="link" maxlength="300" placeholder="Ҳавола https://… (ихтиёрий)" aria-label="Ҳавола">
+              <div class="toolbar">
+                <select name="stage" aria-label="Кимга"><option value="all">Ҳаммага</option><option value="maktab">🎒 Мактаб</option><option value="uni">🎓 Университет</option></select>
+                <select name="days" aria-label="Муддати"><option value="0">Муддатсиз</option><option value="7">7 кун</option><option value="30">30 кун</option><option value="90">90 кун</option></select>
+                <label class="small"><input type="checkbox" name="pinned"> 📌 Бош саҳифада кўрсатиш</label>
+              </div>
+              <button class="btn primary sm" type="submit">Эълон қилиш</button>
+            </form>
+            <p class="small muted">Эълон платформанинг «Янгиликлар» бўлимида ва (📌 бўлса) бош саҳифада кўринади.</p>
+          </div>
+          <div class="card"><h2>Эълонлар</h2><div id="newsList"></div></div>
+        </div>
+        <div class="card"><h2>🏆 Ҳафталик турнир</h2>
+          <div class="toolbar"><select id="trWeek" aria-label="Ҳафта"></select></div>
+          <p class="small muted">Номақбул лақабни «Яшириш» тугмаси билан рейтингдан олиб ташланг.</p>
+          <div class="table" id="trList"></div></div>
       </section>
 
       <section data-view="reports" hidden>

@@ -209,3 +209,6 @@ td.nw { white-space: nowrap; }
 .place { font-weight: 600; white-space: nowrap; }
 .dev { font-size: 12.5px; }
 details summary { cursor: pointer; color: var(--muted); font-size: 13px; padding: 6px 0; }
+/* Эълонлар формаси */
+.stack { display: grid; gap: 10px; }
+.stack input[type="text"], .stack input[type="url"], .stack textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line, #d0d7de); background: var(--card, #fff); color: inherit; font: inherit; }

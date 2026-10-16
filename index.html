@@ -18,6 +18,7 @@
       var st = "no-profile";
       try { var p = JSON.parse(localStorage.getItem("ekotalim:profile") || "null"), n = new Date();
         var a = JSON.parse(localStorage.getItem("ekotalim:a11y") || "null"); if (a) { if (a.fs && a.fs !== 100) d.style.fontSize = a.fs + "%"; if (a.hc) d.classList.add("a11y-hc"); if (a.rm) d.classList.add("a11y-rm"); if (a.sp) d.classList.add("a11y-sp"); }
+        var md = JSON.parse(localStorage.getItem("ekotalim:modes") || "null"); if (md) { if (md.lite === "on") d.classList.add("eko-lite"); if (md.focus) d.classList.add("eko-focus"); }
         if (p && p.by && p.bm) st = (n.getFullYear() - p.by - (n.getMonth() + 1 < p.bm ? 1 : 0)) >= 16 ? "stage-uni" : "stage-maktab"; } catch (e) { /* ignore */ }
       d.classList.add(st); })();
   </script>
@@ -1959,6 +1960,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
 .st-replied .fk-st { background: #15803d; color: #fff; } .st-read .fk-st { background: #1d4ed8; color: #fff; } .st-queue .fk-st { background: #b45309; color: #fff; }
 .fk-reply { margin-top: 8px; padding: 10px 12px; border-radius: 12px; border-left: 4px solid #15803d; background: color-mix(in srgb, #15803d 10%, var(--card)); }
 </style>
+  <link rel="stylesheet" href="/vendor/eko-global.css">
 </head>
 <body>
   <!-- Рўйхатдан ўтиш: ҳар бир фойдаланувчи илова ичига кириш учун профил очади -->
@@ -2120,6 +2122,8 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <a class="app" data-cat="learn" href="#kurslar" data-crs="dunyo" data-stage="maktab" style="--c:#0369a1;--c1:#fcd34d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>Дунё саёҳати</b><small>4 давлат тажрибаси</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#video" style="--c:#b91c1c;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>31 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#kurslar" style="--c:#05875f;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" data-cat="learn" href="#yol" style="--c:#6d28d9;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-route"></i></span><b>Шахсий йўл</b><small>Сизга мос кейинги қадам</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#pasport" style="--c:#1d4ed8;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-passport"></i></span><b>Кўникмалар паспорти</b><small>SDG, ESD, Open Badges 3.0</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#12883e;--c1:#bef264"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#b16105;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
@@ -2130,6 +2134,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <a class="app" data-cat="learn" href="#kutubxona" style="--c:#c2410c;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
           <a class="app" data-cat="learn" href="#yangiliklar" style="--c:#e11d48;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
           <a class="app" data-cat="learn" href="#internet" style="--c:#2563eb;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#sayyora" style="--c:#0f766e;--c1:#86efac"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-heart-pulse"></i></span><b>Сайёра саломатлиги</b><small>Жонли мониторинг, COP</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <h3 class="app-cat" data-cat="lab"><i class="fa-solid fa-flask" aria-hidden="true"></i> Лабораториялар</h3>
           <a class="app" data-cat="lab" href="#lab3d" style="--c:#7c3aed;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>20 тажриба, 4 давлат тажрибаси</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#07819e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
@@ -2139,9 +2144,11 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <h3 class="app-cat" data-cat="act"><i class="fa-solid fa-seedling" aria-hidden="true"></i> Амалиёт ва лойиҳалар</h3>
           <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#cd4d0b;--c1:#fed7aa"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="act" href="#oyinmarkaz" style="--c:#a21caf;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span><b>Ўйин маркази</b><small>Вазифа, танга, босс жанги</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="act" href="#turnir" style="--c:#b45309;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-medal"></i></span><b>Ҳафталик турнир</b><small>Вилоятлар рейтинги</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="act" href="#chellenj" style="--c:#a36907;--c1:#fde047"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
           <a class="app" data-cat="act" href="#hashar" style="--c:#0b8177;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
           <a class="app" data-cat="act" href="#maktab" style="--c:#5e61f1;--c1:#c7d2fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
+          <a class="app" data-cat="act" href="#ustoz" style="--c:#be123c;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-chalkboard-user"></i></span><b>Ўқитувчи устахонаси</b><small>Тест, дарс, ISO 14001</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8452f5;--c1:#ddd6fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
           <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#dc2626;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
           <h3 class="app-cat" data-cat="tool"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Ўйин ва асбоблар</h3>
@@ -2554,6 +2561,31 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
     <!-- VIDEO DARSLAR: ochiq ta'lim videolari asosida dars — vendor/eko-video.js -->
     <section class="section alt" id="video">
       <div class="wrap" id="vdRoot" data-notr></div>
+    </section>
+
+    <!-- EKOMUN 2.9: GLOBAL KO'NIKMALAR PASPORTI (SDG, UNESCO ESD, Open Badges 3.0) — vendor/eko-pasport.js -->
+    <section class="section alt" id="pasport">
+      <div class="wrap" id="psRoot" data-notr></div>
+    </section>
+
+    <!-- SHAXSIY YO'L: moslashuvchan o'qitish (BKT), 7 kunlik reja, qulay rejimlar — vendor/eko-yol.js -->
+    <section class="section" id="yol">
+      <div class="wrap" id="ylRoot" data-notr></div>
+    </section>
+
+    <!-- SAYYORA SALOMATLIGI: sayyora chegaralari, jonli monitoring, COP simulyatori — vendor/eko-sayyora.js -->
+    <section class="section alt" id="sayyora">
+      <div class="wrap" id="syRoot" data-notr></div>
+    </section>
+
+    <!-- HAFTALIK TURNIR, reyting, do'stni taklif qilish — vendor/eko-turnir.js -->
+    <section class="section" id="turnir">
+      <div class="wrap" id="trRoot" data-notr></div>
+    </section>
+
+    <!-- O'QITUVCHI USTAXONASI: test generatori, dars yaratgich, ISO 14001 — vendor/eko-ustoz.js -->
+    <section class="section alt" id="ustoz">
+      <div class="wrap" id="usRoot" data-notr></div>
     </section>
 
     <!-- FIKR-MULOHAZA: foydalanuvchi fikri serverga, admin panelda ko'rinadi — vendor/eko-fikr.js -->
@@ -54154,5 +54186,10 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   <script src="/vendor/eko-video-data.js" defer></script>
   <script src="/vendor/eko-video.js" defer></script>
   <script src="/vendor/eko-fikr.js" defer></script>
+  <script src="/vendor/eko-pasport.js" defer></script>
+  <script src="/vendor/eko-yol.js" defer></script>
+  <script src="/vendor/eko-sayyora.js" defer></script>
+  <script src="/vendor/eko-ustoz.js" defer></script>
+  <script src="/vendor/eko-turnir.js" defer></script>
 </body>
 </html>
