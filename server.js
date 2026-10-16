@@ -1496,6 +1496,7 @@ const STATIC = {
   "/vendor/eko-bola-huquq-data.js": { file: "vendor/eko-bola-huquq-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-bola-huquq.js": { file: "vendor/eko-bola-huquq.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-mro.js": { file: "vendor/eko-mro.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-plus.js": { file: "vendor/eko-plus.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun-darslik-data.js": { file: "vendor/eko-qonun-darslik-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun-darslik.js": { file: "vendor/eko-qonun-darslik.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-pdf.js": { file: "vendor/eko-pdf.js", type: "text/javascript; charset=utf-8" },
@@ -1552,6 +1553,15 @@ const server = http.createServer(async (req, res) => {
   try { pathname = new URL(req.url, "http://x").pathname; } catch (e) { return send(res, 400, "Bad request"); }
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "same-origin");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("Permissions-Policy", "camera=(self), microphone=(self), geolocation=(self), payment=(), usb=()");
+  /* HTTPS мажбурий: прокси ортида (Render ва б.) HTTP сўров HTTPS га йўналтирилади, HSTS браузерга эслатилади */
+  const proto = req.headers["x-forwarded-proto"];
+  if (proto === "http" && process.env.FORCE_HTTPS !== "0" && req.headers.host) {
+    res.writeHead(301, { Location: "https://" + req.headers.host + req.url });
+    return res.end();
+  }
+  if (proto === "https" || req.socket.encrypted) res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
 
   if (pathname.startsWith("/api/")) {
     try { return await api(req, res, pathname); }

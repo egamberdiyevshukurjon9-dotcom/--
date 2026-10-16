@@ -181,6 +181,8 @@
       this.bindInput();
       this.ro = new ResizeObserver(() => this.resize());
       this.ro.observe(host);
+      /* Кириш анимацияси: камера узоқдан айланиб, саҳнага «учиб киради» */
+      if (!reduce) { this.fly = { t: 0, d0: this.d * 1.9, th0: this.th - 1.1, ph0: Math.max(0.3, this.ph - 0.45) }; Object.assign(this, { d: this.fly.d0, th: this.fly.th0, ph: this.fly.ph0 }); }
       this.resize();
       this.place();
     }
@@ -194,7 +196,7 @@
       c.addEventListener("pointermove", (e) => {
         if (!pts.has(e.pointerId)) return;
         const dx = e.clientX - lx, dy = e.clientY - ly; lx = e.clientX; ly = e.clientY;
-        this.moved += Math.abs(dx) + Math.abs(dy);
+        this.moved += Math.abs(dx) + Math.abs(dy); this.fly = null;
         this.th -= dx * 0.008;
         if (e.pointerType === "mouse") this.ph = clamp(this.ph - dy * 0.008, 0.15, 1.52);
         this.auto = false; this.syncAuto(); this.place();
@@ -205,7 +207,7 @@
       c.addEventListener("wheel", (e) => { e.preventDefault(); this.zoom(e.deltaY > 0 ? 1.1 : 0.9); }, { passive: false });
       c.addEventListener("keydown", (e) => {
         const k = { ArrowLeft: [0.12, 0], ArrowRight: [-0.12, 0], ArrowUp: [0, 0.08], ArrowDown: [0, -0.08] }[e.key];
-        if (k) { e.preventDefault(); this.th += k[0]; this.ph = clamp(this.ph + k[1], 0.15, 1.52); this.auto = false; this.syncAuto(); this.place(); }
+        if (k) { e.preventDefault(); this.fly = null; this.th += k[0]; this.ph = clamp(this.ph + k[1], 0.15, 1.52); this.auto = false; this.syncAuto(); this.place(); }
         if (e.key === "+" || e.key === "=") this.zoom(0.9);
         if (e.key === "-") this.zoom(1.1);
       });
@@ -221,8 +223,8 @@
     }
     /* Расм олиш: шу кадрни қайта чизиб PNG қилиш */
     snapshot() { this.render(); return this.canvas.toDataURL("image/png"); }
-    zoom(f) { this.d = clamp(this.d * f, this.minD, this.maxD); this.place(); }
-    resetView() { Object.assign(this, { th: this.home.th, ph: this.home.ph, d: this.home.d }); this.place(); }
+    zoom(f) { this.fly = null; this.d = clamp(this.d * f, this.minD, this.maxD); this.place(); }
+    resetView() { this.fly = null; Object.assign(this, { th: this.home.th, ph: this.home.ph, d: this.home.d }); this.place(); }
     place() {
       const s = Math.sin(this.ph);
       this.camera.position.set(this.target.x + this.d * s * Math.sin(this.th), this.target.y + this.d * Math.cos(this.ph), this.target.z + this.d * s * Math.cos(this.th));
@@ -243,7 +245,12 @@
       const loop = (now) => {
         if (!this.running) return;
         const dt = clamp((now - this.last) / 1000, 0, 0.1); this.last = now; this.t += dt;
-        if (this.auto) { this.th += dt * 0.25; this.place(); }
+        if (this.fly) {
+          const f = this.fly; f.t = Math.min(1, f.t + dt / 1.6); const k = 1 - Math.pow(1 - f.t, 3);
+          this.d = lerp(f.d0, this.home.d, k); this.th = lerp(f.th0, this.home.th, k); this.ph = lerp(f.ph0, this.home.ph, k);
+          if (f.t >= 1) this.fly = null;
+          this.place();
+        } else if (this.auto) { this.th += dt * 0.25; this.place(); }
         this.updaters.forEach((f) => f(dt, this.t));
         this.render();
         this.raf = requestAnimationFrame(loop);
@@ -2448,7 +2455,562 @@
     ["🔮", t3("POE: Тахмин → Кузатиш → Тушунтириш (White & Gunstone, Австралия)", "POE: Предскажи → Наблюдай → Объясни (White & Gunstone, Австралия)", "POE: Predict → Observe → Explain (White & Gunstone, Australia)"), t3("Тажрибадан олдин тахмин қилиш нотўғри тасаввурларни очиб беради ва эсда қолишни кучайтиради.", "Прогноз перед опытом вскрывает ошибочные представления и улучшает запоминание.", "Predicting before the experiment exposes misconceptions and improves recall.")]
   );
 
-  const EXPS = [GH, MOLS, TANK, SOLAR, TREE, FLOT, LINE, PLUME, RIVER, PYR, WIND, PHOTO, HOUSE, AQUI, CYCL, COMPOST];
+
+  /* =====================================================================
+     🌐 ХАЛҚАРО ТАЖРИБА (Ekomun 2.6): АҚШ, Германия, Япония, Корея
+     Ҳар бир саҳна узлуксиз ҳаракатда: машиналар юради, парраклар айланади,
+     балиқлар сузади, сув оқади — параметр ўзгарса, манзара дарров ўзгаради.
+     ===================================================================== */
+  /* Ўзгарувчан ёзув (спрайт): матн ўзгарсагина қайта чизилади */
+  function liveLabel(v, pos, color, size) {
+    let spr = null, last = "";
+    return (text, col) => {
+      const key = text + "|" + (col || color);
+      if (key === last) return spr;
+      last = key;
+      if (spr) { v.scene.remove(spr); spr.material.map.dispose(); spr.material.dispose(); }
+      spr = textSprite(text, col || color, size); spr.position.set(...pos); v.scene.add(spr);
+      return spr;
+    };
+  }
+  /* Оддий балиқ: тана (чўзилган шар) + дум */
+  function fishMesh(len, color) {
+    const T = THREE, g = new T.Group(), m = mat(color, { roughness: 0.45, metalness: 0.1 });
+    const body = new T.Mesh(new T.SphereGeometry(len / 2, 14, 10), m); body.scale.set(1, 0.42, 0.28); g.add(body);
+    const tail = new T.Mesh(new T.ConeGeometry(len * 0.22, len * 0.32, 4), m); tail.rotation.z = Math.PI / 2; tail.position.x = -len * 0.58; g.add(tail);
+    g.userData.m = m; g.userData.tail = tail;
+    return g;
+  }
+
+  /* =====================================================================
+     17) 🇺🇸 Ҳаво сифати индекси — US EPA AQI (PM2.5, 2024 чегаралари), қути модели
+     ===================================================================== */
+  const AQI_BP = [[0, 9.0, 0, 50], [9.1, 35.4, 51, 100], [35.5, 55.4, 101, 150], [55.5, 125.4, 151, 200], [125.5, 225.4, 201, 300], [225.5, 325.4, 301, 500]];
+  const AQI_CAT = [
+    ["#00e400", t3("Яхши", "Хорошо", "Good")], ["#ffff00", t3("Ўртача", "Умеренно", "Moderate")], ["#ff7e00", t3("Сезгирлар учун зарарли", "Вредно для чувствительных", "Unhealthy for sensitive groups")],
+    ["#ff0000", t3("Зарарли", "Вредно", "Unhealthy")], ["#8f3f97", t3("Жуда зарарли", "Очень вредно", "Very unhealthy")], ["#7e0023", t3("Хавфли", "Опасно", "Hazardous")]
+  ];
+  function aqiOf(c) {
+    c = Math.floor(Math.max(0, c) * 10) / 10;
+    if (c > 325.4) return 500;
+    const b = AQI_BP.find((x) => c <= x[1]) || AQI_BP[5];
+    return Math.round(((b[3] - b[2]) / (b[1] - b[0])) * (c - b[0]) + b[2]);
+  }
+  const aqiCat = (i) => (i <= 50 ? 0 : i <= 100 ? 1 : i <= 150 ? 2 : i <= 200 ? 3 : i <= 300 ? 4 : 5);
+  const AQI = {
+    id: "aqi", icon: "🌫️", flag: "🇺🇸",
+    name: t3("Ҳаво сифати индекси (AQI)", "Индекс качества воздуха (AQI)", "Air Quality Index (AQI)"),
+    q: t3("Нега қишда, шамолсиз кунда шаҳар ҳавоси ифлосроқ бўлади, гарчи машиналар сони ўзгармаса ҳам?", "Почему зимой в безветренный день воздух в городе грязнее, хотя машин столько же?", "Why is city air dirtier on a calm winter day even though the number of cars is the same?"),
+    poe: { o: [t3("Қишда машиналар кўпроқ тутун чиқаради", "Зимой машины дымят сильнее", "Cars smoke more in winter"), t3("Шамол ва аралашув қатлами пасайиб, чанг кичик ҳажмда тўпланади", "Ветер и слой перемешивания уменьшаются, пыль копится в малом объёме", "Wind and the mixing layer shrink, so dust collects in a small volume"), t3("Қор чанг чиқаради", "Снег выделяет пыль", "Snow releases dust")], a: 1,
+      w: t3("Қути моделида концентрация C = q·L / (u·H): шамол тезлиги u ва аралашув баландлиги H кичрайса, худди шу чиқинди кичик ҳаво ҳажмига тушади. Инверсия «қопқоқ» каби ҳавони босиб туради.", "В боксовой модели C = q·L / (u·H): при малых скорости ветра u и высоте перемешивания H те же выбросы попадают в меньший объём воздуха. Инверсия работает как «крышка».", "In the box model C = q·L / (u·H): with low wind u and mixing height H the same emissions go into a smaller air volume. An inversion acts like a lid.") },
+    src: "U.S. EPA «Technical Assistance Document for the Reporting of Daily Air Quality — the Air Quality Index (AQI)», EPA-454/B-24-002, 2024 (PM2.5 чегаралари: 9,0 / 35,4 / 55,4 / 125,4 / 225,4 µg/m³); Seinfeld J.H., Pandis S.N. «Atmospheric Chemistry and Physics», 3rd ed., 2016 (қути модели); WHO Global Air Quality Guidelines, 2021 (PM2.5 йиллик 5 µg/m³)",
+    view: { bg: "#7dd3fc", d: 13, ph: 1.08, th: 0.7, target: [0, 1.4, 0], minD: 5, maxD: 22 },
+    quiz: [
+      { q: t3("AQI шкаласида 0–50 қайси рангда?", "Какого цвета 0–50 на шкале AQI?", "What colour is 0–50 on the AQI scale?"), o: [t3("Яшил", "Зелёный", "Green"), t3("Сариқ", "Жёлтый", "Yellow"), t3("Қизил", "Красный", "Red")], a: 0, w: t3("Яшил — «яхши», сариқ — «ўртача», тўқ сариқ — сезгир гуруҳлар учун зарарли.", "Зелёный — «хорошо», жёлтый — «умеренно», оранжевый — вредно для чувствительных.", "Green is good, yellow moderate, orange unhealthy for sensitive groups.") },
+      { q: t3("PM2.5 нима?", "Что такое PM2.5?", "What is PM2.5?"), o: [t3("Диаметри 2,5 мкм ва ундан кичик заррачалар", "Частицы диаметром 2,5 мкм и меньше", "Particles 2.5 µm across or smaller"), t3("2,5 тонна чанг", "2,5 тонны пыли", "2.5 tonnes of dust"), t3("Газ номи", "Название газа", "A gas name")], a: 0, w: t3("Улар ўпканинг чуқур қисмига ва қонга ўтади — шунинг учун энг хавфли ифлословчи ҳисобланади.", "Они проникают глубоко в лёгкие и кровь — поэтому считаются самым опасным загрязнителем.", "They reach deep into the lungs and blood, which makes them the most harmful pollutant.") },
+      { q: t3("Инверсия пайтида нима бўлади?", "Что происходит при инверсии?", "What happens during an inversion?"), o: [t3("Юқоридаги илиқ қатлам ҳавони пастда ушлаб қолади", "Тёплый слой сверху удерживает воздух внизу", "A warm layer above traps air below"), t3("Шамол кучаяди", "Ветер усиливается", "The wind gets stronger"), t3("Чанг ўз-ўзидан йўқолади", "Пыль сама исчезает", "Dust disappears by itself")], a: 0, w: t3("Аралашув баландлиги H бир неча юз метргача тушади ва концентрация кўп марта ошади.", "Высота перемешивания падает до сотен метров, концентрация растёт в разы.", "Mixing height drops to a few hundred metres and concentrations multiply.") }
+    ],
+    build(v, ui) {
+      const T = THREE, S = { veh: 400, ind: 1500, eta: 0.6, heat: 600, u: 2, Hm: 400 };
+      const L0 = 20000, A0 = 4e8, Cb = 6;
+      const Etot = () => S.veh * 1000 * 15 * 0.02 / 1000 + S.ind * (1 - S.eta) + S.heat; // кг/сутка
+      const qf = () => (Etot() * 1e9) / 86400 / A0; // µg/(m²·s)
+      const conc = () => Cb + (qf() * L0) / (S.u * S.Hm);
+      ui.unit = () => 1000;
+      const ground = new T.Mesh(new T.PlaneGeometry(16, 16), mat(0x94a3b8)); ground.rotation.x = -Math.PI / 2; v.scene.add(ground);
+      const road = new T.Mesh(new T.PlaneGeometry(16, 1.1), mat(0x334155)); road.rotation.x = -Math.PI / 2; road.position.set(0, 0.01, 1.6); v.scene.add(road);
+      const park = new T.Mesh(new T.CircleGeometry(1.4, 24), mat(0x65a30d)); park.rotation.x = -Math.PI / 2; park.position.set(-4.5, 0.02, -3.5); v.scene.add(park);
+      let sd = 7; const rnd = () => { sd = (sd * 16807) % 2147483647; return sd / 2147483647; };
+      const bcol = [0xe2e8f0, 0xcbd5e1, 0xfde68a, 0xbae6fd, 0xfecaca];
+      for (let i = 0; i < 26; i++) {
+        const x = -6.5 + (i % 9) * 1.6 + rnd() * 0.3, z = i < 9 ? -1.2 : i < 18 ? 3.6 : -4.6;
+        if (Math.hypot(x + 4.5, z + 3.5) < 1.8) continue;
+        const h = 0.6 + rnd() * (i % 4 === 0 ? 3.8 : 1.8);
+        const b = new T.Mesh(new T.BoxGeometry(0.9, h, 0.9), mat(bcol[i % 5], { roughness: 0.6 })); b.position.set(x, h / 2, z); v.scene.add(b);
+      }
+      for (let i = 0; i < 7; i++) { const tr = new T.Mesh(new T.SphereGeometry(0.32, 10, 8), mat(0x16a34a)); const a = (i / 7) * Math.PI * 2; tr.position.set(-4.5 + Math.cos(a) * 0.8, 0.45, -3.5 + Math.sin(a) * 0.8); v.scene.add(tr); }
+      /* Завод ва мўри */
+      const fac = new T.Mesh(new T.BoxGeometry(2, 1, 1.4), mat(0x78716c)); fac.position.set(5.4, 0.5, -3.6); v.scene.add(fac);
+      const stack = new T.Mesh(new T.CylinderGeometry(0.16, 0.22, 2.6, 14), mat(0xa8a29e)); stack.position.set(6, 1.8, -3.6); v.scene.add(stack);
+      const filt = new T.Mesh(new T.BoxGeometry(0.5, 0.5, 0.5), mat(0x0ea5e9, { metalness: 0.3 })); filt.position.set(4.9, 1.25, -3.6); v.scene.add(filt);
+      /* Машиналар */
+      const cars = [], ccol = [0xef4444, 0x3b82f6, 0xf59e0b, 0xffffff, 0x10b981, 0x111827];
+      for (let i = 0; i < 24; i++) { const c = new T.Mesh(new T.BoxGeometry(0.42, 0.2, 0.22), mat(ccol[i % 6], { roughness: 0.3, metalness: 0.4 })); c.userData = { x: -8 + Math.random() * 16, lane: i % 2, sp: 1.2 + Math.random() * 0.8 }; c.position.y = 0.12; v.scene.add(c); cars.push(c); }
+      /* Мўри тутуни */
+      const NS = 60, smoke = new T.InstancedMesh(new T.SphereGeometry(1, 8, 6), new T.MeshStandardMaterial({ color: 0x9ca3af, transparent: true, opacity: 0.55, depthWrite: false }), NS); smoke.userData.noPick = true; v.scene.add(smoke);
+      const SP = Array.from({ length: NS }, (_, i) => ({ age: (i / NS) * 4 }));
+      /* Чанг-туман (haze) ва инверсия қопқоғи */
+      const NH = 700, hg = new T.BufferGeometry(), hp = new Float32Array(NH * 3), hr = new Float32Array(NH);
+      for (let i = 0; i < NH; i++) { hp[i * 3] = -8 + Math.random() * 16; hr[i] = Math.random(); hp[i * 3 + 2] = -8 + Math.random() * 16; }
+      hg.setAttribute("position", new T.BufferAttribute(hp, 3));
+      const hm = new T.PointsMaterial({ color: 0xa16207, size: 0.16, transparent: true, opacity: 0.4, depthWrite: false });
+      const haze = new T.Points(hg, hm); v.scene.add(haze);
+      const lid = new T.Mesh(new T.PlaneGeometry(16, 16), new T.MeshBasicMaterial({ color: 0xfb923c, transparent: true, opacity: 0.12, side: T.DoubleSide, depthWrite: false })); lid.rotation.x = -Math.PI / 2; lid.userData.noPick = true; v.scene.add(lid);
+      const banner = liveLabel(v, [0, 7.4, 0], "#ffffff", 0.62);
+      const lidLbl = liveLabel(v, [-6.2, 3, -7], "#fdba74", 0.3);
+      const skyC = new T.Color(0x7dd3fc), dirty = new T.Color(0xb7a98b), tmpC = new T.Color();
+      const lidY = () => clamp(S.Hm / 150, 1.2, 8);
+      v.updaters.push((dt, t) => {
+        const C = conc(), I = aqiOf(C), k = aqiCat(I), dirt = clamp((C - 5) / 150, 0, 1);
+        const ncar = Math.round(clamp(S.veh / 1200, 0, 1) * cars.length);
+        cars.forEach((c, i) => {
+          c.visible = i < ncar; if (!c.visible) return;
+          const d = c.userData; d.x += (d.lane ? -1 : 1) * d.sp * dt * 1.6; if (d.x > 8) d.x = -8; if (d.x < -8) d.x = 8;
+          c.position.set(d.x, 0.12, 1.6 + (d.lane ? 0.25 : -0.25));
+        });
+        const mtx = new T.Matrix4(), sm = clamp(S.ind * (1 - S.eta) / 1500, 0, 1);
+        SP.forEach((p, i) => {
+          p.age += dt * (0.6 + S.u * 0.2); if (p.age > 4) p.age = 0;
+          const a = p.age, r = sm > 0.01 ? (0.12 + a * 0.18) * (0.4 + sm) : 0;
+          const top = Math.min(3 + a * 0.9, lidY());
+          mtx.makeScale(r, r, r); mtx.setPosition(6 + a * S.u * 0.35, top, -3.6 + Math.sin(i + a) * 0.2); smoke.setMatrixAt(i, mtx);
+        });
+        smoke.instanceMatrix.needsUpdate = true;
+        const ly = lidY(), pos = hg.attributes.position.array;
+        for (let i = 0; i < NH; i++) { pos[i * 3] += S.u * dt * 0.25 * (0.6 + hr[i]); if (pos[i * 3] > 8) pos[i * 3] = -8; pos[i * 3 + 1] = 0.15 + hr[i] * ly + Math.sin(t * 0.7 + i) * 0.05; }
+        hg.attributes.position.needsUpdate = true;
+        hm.opacity = 0.08 + dirt * 0.7; hm.color.set(AQI_CAT[k][0]).lerp(dirty, 0.45); hm.size = 0.12 + dirt * 0.14;
+        lid.position.y = ly; lid.visible = S.Hm <= 800;
+        v.scene.background = tmpC.copy(skyC).lerp(dirty, dirt);
+        filt.visible = S.eta > 0;
+        banner("AQI " + I + " · " + L(AQI_CAT[k][1]), AQI_CAT[k][0]);
+        lidLbl(S.Hm <= 800 ? L(t3("инверсия «қопқоғи»", "«крышка» инверсии", "inversion lid")) + " H = " + S.Hm + " m" : " ");
+      });
+      ui.probe = (p) => `${L(t3("Баландлик", "Высота", "Height"))} ≈ ${fmt(p.y * 150, 0)} m · PM2.5 ≈ ${fmt(p.y * 150 < S.Hm ? conc() : Cb, 1)} µg/m³`;
+      const show = (k, x) => ({ veh: `${x} ${L(t3("минг/сутка", "тыс./сут", "k/day"))}`, ind: `${x} kg/d`, eta: `${Math.round(x * 100)}%`, heat: `${x} kg/d`, u: `${fmt(x, 1)} m/s`, Hm: `${x} m` }[k]);
+      const bar = (I) => `<div class="l3-aqibar">${AQI_CAT.map(([c], i) => `<i style="background:${c}" class="${aqiCat(I) === i ? "on" : ""}"></i>`).join("")}</div>`;
+      const outK = () => {
+        const C = conc(), I = aqiOf(C), k = aqiCat(I);
+        const msg = k === 0 ? t3("Ажойиб! Ҳаво тоза — ташқарида бемалол ўйнаш мумкин.", "Отлично! Воздух чистый — можно смело гулять.", "Great! The air is clean — go out and play.") : k <= 2 ? t3("Ҳаво ўртача. Астма бор болалар узоқ югурмагани маъқул.", "Воздух средний. Детям с астмой лучше не бегать долго.", "Moderate air. Kids with asthma should avoid long runs.") : t3("Ҳаво зарарли! Филтр, шамол ва камроқ машина ёрдам беради.", "Воздух вредный! Помогут фильтр, ветер и меньше машин.", "Unhealthy air! A filter, wind and fewer cars would help.");
+        return `<div class="l3-big"><span>${["😀", "🙂", "😐", "😷", "🤢", "☠️"][k]}</span><b style="color:${AQI_CAT[k][0]};text-shadow:0 1px 2px #0008">${I}</b><small>AQI · ${H(AQI_CAT[k][1])}</small></div>${bar(I)}<p class="lab-out">${H(msg)}</p>`;
+      };
+      const outU = () => {
+        const C = conc(), I = aqiOf(C), k = aqiCat(I), crv = [];
+        for (let u = 0.5; u <= 8.01; u += 0.25) crv.push([u, aqiOf(Cb + (qf() * L0) / (u * S.Hm))]);
+        return `<div class="lab-formula">E = <b>${fmt(Etot(), 0)}</b> kg/d → q = E/A = <b>${fmt(qf(), 3)}</b> µg/(m²·s) (A = 400 km²)<br>C = C<sub>b</sub> + q·L/(u·H) = ${Cb} + ${fmt(qf(), 3)}·20000/(${fmt(S.u, 1)}·${S.Hm}) = <b>${fmt(C, 1)}</b> µg/m³<br>AQI = (I<sub>hi</sub>−I<sub>lo</sub>)/(C<sub>hi</sub>−C<sub>lo</sub>)·(C−C<sub>lo</sub>)+I<sub>lo</sub> = <b>${I}</b> · ${H(AQI_CAT[k][1])}<br>WHO 2021: ${L(t3("суткалик", "суточная", "24-h"))} 15 µg/m³ → ×<b>${fmt(C / 15, 1)}</b></div>${bar(I)}
+          ${chartSvg([{ pts: crv, c: "#a16207" }], { mark: [S.u, I], x0: 0.5, x1: 8, y0: 0, y1: 300, xl: "u, m/s", yl: "AQI", bands: [[0, 50, "#00e400"], [50, 100, "#ffff00"], [100, 150, "#ff7e00"], [150, 200, "#ff0000"], [200, 300, "#8f3f97"]] })}`;
+      };
+      ui.html = () => {
+        if (stage() !== "uni") return `<p class="small"><b>${H(t3("Машиналар", "Машины", "Cars"))}</b></p>${optsH("veh", [[150, "🚲", t3("Кам", "Мало", "Few")], [400, "🚗", t3("Ўртача", "Средне", "Medium")], [1200, "🚙", t3("Тирбандлик", "Пробки", "Traffic jam")]], S.veh)}
+          <p class="small"><b>${H(t3("Завод мўриси", "Труба завода", "Factory stack"))}</b></p>${optsH("eta", [[0, "🏭", t3("Фильтрсиз", "Без фильтра", "No filter")], [0.6, "🧰", t3("Оддий фильтр", "Простой фильтр", "Basic filter")], [0.99, "✨", t3("Электрофильтр 99 %", "Электрофильтр 99 %", "ESP 99 %")]], S.eta)}
+          <p class="small"><b>${H(t3("Об-ҳаво", "Погода", "Weather"))}</b></p>${optsH("u", [[0.5, "🌫️", t3("Шамолсиз + инверсия", "Штиль + инверсия", "Calm + inversion")], [2, "🌤️", t3("Енгил шамол", "Лёгкий ветер", "Light wind")], [6, "🌬️", t3("Кучли шамол", "Сильный ветер", "Strong wind")]], S.u)}
+          <div data-out>${outK()}</div><p class="l3-mission" data-star>${H(TX.mission)}: ${H(t3("Шамолсиз кунда ҳам AQI ни яшил (≤ 50) қилинг.", "Даже в безветренный день сделайте AQI зелёным (≤ 50).", "Make the AQI green (≤ 50) even on a calm day."))}</p>`;
+        return `${rngH("veh", H(t3("Транспорт оқими", "Транспортный поток", "Traffic flow")), S.veh, 0, 1500, 50, show("veh", S.veh))}
+          ${rngH("ind", H(t3("Саноат чанги (фильтргача)", "Промышленная пыль (до фильтра)", "Industrial PM (before filter)")), S.ind, 0, 5000, 100, show("ind", S.ind))}
+          ${rngH("eta", H(t3("Фильтр самарадорлиги η", "КПД фильтра η", "Filter efficiency η")), S.eta, 0, 0.99, 0.01, show("eta", S.eta))}
+          ${rngH("heat", H(t3("Иситиш ва очиқ ёқиш", "Отопление и открытое сжигание", "Heating and open burning")), S.heat, 0, 3000, 100, show("heat", S.heat))}
+          ${rngH("u", H(t3("Шамол тезлиги u", "Скорость ветра u", "Wind speed u")), S.u, 0.5, 8, 0.1, show("u", S.u))}
+          ${rngH("Hm", H(t3("Аралашув баландлиги H", "Высота перемешивания H", "Mixing height H")), S.Hm, 100, 1500, 50, show("Hm", S.Hm))}
+          <div data-out>${outU()}</div>`;
+      };
+      const chk = () => { if (stage() !== "uni" && S.u === 0.5 && aqiOf(conc()) <= 50) star("aqi", ui.el.querySelector("[data-star]")); };
+      ui.bind = (el) => {
+        liveBind(el, S, show, stage() === "uni" ? outU : outK, chk);
+        bindOpts(el, S, (k) => { if (k === "u") S.Hm = S.u === 0.5 ? 150 : S.u === 2 ? 600 : 1200; ui.render(); chk(); });
+      };
+      if (stage() !== "uni") S.Hm = 600;
+      ui.goals = stage() === "uni" ? [
+        { id: "inv", t: t3("Инверсияда (H ≤ 200 м, u ≤ 1 м/с) AQI «хавфли» (> 300) бўлишини кўринг", "Увидьте «опасный» AQI (> 300) при инверсии (H ≤ 200 м, u ≤ 1 м/с)", "See a hazardous AQI (> 300) during an inversion (H ≤ 200 m, u ≤ 1 m/s)"), ok: () => S.Hm <= 200 && S.u <= 1 && aqiOf(conc()) > 300 },
+        { id: "fix", t: t3("Инверсия сақланган ҳолда (H ≤ 200 м, u ≤ 1) манбаларни камайтириб AQI ≤ 100 га туширинг", "При той же инверсии (H ≤ 200 м, u ≤ 1) снизьте AQI до ≤ 100, уменьшая источники", "Keep the inversion (H ≤ 200 m, u ≤ 1) and bring AQI to ≤ 100 by cutting sources"), ok: () => S.Hm <= 200 && S.u <= 1 && aqiOf(conc()) <= 100 },
+        { id: "who", t: t3("WHO суткалик меъёрига (≤ 15 µg/m³) эришинг", "Достигните суточной нормы ВОЗ (≤ 15 µg/m³)", "Meet the WHO 24-h guideline (≤ 15 µg/m³)"), ok: () => conc() <= 15 }
+      ] : [
+        { id: "jam", t: t3("Тирбандлик + шамолсиз кун: AQI қандай бўлишини кўринг", "Пробки + штиль: посмотрите, каким станет AQI", "Traffic jam + calm day: see what the AQI becomes"), ok: () => S.veh === 1200 && S.u === 0.5 },
+        { id: "wind", t: t3("Кучли шамол ҳавони тозалашини текширинг", "Проверьте, что сильный ветер очищает воздух", "Check that strong wind cleans the air"), ok: () => S.u === 6 && aqiOf(conc()) <= 100 }
+      ];
+      ui.read = () => ({ p: `u = ${fmt(S.u, 1)} m/s; H = ${S.Hm} m; η = ${Math.round(S.eta * 100)}%`, r: `PM2.5 = ${fmt(conc(), 1)} µg/m³; AQI = ${aqiOf(conc())}`, x: S.u, y: aqiOf(conc()), xl: "u, m/s", yl: "AQI" });
+      ui.task = () => ({ q: t3("PM2.5 суткалик концентрацияси 40,0 µg/m³. EPA 2024 чегаралари бўйича (35,5–55,4 → 101–150) AQI ни ҳисобланг.", "Суточная концентрация PM2.5 = 40,0 µg/m³. По границам EPA 2024 (35,5–55,4 → 101–150) рассчитайте AQI.", "Daily PM2.5 is 40.0 µg/m³. Using EPA 2024 breakpoints (35.5–55.4 → 101–150), compute the AQI."),
+        a: aqiOf(40), tol: 1, unit: "", dec: 0, hint: t3("I = (150−101)/(55,4−35,5)·(40,0−35,5) + 101", "I = (150−101)/(55,4−35,5)·(40,0−35,5) + 101", "I = (150−101)/(55.4−35.5)·(40.0−35.5) + 101") });
+      ui.render();
+    }
+  };
+
+  /* =====================================================================
+     18) 🇩🇪 Энергия бурилиши (Energiewende) — 24 соатлик тармоқ баланси
+     ===================================================================== */
+  const ENERGY = {
+    id: "energiya", icon: "⚡", flag: "🇩🇪",
+    name: t3("Энергия бурилиши: 24 соат", "Энергетический поворот: 24 часа", "Energy transition: 24 hours"),
+    q: t3("Қуёш ва шамол ҳар доим ҳам бўлмаса, шаҳар тунда электрни қаердан олади?", "Если солнце и ветер есть не всегда, откуда город берёт электричество ночью?", "If sun and wind are not always there, where does a city get power at night?"),
+    poe: { o: [t3("Фақат кўпроқ қуёш панели керак", "Нужно только больше панелей", "Just more solar panels"), t3("Аккумулятор, шамол ва захира электр станцияси бирга ишлайди", "Работают вместе аккумуляторы, ветер и резервная станция", "Batteries, wind and backup plants work together"), t3("Тунда электр керак эмас", "Ночью электричество не нужно", "No power is needed at night")], a: 1,
+      w: t3("Қуёш тунда ишламайди, шамол эса ўзгарувчан. Шунинг учун Германия қуёш, шамол, аккумулятор ва газ станцияларини бирга режалаштиради; энг қийин пайт — қишда шамолсиз ва булутли «Dunkelflaute».", "Солнце ночью не работает, ветер переменчив. Поэтому Германия планирует солнце, ветер, накопители и газовые станции вместе; самое трудное — зимняя безветренная пасмурная «Dunkelflaute».", "Solar is off at night and wind varies, so Germany plans solar, wind, storage and gas plants together; the hardest case is the calm, cloudy winter Dunkelflaute.") },
+    src: "Fraunhofer ISE «Energy-Charts» (2024: қуёш ≈ 99 ГВт, шамол ≈ 73 ГВт ўрнатилган қувват); BNetzA/SMARD; Umweltbundesamt «Erneuerbare Energien in Zahlen»; IPCC AR5 WGIII Annex III (газ ТЭС ≈ 0,4 кг CO₂/кВт·с)",
+    view: { bg: "#bae6fd", d: 14, ph: 1.1, th: 0.5, target: [0, 1.2, 0], minD: 6, maxD: 24 },
+    quiz: [
+      { q: t3("«Dunkelflaute» нима?", "Что такое «Dunkelflaute»?", "What is a Dunkelflaute?"), o: [t3("Қуёш ҳам, шамол ҳам кам бўлган қоронғи, шамолсиз давр", "Тёмный безветренный период без солнца и ветра", "A dark, windless period with little sun and wind"), t3("Немис шамол турбинаси", "Немецкая ветротурбина", "A German wind turbine"), t3("Электр нархи", "Цена электроэнергии", "An electricity price")], a: 0, w: t3("Бундай кунларда аккумулятор, импорт ва газ станциялари ёрдамга келади.", "В такие дни выручают накопители, импорт и газовые станции.", "On such days storage, imports and gas plants fill the gap.") },
+      { q: t3("Қуёш электр станцияси қачон энг кўп ишлайди?", "Когда солнечная станция работает больше всего?", "When does a solar plant produce most?"), o: [t3("Ёзда, туш пайти", "Летом в полдень", "At noon in summer"), t3("Қишда тунда", "Зимой ночью", "At night in winter"), t3("Эрталаб соат 5 да", "В 5 утра", "At 5 a.m.")], a: 0, w: t3("Қуёш баланд бўлса, панелга кўпроқ нур тушади.", "Чем выше солнце, тем больше света на панели.", "The higher the sun, the more light reaches the panels.") },
+      { q: t3("Ортиқча қуёш электрини нима қилган маъқул?", "Что лучше делать с лишней солнечной энергией?", "What is best to do with surplus solar power?"), o: [t3("Аккумуляторда сақлаб, кечқурун ишлатиш", "Накопить в аккумуляторе и использовать вечером", "Store it and use it in the evening"), t3("Ҳамма чироқларни ёқиш", "Включить все лампы", "Switch on every lamp"), t3("Панелларни ўчириш", "Выключить панели", "Turn panels off")], a: 0, w: t3("Сақланмаса, ортиқча энергия «кесилади» (curtailment) ва бекор кетади.", "Без накопления лишняя энергия «отсекается» (curtailment) и теряется.", "Without storage, surplus is curtailed and wasted.") }
+    ],
+    build(v, ui) {
+      const T = THREE, S = { pv: 100, wind: 70, bat: 20, sea: 1, wd: 0.25 };
+      const dem = (h) => 47 + 13 * Math.exp(-((h - 12) ** 2) / 18) + 9 * Math.exp(-((h - 19) ** 2) / 5) - 6 * Math.exp(-((h - 3) ** 2) / 6);
+      const sol = (h) => (S.sea ? Math.max(0, Math.sin((Math.PI * (h - 5)) / 16)) * 0.7 : Math.max(0, Math.sin((Math.PI * (h - 8)) / 8)) * 0.3);
+      const wcf = (h) => clamp(S.wd * (1 + 0.35 * Math.sin((h / 24) * Math.PI * 2 + 1.3)), 0, 0.95);
+      const sim = () => {
+        let soc = S.bat * 0.5, re = 0, D = 0, gas = 0, cut = 0, gasH = 0; const rows = [], P = S.bat / 4;
+        for (let h = 0; h < 24; h++) {
+          const d = dem(h), r = S.pv * sol(h) + S.wind * wcf(h); D += d;
+          let net = r - d, ch = 0, g = 0, c = 0;
+          if (net > 0) { ch = Math.min(net, P, (S.bat - soc) / 0.95); soc += ch * 0.95; c = net - ch; re += d; }
+          else { const dis = Math.min(-net, P, soc * 0.95); soc -= dis / 0.95; g = -net - dis; re += r + dis; if (g > 0.01) gasH++; }
+          gas += g; cut += c; rows.push({ h, d, r, g, soc, c, pv: S.pv * sol(h), w: S.wind * wcf(h) });
+        }
+        return { rows, share: (re / D) * 100, gas, cut, D, co2: (gas * 400) / D, gasH };
+      };
+      let R = sim();
+      ui.unit = () => 1;
+      const ground = new T.Mesh(new T.PlaneGeometry(22, 14), mat(0x86efac)); ground.rotation.x = -Math.PI / 2; v.scene.add(ground);
+      /* Шамол турбиналари */
+      const rotors = [], wmat = mat(0xf8fafc, { roughness: 0.4 });
+      for (let i = 0; i < 6; i++) {
+        const x = -8.5 + (i % 3) * 2.2, z = -4 + Math.floor(i / 3) * 2.4;
+        const tw = new T.Mesh(new T.CylinderGeometry(0.06, 0.12, 3.2, 10), wmat); tw.position.set(x, 1.6, z); v.scene.add(tw);
+        const nac = new T.Mesh(new T.BoxGeometry(0.22, 0.2, 0.42), wmat); nac.position.set(x, 3.25, z); v.scene.add(nac);
+        const rot = new T.Group(); rot.position.set(x, 3.25, z + 0.24);
+        for (let b = 0; b < 3; b++) { const bl = new T.Mesh(new T.BoxGeometry(0.09, 1.3, 0.03), wmat); bl.position.y = 0.65; const arm = new T.Group(); arm.add(bl); arm.rotation.z = (b * Math.PI * 2) / 3; rot.add(arm); }
+        v.scene.add(rot); rotors.push(rot);
+      }
+      /* Қуёш панеллари */
+      const panels = [], pmat = mat(0x1e3a8a, { roughness: 0.25, metalness: 0.5, emissive: 0x0b1d4d });
+      for (let i = 0; i < 30; i++) { const p = new T.Mesh(new T.BoxGeometry(0.9, 0.04, 0.55), pmat); p.position.set(1.2 + (i % 6) * 1.05, 0.35, -5 + Math.floor(i / 6) * 0.8); p.rotation.x = -0.5; v.scene.add(p); panels.push(p); }
+      /* Шаҳарча: ойналари ёнадиган уйлар */
+      const wins = [];
+      for (let i = 0; i < 10; i++) {
+        const x = -3 + (i % 5) * 1.4, z = 3 + Math.floor(i / 5) * 1.6, h = 0.8 + (i % 3) * 0.5;
+        const hb = new T.Mesh(new T.BoxGeometry(1, h, 1), mat(0xfef3c7)); hb.position.set(x, h / 2, z); v.scene.add(hb);
+        const roof = new T.Mesh(new T.ConeGeometry(0.8, 0.5, 4), mat(0xb91c1c)); roof.position.set(x, h + 0.25, z); roof.rotation.y = Math.PI / 4; v.scene.add(roof);
+        const wm = new T.MeshStandardMaterial({ color: 0x1f2937, emissive: 0xfacc15, emissiveIntensity: 0 }), wn = new T.Mesh(new T.PlaneGeometry(0.5, 0.3), wm); wn.position.set(x, h * 0.55, z + 0.51); v.scene.add(wn); wins.push(wm);
+      }
+      /* Аккумулятор (тўлиш даражаси) */
+      const batBox = new T.Mesh(new T.BoxGeometry(1.2, 2, 0.8), new T.MeshStandardMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.3, depthWrite: false })); batBox.position.set(5.5, 1, 3.5); v.scene.add(batBox);
+      const batFill = new T.Mesh(new T.BoxGeometry(1.1, 1, 0.7), mat(0x22c55e, { emissive: 0x14532d })); batFill.position.set(5.5, 0.5, 3.5); v.scene.add(batFill);
+      /* Газ станцияси ва тутун */
+      const gp = new T.Mesh(new T.BoxGeometry(1.6, 1, 1.2), mat(0x64748b)); gp.position.set(8.5, 0.5, 1); v.scene.add(gp);
+      const gs = new T.Mesh(new T.CylinderGeometry(0.15, 0.2, 2, 12), mat(0x94a3b8)); gs.position.set(8.9, 1.5, 1); v.scene.add(gs);
+      const NP = 40, puff = new T.InstancedMesh(new T.SphereGeometry(1, 8, 6), new T.MeshStandardMaterial({ color: 0x6b7280, transparent: true, opacity: 0.5, depthWrite: false }), NP); puff.userData.noPick = true; v.scene.add(puff);
+      const PF = Array.from({ length: NP }, (_, i) => ({ a: (i / NP) * 3 }));
+      /* Қуёш, электр «оқими» (ЛЭП бўйлаб ёруғ нуқталар) */
+      const sun = new T.Mesh(new T.SphereGeometry(0.6, 20, 14), new T.MeshBasicMaterial({ color: 0xfde047 })); v.scene.add(sun);
+      const NF = 36, flow = new T.InstancedMesh(new T.SphereGeometry(0.07, 6, 5), new T.MeshBasicMaterial({ color: 0xfacc15 }), NF); flow.userData.noPick = true; v.scene.add(flow);
+      const path = [new T.Vector3(-7, 1.2, -3), new T.Vector3(3, 1.2, -3.5), new T.Vector3(0, 1.2, 3)];
+      const clock = liveLabel(v, [0, 6.2, 0], "#0f172a", 0.5);
+      const day = new T.Color(S.sea ? 0xbae6fd : 0xcbd5e1), night = new T.Color(0x0f172a), tc = new T.Color();
+      let hour = 8;
+      v.updaters.push((dt, t) => {
+        hour = (hour + dt * 1.2) % 24;
+        const h0 = Math.floor(hour), rw = R.rows[h0], s = sol(hour), w = wcf(hour);
+        rotors.forEach((r, i) => { r.rotation.z -= dt * (0.6 + w * 9) * (1 + i * 0.03); });
+        const npv = Math.round(clamp(S.pv / 200, 0, 1) * panels.length); panels.forEach((p, i) => { p.visible = i < npv; });
+        pmat.emissiveIntensity = 0.2 + s * 1.6;
+        const ang = ((hour - 6) / 12) * Math.PI; sun.position.set(-Math.cos(ang) * 10, Math.sin(ang) * 8, -6); sun.visible = sun.position.y > -0.5;
+        const lite = clamp(Math.sin(ang) * 1.4 + 0.15, 0, 1);
+        v.scene.background = tc.copy(night).lerp(day.set(S.sea ? 0xbae6fd : 0xcbd5e1), lite);
+        wins.forEach((m) => { m.emissiveIntensity = (1 - lite) * 1.2; });
+        const f = S.bat ? clamp(rw.soc / S.bat, 0.02, 1) : 0.02; batFill.scale.y = f * 1.9; batFill.position.y = 0.05 + (f * 1.9) / 2;
+        batFill.material.color.setHex(f < 0.25 ? 0xef4444 : f < 0.6 ? 0xfacc15 : 0x22c55e);
+        const gon = clamp(rw.g / 30, 0, 1), mtx = new T.Matrix4();
+        PF.forEach((p, i) => { p.a += dt * 0.9; if (p.a > 3) p.a = 0; const r = gon > 0.02 ? (0.15 + p.a * 0.2) * (0.5 + gon) : 0; mtx.makeScale(r, r, r); mtx.setPosition(8.9 + p.a * 0.4, 2.6 + p.a * 0.9, 1 + Math.sin(i) * 0.2); puff.setMatrixAt(i, mtx); });
+        puff.instanceMatrix.needsUpdate = true;
+        const fr = clamp(rw.r / Math.max(rw.d, 1), 0, 1.5);
+        for (let i = 0; i < NF; i++) {
+          const u = ((i / NF) + t * 0.25 * (0.3 + fr)) % 1, seg = u < 0.5 ? 0 : 1, k = (u % 0.5) * 2;
+          const pnt = new T.Vector3().lerpVectors(path[seg], path[seg + 1], k);
+          const sc = i / NF < Math.min(1, fr) ? 1 : 0; mtx.makeScale(sc, sc, sc); mtx.setPosition(pnt.x, pnt.y + Math.sin(u * 20) * 0.05, pnt.z); flow.setMatrixAt(i, mtx);
+        }
+        flow.instanceMatrix.needsUpdate = true;
+        clock(`🕒 ${String(h0).padStart(2, "0")}:00 · ☀️ ${fmt(rw.pv, 0)} · 🌬️ ${fmt(rw.w, 0)} · 🔥 ${fmt(rw.g, 0)} GW`, lite > 0.4 ? "#0f172a" : "#f8fafc");
+      });
+      const show = (k, x) => ({ pv: `${x} GW`, wind: `${x} GW`, bat: `${x} GWh`, wd: `${Math.round(x * 100)}%` }[k]);
+      const verdict = () => (R.share >= 95 ? "🌞" : R.share >= 70 ? "🌿" : R.share >= 40 ? "⛅" : "🏭");
+      const outK = () => {
+        const msg = R.share >= 80 ? t3("Зўр! Шаҳарнинг деярли бутун электри тоза манбалардан.", "Супер! Почти всё электричество города — из чистых источников.", "Great! Almost all the town's power is clean.") : R.share >= 50 ? t3("Ярмидан кўпи тоза. Тунда газ станцияси ишлаяпти — аккумулятор қўшиб кўринг.", "Больше половины — чистая. Ночью работает газовая станция — добавьте аккумулятор.", "Over half is clean. The gas plant runs at night — try adding a battery.") : t3("Газ станцияси кўп ишлаяпти. Шамол ёки қуёшни кўпайтиринг.", "Газовая станция работает много. Добавьте ветер или солнце.", "The gas plant runs a lot. Add wind or solar.");
+        return `<div class="l3-big"><span>${verdict()}</span><b>${fmt(R.share, 0)}%</b><small>${H(t3("тоза электр", "чистой энергии", "clean power"))}</small></div><p class="lab-out">${H(msg)}</p>`;
+      };
+      const chart = () => chartSvg([{ pts: R.rows.map((r) => [r.h, r.d]), c: "#0f172a" }, { pts: R.rows.map((r) => [r.h, r.pv]), c: "#f59e0b" }, { pts: R.rows.map((r) => [r.h, r.w]), c: "#0ea5e9" }, { pts: R.rows.map((r) => [r.h, r.g]), c: "#ef4444", dash: true }], { x0: 0, x1: 23, y0: 0, xl: L(t3("соат", "час", "hour")), yl: "GW" })
+        + `<p class="small muted">— ${H(t3("талаб", "спрос", "demand"))} · <span style="color:#f59e0b">☀️</span> · <span style="color:#0ea5e9">🌬️</span> · <span style="color:#ef4444">- - ${H(t3("газ", "газ", "gas"))}</span></p>`;
+      const outU = () => `<div class="lab-formula">E<sub>RE</sub> = Σ(P<sub>PV</sub>·CF<sub>PV</sub>(h) + P<sub>W</sub>·CF<sub>W</sub>(h)) · ${L(t3("аккумулятор", "накопитель", "storage"))}: P = E/4, η = 0,95²<br>${L(t3("Тоза улуш", "Доля ВИЭ", "RE share"))} = <b>${fmt(R.share, 1)}%</b> · ${L(t3("газ", "газ", "gas"))} = <b>${fmt(R.gas, 0)}</b> GWh (${R.gasH} h)<br>${L(t3("Кесилган ортиқча", "Отсечено излишков", "Curtailed"))} = <b>${fmt(R.cut, 0)}</b> GWh (${fmt((R.cut / R.D) * 100, 1)}%) · CO₂ ≈ <b>${fmt(R.co2, 0)}</b> g/kWh</div>${chart()}`;
+      ui.html = () => {
+        if (stage() !== "uni") return `<p class="small"><b>${H(t3("Фасл", "Сезон", "Season"))}</b></p>${optsH("sea", [[1, "☀️", t3("Ёз", "Лето", "Summer")], [0, "❄️", t3("Қиш", "Зима", "Winter")]], S.sea)}
+          <p class="small"><b>${H(t3("Шамол", "Ветер", "Wind"))}</b></p>${optsH("wd", [[0.06, "🍃", t3("Шамолсиз", "Штиль", "Calm")], [0.25, "🌬️", t3("Ўртача", "Средний", "Average")], [0.5, "🌪️", t3("Кучли", "Сильный", "Strong")]], S.wd)}
+          <p class="small"><b>${H(t3("Аккумулятор", "Аккумулятор", "Battery"))}</b></p>${optsH("bat", [[0, "🚫", t3("Йўқ", "Нет", "None")], [20, "🔋", t3("Кичик", "Малый", "Small")], [200, "🔋🔋", t3("Катта", "Большой", "Big")]], S.bat)}
+          <div data-out>${outK()}</div><p class="l3-mission" data-star>${H(TX.mission)}: ${H(t3("Ёзда тоза электр улушини 90 % дан оширинг.", "Летом поднимите долю чистой энергии выше 90 %.", "Get clean power above 90 % in summer."))}</p>`;
+        return `${rngH("pv", H(t3("Қуёш қуввати", "Мощность СЭС", "Solar capacity")), S.pv, 0, 400, 10, show("pv", S.pv))}
+          ${rngH("wind", H(t3("Шамол қуввати", "Мощность ВЭС", "Wind capacity")), S.wind, 0, 250, 5, show("wind", S.wind))}
+          ${rngH("bat", H(t3("Аккумулятор сиғими", "Ёмкость накопителей", "Storage capacity")), S.bat, 0, 400, 10, show("bat", S.bat))}
+          ${rngH("wd", H(t3("Шамол куни (ўртача CF)", "Ветреность дня (средний CF)", "Wind day (mean CF)")), S.wd, 0.03, 0.6, 0.01, show("wd", S.wd))}
+          ${optsH("sea", [[1, "☀️", t3("Ёз куни", "Летний день", "Summer day")], [0, "❄️", t3("Қиш куни", "Зимний день", "Winter day")]], S.sea)}
+          <div data-out>${outU()}</div>`;
+      };
+      const chk = () => { if (stage() !== "uni" && S.sea === 1 && R.share > 90) star("energiya", ui.el.querySelector("[data-star]")); };
+      ui.bind = (el) => {
+        liveBind(el, S, show, () => { R = sim(); return stage() === "uni" ? outU() : outK(); }, chk);
+        bindOpts(el, S, () => { R = sim(); ui.render(); chk(); });
+      };
+      ui.goals = stage() === "uni" ? [
+        { id: "s80", t: t3("Ёз кунида тоза улушни ≥ 80 % га етказинг", "Летом доведите долю ВИЭ до ≥ 80 %", "Reach ≥ 80 % renewables on a summer day"), ok: () => S.sea === 1 && R.share >= 80 },
+        { id: "cut", t: t3("Тоза улуш ≥ 70 % бўлсин, лекин кесилган энергия ≤ 5 %", "Доля ВИЭ ≥ 70 % при отсечении ≤ 5 %", "≥ 70 % renewables with ≤ 5 % curtailment"), ok: () => R.share >= 70 && R.cut / R.D <= 0.05 },
+        { id: "dunkel", t: t3("Қишки «Dunkelflaute» (CF ≤ 0,08) да ҳам ≥ 60 % га эришинг", "Даже в зимнюю «Dunkelflaute» (CF ≤ 0,08) достигните ≥ 60 %", "Reach ≥ 60 % even in a winter Dunkelflaute (CF ≤ 0.08)"), ok: () => S.sea === 0 && S.wd <= 0.08 && R.share >= 60 }
+      ] : [
+        { id: "night", t: t3("Аккумуляторсиз тунда газ станцияси ишлашини кўринг", "Посмотрите: без аккумулятора ночью работает газ", "See the gas plant run at night without a battery"), ok: () => S.bat === 0 && R.gas > 0 },
+        { id: "winter", t: t3("Қишда шамолсиз кунни синаб кўринг", "Попробуйте зимний безветренный день", "Try a calm winter day"), ok: () => S.sea === 0 && S.wd === 0.06 }
+      ];
+      ui.read = () => ({ p: `PV = ${S.pv} GW; W = ${S.wind} GW; B = ${S.bat} GWh; ${S.sea ? "summer" : "winter"}`, r: `RE = ${fmt(R.share, 1)}%; CO₂ = ${fmt(R.co2, 0)} g/kWh`, x: S.bat, y: R.share, xl: "GWh", yl: "RE, %" });
+      ui.task = () => ({ q: t3("Шамол электр станцияси қуввати 70 ГВт, ўртача фойдаланиш коэффициенти CF = 0,25. Бир суткада қанча ГВт·с электр ишлаб чиқарилади?", "Ветростанции 70 ГВт, средний КИУМ CF = 0,25. Сколько ГВт·ч выработается за сутки?", "Wind capacity is 70 GW with a mean capacity factor of 0.25. How many GWh are produced per day?"),
+        a: 70 * 0.25 * 24, tol: 2, unit: "GWh", dec: 0, hint: t3("E = P · CF · 24 соат", "E = P · CF · 24 ч", "E = P · CF · 24 h") });
+      ui.render();
+    }
+  };
+
+  /* =====================================================================
+     19) 🇯🇵 Минамата: симобнинг озиқ занжирида тўпланиши (биомагнификация)
+     ===================================================================== */
+  const MINA = {
+    id: "minamata", icon: "🐟", flag: "🇯🇵",
+    name: t3("Минамата: симоб занжири", "Минамата: цепочка ртути", "Minamata: the mercury chain"),
+    q: t3("Сувда симоб жуда оз бўлса ҳам, нега катта балиқда у хавфли даражага етади?", "Почему даже при очень малом содержании ртути в воде её в крупной рыбе становится опасно много?", "Why can big fish hold dangerous mercury when there is only a trace in the water?"),
+    poe: { o: [t3("Катта балиқ симобни ўзи ишлаб чиқаради", "Крупная рыба сама производит ртуть", "Big fish make mercury themselves"), t3("Ҳар бир озиқ поғонасида метилсимоб тўпланиб кўпаяди", "На каждом трофическом уровне метилртуть накапливается и умножается", "Methylmercury builds up and multiplies at each food-chain level"), t3("Катта балиқ кўп сув ичади", "Крупная рыба пьёт много воды", "Big fish drink more water")], a: 1,
+      w: t3("Метилсимоб ёғ ва оқсилда ушланиб, организмдан секин чиқади. Ҳар бир йиртқич кўп ўлжа ейди, шунинг учун концентрация ҳар поғонада бир неча марта ошади. Минамата (Япония, 1956) фожиаси шундай юз берган.", "Метилртуть удерживается белками и выводится медленно. Каждый хищник съедает много добычи, и концентрация растёт в разы на каждом уровне. Так произошла трагедия Минаматы (Япония, 1956).", "Methylmercury binds to proteins and leaves the body slowly. Each predator eats lots of prey, so the level multiplies at every step — that is how the Minamata tragedy (Japan, 1956) unfolded.") },
+    src: "Ministry of the Environment, Japan «Lessons from Minamata Disease and Mercury Management in Japan», 2013; UNEP Minamata Convention on Mercury (2013, 2017 йилдан кучда); Lavoie R.A. et al., Environ. Sci. Technol. 47:13385, 2013 (TMF); JECFA 2003 (MeHg PTWI 1,6 µg/kg·ҳафта); US EPA 2001 (балиқда 0,3 мг/кг)",
+    view: { bg: "#0c4a6e", d: 11, ph: 1.15, th: 0.5, target: [0, 0.3, 0], minD: 4, maxD: 18 },
+    LV: [["🦠", t3("Фитопланктон", "Фитопланктон", "Phytoplankton")], ["🦐", t3("Зоопланктон", "Зоопланктон", "Zooplankton")], ["🐟", t3("Майда балиқ", "Мелкая рыба", "Small fish")], ["🐠", t3("Йиртқич балиқ", "Хищная рыба", "Predatory fish")], ["🦈", t3("Катта йиртқич (тунец)", "Крупный хищник (тунец)", "Top predator (tuna)")]],
+    quiz: [
+      { q: t3("Биомагнификация нима?", "Что такое биомагнификация?", "What is biomagnification?"), o: [t3("Озиқ занжири бўйлаб модда концентрациясининг ортиши", "Рост концентрации вещества вверх по пищевой цепи", "Rising concentration up the food chain"), t3("Балиқнинг катталашиши", "Рост рыбы", "Fish growing bigger"), t3("Сувнинг буғланиши", "Испарение воды", "Water evaporating")], a: 0, w: t3("TMF — ҳар бир трофик поғонада неча марта ошишини кўрсатади.", "TMF показывает, во сколько раз растёт концентрация на каждом уровне.", "The TMF tells how many times it grows per trophic level.") },
+      { q: t3("Минамата касаллиги қайси давлатда аниқланган?", "В какой стране выявили болезнь Минамата?", "Where was Minamata disease identified?"), o: [t3("Япония", "Япония", "Japan"), t3("Корея", "Корея", "Korea"), t3("Германия", "Германия", "Germany")], a: 0, w: t3("1956 йил, Кумамото префектураси, Минамата кўрфази.", "1956 г., префектура Кумамото, залив Минамата.", "1956, Minamata Bay, Kumamoto Prefecture.") },
+      { q: t3("Ҳомиладор аёлларга қайси балиқни кам ейиш тавсия этилади?", "Какую рыбу беременным советуют есть реже?", "Which fish should pregnant women eat less of?"), o: [t3("Катта йиртқич балиқлар (акула, қилич балиқ)", "Крупных хищников (акула, меч-рыба)", "Big predators (shark, swordfish)"), t3("Майда балиқлар (сардина)", "Мелкую рыбу (сардина)", "Small fish (sardine)"), t3("Барчасини бир хил", "Всю одинаково", "All the same")], a: 0, w: t3("Улар озиқ занжири юқорисида бўлгани учун симоб кўп тўплайди.", "Они наверху пищевой цепи и накапливают больше ртути.", "They sit at the top of the chain and accumulate the most mercury.") }
+    ],
+    build(v, ui) {
+      const T = THREE, S = { lc: 0.3, tmf: 4, baf: 5, lv: 4, eat: 50, bw: 60 };
+      const Cw = () => Math.pow(10, S.lc); // нг/л метилсимоб
+      const Ci = (i) => Cw() * 1e-6 * Math.pow(10, S.baf) * Math.pow(S.tmf, i); // мг/кг, i = 0..4
+      const top = () => Ci(S.lv - 1);
+      const intake = () => (top() * 1000 * (S.eat / 1000) * 7) / S.bw; // µg/kg·ҳафта
+      ui.unit = () => 10;
+      const sea = new T.Mesh(new T.BoxGeometry(14, 3, 8), new T.MeshStandardMaterial({ color: 0x0284c7, transparent: true, opacity: 0.35, depthWrite: false, roughness: 0.1 })); sea.position.set(0, -0.5, 0); sea.userData.noPick = true; v.scene.add(sea);
+      const surf = new T.Mesh(new T.PlaneGeometry(14, 8, 40, 20), new T.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.5, side: T.DoubleSide, roughness: 0.1, metalness: 0.2 })); surf.rotation.x = -Math.PI / 2; surf.position.y = 1; surf.userData.noPick = true; v.scene.add(surf);
+      const bed = new T.Mesh(new T.PlaneGeometry(14, 8), mat(0x78716c)); bed.rotation.x = -Math.PI / 2; bed.position.y = -2; v.scene.add(bed);
+      const shore = new T.Mesh(new T.BoxGeometry(4, 1.6, 8), mat(0x65a30d)); shore.position.set(-9, 0.2, 0); v.scene.add(shore);
+      const fac = new T.Mesh(new T.BoxGeometry(2, 1.2, 1.6), mat(0x57534e)); fac.position.set(-9, 1.6, -1.5); v.scene.add(fac);
+      const chim = new T.Mesh(new T.CylinderGeometry(0.15, 0.2, 1.6, 12), mat(0xa8a29e)); chim.position.set(-8.5, 2.9, -1.5); v.scene.add(chim);
+      const pipe = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 3, 10), mat(0x44403c)); pipe.rotation.z = Math.PI / 2; pipe.position.set(-6.5, 0.4, -1.5); v.scene.add(pipe);
+      const boat = new T.Group(); const hull = new T.Mesh(new T.BoxGeometry(1.2, 0.3, 0.5), mat(0xb45309)); boat.add(hull); const man = new T.Mesh(new T.CapsuleGeometry(0.1, 0.25, 4, 8), mat(0xfde68a)); man.position.y = 0.35; boat.add(man); boat.position.set(3, 1.15, 2.5); v.scene.add(boat);
+      /* Симоб заррачалари (оқова сувдан тарқалади) */
+      const NH = 160, hgm = new T.InstancedMesh(new T.SphereGeometry(0.05, 6, 5), new T.MeshBasicMaterial({ color: 0xf87171 }), NH); hgm.userData.noPick = true; v.scene.add(hgm);
+      const HP = Array.from({ length: NH }, () => ({ a: Math.random() * 6, x: 0, y: 0, z: 0, dx: Math.random() - 0.3, dz: Math.random() - 0.5, dy: -Math.random() * 0.4 }));
+      /* Планктон (нуқталар) */
+      const NPk = 260, pg = new T.BufferGeometry(), pp = new Float32Array(NPk * 3);
+      for (let i = 0; i < NPk; i++) { pp[i * 3] = -6 + Math.random() * 12; pp[i * 3 + 1] = -1.8 + Math.random() * 2.6; pp[i * 3 + 2] = -3.6 + Math.random() * 7.2; }
+      pg.setAttribute("position", new T.BufferAttribute(pp, 3));
+      const pm = new T.PointsMaterial({ color: 0x86efac, size: 0.09, transparent: true, opacity: 0.85 }); v.scene.add(new T.Points(pg, pm));
+      /* Балиқлар: 3 даражада */
+      const school = [];
+      const addFish = (n, len, lvl, R, y, sp) => { for (let i = 0; i < n; i++) { const f = fishMesh(len, 0x94a3b8); f.userData.o = { lvl, R: R * (0.7 + Math.random() * 0.5), y: y + (Math.random() - 0.5) * 0.6, sp: sp * (0.8 + Math.random() * 0.4), ph: Math.random() * 6.28, cx: (Math.random() - 0.5) * 3, cz: (Math.random() - 0.5) * 2 }; v.scene.add(f); school.push(f); } };
+      addFish(14, 0.32, 2, 2.2, -0.2, 0.9); addFish(5, 0.75, 3, 3.2, -0.9, 0.5); addFish(2, 1.4, 4, 4, -1.3, 0.3);
+      const lbl = [0, 1, 2, 3, 4].map((i) => liveLabel(v, [2.4, 3.5 - i * 0.48, -3.8], "#ffffff", 0.3));
+      const head = liveLabel(v, [-2.6, 4.1, -3.8], "#ffffff", 0.42);
+      const cBad = new T.Color(0xef4444), cOk = new T.Color(0x94a3b8);
+      v.updaters.push((dt, t) => {
+        const pa = surf.geometry.attributes.position; for (let i = 0; i < pa.count; i++) { const x = pa.getX(i), y = pa.getY(i); pa.setZ(i, Math.sin(x * 0.9 + t * 1.5) * 0.06 + Math.cos(y * 1.3 + t) * 0.05); } pa.needsUpdate = true;
+        boat.position.y = 1.15 + Math.sin(t * 1.4) * 0.05; boat.rotation.z = Math.sin(t * 1.1) * 0.05;
+        const flowOn = S.lc > -0.6, mtx = new T.Matrix4();
+        HP.forEach((p, i) => {
+          p.a += dt; if (p.a > 6) { p.a = 0; }
+          const a = p.a, s = flowOn ? clamp((S.lc + 1) / 2, 0.15, 1) : 0;
+          mtx.makeScale(s, s, s); mtx.setPosition(-5 + a * 1.6 * (0.6 + p.dx), 0.3 + a * p.dy - a * 0.1, -1.5 + a * p.dz * 1.2); hgm.setMatrixAt(i, mtx);
+        });
+        hgm.instanceMatrix.needsUpdate = true;
+        pm.color.copy(cOk.clone().set(0x86efac)).lerp(cBad, clamp(Ci(0) / 0.3, 0, 1) * 0.8);
+        school.forEach((f) => {
+          const o = f.userData.o, a = o.ph + t * o.sp; f.visible = o.lvl < S.lv;
+          f.position.set(o.cx + Math.cos(a) * o.R, o.y + Math.sin(t * 2 + o.ph) * 0.08, o.cz + Math.sin(a) * o.R * 0.55);
+          f.rotation.y = -a - Math.PI / 2 + Math.PI;
+          f.userData.tail.rotation.y = Math.sin(t * 10 * o.sp + o.ph) * 0.5;
+          f.userData.m.color.copy(cOk).lerp(cBad, clamp(Ci(o.lvl) / 0.3, 0, 1));
+        });
+        for (let i = 0; i < 5; i++) { const on = i < S.lv, c = Ci(i); lbl[i](on ? `${L(this.LV[i][1])}: ${fmt(c, c < 0.1 ? 3 : 2)} mg/kg` : " ", c > 0.3 ? "#fca5a5" : "#bbf7d0"); }
+        head(`💧 ${L(t3("сув", "вода", "water"))}: ${fmt(Cw(), Cw() < 1 ? 2 : 1)} ng/L`, "#e0f2fe");
+      });
+      ui.probe = (p) => p.y > 1 ? L(t3("Ҳаво", "Воздух", "Air")) : `${L(t3("Сув", "Вода", "Water"))}: ${fmt(Cw(), 2)} ng/L MeHg`;
+      const show = (k, x) => ({ lc: `${fmt(Math.pow(10, x), Math.pow(10, x) < 1 ? 2 : 1)} ng/L`, tmf: `×${fmt(x, 1)}`, baf: `10^${fmt(x, 1)} L/kg`, lv: `${x}`, eat: `${x} g/d`, bw: `${x} kg` }[k]);
+      const chain = () => `<div class="l3-chain">${this.LV.slice(0, S.lv).map(([e, n], i) => { const c = Ci(i); return `<span class="${c > 0.3 ? "bad" : "ok"}"><b>${e}</b><small>${H(n)}</small><i>${fmt(c, c < 0.1 ? 3 : 2)}</i></span>`; }).join("<em>→</em>")}</div>`;
+      const outK = () => {
+        const c = top(), ok = c <= 0.3;
+        return `<div class="l3-big"><span>${ok ? "✅" : "⚠️"}</span><b>${fmt(c, c < 1 ? 2 : 1)}</b><small>mg/kg · ${H(t3("энг катта балиқда", "в самой крупной рыбе", "in the biggest fish"))}</small></div>${chain()}<p class="lab-out">${H(ok ? t3("Балиқни ейиш хавфсиз (≤ 0,3 мг/кг).", "Рыбу есть безопасно (≤ 0,3 мг/кг).", "The fish is safe to eat (≤ 0.3 mg/kg).") : t3("Хавфли! Озиқ занжирида симоб кўпайиб кетди.", "Опасно! Ртуть умножилась по пищевой цепи.", "Danger! Mercury multiplied along the food chain."))}</p>`;
+      };
+      const outU = () => {
+        const pts = []; for (let i = 0; i < S.lv; i++) pts.push([i + 1, Math.log10(Ci(i))]);
+        return `<div class="lab-formula">C<sub>1</sub> = C<sub>w</sub>·BAF = ${fmt(Cw(), 2)}·10⁻⁶·10^${fmt(S.baf, 1)} = <b>${fmt(Ci(0), 3)}</b> mg/kg<br>C<sub>n</sub> = C<sub>1</sub>·TMF<sup>n−1</sup> → C<sub>${S.lv}</sub> = <b>${fmt(top(), 2)}</b> mg/kg (US EPA: 0,3)<br>${L(t3("Истеъмол", "Поступление", "Intake"))} = C·m·7/BW = <b>${fmt(intake(), 2)}</b> µg/kg·${L(t3("ҳафта", "нед.", "week"))} (JECFA PTWI 1,6 → ${fmt((intake() / 1.6) * 100, 0)}%)</div>${chain()}
+          ${chartSvg([{ pts, c: "#ef4444", dots: true }], { x0: 1, x1: 5, y0: -4, y1: 2, xl: L(t3("трофик поғона", "трофический уровень", "trophic level")), yl: "log₁₀ C, mg/kg", bands: [[-4, Math.log10(0.3), "#22c55e"], [Math.log10(0.3), 2, "#ef4444"]] })}`;
+      };
+      ui.html = () => {
+        if (stage() !== "uni") return `<p class="small"><b>${H(t3("Завод оқоваси", "Сброс завода", "Factory discharge"))}</b></p>${optsH("lc", [[0.3, "☠️", t3("Тозаламай ташлайди", "Сбрасывает без очистки", "Dumps untreated")], [-0.7, "🧪", t3("Тозалайди", "Очищает", "Treats it")], [-1.5, "🌊", t3("Ёпилди (табиий фон)", "Закрыт (природный фон)", "Closed (background)")]], S.lc)}
+          <p class="small"><b>${H(t3("Қайси балиқни тутамиз?", "Какую рыбу ловим?", "Which fish do we catch?"))}</b></p>${optsH("lv", [[3, "🐟", t3("Майда балиқ", "Мелкая рыба", "Small fish")], [4, "🐠", t3("Йиртқич балиқ", "Хищная рыба", "Predatory fish")], [5, "🦈", t3("Тунец", "Тунец", "Tuna")]], S.lv)}
+          <div data-out>${outK()}</div><p class="l3-mission" data-star>${H(TX.mission)}: ${H(t3("Оқовани тўхтатинг ва ейиш хавфсиз балиқни топинг.", "Остановите сброс и найдите рыбу, безопасную для еды.", "Stop the discharge and find a fish that is safe to eat."))}</p>`;
+        return `${rngH("lc", H(t3("Сувдаги метилсимоб Cw", "Метилртуть в воде Cw", "Methylmercury in water Cw")), S.lc, -2, 1, 0.05, show("lc", S.lc))}
+          ${rngH("baf", H(t3("Биоаккумуляция BAF", "Биоаккумуляция BAF", "Bioaccumulation BAF")), S.baf, 4, 6, 0.1, show("baf", S.baf))}
+          ${rngH("tmf", H(t3("Трофик магнификация TMF", "Трофическая магнификация TMF", "Trophic magnification TMF")), S.tmf, 1.5, 8, 0.1, show("tmf", S.tmf))}
+          ${rngH("lv", H(t3("Занжир узунлиги", "Длина цепи", "Chain length")), S.lv, 3, 5, 1, show("lv", S.lv))}
+          ${rngH("eat", H(t3("Балиқ истеъмоли", "Потребление рыбы", "Fish eaten")), S.eat, 0, 300, 10, show("eat", S.eat))}
+          ${rngH("bw", H(t3("Тана вазни", "Масса тела", "Body weight")), S.bw, 15, 100, 5, show("bw", S.bw))}
+          <div data-out>${outU()}</div>`;
+      };
+      const chk = () => { if (stage() !== "uni" && S.lc <= -0.7 && top() <= 0.3) star("minamata", ui.el.querySelector("[data-star]")); };
+      ui.bind = (el) => { liveBind(el, S, show, stage() === "uni" ? outU : outK, chk); bindOpts(el, S, () => { ui.render(); chk(); }); };
+      ui.goals = stage() === "uni" ? [
+        { id: "thr", t: t3("5-поғонали занжирда энг юқори балиқ 0,3 мг/кг дан ошмайдиган Cw ни топинг (BAF 10⁵, TMF 4)", "Найдите Cw, при котором в 5-уровневой цепи верхняя рыба ≤ 0,3 мг/кг (BAF 10⁵, TMF 4)", "Find the Cw that keeps the top fish ≤ 0.3 mg/kg in a 5-level chain (BAF 10⁵, TMF 4)"), ok: () => S.lv === 5 && Math.abs(S.baf - 5) < 0.05 && Math.abs(S.tmf - 4) < 0.05 && top() <= 0.3 && top() >= 0.15 },
+        { id: "ptwi", t: t3("Ҳафталик истеъмол PTWI дан 2 марта кўп бўлган ҳолатни кўринг", "Найдите случай, когда поступление вдвое выше PTWI", "Find a case where intake is twice the PTWI"), ok: () => intake() >= 3.2 },
+        { id: "kid", t: t3("20 кг ли бола учун кунига 50 г балиқ хавфсиз бўлсин (≤ PTWI)", "Для ребёнка 20 кг 50 г рыбы в день — безопасно (≤ PTWI)", "Make 50 g/day of fish safe for a 20 kg child (≤ PTWI)"), ok: () => S.bw <= 20 && S.eat >= 50 && intake() <= 1.6 }
+      ] : [
+        { id: "dump", t: t3("Завод оқова ташлаганда тунецдаги симобни кўринг", "Посмотрите на ртуть в тунце при сбросе", "See the mercury in tuna when the factory dumps"), ok: () => S.lc >= 0.3 && S.lv === 5 },
+        { id: "small", t: t3("Майда балиқ йиртқичдан хавфсизроқ эканини текширинг", "Проверьте, что мелкая рыба безопаснее хищной", "Check that small fish are safer than predators"), ok: () => S.lv === 3 }
+      ];
+      ui.read = () => ({ p: `Cw = ${fmt(Cw(), 2)} ng/L; TMF = ${fmt(S.tmf, 1)}; n = ${S.lv}`, r: `C_top = ${fmt(top(), 3)} mg/kg; intake = ${fmt(intake(), 2)} µg/kg/wk`, x: S.tmf, y: top(), xl: "TMF", yl: "C, mg/kg" });
+      ui.task = () => ({ q: t3("Сувда метилсимоб 1 нг/л, BAF = 10⁵ л/кг (фитопланктон), TMF = 4. 4-поғонадаги (йиртқич балиқ) концентрация неча мг/кг?", "Метилртуть в воде 1 нг/л, BAF = 10⁵ л/кг (фитопланктон), TMF = 4. Концентрация на 4-м уровне (хищная рыба), мг/кг?", "Water MeHg is 1 ng/L, BAF = 10⁵ L/kg (phytoplankton), TMF = 4. What is the level-4 (predatory fish) concentration in mg/kg?"),
+        a: 1e-6 * 1e5 * 64, tol: 0.1, unit: "mg/kg", dec: 1, hint: t3("C₁ = 1·10⁻⁶ мг/л · 10⁵ = 0,1 мг/кг; C₄ = C₁·4³", "C₁ = 1·10⁻⁶ мг/л · 10⁵ = 0,1 мг/кг; C₄ = C₁·4³", "C₁ = 1·10⁻⁶ mg/L · 10⁵ = 0.1 mg/kg; C₄ = C₁·4³") });
+      ui.render();
+    }
+  };
+
+  /* =====================================================================
+     20) 🇰🇷 Чхонгечхон: шаҳар иссиқлик ороли ва дарёни тиклаш (энергия баланси)
+     ===================================================================== */
+  const CHEONG = {
+    id: "chhonggye", icon: "🏙️", flag: "🇰🇷",
+    name: t3("Чхонгечхон: салқин шаҳар", "Чхонгечхон: прохладный город", "Cheonggyecheon: a cooler city"),
+    q: t3("Сеулда эстакада бузилиб, ўрнига ариқ очилгач, кўча нега бир неча градусга салқинлашди?", "Почему в Сеуле улица стала прохладнее на несколько градусов, когда эстакаду снесли и открыли ручей?", "Why did a Seoul street cool by several degrees when a highway was torn down and a stream restored?"),
+    poe: { o: [t3("Сув ва дарахтлар буғлатиш орқали иссиқликни олади", "Вода и деревья забирают тепло испарением", "Water and trees remove heat by evaporation"), t3("Машиналар йўқолгани учун қуёш камроқ иситади", "Без машин солнце греет слабее", "Without cars the sun heats less"), t3("Ариқ сови ҳавони пуфлайди", "Ручей дует холодным воздухом", "The stream blows cold air")], a: 0,
+      w: t3("Асфальт қуёш энергиясини иссиқликка айлантиради (сезиладиган иссиқлик H). Сув ва ўсимлик эса уни буғлатишга (яширин иссиқлик LE) сарфлайди, шамол йўлаги ҳам очилади — ҳаво салқинлашади.", "Асфальт превращает солнечную энергию в ощутимое тепло H, а вода и растения тратят её на испарение (скрытое тепло LE), к тому же открывается ветровой коридор — воздух охлаждается.", "Asphalt turns sunlight into sensible heat H, while water and plants spend it on evaporation (latent heat LE) and a wind corridor opens, so the air cools.") },
+    src: "Seoul Metropolitan Government «Cheonggyecheon Restoration Project», 2006; Oke T.R. et al. «Urban Climates», Cambridge UP, 2017 (энергия баланси Rn = H + LE + G); Lee J.H. et al. «Cooling effect of the restored Cheonggyecheon stream», 2009; Santamouris M., 2014 (салқин томлар)",
+    view: { bg: "#e0f2fe", d: 12, ph: 1.05, th: 0.9, target: [0, 1, 0], minD: 5, maxD: 20 },
+    quiz: [
+      { q: t3("Шаҳар иссиқлик ороли нима?", "Что такое городской остров тепла?", "What is an urban heat island?"), o: [t3("Шаҳар атрофидаги қишлоқдан иссиқроқ бўлиши", "Город теплее окружающей сельской местности", "A city being warmer than the countryside around it"), t3("Шаҳардаги орол", "Остров в городе", "An island in a city"), t3("Иссиқ сувли кўл", "Озеро с тёплой водой", "A warm lake")], a: 0, w: t3("Асфальт, бетон, машина ва кондиционерлар иссиқлик чиқаради, ўсимлик эса кам.", "Асфальт, бетон, машины и кондиционеры выделяют тепло, а зелени мало.", "Asphalt, concrete, cars and air conditioners add heat while greenery is scarce.") },
+      { q: t3("Оқ том нега салқин?", "Почему белая крыша прохладнее?", "Why is a white roof cooler?"), o: [t3("Қуёш нурини кўпроқ қайтаради (альбедо юқори)", "Отражает больше солнца (высокое альбедо)", "It reflects more sunlight (high albedo)"), t3("Оқ бўёқ совуқ", "Белая краска холодная", "White paint is cold"), t3("Шамолни тортади", "Притягивает ветер", "It attracts wind")], a: 0, w: t3("Альбедо 0,6 бўлса, нурнинг 60 % и қайтади.", "При альбедо 0,6 отражается 60 % излучения.", "With albedo 0.6, 60 % of the light is reflected.") },
+      { q: t3("Чхонгечхон қайси шаҳарда?", "В каком городе Чхонгечхон?", "Which city is Cheonggyecheon in?"), o: [t3("Сеул", "Сеул", "Seoul"), t3("Токио", "Токио", "Tokyo"), t3("Берлин", "Берлин", "Berlin")], a: 0, w: t3("2003–2005 йилларда эстакада бузилиб, 5,8 км ариқ тикланган.", "В 2003–2005 гг. снесли эстакаду и восстановили 5,8 км ручья.", "In 2003–2005 the overpass was removed and 5.8 km of stream restored.") }
+    ],
+    build(v, ui) {
+      const T = THREE, S = { hw: 1, g: 0.05, w: 0, alb: 0.12, u: 1.5 };
+      const Sd = 800, Lw = 100, rcp = 1200;
+      const albE = () => (1 - S.g - S.w) * S.alb + S.g * 0.2 + S.w * 0.08;
+      const Rn = () => (1 - albE()) * Sd - Lw;
+      const EF = () => clamp(0.08 + 0.85 * (S.g + S.w * 1.3), 0, 0.9);
+      const Qf = () => (S.hw ? 60 : 10);
+      const Hs = () => (1 - EF()) * (Rn() + Qf()) * 0.85;
+      const ga = () => 0.01 * (1 + S.u) * (S.hw ? 0.8 : 1.1);
+      const dT = () => (0.3 * Hs()) / (rcp * ga());
+      let base = null; const start = () => { if (base === null) base = dT(); };
+      start();
+      ui.unit = () => 10;
+      const ground = new T.Mesh(new T.PlaneGeometry(18, 12), mat(0x52525b)); ground.rotation.x = -Math.PI / 2; v.scene.add(ground);
+      const bmats = [];
+      for (let s = -1; s <= 1; s += 2) for (let i = 0; i < 7; i++) {
+        const h = 1.5 + ((i * 37) % 5) * 0.7, bm = mat(0xd6d3d1, { roughness: 0.7 }), b = new T.Mesh(new T.BoxGeometry(1.8, h, 2.4), bm); b.position.set(-7.2 + i * 2.4, h / 2, s * 3.6); v.scene.add(b);
+        const rf = new T.Mesh(new T.BoxGeometry(1.82, 0.06, 2.42), mat(0x27272a)); rf.position.set(b.position.x, h + 0.03, b.position.z); v.scene.add(rf); bmats.push(rf.material);
+      }
+      /* Эстакада */
+      const hwG = new T.Group();
+      const deck = new T.Mesh(new T.BoxGeometry(18, 0.3, 2.2), mat(0x71717a)); deck.position.y = 1.6; hwG.add(deck);
+      for (let i = 0; i < 8; i++) { const c = new T.Mesh(new T.CylinderGeometry(0.15, 0.15, 1.6, 10), mat(0x52525b)); c.position.set(-8 + i * 2.3, 0.8, 0); hwG.add(c); }
+      const hcars = []; for (let i = 0; i < 14; i++) { const c = new T.Mesh(new T.BoxGeometry(0.5, 0.22, 0.26), mat([0xef4444, 0x3b82f6, 0xfacc15, 0xffffff][i % 4], { metalness: 0.4, roughness: 0.3 })); c.userData = { x: -9 + Math.random() * 18, l: i % 2 }; hwG.add(c); hcars.push(c); }
+      v.scene.add(hwG);
+      /* Ариқ ва дарахтлар */
+      const strG = new T.Group();
+      const water = new T.Mesh(new T.PlaneGeometry(18, 1.6, 60, 6), new T.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.1, metalness: 0.2, transparent: true, opacity: 0.9 })); water.rotation.x = -Math.PI / 2; water.position.y = 0.04; strG.add(water);
+      const bank = (z) => { const b = new T.Mesh(new T.BoxGeometry(18, 0.12, 0.8), mat(0x84cc16)); b.position.set(0, 0.06, z); strG.add(b); };
+      bank(1.2); bank(-1.2);
+      const trees = [];
+      for (let i = 0; i < 24; i++) { const tg = new T.Group(), tr = new T.Mesh(new T.CylinderGeometry(0.06, 0.08, 0.6, 6), mat(0x78350f)); tr.position.y = 0.3; tg.add(tr); const cr = new T.Mesh(new T.SphereGeometry(0.4, 10, 8), mat(0x16a34a)); cr.position.y = 0.8; tg.add(cr); tg.position.set(-8.5 + (i % 12) * 1.5, 0, i < 12 ? 1.9 : -1.9); strG.add(tg); trees.push(tg); }
+      const NW = 50, ripple = new T.InstancedMesh(new T.SphereGeometry(0.05, 6, 4), new T.MeshBasicMaterial({ color: 0xe0f2fe }), NW); ripple.userData.noPick = true; strG.add(ripple);
+      const RP = Array.from({ length: NW }, () => ({ x: -9 + Math.random() * 18, z: (Math.random() - 0.5) * 1.3 }));
+      v.scene.add(strG);
+      /* Иссиқлик тўлқинлари */
+      const NHt = 120, heatI = new T.InstancedMesh(new T.SphereGeometry(0.06, 6, 4), new T.MeshBasicMaterial({ color: 0xf97316, transparent: true, opacity: 0.6 }), NHt); heatI.userData.noPick = true; v.scene.add(heatI);
+      const HT = Array.from({ length: NHt }, () => ({ x: -8 + Math.random() * 16, z: (Math.random() - 0.5) * 6, y: Math.random() * 4, s: 0.5 + Math.random() }));
+      const therm = liveLabel(v, [0, 5.6, 0], "#ffffff", 0.48);
+      let morph = S.hw ? 1 : 0;
+      const roofC = new T.Color(), dark = new T.Color(0x27272a), white = new T.Color(0xf8fafc);
+      v.updaters.push((dt, t) => {
+        morph = clamp(morph + (S.hw ? 1 : -1) * dt * 0.8, 0, 1);
+        hwG.position.y = (morph - 1) * 2.2; hwG.visible = morph > 0.01;
+        strG.visible = morph < 0.99;
+        const grow = 1 - morph, ntree = Math.round(clamp(S.g / 0.5, 0, 1) * trees.length);
+        trees.forEach((tg, i) => { const sc = i < ntree ? grow : 0.001; tg.scale.setScalar(Math.max(0.001, sc)); });
+        water.scale.z = Math.max(0.001, grow * clamp(S.w / 0.15, 0.2, 1.3));
+        const pa = water.geometry.attributes.position; for (let i = 0; i < pa.count; i++) pa.setZ(i, Math.sin(pa.getX(i) * 2 - t * 3) * 0.03); pa.needsUpdate = true;
+        const mtx = new T.Matrix4();
+        RP.forEach((p, i) => { p.x += dt * 1.2; if (p.x > 9) p.x = -9; const sc = grow * (S.w > 0.01 ? 1 : 0); mtx.makeScale(sc, sc, sc); mtx.setPosition(p.x, 0.08, p.z * water.scale.z); ripple.setMatrixAt(i, mtx); });
+        ripple.instanceMatrix.needsUpdate = true;
+        hcars.forEach((c) => { const d = c.userData; d.x += (d.l ? 1 : -1) * dt * 2.2; if (d.x > 9) d.x = -9; if (d.x < -9) d.x = 9; c.position.set(d.x, 1.86, d.l ? 0.45 : -0.45); });
+        const heat = clamp(dT() / 5, 0, 1), nh = Math.round(heat * NHt);
+        HT.forEach((p, i) => { p.y += dt * p.s * (0.6 + heat); if (p.y > 4.5) p.y = 0; const sc = i < nh ? 1 + Math.sin(t * 5 + i) * 0.3 : 0; mtx.makeScale(sc, sc, sc); mtx.setPosition(p.x + Math.sin(t * 2 + i) * 0.15, p.y, p.z); heatI.setMatrixAt(i, mtx); });
+        heatI.instanceMatrix.needsUpdate = true;
+        roofC.copy(dark).lerp(white, clamp((S.alb - 0.05) / 0.6, 0, 1)); bmats.forEach((m) => m.color.copy(roofC));
+        const d = dT(); therm(`🌡️ +${fmt(d, 1)} °C ${L(t3("қишлоққа нисбатан", "к пригороду", "vs countryside"))}`, d > 3 ? "#fecaca" : d > 1.5 ? "#fde68a" : "#bbf7d0");
+      });
+      ui.probe = (p) => `${L(t3("Ҳаво", "Воздух", "Air"))}: +${fmt(dT() * clamp(1 - p.y / 6, 0.2, 1), 1)} °C`;
+      const show = (k, x) => ({ g: `${Math.round(x * 100)}%`, w: `${Math.round(x * 100)}%`, alb: fmt(x, 2), u: `${fmt(x, 1)} m/s` }[k]);
+      const outK = () => {
+        const d = dT(), gain = base - d;
+        const msg = gain >= 3 ? t3("Зўр! Кўча худди Сеулдаги каби анча салқинлашди.", "Отлично! Улица заметно остыла, как в Сеуле.", "Great! The street cooled down a lot, just like in Seoul.") : gain >= 1 ? t3("Салқинроқ бўлди. Яна дарахт ёки сув қўшинг.", "Стало прохладнее. Добавьте ещё деревьев или воды.", "Cooler now. Add more trees or water.") : t3("Кўча ҳали иссиқ. Эстакадани ариққа алмаштириб кўринг.", "Улица ещё горячая. Попробуйте заменить эстакаду ручьём.", "Still hot. Try replacing the highway with a stream.");
+        return `<div class="l3-big"><span>${d > 3 ? "🥵" : d > 1.5 ? "😅" : "😎"}</span><b>+${fmt(d, 1)} °C</b><small>${H(t3("қишлоқдан иссиқроқ", "теплее пригорода", "warmer than countryside"))} · −${fmt(Math.max(0, gain), 1)} °C</small></div><p class="lab-out">${H(msg)}</p>`;
+      };
+      const outU = () => {
+        const crv = []; for (let g = 0; g <= 0.6001; g += 0.05) { const s0 = S.g; S.g = g; crv.push([g * 100, dT()]); S.g = s0; }
+        return `<div class="lab-formula">α<sub>eff</sub> = <b>${fmt(albE(), 3)}</b> · R<sub>n</sub> = (1−α)·${Sd} − ${Lw} = <b>${fmt(Rn(), 0)}</b> W/m² · Q<sub>F</sub> = ${Qf()} W/m²<br>EF = LE/(R<sub>n</sub>+Q<sub>F</sub>−G) = <b>${fmt(EF(), 2)}</b> → H = (1−EF)(R<sub>n</sub>+Q<sub>F</sub>)·0,85 = <b>${fmt(Hs(), 0)}</b> W/m²<br>ΔT ≈ k·H/(ρc<sub>p</sub>g<sub>a</sub>) = 0,3·${fmt(Hs(), 0)}/(1200·${fmt(ga(), 3)}) = <b>${fmt(dT(), 2)}</b> °C · β = H/LE = <b>${fmt((1 - EF()) / Math.max(EF(), 0.01), 2)}</b></div>
+          ${chartSvg([{ pts: crv, c: "#16a34a" }], { mark: [S.g * 100, dT()], x0: 0, x1: 60, y0: 0, xl: L(t3("кўкаламзорлик, %", "озеленение, %", "green cover, %")), yl: "ΔT, °C" })}`;
+      };
+      ui.html = () => {
+        if (stage() !== "uni") return `<p class="small"><b>${H(t3("Кўча ўртасида", "Посреди улицы", "Middle of the street"))}</b></p>${optsH("hw", [[1, "🛣️", t3("Эстакада", "Эстакада", "Highway")], [0, "🏞️", t3("Ариқ", "Ручей", "Stream")]], S.hw)}
+          <p class="small"><b>${H(t3("Дарахтлар", "Деревья", "Trees"))}</b></p>${optsH("g", [[0.05, "🌱", t3("Кам", "Мало", "Few")], [0.25, "🌳", t3("Ўртача", "Средне", "Some")], [0.5, "🌳🌳", t3("Кўп", "Много", "Many")]], S.g)}
+          <p class="small"><b>${H(t3("Томлар", "Крыши", "Roofs"))}</b></p>${optsH("alb", [[0.12, "⬛", t3("Қора", "Тёмные", "Dark")], [0.6, "⬜", t3("Оқ", "Белые", "White")]], S.alb)}
+          <div data-out>${outK()}</div><p class="l3-mission" data-star>${H(TX.mission)}: ${H(t3("Кўчани камида 3 °C га салқинлатинг.", "Охладите улицу хотя бы на 3 °C.", "Cool the street by at least 3 °C."))}</p>`;
+        return `${optsH("hw", [[1, "🛣️", t3("Эстакада + машиналар", "Эстакада + машины", "Highway + traffic")], [0, "🏞️", t3("Тикланган ариқ", "Восстановленный ручей", "Restored stream")]], S.hw)}
+          ${rngH("g", H(t3("Кўкаламзорлик улуши", "Доля озеленения", "Green cover")), S.g, 0, 0.6, 0.01, show("g", S.g))}
+          ${rngH("w", H(t3("Сув юзаси улуши", "Доля водной поверхности", "Water surface")), S.w, 0, 0.3, 0.01, show("w", S.w))}
+          ${rngH("alb", H(t3("Том ва йўлак альбедоси", "Альбедо крыш и тротуаров", "Roof and pavement albedo")), S.alb, 0.05, 0.7, 0.01, show("alb", S.alb))}
+          ${rngH("u", H(t3("Шамол тезлиги", "Скорость ветра", "Wind speed")), S.u, 0.3, 5, 0.1, show("u", S.u))}
+          <div data-out>${outU()}</div>`;
+      };
+      const chk = () => { if (stage() !== "uni" && base - dT() >= 3) star("chhonggye", ui.el.querySelector("[data-star]")); };
+      ui.bind = (el) => {
+        liveBind(el, S, show, stage() === "uni" ? outU : outK, chk);
+        bindOpts(el, S, (k) => { if (k === "hw" && !S.hw && S.w < 0.1) S.w = 0.12; if (k === "hw" && S.hw) S.w = 0; ui.render(); chk(); });
+      };
+      ui.goals = stage() === "uni" ? [
+        { id: "seoul", t: t3("Эстакадани ариққа алмаштириб, ΔT ни ≥ 2,5 °C га камайтиринг", "Заменив эстакаду ручьём, снизьте ΔT на ≥ 2,5 °C", "Replace the highway with a stream and cut ΔT by ≥ 2.5 °C"), ok: () => !S.hw && base - dT() >= 2.5 },
+        { id: "roof", t: t3("Фақат салқин томлар (α ≥ 0,6) билан ΔT ≤ 2 °C", "Только прохладными крышами (α ≥ 0,6): ΔT ≤ 2 °C", "Only cool roofs (α ≥ 0.6): ΔT ≤ 2 °C"), ok: () => S.alb >= 0.6 && S.g <= 0.1 && S.w <= 0.02 && dT() <= 2 },
+        { id: "bowen", t: t3("Боуэн нисбати β < 1 бўлсин (буғланиш устун)", "Пусть число Боуэна β < 1 (испарение преобладает)", "Get the Bowen ratio β < 1 (evaporation dominates)"), ok: () => (1 - EF()) / EF() < 1 }
+      ] : [
+        { id: "stream", t: t3("Эстакадани ариққа алмаштиринг", "Замените эстакаду ручьём", "Replace the highway with a stream"), ok: () => S.hw === 0 },
+        { id: "white", t: t3("Оқ томлар ҳам ёрдам беришини текширинг", "Проверьте, помогают ли белые крыши", "Check that white roofs help too"), ok: () => S.alb === 0.6 }
+      ];
+      ui.read = () => ({ p: `${S.hw ? "highway" : "stream"}; green = ${Math.round(S.g * 100)}%; α = ${fmt(S.alb, 2)}`, r: `ΔT = ${fmt(dT(), 2)} °C; H = ${fmt(Hs(), 0)} W/m²`, x: S.g * 100, y: dT(), xl: "green, %", yl: "ΔT, °C" });
+      ui.task = () => ({ q: t3("Радиация баланси Rn = 500 Вт/м², буғланиш улуши EF = 0,6, тупроққа кетадиган иссиқлик G = 15 %. Сезиладиган иссиқлик оқими H неча Вт/м²?", "Радиационный баланс Rn = 500 Вт/м², доля испарения EF = 0,6, поток в почву G = 15 %. Чему равен поток ощутимого тепла H, Вт/м²?", "Net radiation Rn = 500 W/m², evaporative fraction EF = 0.6, ground heat G = 15 %. What is the sensible heat flux H in W/m²?"),
+        a: 500 * 0.85 * 0.4, tol: 3, unit: "W/m²", dec: 0, hint: t3("H = (1 − EF) · Rn · (1 − 0,15)", "H = (1 − EF) · Rn · (1 − 0,15)", "H = (1 − EF) · Rn · (1 − 0.15)") });
+      ui.render();
+    }
+  };
+
+  Object.assign(HOW, {
+    aqi: {
+      k: [t3("Машиналар сонини, завод фильтрини ва об-ҳавони танланг.", "Выберите число машин, фильтр завода и погоду.", "Choose the cars, factory filter and weather."), t3("Осмон ранги ва AQI рақамини кузатинг: яшил — тоза, қизил — зарарли.", "Следите за цветом неба и числом AQI: зелёный — чисто, красный — вредно.", "Watch the sky and AQI number: green is clean, red is unhealthy."), t3("Шамолсиз кунда ҳам ҳавони тоза қилиш йўлини топинг.", "Найдите, как очистить воздух даже в безветрие.", "Find a way to clean the air even on a calm day.")],
+      u: [t3("Манбалар (транспорт, саноат, иситиш) ва метеошароитни (u, H) ўзгартиринг.", "Меняйте источники (транспорт, промышленность, отопление) и метеоусловия (u, H).", "Change the sources (traffic, industry, heating) and weather (u, H)."), t3("Қути модели C = Cb + qL/(uH) ва EPA 2024 чегараларида AQI ни текширинг.", "Проверьте боксовую модель C = Cb + qL/(uH) и AQI по границам EPA 2024.", "Check the box model C = Cb + qL/(uH) and the AQI using EPA 2024 breakpoints."), t3("Графикда AQI нинг шамол тезлигига боғлиқлигини таҳлил қилинг.", "Проанализируйте на графике зависимость AQI от скорости ветра.", "Analyse how AQI depends on wind speed on the chart.")]
+    },
+    energiya: {
+      k: [t3("Фасл, шамол ва аккумуляторни танланг.", "Выберите сезон, ветер и аккумулятор.", "Pick the season, wind and battery."), t3("Соат айланаётганини кузатинг: тунда уйларда чироқ ёнади, газ станцияси тутун чиқаради.", "Следите за часами: ночью в домах горит свет, газовая станция дымит.", "Watch the clock: at night windows light up and the gas plant smokes."), t3("Тоза электр улушини 90 % дан оширинг.", "Поднимите долю чистой энергии выше 90 %.", "Get clean power above 90 %.")],
+      u: [t3("Қуёш, шамол ва аккумулятор қувватини ўзгартиринг.", "Меняйте мощности СЭС, ВЭС и накопителей.", "Change solar, wind and storage capacity."), t3("Соатлик графикда талаб, қуёш, шамол ва газни солиштиринг.", "Сравните на почасовом графике спрос, солнце, ветер и газ.", "Compare hourly demand, solar, wind and gas on the chart."), t3("Кесилган энергия ва CO₂ интенсивлигини таҳлил қилинг; қишки «Dunkelflaute» ни синанг.", "Проанализируйте отсечение и углеродоёмкость; испытайте зимнюю «Dunkelflaute».", "Analyse curtailment and CO₂ intensity; try a winter Dunkelflaute.")]
+    },
+    minamata: {
+      k: [t3("Завод оқовасини танланг: ташлайди, тозалайди ёки ёпилган.", "Выберите сброс завода: сбрасывает, очищает или закрыт.", "Pick the discharge: dumping, treated or closed."), t3("Балиқлар рангини кузатинг: қизил — симоб кўп.", "Следите за цветом рыб: красный — много ртути.", "Watch the fish colour: red means lots of mercury."), t3("Ейиш учун хавфсиз балиқни топинг.", "Найдите рыбу, безопасную для еды.", "Find a fish that is safe to eat.")],
+      u: [t3("Cw, BAF ва TMF ни ўзгартириб, ҳар бир поғонадаги концентрацияни кузатинг.", "Меняйте Cw, BAF и TMF и следите за концентрацией на каждом уровне.", "Change Cw, BAF and TMF and watch each trophic level."), t3("Логарифмик графикда биомагнификацияни таҳлил қилинг.", "Проанализируйте биомагнификацию на логарифмическом графике.", "Analyse biomagnification on the log chart."), t3("Истеъмол ва тана вазни бўйича JECFA PTWI билан солиштиринг.", "Сравните поступление с PTWI JECFA с учётом массы тела.", "Compare intake with the JECFA PTWI for a given body weight.")]
+    },
+    chhonggye: {
+      k: [t3("Кўча ўртасини танланг: эстакада ёки ариқ.", "Выберите середину улицы: эстакада или ручей.", "Choose the middle of the street: highway or stream."), t3("Дарахт ва оқ томлар қўшиб, иссиқлик тўлқинлари камайишини кузатинг.", "Добавьте деревья и белые крыши и следите, как тают волны тепла.", "Add trees and white roofs and watch the heat waves fade."), t3("Кўчани 3 °C га салқинлатинг.", "Охладите улицу на 3 °C.", "Cool the street by 3 °C.")],
+      u: [t3("Кўкаламзорлик, сув, альбедо ва шамолни ўзгартиринг.", "Меняйте озеленение, воду, альбедо и ветер.", "Change green cover, water, albedo and wind."), t3("Энергия баланси Rn = H + LE + G ва Боуэн нисбатини текширинг.", "Проверьте энергобаланс Rn = H + LE + G и число Боуэна.", "Check the energy balance Rn = H + LE + G and the Bowen ratio."), t3("Ариқ, дарахт ва салқин томлар самарасини солиштиринг.", "Сравните эффект ручья, деревьев и прохладных крыш.", "Compare the effect of the stream, trees and cool roofs.")]
+    }
+  });
+  METHODS.push(
+    ["🌐", t3("Халқаро тажрибалар: АҚШ (EPA AQI), Германия (Energiewende), Япония (Минамата), Корея (Чхонгечхон)", "Международный опыт: США (EPA AQI), Германия (Energiewende), Япония (Минамата), Корея (Чхонгечхон)", "International cases: USA (EPA AQI), Germany (Energiewende), Japan (Minamata), Korea (Cheonggyecheon)"), t3("Ҳар бир тажриба шу давлатнинг ҳақиқий сиёсати ёки фожиасига асосланган ва узлуксиз анимацияда кўрсатилади.", "Каждый опыт основан на реальной политике или трагедии страны и показан в непрерывной анимации.", "Each experiment is based on a real policy or event in that country and runs as a live animation.")]
+  );
+
+  const EXPS = [GH, MOLS, TANK, SOLAR, TREE, FLOT, LINE, PLUME, RIVER, PYR, WIND, PHOTO, HOUSE, AQUI, CYCL, COMPOST, AQI, ENERGY, MINA, CHEONG];
 
   /* ---------- Бўлимни чизиш ---------- */
   /* Тажрибалар мавзу бўйича гуруҳланади (галерея) */
@@ -2456,7 +3018,8 @@
     ["climate", "🌍", t3("Иқлим ва энергия", "Климат и энергия", "Climate and energy"), ["issiq", "molekula", "quyosh", "shamol", "uy"]],
     ["water", "💧", t3("Сув ва тупроқ", "Вода и почва", "Water and soil"), ["tindir", "daryo", "yerosti"]],
     ["waste", "♻️", t3("Чиқинди ва ҳаво", "Отходы и воздух", "Waste and air"), ["flotatsiya", "liniya", "tutun", "siklon", "kompost"]],
-    ["life", "🌿", t3("Тирик табиат", "Живая природа", "Living nature"), ["daraxt", "piramida", "fotosintez"]]
+    ["life", "🌿", t3("Тирик табиат", "Живая природа", "Living nature"), ["daraxt", "piramida", "fotosintez"]],
+    ["world", "🌐", t3("Халқаро тажриба: АҚШ, Германия, Япония, Корея", "Международный опыт: США, Германия, Япония, Корея", "International: USA, Germany, Japan, Korea"), ["aqi", "energiya", "minamata", "chhonggye"]]
   ];
   const TX2 = {
     prog: t3("Бажарилган тажрибалар", "Выполнено опытов", "Experiments completed"),
@@ -2491,13 +3054,13 @@
   };
   const CAT_OF = {}; CATS.forEach(([c, , , ids]) => ids.forEach((id) => (CAT_OF[id] = c)));
   const isDone = (id) => { const f = flags(); return !!(f["l3k_" + id] || f["l3t_" + id]); };
-  const NEWX = new Set(["shamol", "uy", "yerosti", "siklon", "kompost", "fotosintez"]);
+  const NEWX = new Set(["aqi", "energiya", "minamata", "chhonggye"]);
   let cur = EXPS[0].id, view = null, built = false, glFail = false;
   function shell() {
     const uni = stage() === "uni", exp = EXPS.find((x) => x.id === cur) || EXPS[0];
     const nDone = EXPS.filter((x) => isDone(x.id)).length, f = flags();
     const nGoal = Object.keys(f).filter((k) => k.startsWith("l3g_")).length;
-    const card = (x) => `<button type="button" role="tab" aria-selected="${x.id === cur}" class="chip l3-card ${x.id === cur ? "active" : ""} ${isDone(x.id) ? "done" : ""}" data-x="${x.id}"><span class="l3-ci" aria-hidden="true">${x.icon}</span><span class="l3-cn">${H(x.name)}</span>${NEWX.has(x.id) ? `<em class="l3-new">${H(TX2.news)}</em>` : ""}${isDone(x.id) ? '<i class="fa-solid fa-circle-check l3-ok" aria-hidden="true"></i>' : ""}</button>`;
+    const card = (x) => `<button type="button" role="tab" aria-selected="${x.id === cur}" class="chip l3-card ${x.id === cur ? "active" : ""} ${isDone(x.id) ? "done" : ""}" data-x="${x.id}"><span class="l3-ci" aria-hidden="true">${x.icon}${x.flag ? `<sup class="l3-flag">${x.flag}</sup>` : ""}</span><span class="l3-cn">${H(x.name)}</span>${NEWX.has(x.id) ? `<em class="l3-new">${H(TX2.news)}</em>` : ""}${isDone(x.id) ? '<i class="fa-solid fa-circle-check l3-ok" aria-hidden="true"></i>' : ""}</button>`;
     const gallery = CATS.map(([c, ic, nm, ids]) => {
       const xs = ids.map((id) => EXPS.find((x) => x.id === id)).filter(Boolean);
       return xs.length ? `<div class="l3-cat"><h3 class="l3-cath"><span aria-hidden="true">${ic}</span> ${H(nm)} <small>${xs.filter((x) => isDone(x.id)).length}/${xs.length}</small></h3><div class="l3-rail" role="tablist">${xs.map(card).join("")}</div></div>` : "";
@@ -2817,6 +3380,7 @@
     get view() { return view; },
     open: (id) => { if (EXPS.some((x) => x.id === id)) { cur = id; if (built) mount(); else shell(); } },
     ids: EXPS.map((x) => x.id),
+    list: EXPS.map((x) => ({ id: x.id, icon: x.icon, flag: x.flag || "", name: x.name, q: x.q })),
     /* Бошқа 3D бўлимлар (болалар учун «3D Эко-дунё») шу кўрувчидан фойдаланади */
     lib: { loadThree: () => loadThree().then(() => THREE), View: (...a) => new View(...a), textSprite: (...a) => textSprite(...a), earthTexture: () => earthTexture() }
   };
