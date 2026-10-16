@@ -192,3 +192,16 @@ td.nw { white-space: nowrap; }
   .main { padding: 16px; }
   .grid2, .grid3, .split { grid-template-columns: 1fr; }
 }
+
+/* Фикр-мулоҳазалар */
+.fb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.fb-item { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; background: var(--panel); }
+.fb-item.unread { border-left: 4px solid var(--info, #2563eb); }
+.fb-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; }
+.fb-head .stars { color: #b45309; letter-spacing: 1px; }
+.fb-text { margin: 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14.5px; line-height: 1.5; }
+.fb-meta { color: var(--muted); font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 10px; }
+.fb-reply { margin-top: 8px; padding: 8px 10px; border-left: 3px solid var(--ok, #15803d); background: var(--ok-bg, rgba(21, 128, 61, .1)); border-radius: 8px; font-size: 13.5px; white-space: pre-wrap; }
+.fb-form { display: grid; gap: 6px; margin-top: 8px; }
+.fb-form textarea { width: 100%; min-height: 70px; font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg, transparent); color: inherit; }
+.fb-more { text-align: center; margin-top: 10px; }

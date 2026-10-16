@@ -15,7 +15,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -56,6 +59,9 @@ public class MainActivity extends Activity {
     private static final int REQ_FILE = 1, REQ_SAVE = 2, REQ_LOCATION = 3;
 
     private WebView web;
+    /* «Видео дарслар»: YouTube видеосини тўлиқ экранда кўрсатиш */
+    private View fullView;
+    private WebChromeClient.CustomViewCallback fullCallback;
     private String serverUrl;
     private boolean onLocal = true;
 
@@ -138,6 +144,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        if (fullView != null) { exitFull(); return; }
         if (web.canGoBack()) web.goBack();
         else super.onBackPressed();
     }
@@ -407,7 +414,32 @@ public class MainActivity extends Activity {
 
     /* ---------- Расм танлаш / камера, жойлашув ---------- */
 
+    private void exitFull() {
+        if (fullView == null) return;
+        ((ViewGroup) getWindow().getDecorView()).removeView(fullView);
+        fullView = null;
+        web.setVisibility(View.VISIBLE);
+        if (fullCallback != null) fullCallback.onCustomViewHidden();
+        fullCallback = null;
+    }
+
     private class Chrome extends WebChromeClient {
+        @Override
+        public void onShowCustomView(View view, CustomViewCallback callback) {
+            if (fullView != null) { callback.onCustomViewHidden(); return; }
+            fullView = view;
+            fullCallback = callback;
+            view.setBackgroundColor(Color.BLACK);
+            ((ViewGroup) getWindow().getDecorView()).addView(view, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            web.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
+        public void onHideCustomView() {
+            exitFull();
+        }
+
         @Override
         public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> cb, FileChooserParams params) {
             if (fileCallback != null) fileCallback.onReceiveValue(null);

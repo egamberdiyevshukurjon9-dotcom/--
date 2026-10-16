@@ -1860,6 +1860,104 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
 }
 @keyframes plus-spin { to { transform: rotate(360deg); } }
 @keyframes plus-bounce { 40% { transform: translateY(-4px) scale(1.1); } }
+/* Дизайн 3.2 (Ekomun 2.8): иконкалар халқаро талабларга мос.
+   WCAG 2.2: оқ белги ва фон контрасти ≥ 4.5:1 (1.4.11 «матн бўлмаган контраст» 3:1 дан юқори),
+   градиентнинг энг оч нуқтаси ҳам ≥ 3:1. Ранглар --c (тўқ) дан олинади; --c1 фақат карточка ёғдуси учун.
+   Material Design 3 / Apple HIG: барча иконкалар бир хил шакл (сквиркл), белги майдоннинг ~50 % и,
+   ялтироқ қатлам белгини хиралаштирмайди. Клавиатура фокуси аниқ кўринади (2.4.7, 2.4.11). */
+.app-ic, .app[data-cat] .app-ic { border-radius: 28%; background:
+    linear-gradient(145deg, color-mix(in srgb, var(--c, var(--primary)) 88%, #fff) 0%, var(--c, var(--primary)) 55%, color-mix(in srgb, var(--c, var(--primary)) 80%, #000) 100%); }
+.app-ic::before { background: linear-gradient(180deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, 0)); inset: 1px 1px 58% 1px; }
+.app-ic::after { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .28), transparent); }
+.app-ic i { color: #fff; font-size: 1.62rem; width: 1.25em; text-align: center; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .35)); }
+@media (max-width: 720px) { .app-ic i { font-size: 1.5rem; } }
+@media (max-width: 620px) { .app-ic, .app[data-cat] .app-ic { border-radius: 28%; } }
+.app-recent a .app-ic i { font-size: .95rem; }
+.app:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+.app-new { background: #be123c; color: #fff; }
+.app-cat i, .app-cat[data-cat] i { border-radius: 28%; color: #fff; }
+.app-cat[data-cat="learn"] i { background: #047857; }
+.app-cat[data-cat="lab"] i { background: #6d28d9; }
+.app-cat[data-cat="act"] i { background: #c2410c; }
+.app-cat[data-cat="tool"] i { background: #be185d; }
+html.a11y-hc .app-ic::before, html.a11y-hc .app-ic::after { display: none; }
+html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2px var(--text); }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+/* 🎬 Видео дарслар (vendor/eko-video.js) */
+.vd-status { display: inline-flex; align-items: center; gap: 8px; margin: 6px 0 0; padding: 6px 12px; border-radius: 999px; font-size: .88rem; font-weight: 600; }
+.vd-status.on { background: color-mix(in srgb, #15803d 12%, var(--card)); color: color-mix(in srgb, #15803d 75%, var(--text)); }
+.vd-status.off { background: color-mix(in srgb, #b45309 14%, var(--card)); color: color-mix(in srgb, #b45309 70%, var(--text)); }
+.vd-prog { margin: 6px 0 14px; }
+.vd-prog-txt { display: flex; justify-content: space-between; gap: 10px; font-size: .92rem; margin-bottom: 6px; }
+.vd-bar { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.vd-bar i { display: block; height: 100%; background: var(--primary); border-radius: inherit; }
+.vd-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
+.vd-search { flex: 1 1 220px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.vd-search input { flex: 1; min-width: 0; border: 0; background: none; color: var(--text); font: inherit; padding: 10px 0; }
+.vd-search input:focus { outline: none; } .vd-search:focus-within { outline: 2px solid var(--primary); outline-offset: 1px; }
+.vd-tools select { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; }
+.vd-chk { display: inline-flex; gap: 8px; align-items: center; font-size: .92rem; cursor: pointer; }
+.vd-chk input { width: 18px; height: 18px; accent-color: var(--primary); }
+.vd-topics { margin-bottom: 14px; }
+.vd-n { opacity: .75; font-size: .82em; margin-left: 2px; }
+.vd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 16px; }
+.vd-card { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.vd-card.is-done { border-color: color-mix(in srgb, #15803d 55%, var(--line)); }
+.vd-thumb, .vd-start { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; padding: 0; border: 0; cursor: pointer; overflow: hidden;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--tc) 70%, #000), var(--tc)); color: #fff; }
+.vd-thumb img, .vd-start img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.vd-ph { position: absolute; right: 14px; top: 10px; font-size: 2.2rem; opacity: .45; }
+.vd-playic, .vd-bigplay { position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 56px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(0, 0, 0, .72); color: #fff; font-size: 1.1rem; transition: background .2s; }
+.vd-bigplay { width: 76px; height: 54px; font-size: 1.5rem; background: #cc0000; }
+.vd-thumb:hover .vd-playic, .vd-thumb:focus-visible .vd-playic { background: #cc0000; }
+.vd-thumb:focus-visible, .vd-start:focus-visible, .vd-link:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+.vd-lng { position: absolute; z-index: 2; left: 8px; bottom: 8px; padding: 2px 8px; border-radius: 6px; background: rgba(0, 0, 0, .78); color: #fff; font-size: .75rem; font-weight: 700; }
+.vd-badge { position: absolute; z-index: 2; right: 8px; top: 8px; padding: 2px 8px; border-radius: 6px; background: rgba(0, 0, 0, .78); color: #fff; font-size: .75rem; font-weight: 700; }
+.vd-badge.ok { background: #15803d; }
+.vd-badge.static { position: static; display: inline-flex; gap: 6px; align-items: center; padding: 6px 10px; font-size: .85rem; }
+.vd-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+.vd-body h3 { margin: 0; font-size: 1rem; line-height: 1.35; }
+.vd-link { all: unset; cursor: pointer; color: var(--text); }
+.vd-link:hover { color: var(--primary); text-decoration: underline; }
+.vd-ch { margin: 0; color: var(--muted); font-size: .85rem; }
+.vd-top { display: inline-flex; gap: 6px; align-items: center; align-self: flex-start; font-size: .78rem; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+  background: color-mix(in srgb, var(--tc) 14%, var(--card)); color: color-mix(in srgb, var(--tc) 80%, var(--text)); }
+.vd-lesson h4 { margin: 22px 0 8px; }
+.vd-player { border-radius: 16px; overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
+.vd-player iframe { width: 100%; height: 100%; border: 0; display: block; }
+.vd-net { padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, #b45309 14%, var(--card)); }
+.vd-notes { padding-left: 20px; line-height: 1.65; } .vd-notes li { margin-bottom: 6px; }
+.vd-ref { display: grid; gap: 10px; } .vd-ref label { display: grid; gap: 4px; font-weight: 600; font-size: .92rem; }
+/* 💬 Фикр-мулоҳаза (vendor/eko-fikr.js) */
+.fk-form { display: grid; gap: 14px; max-width: 760px; }
+.fk-form fieldset { border: 0; padding: 0; margin: 0; }
+.fk-form legend { font-weight: 700; margin-bottom: 8px; }
+.fk-kinds { display: flex; flex-wrap: wrap; gap: 8px; }
+.fk-kind input, .fk-stars input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.fk-kind span { display: inline-flex; gap: 8px; align-items: center; padding: 9px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); cursor: pointer; font-weight: 600; font-size: .92rem; }
+.fk-kind input:checked + span { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 14%, var(--card)); color: var(--text); box-shadow: inset 0 0 0 1px var(--primary); }
+.fk-kind input:focus-visible + span, .fk-stars input:focus-visible + span { outline: 3px solid var(--primary); outline-offset: 2px; }
+.fk-stars { display: flex; align-items: center; gap: 2px; }
+.fk-stars label { cursor: pointer; }
+.fk-stars span[aria-hidden] { font-size: 2rem; line-height: 1; color: color-mix(in srgb, var(--muted) 55%, transparent); padding: 2px; border-radius: 8px; display: inline-block; }
+.fk-stars span.on { color: #b45309; }
+.fk-rate-t { margin-left: 10px; }
+.fk-field { display: grid; gap: 6px; font-weight: 600; }
+.fk-field textarea, .fk-field input, .fk-field select { font: inherit; font-weight: 400; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.fk-field textarea:focus, .fk-field input:focus, .fk-field select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.fk-field > span { display: flex; justify-content: space-between; gap: 10px; }
+.fk-err { color: #b91c1c; margin: 0; min-height: 0; }
+:root[data-theme="dark"] .fk-err { color: #fca5a5; }
+.fk-mine { margin-top: 16px; max-width: 760px; }
+.fk-mine-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.fk-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.fk-item { padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
+.fk-item p { margin: 6px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fk-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: .88rem; }
+.fk-tag { font-weight: 700; }
+.fk-st { margin-left: auto; padding: 2px 9px; border-radius: 999px; font-size: .78rem; font-weight: 700; background: var(--line); color: var(--text); }
+.st-replied .fk-st { background: #15803d; color: #fff; } .st-read .fk-st { background: #1d4ed8; color: #fff; } .st-queue .fk-st { background: #b45309; color: #fff; }
+.fk-reply { margin-top: 8px; padding: 10px 12px; border-radius: 12px; border-left: 4px solid #15803d; background: color-mix(in srgb, #15803d 10%, var(--card)); }
 </style>
 </head>
 <body>
@@ -1944,9 +2042,11 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
         <a href="#hashar">Ҳашар</a>
         <a href="#maktab">Мактаб</a>
         <a href="#kurslar">Курслар</a>
+        <a href="#video">Видео дарслар</a>
         <a class="nav-x" href="#yangiliklar">Янгиликлар</a>
         <a href="#kutubxona">Кутубхона</a>
         <a href="#havo">Ҳаво</a>
+        <a class="nav-x" href="#fikr">Фикр-мулоҳаза</a>
         <a class="nav-x" href="#kalkulyator">Калькулятор</a>
         <a class="nav-x" href="#chellenj">Челленж</a>
         <a class="nav-x" href="#yordamchi">Ёрдамчи</a>
@@ -2015,15 +2115,16 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
         <div class="app-recent" id="appRecent" hidden></div>
         <nav class="app-grid" aria-label="Бўлимлар">
           <h3 class="app-cat" data-cat="learn"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Ўрганиш</h3>
-          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#f43f5e;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
+          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#e80d33;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
           <a class="app" data-cat="learn" href="#kurslar" data-crs="xalqaro" data-stage="uni" style="--c:#0369a1;--c1:#fcd34d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-americas"></i></span><b>Халқаро тажриба</b><small>АҚШ, Германия, Япония, Корея</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#kurslar" data-crs="dunyo" data-stage="maktab" style="--c:#0369a1;--c1:#fcd34d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>Дунё саёҳати</b><small>4 давлат тажрибаси</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#kurslar" style="--c:#059669;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
-          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#16a34a;--c1:#bef264"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#d97706;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#video" style="--c:#b91c1c;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>31 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#kurslar" style="--c:#05875f;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#12883e;--c1:#bef264"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#b16105;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
           <a class="app" data-cat="learn" href="#adabiyot" style="--c:#4f46e5;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#0284c7;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
+          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#027ab8;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
           <a class="app" data-cat="learn" href="#takror" style="--c:#db2777;--c1:#f9a8d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-brain"></i></span><b>Такрорлаш хонаси</b><small>Карталар, хатолар дафтари</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#krossvord" style="--c:#9333ea;--c1:#d8b4fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
           <a class="app" data-cat="learn" href="#kutubxona" style="--c:#c2410c;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
@@ -2031,23 +2132,24 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
           <a class="app" data-cat="learn" href="#internet" style="--c:#2563eb;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <h3 class="app-cat" data-cat="lab"><i class="fa-solid fa-flask" aria-hidden="true"></i> Лабораториялар</h3>
           <a class="app" data-cat="lab" href="#lab3d" style="--c:#7c3aed;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>20 тажриба, 4 давлат тажрибаси</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#0891b2;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
+          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#07819e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
           <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#6d28d9;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
           <a class="app" data-cat="lab" href="#mro" data-stage="uni" style="--c:#15803d;--c1:#86efac"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-recycle"></i></span><b>Чиқиндилар ҳисоби</b><small>10 методика, калькулятор</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="lab" href="#ilmiy" data-stage="uni" style="--c:#2563eb;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
           <h3 class="app-cat" data-cat="act"><i class="fa-solid fa-seedling" aria-hidden="true"></i> Амалиёт ва лойиҳалар</h3>
-          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#ea580c;--c1:#fed7aa"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#cd4d0b;--c1:#fed7aa"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="act" href="#oyinmarkaz" style="--c:#a21caf;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span><b>Ўйин маркази</b><small>Вазифа, танга, босс жанги</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="act" href="#chellenj" style="--c:#f59e0b;--c1:#fde047"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
-          <a class="app" data-cat="act" href="#hashar" style="--c:#0d9488;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
-          <a class="app" data-cat="act" href="#maktab" style="--c:#6366f1;--c1:#c7d2fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
-          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8b5cf6;--c1:#ddd6fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
+          <a class="app" data-cat="act" href="#chellenj" style="--c:#a36907;--c1:#fde047"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
+          <a class="app" data-cat="act" href="#hashar" style="--c:#0b8177;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
+          <a class="app" data-cat="act" href="#maktab" style="--c:#5e61f1;--c1:#c7d2fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
+          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8452f5;--c1:#ddd6fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
           <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#dc2626;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
           <h3 class="app-cat" data-cat="tool"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Ўйин ва асбоблар</h3>
           <a class="app" data-cat="tool" href="#dunyo3d" data-stage="maktab" style="--c:#047857;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>3D Эко-дунё</b><small>Саралаш, орол, Ер шари</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#ea580c;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
+          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#cd4d0b;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
           <a class="app" data-cat="tool" href="#havo" style="--c:#0369a1;--c1:#bae6fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
           <a class="app" data-cat="tool" href="#kalkulyator" style="--c:#be185d;--c1:#fbcfe8"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
+          <a class="app" data-cat="tool" href="#fikr" style="--c:#0f766e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></span><b>Фикр-мулоҳаза</b><small>Таклиф ва хатоларни ёзинг</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="tool" href="#yordamchi" style="--c:#0e7490;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
         </nav>
         <p class="muted app-none" id="appNone" hidden>Бундай бўлим топилмади.</p>
@@ -2447,6 +2549,16 @@ html.a11y-sp p, html.a11y-sp li { line-height: 1.85 !important; }
     <!-- MAKTAB: TABIAT HIMOYACHISI (bolalar uchun ekologik huquq) — vendor/eko-bola-huquq.js -->
     <section class="section alt" id="bolahuquq" data-stage="maktab">
       <div class="wrap" id="bhRoot" data-notr></div>
+    </section>
+
+    <!-- VIDEO DARSLAR: ochiq ta'lim videolari asosida dars — vendor/eko-video.js -->
+    <section class="section alt" id="video">
+      <div class="wrap" id="vdRoot" data-notr></div>
+    </section>
+
+    <!-- FIKR-MULOHAZA: foydalanuvchi fikri serverga, admin panelda ko'rinadi — vendor/eko-fikr.js -->
+    <section class="section" id="fikr">
+      <div class="wrap" id="fkRoot" data-notr></div>
     </section>
 
     <!-- UNIVERSITET: CHIQINDILAR HOSIL BO'LISHINI HISOBLASH (MRO-1 … MRO-10) — vendor/eko-mro.js -->
@@ -54039,5 +54151,8 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   <script src="/vendor/eko-bola-huquq-data.js" defer></script>
   <script src="/vendor/eko-bola-huquq.js" defer></script>
   <script src="/vendor/eko-mro.js" defer></script>
+  <script src="/vendor/eko-video-data.js" defer></script>
+  <script src="/vendor/eko-video.js" defer></script>
+  <script src="/vendor/eko-fikr.js" defer></script>
 </body>
 </html>
