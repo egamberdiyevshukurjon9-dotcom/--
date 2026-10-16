@@ -293,6 +293,11 @@
   }
   const hasProfile = () => { try { const p = JSON.parse(localStorage.getItem("ekotalim:profile") || "null"); return !!(p && p.by); } catch (e) { return false; } };
 
+  /* Бош саҳифадаги курс иконкаси: курслар саҳифасини очиб, шу курсга олиб боради */
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest && e.target.closest("a[data-crs]"); if (!a) return;
+    setTimeout(() => { const el = document.getElementById("crs-" + a.dataset.crs); if (el) el.scrollIntoView({ behavior: reduce() ? "auto" : "smooth", block: "start" }); }, 150);
+  });
   function init() {
     topButtons();
     bottomNav();
