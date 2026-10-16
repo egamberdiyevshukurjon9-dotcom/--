@@ -1,14 +1,14 @@
 {
  "apk": {
-  "versionCode": 16,
-  "versionName": "2.5",
-  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/Ekomun-2.5.apk",
-  "sha256": "670f2a69b4c2ebb8344e1f05d09ee659c22d5169e9adab4ff4c8163c4dddd676",
-  "size": 4848038,
-  "notes": "• 🧊 3D лаборатория: 16 тажриба — янги: шамол турбинаси, фотосинтез, энергия тежайдиган уй, ер ости суви, циклон чангушлагич, компост\n• 📏 Янги асбоблар: чизғич ва зонд, расмга олиш, катта экран, лаборатория журнали (график, CSV), мақсадли топшириқлар, тахмин ва тест\n• 🎨 Дизайн 3.0: жонли иконкалар, рангли карточкалар, янги фон ва тунги режим\n• 🛠 Тузатиш: телефонда 3D лаборатория экрандан четга чиқмайди"
+  "versionCode": 17,
+  "versionName": "2.6",
+  "url": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/app/Ekomun-2.6.apk",
+  "sha256": "3f0a679538d00f1f271eceb6c02d2f2797c7175e3622e57841692a62aca62193",
+  "size": 5007857,
+  "notes": "• 🌐 Янги курс: «Халқаро экологик тажриба» — жаҳон экология адабиёти, АҚШ, Германия, Япония ва Корея (30 дарс, 40 саволли якуний тест); мактаб учун «Дунё бўйлаб эко-саёҳат» (10 дарс, уй тажрибалари)\n• 🧊 3D лаборатория: 20 тажриба — янги ҳаракатли саҳналар: ҳаво сифати индекси (АҚШ), энергия бурилиши (Германия), Минамата симоб занжири (Япония), Чхонгечхон салқин шаҳар (Корея); камера саҳнага «учиб киради»\n• 🔍 Глобал қидирув: бўлим, дарс, тажриба ва атамалар; овозли қидирув ва қидирув тарихи\n• ♿ Қулайлик: ҳарф ўлчами, юқори контраст, ҳаракатни камайтириш, ўқиш учун оралиқ; телефонда пастки меню; биринчи очилишда таништирув\n• 🎨 Дизайн 3.1: ҳар бир бўлим иконкаси ўз шаклида ва янги ранглар\n• 🔒 HTTPS мажбурий (HSTS), ekomun:// чуқур ҳаволалар"
  },
  "content": {
-  "version": "6385f5e15dd77cf6",
+  "version": "ea6f1249834174fe",
   "minApk": 3,
   "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
   "files": {
@@ -18,7 +18,7 @@
    "icons/icon-maskable-512.png": "b915b6e69616430fd084943e18024aab264fac920426f2c03e80420c96091748",
    "icons/icon-maskable.svg": "76a72a544e63a21bdfd69e33db4ee08da25dacd83eda2e2c0a40dcb189372594",
    "icons/icon.svg": "4f2227bd2a4ae862f39cefbf0a5b5550d2d63d56cd7ed6e969af43da0710797a",
-   "index.html": "3287e83003be84d04509d050d4642180be5cce9d73c533df8b08ee7883a24012",
+   "index.html": "5e510bb65597c26b44f8976857a0e6cdbc285475c944ef0be23ac7396521fa1c",
    "manifest.webmanifest": "491bf7d698454ba56601f663f9995c7ee1d11e7f07465ba36fce5ed2a22ca9a3",
    "privacy.html": "e6ca5bbfbef695953b09fcc61b33a5aec93c454eb60f58a8d7604b2459bd8829",
    "vendor/eko-adabiyot.js": "2e1f82755b04b6d4e96f8a5a2d90f1d909cf2274c8abf6f52d240e9a1a934f0c",
@@ -32,7 +32,7 @@
    "vendor/eko-onlayn.js": "8cce1e0ce561762cc5a815f91e94ca9e0c7cc6a6731925f1ec09ffb25f1d67a9",
    "vendor/eko-oyin.js": "28a51d994a4b90f56eff04319b4cb2df38e1ab6acd8ae260d571d5b1daf104a4",
    "vendor/eko-pdf.js": "4b6f51b953151bd7a7751e5c2455e1b0c4220878fdf14b8269a897af3e0033cd",
-   "vendor/eko-plus.js": "1e5b2d8b15b898e9164a806f168d1ff7738b3334593b17ef200e83e906c9132e",
+   "vendor/eko-plus.js": "962a2f409844dcb661136610550c4bd21678cf4dcf1a3ee74085625fcd4cf71e",
    "vendor/eko-qonun-amaliy.js": "5bc4919f4da0ef639be623d465500a1c346e2f218a88ac9c873da698b05d2778",
    "vendor/eko-qonun-darslik-data.js": "faeb6426c1e3f023dac6160cedb4378ed6d3e9921a661e0c814142721ae3c3a3",
    "vendor/eko-qonun-darslik.js": "08163c056d5c17b0016549f75f7aebc042e34e6f9d4fe4bde85265b9e92d5e1f",
