@@ -469,7 +469,8 @@
 
   const visible = () => SEC && SEC.classList.contains("page-on");
   /* Бўлим очилганда: 20 дақиқадан эски бўлса янгилаймиз */
-  function maybeRefresh() { if (visible() && online() && Date.now() - lastFetch > 20 * 60e3) refreshAll(false); }
+  /* «Тежамкор трафик» режимида (eko-yol.js) маълумот фақат «Янгилаш» босилганда юкланади */
+  function maybeRefresh() { if (window.EkoModes && window.EkoModes.lite) return; if (visible() && online() && Date.now() - lastFetch > 20 * 60e3) refreshAll(false); }
 
   /* ===================== Умумий интернет кўрсаткичи ===================== */
   function injectCSS() {

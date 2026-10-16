@@ -157,8 +157,10 @@
     constructor(host, opts = {}) {
       const T = THREE;
       this.host = host;
-      this.renderer = new T.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "low-power" });
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      /* Тежамкор трафик режимида (eko-yol.js) 3D енгилроқ: антиалиассиз ва пиксел зичлиги 1 */
+      const lite = !!(window.EkoModes && window.EkoModes.lite);
+      this.renderer = new T.WebGLRenderer({ antialias: !lite, alpha: false, powerPreference: "low-power" });
+      this.renderer.setPixelRatio(lite ? 1 : Math.min(window.devicePixelRatio || 1, 2));
       this.canvas = this.renderer.domElement;
       this.canvas.className = "l3-canvas";
       this.canvas.tabIndex = 0;
@@ -238,7 +240,52 @@
       this.camera.updateProjectionMatrix();
       this.render();
     }
-    render() { this.renderer.render(this.scene, this.camera); }
+    render() {
+      const r = this.renderer;
+      if (!this.stereo || (r.xr && r.xr.isPresenting)) { r.render(this.scene, this.camera); return; }
+      /* Стерео (картон VR кўзойнак): экран иккига бўлинади, ҳар кўзга алоҳида камера */
+      const T = THREE, size = r.getSize(this.v2 || (this.v2 = new T.Vector2())), w = size.x / 2, h = size.y;
+      if (!this.camL) { this.camL = new T.PerspectiveCamera(); this.camR = new T.PerspectiveCamera(); }
+      this.camera.updateMatrixWorld();
+      r.setScissorTest(true);
+      [[this.camL, 0, -1], [this.camR, w, 1]].forEach(([cam, x, sgn]) => {
+        cam.copy(this.camera); cam.aspect = w / h; cam.updateProjectionMatrix();
+        cam.translateX(sgn * 0.032 * Math.max(1, this.d / 3));
+        r.setScissor(x, 0, w, h); r.setViewport(x, 0, w, h);
+        r.render(this.scene, cam);
+      });
+      r.setScissorTest(false);
+      r.setViewport(0, 0, size.x, size.y);
+    }
+    /* WebXR: VR кўзойнак (Meta Quest, Pico ва б.) браузерида тўлиқ иммерсив режим */
+    async enterXR(onEnd) {
+      const r = this.renderer;
+      if (r.xr.isPresenting) { r.xr.getSession().end(); return; }
+      const session = await navigator.xr.requestSession("immersive-vr", { optionalFeatures: ["local-floor"] });
+      const was = this.running;
+      this.stop();
+      r.xr.enabled = true;
+      r.xr.setReferenceSpaceType("local");
+      /* Саҳна томошабиннинг олдига, 1,6 м узоқликка, ярим ўлчамда жойлашади */
+      this.scene.scale.setScalar(0.5);
+      this.scene.position.set(-this.target.x * 0.5, -this.target.y * 0.5 - 0.25, -this.target.z * 0.5 - 1.6);
+      await r.xr.setSession(session);
+      let last = performance.now();
+      r.setAnimationLoop((now) => {
+        const dt = clamp((now - last) / 1000, 0, 0.1); last = now; this.t += dt;
+        this.updaters.forEach((f) => f(dt, this.t));
+        r.render(this.scene, this.camera);
+      });
+      session.addEventListener("end", () => {
+        r.setAnimationLoop(null);
+        r.xr.enabled = false;
+        this.scene.scale.setScalar(1);
+        this.scene.position.set(0, 0, 0);
+        this.resize(); this.place();
+        if (was) this.start();
+        if (onEnd) onEnd();
+      });
+    }
     start() {
       if (this.running) return;
       this.running = true; this.last = performance.now();
@@ -3028,6 +3075,10 @@
     measure: t3("Ўлчов асбоби (чизғич ва зонд)", "Измерительный инструмент (линейка и зонд)", "Measuring tool (ruler and probe)"),
     snap: t3("Расмга олиш (PNG)", "Сделать снимок (PNG)", "Take a snapshot (PNG)"),
     full: t3("Катта экран", "Во весь экран", "Full screen"),
+    stereo: t3("Стерео: картон VR кўзойнак учун (телефонни ётқизинг)", "Стерео: для картонных VR-очков (поверните телефон)", "Stereo: for cardboard VR viewers (turn the phone sideways)"),
+    vr: t3("VR кўзойнакда очиш (WebXR)", "Открыть в VR-очках (WebXR)", "Open in a VR headset (WebXR)"),
+    stereoOn: t3("👓 Стерео режим: телефонни ётқизиб, картон VR кўзойнакка қўйинг. Саҳна ўзи айланади.", "👓 Стерео: поверните телефон и вставьте в картонные VR-очки. Сцена вращается сама.", "👓 Stereo: turn the phone sideways and place it in a cardboard viewer. The scene rotates by itself."),
+    vrFail: t3("VR сессияни очиб бўлмади. Кўзойнак браузерида қайта уриниб кўринг.", "Не удалось открыть VR-сессию. Попробуйте в браузере очков.", "Could not start the VR session. Try again in the headset browser."),
     mOn: t3("📏 Ўлчов ёқилди: саҳнадаги икки нуқтани босинг — масофа ва қиймат кўрсатилади.", "📏 Измерение включено: нажмите две точки сцены — появятся расстояние и значение.", "📏 Measuring on: tap two points in the scene to see the distance and value."),
     miss: t3("Бу ерда объект йўқ — саҳнадаги жисмни босинг.", "Здесь нет объекта — нажмите на предмет сцены.", "Nothing here — tap an object in the scene."),
     dist: t3("Масофа", "Расстояние", "Distance"),
@@ -3088,6 +3139,8 @@
               <button type="button" class="l3-tb" data-tool="measure" title="${H(TX2.measure)}" aria-label="${H(TX2.measure)}" aria-pressed="false"><i class="fa-solid fa-ruler"></i></button>
               <button type="button" class="l3-tb" data-tool="snap" title="${H(TX2.snap)}" aria-label="${H(TX2.snap)}"><i class="fa-solid fa-camera"></i></button>
               <button type="button" class="l3-tb" data-tool="full" title="${H(TX2.full)}" aria-label="${H(TX2.full)}" aria-pressed="false"><i class="fa-solid fa-expand"></i></button>
+              <button type="button" class="l3-tb" data-tool="stereo" title="${H(TX2.stereo)}" aria-label="${H(TX2.stereo)}" aria-pressed="false"><i class="fa-solid fa-glasses"></i></button>
+              <button type="button" class="l3-tb" data-tool="vr" title="${H(TX2.vr)}" aria-label="${H(TX2.vr)}" aria-pressed="false" hidden><i class="fa-solid fa-vr-cardboard"></i></button>
             </div>
             <p class="l3-readout" data-readout aria-live="polite" hidden></p>
             <p class="small muted l3-hint">${H(TX.hint)}</p>
@@ -3331,7 +3384,25 @@
         if (t === "measure") meas.toggle(b);
         if (t === "snap") { try { const d = view.snapshot(); fetch(d).then((r) => r.blob()).then((bl) => download(bl, "Ekomun-3D-" + exp.id + ".png")); once("l3s_" + exp.id, 1, TX.why); } catch (err) { /* ignore */ } }
         if (t === "full") toggleFull(b);
+        if (t === "stereo") {
+          view.stereo = !view.stereo;
+          b.setAttribute("aria-pressed", String(view.stereo)); b.classList.toggle("on", view.stereo);
+          const fb = tools.querySelector('[data-tool="full"]');
+          if (view.stereo && fb.getAttribute("aria-pressed") !== "true") toggleFull(fb);
+          if (!view.stereo && fb.getAttribute("aria-pressed") === "true") toggleFull(fb);
+          if (view.stereo) { view.auto = true; view.syncAuto(); { const a0 = App(); if (a0 && a0.toast) a0.toast(L(TX2.stereoOn)); } once("l3vr_" + exp.id, 2, TX.why); }
+          view.render();
+        }
+        if (t === "vr") {
+          view.enterXR(() => { b.setAttribute("aria-pressed", "false"); b.classList.remove("on"); })
+            .then(() => { b.setAttribute("aria-pressed", "true"); b.classList.add("on"); once("l3vr_" + exp.id, 2, TX.why); })
+            .catch(() => { const a0 = App(); if (a0 && a0.toast) a0.toast(L(TX2.vrFail)); });
+        }
       });
+      /* WebXR қўллаб-қувватланса, VR тугмаси кўринади */
+      if (navigator.xr && navigator.xr.isSessionSupported) {
+        navigator.xr.isSessionSupported("immersive-vr").then((ok) => { const vb = tools.querySelector('[data-tool="vr"]'); if (vb) vb.hidden = !ok; }).catch(() => {});
+      }
       sync();
     } else {
       /* WebGL йўқ: ҳисоблаш панели барибир ишласин */
@@ -3363,6 +3434,7 @@
   /* Бўлим кўринганда анимация юради, яширинса тўхтайди (батарея тежалади) */
   function visible() { return SEC.classList.contains("page-on") && !document.hidden; }
   function sync() {
+    if (!visible() && view && view.stereo) { view.stereo = false; const sb = ROOT.querySelector('[data-tool="stereo"]'); if (sb) { sb.setAttribute("aria-pressed", "false"); sb.classList.remove("on"); } }
     if (!visible()) { const vb = ROOT.querySelector(".l3-viewbox.l3-full"), b = ROOT.querySelector('[data-tool="full"]'); if (vb && b) toggleFull(b); }
     if (!view) return;
     if (visible()) { view.resize(); view.start(); } else view.stop();

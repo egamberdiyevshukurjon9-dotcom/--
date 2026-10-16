@@ -422,6 +422,26 @@
   }
   async function loadFeedback() { feedback = (await api("/api/admin/feedback")).feedback; }
 
+  /* ---------- Эълонлар ва турнир ---------- */
+  let newsItems = [], trData = null;
+  const TR_REG = { tsh: "Тошкент ш.", tsv: "Тошкент в.", and: "Андижон", bux: "Бухоро", jiz: "Жиззах", qas: "Қашқадарё", nav: "Навоий", nam: "Наманган", sam: "Самарқанд", sur: "Сурхондарё", sir: "Сирдарё", far: "Фарғона", xor: "Хоразм", qqr: "Қорақалпоғистон", oth: "Бошқа" };
+  const STG_N = { all: "Ҳаммага", maktab: "🎒 Мактаб", uni: "🎓 Университет" };
+  async function loadCommunity(week) {
+    const [n, t] = await Promise.all([api("/api/admin/news"), api("/api/admin/turnir" + (week ? "?w=" + encodeURIComponent(week) : ""))]);
+    newsItems = n.items; trData = t;
+  }
+  function renderCommunity() {
+    if (!trData) return;
+    const t = trData;
+    kpis($("#cmKpis"), [[nf(newsItems.length), "Эълонлар"], [nf(t.list.length), "Шу ҳафта турнирда"], [nf(t.list.filter((e) => e.stage === "maktab").length), "🎒 Мактаб"], [nf(t.list.filter((e) => e.stage === "uni").length), "🎓 Университет"], [nf(t.refs), "Таклиф билан келганлар"]]);
+    $("#newsList").innerHTML = newsItems.length ? `<ul class="fb-list">${newsItems.map((n) => `<li class="fb-item"><div class="fb-head">${n.pinned ? `<span class="tag info">📌 бош саҳифада</span>` : ""}<span class="tag">${esc(STG_N[n.stage] || n.stage)}</span><span class="muted">${fmt(n.at)}${n.until ? " → " + fmt(n.until) : ""}</span></div>
+      <p class="fb-text"><b>${esc(n.title)}</b>${n.body ? "<br>" + esc(n.body) : ""}${n.link ? `<br><a href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.link)}</a>` : ""}</p>
+      <div class="acts"><button class="btn sm ghost" data-nw="${n.pinned ? "unpin" : "pin"}" data-id="${n.id}">${n.pinned ? "Бош саҳифадан олиш" : "📌 Бош саҳифага"}</button><button class="btn sm ghost" data-nw="delete" data-id="${n.id}">🗑️</button></div></li>`).join("")}</ul>` : `<p class="empty">Эълон йўқ.</p>`;
+    const sel = $("#trWeek");
+    sel.innerHTML = (t.weeks.length ? t.weeks : [t.week]).map((w) => `<option${w === t.week ? " selected" : ""}>${esc(w)}</option>`).join("");
+    $("#trList").innerHTML = t.list.length ? `<table><thead><tr><th>#</th><th>Лақаб</th><th>Босқич</th><th>Вилоят</th><th>Балл</th><th>Тўғри</th><th>Вақт</th><th>IP</th><th></th></tr></thead><tbody>${t.list.map((e, i) => `<tr class="${e.hidden ? "muted" : ""}"><td>${i + 1}</td><td>${esc(e.nick)}</td><td>${e.stage === "maktab" ? "🎒" : "🎓"}</td><td>${esc(TR_REG[e.region] || "—")}</td><td><b>${e.score}</b></td><td>${e.correct}/10</td><td>${fmt(e.at)}</td><td class="mono">${esc(e.ip)}</td><td><button class="btn sm ghost" data-trh="${e.id}">${e.hidden ? "Қайтариш" : "Яшириш"}</button></td></tr>`).join("")}</tbody></table>` : `<p class="empty">Бу ҳафта ҳали ҳеч ким қатнашмади.</p>`;
+  }
+
   /* ---------- Натижалар ---------- */
   const GRADE = { gold: "🥇 Олтин", silver: "🥈 Кумуш", bronze: "🥉 Бронза" };
   const courseName = (c) => COURSES[c] || c;
@@ -571,7 +591,7 @@
     }, 15000);
   }
 
-  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар" };
+  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар", community: "Эълонлар ва турнир" };
   $("#tabs").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tab]");
     if (!b) return;
@@ -586,6 +606,27 @@
     if (tab === "growth") { try { await loadGrowth(); renderGrowth(); } catch (err) { /* ignore */ } }
     if (tab === "results") { try { await loadResults(); renderResults(); } catch (err) { /* ignore */ } }
     if (tab === "feedback") { try { await loadFeedback(); renderFeedback(); } catch (err) { /* ignore */ } }
+    if (tab === "community") { try { await loadCommunity(); renderCommunity(); } catch (err) { /* ignore */ } }
+  });
+  $("#newsForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    try {
+      await api("/api/admin/news", { title: f.title.value, body: f.body.value, link: f.link.value, stage: f.stage.value, days: +f.days.value, pinned: f.pinned.checked });
+      f.reset(); toast("Эълон қилинди"); await loadCommunity($("#trWeek").value); renderCommunity();
+    } catch (err) { if (err.message !== "auth") toast(err.message); }
+  });
+  $("#newsList").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-nw]"); if (!b) return;
+    if (b.dataset.nw === "delete" && !(await confirmBox("Эълонни ўчириш", "Эълон платформадан олиб ташланади. Давом этасизми?"))) return;
+    try { await api("/api/admin/news/" + b.dataset.id, { action: b.dataset.nw }); await loadCommunity($("#trWeek").value); renderCommunity(); }
+    catch (err) { if (err.message !== "auth") toast(err.message); }
+  });
+  $("#trWeek").addEventListener("change", async (e) => { try { await loadCommunity(e.target.value); renderCommunity(); } catch (err) { /* ignore */ } });
+  $("#trList").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-trh]"); if (!b) return;
+    try { await api("/api/admin/turnir/hide", { week: trData.week, id: b.dataset.trh }); await loadCommunity(trData.week); renderCommunity(); }
+    catch (err) { if (err.message !== "auth") toast(err.message); }
   });
   $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth(), loadResults()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } });
   $("#refresh").addEventListener("click", reloadAll);
