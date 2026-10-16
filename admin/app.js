@@ -274,7 +274,7 @@
       g.hard.map((q) => `<tr><td>${esc(lessonName(q.k))}</td><td class="num">${nf(q.n)}</td><td class="nw"><span class="meter"><i style="width:${q.err}%"></i></span>${q.err}%</td></tr>`),
       "Камида 3 та жавоб берилган савол ҳали йўқ.");
     $("#tCerts").innerHTML = table(["Сана", "Эгаси", "Курс", "#Тест", "Код"],
-      g.certList.map((c) => `<tr><td>${fmt(c.at)}</td><td>${esc(c.name)}</td><td>${esc(c.title)}</td><td class="num">${c.pct ? c.pct + "%" : "—"}</td><td><a class="mono" href="/tekshir?c=${encodeURIComponent(c.code)}" target="_blank" rel="noopener">${esc(c.code)}</a></td></tr>`),
+      g.certList.map((c) => `<tr><td>${fmt(c.at)}</td><td>${esc(c.name)}</td><td>${esc(c.title)}</td><td class="num">${({ gold: "🥇 ", silver: "🥈 ", bronze: "🥉 " })[c.grade] || ""}${c.pct ? c.pct + "%" : "—"}</td><td><a class="mono" href="/tekshir?c=${encodeURIComponent(c.code)}" target="_blank" rel="noopener">${esc(c.code)}</a></td></tr>`),
       "Бу даврда сертификат берилмаган.");
   }
 

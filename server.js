@@ -397,6 +397,9 @@ function tooManyErrors(ip) {
   return ++r.count > 30;
 }
 const SEC_RE = /^[a-z0-9-]{1,24}$/;
+/* Сертификат даражаси якуний тест натижасига қараб (index.html даги GRADES билан бир хил) */
+const CERT_MIN = 60;
+const certGrade = (pct) => (pct >= 90 ? "gold" : pct >= 75 ? "silver" : pct >= CERT_MIN ? "bronze" : null);
 const FUNNEL_EVENTS = ["exam", "exampass", "cert", "account"];
 const AGE_BANDS = ["5–7", "8–10", "11–13", "14–15", "16–17", "18–24", "25–34", "35–44", "45–60", "60+"];
 const LANGS = ["cyr", "lat", "ru", "en"];
@@ -559,7 +562,7 @@ function computeGrowth(days) {
     retention, cohorts,
     funnel: Object.entries(steps).map(([k, s]) => ({ k, n: s.size })),
     lessons: lessonRows, hard,
-    certList: certs.slice(-50).reverse().map((c) => ({ code: c.code, name: c.name, title: c.title, pct: c.pct, at: c.at }))
+    certList: certs.slice(-50).reverse().map((c) => ({ code: c.code, name: c.name, title: c.title, pct: c.pct, grade: c.grade || null, at: c.at }))
   };
 }
 
@@ -705,7 +708,7 @@ const publicReport = (r) => ({ id: r.id, category: r.category, text: r.text, lat
 
 /* ---------- Мактаблар учун ---------- */
 const TASK_TYPES = ["xp", "sort", "quiz", "memory", "tree", "course", "streak"];
-const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "qayta", "ekologiya", "yosh", "tabiat", "steam", "qollanma", "tadqiqot", "litosfera", "yerqalqon"];
+const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "qayta", "ekologiya", "yosh", "tabiat", "steam", "qollanma", "tadqiqot", "litosfera", "yerqalqon", "xalqaro", "dunyo"];
 const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function newClassCode() {
   for (;;) {
@@ -1086,19 +1089,25 @@ async function api(req, res, pathname) {
     if (!name || !title || !COURSE_IDS.includes(cid)) return send(res, 400, { error: "Нотўғри сўров" });
     const pct = Math.max(0, Math.min(100, Math.round(Number(body.pct) || 0)));
     const lessons = Math.max(0, Math.min(200, Math.floor(Number(body.lessons) || 0)));
+    const grade = certGrade(pct);
+    if (!grade) return send(res, 400, { error: `Сертификат учун якуний тестдан камида ${CERT_MIN} % тўплаш керак` });
+    const cur = currentUser(req);
+    /* Ўша ҳисоб, ўша курс, ўша исм ва натижа — янги рақам эмас, аввалги сертификат қайтарилади */
+    const same = cur && db.certs.find((c) => c.userId === cur.user.id && c.cid === cid && c.name === name && c.pct === pct);
+    if (same) return send(res, 200, { code: same.code, grade: same.grade || grade, at: same.at });
     let code;
     do code = "EKM-" + crypto.randomBytes(5).toString("hex").toUpperCase(); while (db.certs.some((c) => c.code === code));
-    const cur = currentUser(req);
-    db.certs.push({ code, name, title, cid, pct, lessons, at: now(), userId: cur ? cur.user.id : null });
+    const at = now();
+    db.certs.push({ code, name, title, cid, pct, grade, lessons, at, userId: cur ? cur.user.id : null });
     if (db.certs.length > 100000) db.certs.splice(0, db.certs.length - 100000);
     save();
-    return send(res, 200, { code });
+    return send(res, 200, { code, grade, at });
   }
   if (pathname === "/api/cert" && method === "GET") {
     const code = String(new URL(req.url, "http://x").searchParams.get("c") || "").trim().toUpperCase();
     const c = /^EKM-[0-9A-F]{10}$/.test(code) && db.certs.find((x) => x.code === code);
     if (!c) return send(res, 404, { ok: false });
-    return send(res, 200, { ok: true, code: c.code, name: c.name, title: c.title, pct: c.pct, lessons: c.lessons, at: c.at });
+    return send(res, 200, { ok: true, code: c.code, name: c.name, title: c.title, pct: c.pct, grade: c.grade || null, lessons: c.lessons, at: c.at });
   }
 
   /* Ўз маълумотларини юклаб олиш (ҳисоб, кириш журнали, харита хабарлари, ташрифлар) */
