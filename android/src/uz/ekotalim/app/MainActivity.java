@@ -104,12 +104,30 @@ public class MainActivity extends Activity {
         checkForUpdates(true);
 
         if (state != null && web.restoreState(state) != null) return;
+        String hash = deepHash(getIntent());
         if (!serverUrl.isEmpty() && isOnline()) {
             onLocal = false;
-            web.loadUrl(serverUrl);
+            web.loadUrl(serverUrl + hash);
         } else {
-            web.loadUrl(LOCAL_URL);
+            web.loadUrl(LOCAL_URL + hash);
         }
+    }
+
+    /* Чуқур ҳавола: ekomun://lab3d → #lab3d (фақат ҳарф, рақам ва «-») */
+    private static String deepHash(Intent it) {
+        Uri u = it == null ? null : it.getData();
+        if (u == null || !"ekomun".equals(u.getScheme())) return "";
+        String id = u.getHost();
+        if (id == null || !id.matches("[a-z0-9-]{1,32}")) return "";
+        return "#" + id;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        final String h = deepHash(intent);
+        if (h.isEmpty() || web == null) return;
+        web.evaluateJavascript("window.EkoNav ? EkoNav.go(" + JSONObject.quote(h.substring(1)) + ") : (location.hash = " + JSONObject.quote(h) + ")", null);
     }
 
     @Override
