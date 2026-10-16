@@ -39,6 +39,7 @@
         <button data-tab="people">👥 <span>Фойдаланувчилар</span></button>
         <button data-tab="journal">🕓 <span>Кирди-чиқди</span></button>
         <button data-tab="stats">📈 <span>Статистик таҳлил</span></button>
+        <button data-tab="results">🎓 <span>Натижалар</span></button>
         <button data-tab="growth">🚀 <span>Ўсиш ва ўқиш</span></button>
         <button data-tab="blocks">⛔ <span>Блок ва хавфсизлик</span> <i class="badge warn" id="bSusp" hidden>0</i></button>
         <button data-tab="feedback">💬 <span>Фикр-мулоҳазалар</span> <i class="badge" id="bFeedback" hidden>0</i></button>
@@ -78,6 +79,10 @@
         <div class="grid2">
           <div class="card"><h2>Энг кўп вақт ўтказилган бўлимлар</h2><div id="chSections"></div></div>
           <div class="card"><h2>Босқич ва ёш гуруҳи</h2><div id="chStages"></div></div>
+        </div>
+        <div class="grid2">
+          <div class="card"><h2>📍 Қайси ҳудуддан киришмоқда</h2><p class="small muted">IP манзил бўйича тахминий жойлашув (вилоят ёки мамлакат).</p><div id="chRegions"></div></div>
+          <div class="card"><h2>📱 Қайси қурилмадан</h2><div id="chDevTypes"></div><div id="chModels" style="margin-top:12px"></div></div>
         </div>
       </section>
 
@@ -124,12 +129,36 @@
           <div class="card"><h2>Бўлимлар: кўришлар ва вақт</h2><div class="table" id="tSections"></div></div>
           <div class="card"><h2>Энг кўп очилган дарслар</h2><div class="table" id="tLessons"></div></div>
         </div>
+        <div class="grid2">
+          <div class="card"><h2>📍 Ҳудудлар</h2><div id="chRegions2"></div></div>
+          <div class="card"><h2>🌍 Мамлакатлар</h2><div id="chCountries"></div></div>
+        </div>
         <div class="grid3">
           <div class="card"><h2>Тил</h2><div id="chLang"></div></div>
           <div class="card"><h2>Операцион тизим</h2><div id="chOs"></div></div>
           <div class="card"><h2>Браузер</h2><div id="chBr"></div></div>
         </div>
         <div class="card"><h2>Хулоса</h2><ul class="insights" id="insights"></ul></div>
+      </section>
+
+      <section data-view="results" hidden>
+        <div class="kpis" id="kpisR"></div>
+        <div class="card"><h2>Курслар бўйича натижалар</h2><p class="small muted">Танланган даврда: нечта одам ўқиди, нечта дарс тугатилди, якуний тестнинг ўртача натижаси ва ўтганлар (<span id="rPass">80</span>% ва ундан юқори).</p><div class="table scroll" id="tCourses"></div></div>
+        <div class="card">
+          <h2>Ҳар бир ўқувчининг натижаси</h2>
+          <div class="toolbar">
+            <input type="search" id="rSearch" placeholder="Исм, почта, телефон, ҳудуд…">
+            <select id="rSort">
+              <option value="done">Энг кўп дарс тугатганлар</option>
+              <option value="exam">Энг юқори тест натижаси</option>
+              <option value="qa">Энг кўп тўғри жавоб</option>
+              <option value="last">Охирги фаоллик</option>
+            </select>
+            <a class="btn ghost sm" id="expResults" href="#">⬇ Натижалар CSV (Excel)</a>
+          </div>
+          <p class="small muted">Исмни боссангиз — шу одамнинг барча дарслари, тестлари ва сертификатлари очилади.</p>
+          <div class="table" id="tResults"></div>
+        </div>
       </section>
 
       <section data-view="growth" hidden>

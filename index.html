@@ -1988,7 +1988,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <div class="reg-online" id="regOnline" hidden>
           <label class="reg-check"><input type="checkbox" name="online"> Онлайн ҳисоб ҳам очилсин — бошқа телефондан кириб, давом эттириш учун (13 ёшдан)</label>
           <div id="regOnlineFields" hidden>
-            <label>Электрон почта<input name="email" type="email" autocomplete="email" placeholder="name@mail.uz"></label>
+            <label>Почта ёки телефон рақам<input name="email" type="text" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="254" autocomplete="username" placeholder="name@mail.uz / +998 90 123 45 67"></label>
             <label>Парол (камида 6 белги)<input name="password" type="password" autocomplete="new-password" minlength="6"></label>
           </div>
         </div>
@@ -1997,7 +1997,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <p class="reg-note" id="regNote">Профил (исм, туғилган йил ва ой) шу қурилмада сақланади. Онлайн ҳисоб ихтиёрий.</p>
       </form>
       <form id="loginForm" novalidate hidden>
-        <label>Электрон почта<input name="email" type="email" autocomplete="email" required></label>
+        <label>Почта ёки телефон рақам<input name="email" type="text" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="254" autocomplete="username" placeholder="name@mail.uz / +998 90 123 45 67" required></label>
         <label>Парол<input name="password" type="password" autocomplete="current-password" required></label>
         <div class="reg-row" id="loginBirth" hidden>
           <label>Туғилган йил<select name="by"><option value="">Йил</option></select></label>
@@ -2826,8 +2826,8 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
             <select name="birthMonth" aria-label="Туғилган ой"><option value="">Ой</option></select>
           </div>
         </div>
-        <label>Электрон почта
-          <input name="email" type="email" maxlength="254" autocomplete="email" required>
+        <label>Почта ёки телефон рақам
+          <input name="email" type="text" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="254" autocomplete="username" placeholder="name@mail.uz / +998 90 123 45 67" required>
         </label>
         <label>Парол
           <input name="password" type="password" minlength="6" autocomplete="current-password" required>
@@ -50471,7 +50471,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         const first = state.exams[cid] == null || state.exams[cid] < EXAM_PASS;
         state.exams[cid] = Math.max(state.exams[cid] || 0, pct);
         save();
-        window.dispatchEvent(new CustomEvent("eko:fn", { detail: { k: "exam" } }));
+        window.dispatchEvent(new CustomEvent("eko:fn", { detail: { k: "exam", cid, pct } }));
         if (pct >= EXAM_PASS) window.dispatchEvent(new CustomEvent("eko:fn", { detail: { k: "exampass" } }));
         if (pct >= EXAM_PASS && first) addXp(30, "Якуний тестдан ўтдингиз");
         if (pct === 100 && !state.flags["exam100_" + cid]) { state.flags["exam100_" + cid] = true; addXp(50, "Якуний тест · 100%"); }
