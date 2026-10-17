@@ -134,6 +134,17 @@
     qU: [t3("Менга 4 ҳафталик экология ўқув режасини туз", "Составь мне 4-недельный план изучения экологии", "Make me a 4-week ecology study plan"), t3("ПДК ва ЧММ фарқини тушунтир", "Объясни разницу ПДК и ПДВ", "Explain MPC vs. emission limits"), t3("«Чиқиндилар тўғрисида»ги қонуннинг асосий талаблари", "Основные требования закона «Об отходах»", "Key requirements of the Waste law"), t3("Курс иши мавзуси ва режасини таклиф қил", "Предложи тему и план курсовой", "Suggest a coursework topic and outline")]
   };
 
+  const PX = {
+    tabs: t3("Ekomun PRO бўлимлари", "Разделы Ekomun PRO", "Ekomun PRO sections"),
+    sub: t3("PRO обуна", "Подписка PRO", "PRO subscription"),
+    subD: t3("Тарифлар, тўлов ва муддат", "Тарифы, оплата и срок", "Plans, payment and term"),
+    agent: t3("Шахсий агент", "Личный агент", "Personal agent"),
+    agentD: t3("PRO · AI ёрдамчингиз", "PRO · ваш AI-помощник", "PRO · your AI helper"),
+    on: t3("PRO фаол", "PRO активен", "PRO is active"),
+    off: t3("PRO уланмаган — шахсий агент ва VIP имкониятлар PRO ичида.", "PRO не подключён — личный агент и VIP-возможности входят в PRO.", "PRO is off — the personal agent and VIP features are part of PRO."),
+    offApp: t3("PRO уланмаган.", "PRO не подключён.", "PRO is off.")
+  };
+
   let info = null, busy = false, pollT = null;
   const proOn = () => !!(info && info.me && info.me.pro && info.me.pro.active);
 
@@ -218,8 +229,22 @@
         <button class="btn btn-ghost btn-sm" type="submit">${H(TX.orgSend)}</button></form></details>`;
   }
 
+  /* PRO ва агент — битта бўлим: иккала саҳифа тепасида бир хил шаклдаги иккита таб */
+  const tile = (href, ic, t, d, cls, cur) => `<a class="pr-tile ${cls}${cur ? " on" : ""}" href="${href}"${cur ? ' aria-current="page"' : ""}>
+      <span class="pr-ic" aria-hidden="true"><i class="fa-solid ${ic}"></i></span><span class="pr-tt"><b>${H(t)}</b><small>${H(d)}</small></span></a>`;
+  const tabs = (cur) => `<nav class="pr-tabs" aria-label="${H(PX.tabs)}">${tile("#pro", "fa-crown", PX.sub, PX.subD, "pro-sell", cur === "pro")}${tile("#agent", "fa-robot", PX.agent, PX.agentD, "pro-agent", cur === "agent")}</nav>`;
+  /* Профил ойнаси учун блок (index.html → openProfile) */
+  function profileHtml() {
+    const p = info && info.me && info.me.pro;
+    const st = proOn()
+      ? `<p class="small"><b>👑 ${H(PX.on)}</b> · ${H(TX.until)}: ${fmtDate(p.until)}</p>`
+      : `<p class="small muted">${H(inApp() ? PX.offApp : PX.off)}</p>`;
+    return `<div class="prof-sec prof-pro"><h3><span class="pr-ic sm" aria-hidden="true"><i class="fa-solid fa-crown"></i></span> Ekomun PRO</h3>${st}
+      <div class="pr-tabs in-prof">${tile("#pro", "fa-crown", PX.sub, PX.subD, "pro-sell", false)}${tile("#agent", "fa-robot", PX.agent, PX.agentD, "pro-agent", false)}</div></div>`;
+  }
+
   function renderPro() {
-    const head = `<span class="pill">${H(TX.pill)}</span><h2 class="section-title">${H(TX.title)}</h2>`;
+    const head = tabs("pro") + `<span class="pill">${H(TX.pill)}</span><h2 class="section-title">${H(TX.title)}</h2>`;
     if (!info) { PRO_ROOT.innerHTML = head + `<p class="muted">${H(TX.offline)}</p>`; return; }
     const me = info.me, app = inApp();
     let body = "";
@@ -326,7 +351,7 @@
   }
   function renderAgent() {
     const kid = stage() === "maktab";
-    const head = `<span class="pill">${H(AG.pill)}</span><h2 class="section-title">${H(kid ? AG.titleK : AG.titleU)}</h2><p class="muted">${H(kid ? AG.leadK : AG.leadU)}</p>`;
+    const head = tabs("agent") + `<span class="pill">${H(AG.pill)}</span><h2 class="section-title">${H(kid ? AG.titleK : AG.titleU)}</h2><p class="muted">${H(kid ? AG.leadK : AG.leadU)}</p>`;
     const me = info && info.me;
     if (!me) { AG_ROOT.innerHTML = head + `<p class="muted">${H(info ? AG.needLogin : TX.offline)}</p>${info && !inApp() ? `<button class="btn btn-primary btn-sm" type="button" data-login>${H(TX.loginBtn)}</button>` : ""}`; return; }
     if (!me.pro.active) { AG_ROOT.innerHTML = head + `<p class="muted">${H(AG.needPro)}</p>${inApp() ? "" : `<a class="btn btn-primary btn-sm" href="#pro">${H(AG.seePro)}</a>`}`; return; }
@@ -383,7 +408,22 @@
   /* ---------- Безак ---------- */
   const css = document.createElement("style");
   css.textContent = `
-html.eko-app:not(.is-pro) .pro-sell, html.pro-kid .pro-sell, html.pro-kid .pro-agent, html.eko-app:not(.is-pro) .pro-agent{display:none!important}
+html.eko-app:not(.is-pro) .pro-sell, html.pro-kid .pro-sell, html.pro-kid .pro-agent, html.eko-app:not(.is-pro) .pro-agent, html.pro-kid .prof-pro, html.pro-kid .pb-pro, html.eko-app:not(.is-pro) .pb-pro{display:none!important}
+.pr-ic{--c:#a16207;flex:none;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:28%;background:var(--c);color:#fff;font-size:1.15rem;box-shadow:0 2px 6px rgba(161,98,7,.28)}
+.pr-ic.sm{width:28px;height:28px;font-size:.8rem;vertical-align:-6px;margin-right:4px;box-shadow:none}
+.pr-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.pr-tile{display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 14px;border:1.5px solid var(--line);border-radius:16px;background:var(--card);color:var(--text);text-decoration:none;transition:border-color .15s,background .15s}
+.pr-tile:hover{border-color:#a16207;background:color-mix(in srgb,#f59e0b 8%,var(--card))}
+.pr-tile:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+.pr-tile.on{border-color:#a16207;background:color-mix(in srgb,#f59e0b 12%,var(--card));box-shadow:inset 0 0 0 1px #a16207}
+.pr-tt{display:grid;min-width:0}.pr-tt b{font-size:.98rem;line-height:1.25}.pr-tt small{color:var(--muted);font-size:.8rem;line-height:1.3}
+.pr-tabs.in-prof{margin:8px 0 0}
+.pb-pro{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 7px;border-radius:99px;font-size:.66rem;font-weight:800;line-height:1.4;background:color-mix(in srgb,#f59e0b 18%,transparent);color:inherit;border:1px solid rgba(161,98,7,.55)}
+html.is-pro .pb-pro{background:linear-gradient(135deg,#f59e0b,#eab308);color:#3b2400;border-color:transparent}
+html.is-pro .pb-pro::after{content:"PRO"}
+#profileBtn:not([hidden]){display:inline-flex;align-items:center;gap:5px;max-width:230px;text-overflow:clip}#profileBtn .auth-name{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}#profileBtn .pb-pro{flex:none}
+.prof-pro h3{display:flex;align-items:center;gap:8px}.prof-pro h3 .pr-ic.sm{vertical-align:0;margin:0}
+@media (max-width:480px){.pr-tile{gap:9px;padding:8px 10px;min-height:56px}.pr-tile .pr-ic{width:36px;height:36px;font-size:1rem}.pr-tt small{display:none}.pr-tt b{font-size:.9rem}}
 .pr-perks{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:16px 0}
 .pr-perk{display:flex;gap:12px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
 .pr-perk>span{font-size:1.7rem}.pr-perk b{display:block}.pr-perk small{color:var(--muted)}
@@ -417,7 +457,6 @@ html.eko-app:not(.is-pro) .pro-sell, html.pro-kid .pro-sell, html.pro-kid .pro-a
 .ag-msg.me{align-self:flex-end;background:var(--primary);color:var(--on-primary);border-bottom-right-radius:4px}
 .ag-msg.ai{align-self:flex-start;background:var(--bg-alt);border-bottom-left-radius:4px}.ag-wait{opacity:.7;font-style:italic}
 .ag-q{display:flex;flex-wrap:wrap;gap:6px}.ag-q .chip{white-space:normal;text-align:left;max-width:100%}.ag-form{display:flex;gap:8px;align-items:flex-end}.ag-form textarea{flex:1;resize:vertical;min-height:48px}
-html.is-pro #userChip::after{content:"PRO";margin-left:2px;font-size:.62rem;font-weight:800;padding:2px 6px;border-radius:99px;background:linear-gradient(135deg,#f59e0b,#eab308);color:#3b2400}
 html.pro-gold{--primary:#b45309;--primary-soft:rgba(245,158,11,.16);--btn-grad:linear-gradient(135deg,#d97706,#ca8a04);--grad:linear-gradient(135deg,#f59e0b 0%,#eab308 50%,#d97706 100%)}
 @media (prefers-color-scheme:dark){html.pro-gold:not([data-theme=light]){--primary:#fbbf24;--on-primary:#2a1a00}}
 html[data-theme=dark].pro-gold{--primary:#fbbf24;--on-primary:#2a1a00}
@@ -430,5 +469,5 @@ html[data-theme=dark].pro-gold{--primary:#fbbf24;--on-primary:#2a1a00}
   window.addEventListener("hashchange", () => { if (location.hash === "#pro" || location.hash === "#agent") load(); });
   flags();
   load().then(pollReturn);
-  window.EkoPro = { reload: load, get active() { return proOn(); } };
+  window.EkoPro = { reload: load, profileHtml, get active() { return proOn(); } };
 })();

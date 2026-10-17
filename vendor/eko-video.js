@@ -33,15 +33,29 @@
   const TX = {
     pill: t3("🎬 Видео дарслар · очиқ манбалар", "🎬 Видеоуроки · открытые источники", "🎬 Video lessons · open sources"),
     title: t3("Видео дарслар", "Видеоуроки", "Video lessons"),
-    lead: t3("Дунёдаги энг яхши таълим каналлари (Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, БМТ, IPCC) ва ўзбек ҳужжатли фильмлари. Ҳар бир видео — тўлиқ дарс: аввал савол, кейин видео, конспект, текширув ва амалий топшириқ.",
-      "Лучшие образовательные каналы мира (Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, ООН, IPCC) и узбекские документальные фильмы. Каждое видео — полноценный урок: вопрос, видео, конспект, проверка и практика.",
-      "The world’s best education channels (Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, UN, IPCC) and Uzbek documentaries. Each video is a full lesson: question, video, notes, check and hands-on task."),
+    lead: t3("Ўзбек, рус ва инглиз тилларидаги экология видео дарслари: Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, BBC, БМТ, ПостНаука, МГУ, Разумейкин ва ўзбек ҳужжатли фильмлари. Ҳар бир видео — тўлиқ дарс: аввал савол, кейин видео, конспект, текширув ва амалий топшириқ.",
+      "Видеоуроки по экологии на узбекском, русском и английском: Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, BBC, ООН, ПостНаука, МГУ, Разумейкин и узбекские документальные фильмы. Каждое видео — полноценный урок: вопрос, видео, конспект, проверка и практика.",
+      "Ecology video lessons in Uzbek, Russian and English: Khan Academy, CrashCourse, TED-Ed, National Geographic, NASA, BBC, the UN, PostNauka, Moscow State University, Razumeykin and Uzbek documentaries. Each video is a full lesson: question, video, notes, check and hands-on task."),
     online: t3("Интернет бор — видеолар очилади", "Интернет есть — видео откроются", "Online — videos will play"),
     offline: t3("Интернет йўқ — конспект, савол ва топшириқлар ишлайди; видео уланганда очилади", "Нет интернета — конспекты, вопросы и задания работают; видео откроется при подключении", "Offline — notes, questions and tasks still work; videos play once you reconnect"),
     all: t3("Ҳаммаси", "Все", "All"),
     search: t3("Видео қидириш…", "Поиск видео…", "Search videos…"),
     lng: { uz: t3("ўзбекча", "узбекский", "Uzbek"), ru: t3("русча", "русский", "Russian"), en: t3("инглизча", "английский", "English") },
     anyLang: t3("Ҳар қандай тил", "Любой язык", "Any language"),
+    vLang: t3("Видео тили", "Язык видео", "Video language"),
+    allLang: t3("Барча тиллар", "Все языки", "All languages"),
+    stg: { m: t3("Мактаб", "Школа", "School"), u: t3("Университет", "Университет", "University"), "": t3("Ҳамма учун", "Для всех", "For everyone") },
+    about: t3("Видео ҳақида", "О видео", "About the video"),
+    sum: t3("Қисқача мазмуни", "Кратко", "In short"),
+    iCh: t3("Канал", "Канал", "Channel"),
+    iAu: t3("Маърузачи", "Спикер", "Speaker"),
+    iOrig: t3("Асл номи", "Оригинальное название", "Original title"),
+    iLng: t3("Тил", "Язык", "Language"),
+    iStage: t3("Босқич", "Этап", "Stage"),
+    iTop: t3("Мавзу", "Тема", "Topic"),
+    iParts: t3("Дарс таркиби", "Состав урока", "Lesson parts"),
+    parts: t3("{k} та асосий ғоя · {q} та савол · амалий топшириқ", "{k} главные идеи · {q} вопроса · практика", "{k} key ideas · {q} questions · a hands-on task"),
+    iChecked: t3("Ҳавола текширилган", "Ссылка проверена", "Link checked"),
     unseen: t3("Фақат ўтилмаганлар", "Только непройденные", "Only not done"),
     none: t3("Бундай видео топилмади.", "Видео не найдено.", "No videos found."),
     done: t3("Ўтилди", "Пройдено", "Done"),
@@ -59,7 +73,7 @@
     needNet: t3("Видео учун интернет керак. Уланиб, қайта босинг. Конспект ва саволлар пастда.", "Для видео нужен интернет. Подключитесь и нажмите снова. Конспект и вопросы ниже.", "The video needs internet. Connect and tap again. Notes and questions are below."),
     onYt: t3("YouTube’да очиш", "Открыть на YouTube", "Open on YouTube"),
     privacy: t3("Видео тугма босилгандан кейингина YouTube’дан (youtube-nocookie.com) юкланади.", "Видео загружается с YouTube (youtube-nocookie.com) только после нажатия.", "The video loads from YouTube (youtube-nocookie.com) only after you tap."),
-    subs: t3("Инглизча видеоларда ⚙️ → «Субтитрлар» → «Автотаржима» орқали ўзбек ёки рус тилида субтитр ёқинг.", "В английских видео включите ⚙️ → «Субтитры» → «Автоперевод» на русский.", "Turn on subtitles via ⚙️ → Subtitles → Auto-translate if needed."),
+    subs: t3("Тушунмасангиз, плеерда ⚙️ → «Субтитрлар» → «Автотаржима» орқали ўзбек тилида субтитр ёқинг.", "Если язык видео незнаком, включите ⚙️ → «Субтитры» → «Автоперевод» на русский.", "If needed, turn on subtitles via ⚙️ → Subtitles → Auto-translate to English."),
     markSeen: t3("✓ Кўрдим", "✓ Посмотрел(а)", "✓ I watched it"),
     right: t3("✅ Тўғри!", "✅ Верно!", "✅ Correct!"),
     wrong: t3("❌ Нотўғри.", "❌ Неверно.", "❌ Not quite."),
@@ -92,6 +106,10 @@
   };
 
   const LIST = DATA.list.filter((v) => ID_RE.test(v.yt));
+  const LNGS = ["uz", "ru", "en"];
+  /* Интерфейс тилидаги видеолар рўйхат бошида турсин (рус — рус видеолари, инглиз — инглизча) */
+  const uiLng = () => (lang() === "ru" ? "ru" : lang() === "en" ? "en" : "uz");
+  const ordered = (arr) => { const u = uiLng(); return arr.filter((v) => v.lng === u).concat(arr.filter((v) => v.lng !== u)); };
   const TOP = Object.fromEntries(DATA.topics.map((x) => [x.id, x]));
   const stageNow = () => { const c = document.documentElement.classList; return c.contains("stage-maktab") ? "m" : c.contains("stage-uni") ? "u" : ""; };
   const fits = (v) => !v.st || !stageNow() || v.st === stageNow();
@@ -114,8 +132,8 @@
   /* ---------- Рўйхат ---------- */
   function filtered() {
     const f = st.f, qq = f.q.trim().toLowerCase();
-    return LIST.filter((v) => fits(v) && (!f.top || v.top === f.top) && (!f.lng || v.lng === f.lng) && (!f.un || !isDone(v)) &&
-      (!qq || [L(v.t), v.orig, v.ch, ...v.k.map(L)].join(" ").toLowerCase().includes(qq)));
+    return ordered(LIST.filter((v) => fits(v) && (!f.top || v.top === f.top) && (!f.lng || v.lng === f.lng) && (!f.un || !isDone(v)) &&
+      (!qq || [L(v.t), v.orig, v.ch, v.au || "", L(v.sum), ...v.k.map(L)].join(" ").toLowerCase().includes(qq))));
   }
   function card(v) {
     const tp = TOP[v.top], d = isDone(v), s = !!st.seen[v.id];
@@ -124,13 +142,15 @@
         <img src="${thumb(v)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">
         <span class="vd-ph" aria-hidden="true"><i class="fa-solid ${tp.ic}"></i></span>
         <span class="vd-playic" aria-hidden="true"><i class="fa-solid fa-play"></i></span>
-        <span class="vd-lng">${H(TX.lng[v.lng])}</span>
+        <span class="vd-lng vd-l-${v.lng}">${esc(v.lng.toUpperCase())} · ${H(TX.lng[v.lng])}</span>
         ${d ? `<span class="vd-badge ok"><i class="fa-solid fa-check" aria-hidden="true"></i> ${H(TX.done)}</span>` : s ? `<span class="vd-badge">${H(TX.seen)}</span>` : ""}
       </button>
       <div class="vd-body">
         <span class="vd-top" style="--tc:${tp.c}"><i class="fa-solid ${tp.ic}" aria-hidden="true"></i> ${H(tp.t)}</span>
         <h3><button type="button" class="vd-link" data-open="${v.id}">${H(v.t)}</button></h3>
-        <p class="vd-ch">${esc(v.ch)}</p>
+        <p class="vd-sum">${H(v.sum || v.k[0])}</p>
+        <p class="vd-orig" lang="${v.lng}">«${esc(v.orig)}»</p>
+        <p class="vd-ch"><i class="fa-brands fa-youtube" aria-hidden="true"></i> ${esc(v.ch)}${v.au ? ` · ${esc(v.au)}` : ""} · <span class="vd-stg">${H(TX.stg[v.st || ""])}</span></p>
       </div>
     </article>`;
   }
@@ -143,11 +163,14 @@
         <div class="vd-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div></div>
       <div class="vd-tools">
         <label class="vd-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" data-f="q" value="${esc(f.q)}" placeholder="${H(TX.search)}" aria-label="${H(TX.search)}"></label>
-        <select data-f="lng" aria-label="${H(TX.anyLang)}"><option value="">${H(TX.anyLang)}</option>${["uz", "ru", "en"].map((k) => `<option value="${k}" ${f.lng === k ? "selected" : ""}>${H(TX.lng[k])}</option>`).join("")}</select>
         <label class="vd-chk"><input type="checkbox" data-f="un" ${f.un ? "checked" : ""}> ${H(TX.unseen)}</label>
       </div>
+      <div class="vd-langs" role="group" aria-label="${H(TX.vLang)}"><span class="vd-langs-t">${H(TX.vLang)}:</span>${["", ...LNGS].map((k) => {
+        const n = LIST.filter((v) => fits(v) && (!f.top || v.top === f.top) && (!k || v.lng === k)).length;
+        return `<button type="button" class="chip vd-lchip${k ? " vd-l-" + k : ""} ${f.lng === k ? "active" : ""}" aria-pressed="${f.lng === k}" data-lng="${k}">${k ? `<b>${k.toUpperCase()}</b> ` : ""}${H(k ? TX.lng[k] : TX.allLang)} <span class="vd-n">${n}</span></button>`;
+      }).join("")}</div>
       <div class="qn-tabs vd-topics" role="group">${[{ id: "", ic: "fa-border-all", t: TX.all }, ...DATA.topics].map((x) => {
-        const n = LIST.filter((v) => fits(v) && (!x.id || v.top === x.id)).length;
+        const n = LIST.filter((v) => fits(v) && (!x.id || v.top === x.id) && (!f.lng || v.lng === f.lng)).length;
         return n ? `<button type="button" class="chip ${f.top === x.id ? "active" : ""}" aria-pressed="${f.top === x.id}" data-top="${x.id}"><i class="fa-solid ${x.ic}" aria-hidden="true"></i>${H(x.t)} <span class="vd-n">${n}</span></button>` : "";
       }).join("")}</div>
       ${list.length ? `<div class="vd-grid">${list.map(card).join("")}</div>` : `<p class="muted">${H(TX.none)}</p>`}`;
@@ -157,12 +180,23 @@
   function lessonView(v) {
     const tp = TOP[v.top], a = st.ans[v.id] || {}, r = st.ref[v.id] || ["", "", ""];
     const answered = v.q.every((qq, i) => a[i] != null);
-    const i = LIST.indexOf(v), nx = LIST.slice(i + 1).concat(LIST.slice(0, i)).find((x) => fits(x) && !isDone(x));
+    const i = LIST.indexOf(v), ring = LIST.slice(i + 1).concat(LIST.slice(0, i)).filter((x) => fits(x) && !isDone(x)),
+      nx = ring.find((x) => x.lng === v.lng) || ring[0];
     return `<div class="qn-acts pdf-skip"><button type="button" class="btn btn-ghost btn-sm" data-act="back">${H(TX.back)}</button></div>
       <article class="qn-card vd-lesson" id="vdLesson">
         <span class="vd-top" style="--tc:${tp.c}"><i class="fa-solid ${tp.ic}" aria-hidden="true"></i> ${H(tp.t)}</span>
         <h3>${H(v.t)}</h3>
-        <p class="small muted">${esc(v.orig)} · <b>${esc(v.ch)}</b> · ${H(TX.lng[v.lng])}</p>
+        <p class="vd-lead"><b>${H(TX.sum)}:</b> ${H(v.sum || v.k[0])}</p>
+        <dl class="vd-info" aria-label="${H(TX.about)}">
+          <div><dt>${H(TX.iOrig)}</dt><dd lang="${v.lng}">${esc(v.orig)}</dd></div>
+          <div><dt>${H(TX.iCh)}</dt><dd>${esc(v.ch)}</dd></div>
+          ${v.au ? `<div><dt>${H(TX.iAu)}</dt><dd>${esc(v.au)}</dd></div>` : ""}
+          <div><dt>${H(TX.iLng)}</dt><dd><span class="vd-ltag vd-l-${v.lng}">${esc(v.lng.toUpperCase())}</span> ${H(TX.lng[v.lng])}</dd></div>
+          <div><dt>${H(TX.iStage)}</dt><dd>${H(TX.stg[v.st || ""])}</dd></div>
+          <div><dt>${H(TX.iTop)}</dt><dd>${H(tp.t)}</dd></div>
+          <div><dt>${H(TX.iParts)}</dt><dd>${H(TX.parts).replace("{k}", v.k.length).replace("{q}", v.q.length)}</dd></div>
+          <div><dt>${H(TX.iChecked)}</dt><dd>${esc(v.ck || DATA.checked)}</dd></div>
+        </dl>
 
         <h4>💭 ${H(TX.step1)}</h4>
         <p>${H(v.pre)}</p>
@@ -180,7 +214,7 @@
           <a class="btn btn-ghost btn-sm" href="${watchUrl(v)}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube" aria-hidden="true"></i> ${H(TX.onYt)} ↗</a>
           ${st.seen[v.id] ? `<span class="vd-badge ok static"><i class="fa-solid fa-check" aria-hidden="true"></i> ${H(TX.seen)}</span>` : `<button type="button" class="btn btn-ghost btn-sm" data-act="seen">${H(TX.markSeen)}</button>`}
         </div>
-        <p class="small muted pdf-skip">${H(TX.privacy)}${v.lng === "en" ? " " + L(TX.subs) : ""}</p>
+        <p class="small muted pdf-skip">${H(TX.privacy)}${v.lng !== "uz" && v.lng !== uiLng() ? " " + esc(L(TX.subs)) : ""}</p>
 
         <h4>📝 ${H(TX.step3)}</h4>
         <ul class="vd-notes">${v.k.map((x) => `<li>${H(x)}</li>`).join("")}</ul>
@@ -201,7 +235,7 @@
         <h4>🪞 ${H(TX.step6)}</h4>
         <div class="vd-ref">${[TX.r3, TX.r2, TX.r1].map((lab, k) => `<label><span>${H(lab)}</span><textarea class="qn-ta" rows="2" data-ref="${k}">${esc(r[k] || "")}</textarea></label>`).join("")}</div>
 
-        <p class="qn-src">🎬 ${H(TX.src)}: <a href="${watchUrl(v)}" target="_blank" rel="noopener noreferrer">${esc(v.ch)} — «${esc(v.orig)}» ↗</a> · ${H(TX.checked)}: ${esc(DATA.checked)}</p>
+        <p class="qn-src">🎬 ${H(TX.src)}: <a href="${watchUrl(v)}" target="_blank" rel="noopener noreferrer">${esc(v.ch)} — «${esc(v.orig)}» ↗</a> · ${H(TX.checked)}: ${esc(v.ck || DATA.checked)}</p>
         <div class="qn-acts pdf-skip">
           <button type="button" class="btn btn-ghost btn-sm" data-act="pdf"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> ${H(TX.pdf)}</button>
           <a class="btn btn-ghost btn-sm" href="#fikr" data-fb="${v.id}"><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> ${H(TX.fb)}</a>
@@ -250,6 +284,7 @@
     const ds = b.dataset;
     if (ds.open) { open(ds.open); return; }
     if (ds.top != null) { st.f.top = ds.top; save(); rerender(true); return; }
+    if (ds.lng != null) { st.f.lng = LNGS.includes(ds.lng) ? ds.lng : ""; save(); rerender(true); return; }
     const v = cur && LIST.find((x) => x.id === cur);
     if (ds.fb) { try { sessionStorage.setItem("ekotalim:fikr-sec", "video:" + ds.fb); } catch (err) { /* ignore */ } return; }
     if (!v) return;
@@ -289,7 +324,6 @@
   });
   ROOT.addEventListener("change", (e) => {
     const el = e.target;
-    if (el.matches("[data-f='lng']")) { st.f.lng = el.value; save(); rerender(true); return; }
     if (el.matches("[data-f='un']")) { st.f.un = el.checked; save(); rerender(true); return; }
     if (el.matches("[data-task]") && cur) { st.task[cur] = el.checked ? Date.now() : 0; save(); if (el.checked) xp("vtask:" + cur, 3, TX.step5); }
   });
