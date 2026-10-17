@@ -365,7 +365,7 @@
           <p class="small"><b>${H(TX.mins)}</b></p>${seg("mins", [5, 10, 20, 30].map((m) => [m, `${m} ${L(TX.min)}`]), st.pref.mins)}
           <p class="small"><b>${H(TX.fmt)}</b></p>${seg("fmt", Object.entries(TX.fmts).map(([k, v]) => [k, L(v)]), st.pref.fmt)}
           <p class="small"><b>${H(TX.goal)}</b></p>${seg("goal", Object.entries(TX.goals).map(([k, v]) => [k, L(v)]), st.pref.goal)}
-          <p class="small"><b>${H(TX.sdg)}</b></p><div class="yl-seg">${usedSdg.filter((g) => SDG[g]).map((g) => `<button type="button" class="ps-sdgchip ${st.pref.sdg.includes(g) ? "on" : ""}" style="--sc:${SDG[g].c}" aria-pressed="${st.pref.sdg.includes(g)}" data-sdgp="${g}"><b>${g}</b> ${H(SDG[g].n)}</button>`).join("")}</div>
+          <p class="small"><b>${H(TX.sdg)}</b></p><div class="yl-seg">${usedSdg.filter((g) => SDG[g]).map((g) => `<button type="button" class="ps-sdgchip ${st.pref.sdg.includes(g) ? "on" : ""}" style="--sc:${SDG[g].c};--si:${SDG[g].i || "#fff"}" aria-pressed="${st.pref.sdg.includes(g)}" data-sdgp="${g}"><b>${g}</b> ${H(SDG[g].n)}</button>`).join("")}</div>
         </section>
       </div>
       <section class="ps-box"><h3>${H(TX.plan)}</h3><ol class="yl-plan">${plan}</ol>

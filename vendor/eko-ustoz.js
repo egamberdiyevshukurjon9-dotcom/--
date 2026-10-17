@@ -240,7 +240,7 @@
         <label>${H(TX.bGoal)}<input type="text" maxlength="300" name="goal" value="${esc(d.goal)}"></label>
         <label>${H(TX.bBody)}<textarea name="body" rows="8" maxlength="12000">${esc(d.body)}</textarea></label>
         <label>${H(TX.bTask)}<textarea name="task" rows="3" maxlength="1000">${esc(d.task)}</textarea></label>
-        <fieldset class="us-fs"><legend>${H(TX.bSdg)}</legend><div class="yl-seg">${Object.entries(SDGS()).map(([g, x]) => `<label class="ps-sdgchip ${d.sdg.includes(+g) ? "on" : ""}" style="--sc:${x.c}"><input type="checkbox" name="sdg" value="${g}"${d.sdg.includes(+g) ? " checked" : ""} class="sr-only"> <b>${g}</b> ${H(x.n)}</label>`).join("")}</div></fieldset>
+        <fieldset class="us-fs"><legend>${H(TX.bSdg)}</legend><div class="yl-seg">${Object.entries(SDGS()).map(([g, x]) => `<label class="ps-sdgchip ${d.sdg.includes(+g) ? "on" : ""}" style="--sc:${x.c};--si:${x.i || "#fff"}"><input type="checkbox" name="sdg" value="${g}"${d.sdg.includes(+g) ? " checked" : ""} class="sr-only"> <b>${g}</b> ${H(x.n)}</label>`).join("")}</div></fieldset>
         <fieldset class="us-fs"><legend>${H(TX.bQ)}</legend>${d.q.map((q, i) => `<div class="us-q" data-qi="${i}">
           <label>${i + 1}. ${H(TX.bQText)}<input type="text" maxlength="300" data-qt value="${esc(q.q)}"></label>
           ${q.a.map((a, j) => `<div class="us-opt"><input type="radio" name="c${i}" value="${j}"${q.c === j ? " checked" : ""} aria-label="${H(TX.bRight)}" data-qc><input type="text" maxlength="200" data-qa="${j}" value="${esc(a)}" placeholder="${H(TX.bOpt)} ${String.fromCharCode(65 + j)}"></div>`).join("")}

@@ -53,6 +53,10 @@
     16: { c: "#00689D", n: t3("Адолат ва институтлар", "Мир и правосудие", "Peace & justice") },
     17: { c: "#19486A", n: t3("Ҳамкорлик", "Партнёрство", "Partnerships") }
   };
+  /* Оқ матн контрасти 4,5 дан паст бўлган очиқ SDG рангларида тўқ ёзув */
+  const ink = (hex) => { const v = [1, 3, 5].map((i) => { const x = parseInt(hex.slice(i, i + 2), 16) / 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; });
+    return 1.05 / (0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2] + 0.05) < 4.5 ? "#0b1f17" : "#fff"; };
+  for (const g in SDG) SDG[g].i = ink(SDG[g].c);
   const ESD = [
     { id: "sys", i: "🕸", n: t3("Тизимли фикрлаш", "Системное мышление", "Systems thinking"), d: t3("Табиат, жамият ва иқтисодни бир бутун тизим сифатида кўриш.", "Видеть природу, общество и экономику как единую систему.", "Seeing nature, society and economy as one system.") },
     { id: "ant", i: "🔭", n: t3("Келажакни кўра билиш", "Прогностическое мышление", "Anticipatory"), d: t3("Бир неча келажак сценарийларини тасаввур қилиш ва баҳолаш.", "Представлять и оценивать сценарии будущего.", "Imagining and assessing possible futures.") },
@@ -190,7 +194,7 @@
 
   /* ===================== Курс карталарига SDG белгилари ===================== */
   function sdgChips(gs, cls = "") {
-    return `<div class="sdg-row ${cls}" data-notr aria-label="${H(TX.sdgTitle)}">${gs.map((g) => `<span class="sdg-chip" style="--sc:${SDG[g].c}" title="SDG ${g}: ${H(SDG[g].n)}"><b>${g}</b> ${H(SDG[g].n)}</span>`).join("")}</div>`;
+    return `<div class="sdg-row ${cls}" data-notr aria-label="${H(TX.sdgTitle)}">${gs.map((g) => `<span class="sdg-chip" style="--sc:${SDG[g].c};--si:${SDG[g].i}" title="SDG ${g}: ${H(SDG[g].n)}"><b>${g}</b> ${H(SDG[g].n)}</span>`).join("")}</div>`;
   }
   function decorate() {
     Object.entries(META).forEach(([cid, [gs]]) => {
@@ -254,7 +258,7 @@
       return `<li class="ps-comp"><span class="ps-ci" aria-hidden="true">${e.i}</span><div><b>${H(e.n)}</b> <span class="ps-lv lv${lv}">${lv + 1}. ${H(LEVELS[lv].n)}</span>
         <small>${H(e.d)}</small>${bar(p, 120)}<small class="muted">${p} ${H(TX.pts)}${lv < 3 ? ` · ${LEVELS[lv + 1].min - p} → ${H(LEVELS[lv + 1].n)}` : ""}</small></div></li>`;
     }).join("");
-    const sdgs = Object.keys(SDG).map((g) => `<button type="button" class="ps-sdg" style="--sc:${SDG[g].c}" data-sdg="${g}" aria-expanded="${openSdg === g}"><b>${g}</b><span>${H(SDG[g].n)}</span><em>${R.sdg[g]}</em></button>`).join("");
+    const sdgs = Object.keys(SDG).map((g) => `<button type="button" class="ps-sdg" style="--sc:${SDG[g].c};--si:${SDG[g].i}" data-sdg="${g}" aria-expanded="${openSdg === g}"><b>${g}</b><span>${H(SDG[g].n)}</span><em>${R.sdg[g]}</em></button>`).join("");
     const sdgList = openSdg ? `<div class="ps-sdglist"><b>SDG ${openSdg} · ${H(SDG[openSdg].n)} — ${H(TX.sdgCourses)}:</b><ul>${Object.entries(META).filter(([, [gs]]) => gs.includes(+openSdg)).map(([cid]) => cs.find((c) => c.id === cid)).filter((c) => c && inStage(c, R.stg)).map((c) => `<li><a href="#kurslar" data-crs="${c.id}">${c.icon} ${esc(T(c.title))}</a> <small class="muted">${R.per[c.id].done}/${R.per[c.id].total}</small></li>`).join("")}</ul></div>` : "";
     const badges = R.certs.length ? `<ul class="ps-badges">${R.certs.map(([cid, c]) => {
       const course = cs.find((x) => x.id === cid); if (!course) return "";
