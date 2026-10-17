@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="app.css">
   <script src="app.js" defer></script>
   <script src="pay.js" defer></script>
+  <script src="analiz.js" defer></script>
 </head>
 <body>
   <!-- Кириш ойнаси -->
@@ -40,6 +41,7 @@
         <button data-tab="people">👥 <span>Фойдаланувчилар</span></button>
         <button data-tab="journal">🕓 <span>Кирди-чиқди</span></button>
         <button data-tab="stats">📈 <span>Статистик таҳлил</span></button>
+        <button data-tab="analiz">🧭 <span>Таҳлил ва ҳисобот</span></button>
         <button data-tab="results">🎓 <span>Натижалар</span></button>
         <button data-tab="growth">🚀 <span>Ўсиш ва ўқиш</span></button>
         <button data-tab="blocks">⛔ <span>Блок ва хавфсизлик</span> <i class="badge warn" id="bSusp" hidden>0</i></button>
@@ -142,6 +144,58 @@
           <div class="card"><h2>Браузер</h2><div id="chBr"></div></div>
         </div>
         <div class="card"><h2>Хулоса</h2><ul class="insights" id="insights"></ul></div>
+      </section>
+
+      <section data-view="analiz" hidden>
+        <div class="card report-bar">
+          <div>
+            <h2>📄 Ҳисоботни юклаб олиш</h2>
+            <p class="small muted">Танланган давр ва филтрлар бўйича барча фойдаланувчилар таҳлили: кўрсаткичлар, хулосалар, сегментлар, демография, ўқиш натижалари ва тўлиқ рўйхат.</p>
+          </div>
+          <div class="acts">
+            <a class="btn primary" id="anPdf" href="#" download>⬇ PDF</a>
+            <a class="btn" id="anDocx" href="#" download>⬇ Word</a>
+            <a class="btn ghost sm" id="anCsv" href="#" download>⬇ CSV (Excel)</a>
+          </div>
+        </div>
+        <div class="toolbar">
+          <input type="search" id="anSearch" placeholder="Исм, почта, телефон, ҳудуд…" aria-label="Қидириш">
+          <select id="anStage" aria-label="Босқич"><option value="">Барча босқичлар</option><option value="maktab">🎒 Мактаб</option><option value="uni">🎓 Университет</option></select>
+          <select id="anKind" aria-label="Тури"><option value="">Ҳисоб ва меҳмонлар</option><option value="acc">Фақат ҳисоби борлар</option><option value="guest">Фақат меҳмонлар</option></select>
+          <select id="anSeg" aria-label="Сегмент"><option value="">Барча сегментлар</option><option value="faol">🟢 Фаол</option><option value="susaygan">🟡 Сусайган</option><option value="xavf">🟠 Кетиш хавфи</option><option value="nofaol">⚪ Нофаол</option></select>
+        </div>
+        <div class="kpis" id="anKpis"></div>
+        <div class="card"><h2>💡 Хулоса ва тавсиялар</h2><ul class="insights" id="anInsights"></ul></div>
+        <div class="grid2">
+          <div class="card"><h2>Фаоллик сегментлари</h2><p class="small muted">Охирги фаоллик бўйича. Сегментни боссангиз — рўйхат шу бўйича филтрланади.</p><div id="anSegs"></div></div>
+          <div class="card"><h2>Фаоллик балли (0–100)</h2><p class="small muted">Фаол кунлар, вақт, тугатилган дарслар, тўғри жавоблар ва ютуқлар асосида.</p><div id="anScore"></div></div>
+        </div>
+        <div class="card"><h2>Кунлар бўйича: фаол одамлар, янги ҳисоблар ва янги меҳмонлар</h2><div id="anDaily" class="chart"></div></div>
+        <div class="grid2">
+          <div class="card"><h2>Босқич ва ёш</h2><div class="split"><div id="anStages"></div><div id="anAges"></div></div></div>
+          <div class="card"><h2>Ўқиш воронкаси</h2><div id="anFunnel"></div></div>
+        </div>
+        <div class="grid2">
+          <div class="card"><h2>📍 Ҳудудлар</h2><div id="anRegions"></div></div>
+          <div class="card"><h2>📱 Қурилма ва тизим</h2><div id="anDev"></div><div id="anOs" style="margin-top:12px"></div></div>
+        </div>
+        <div class="card"><h2>⚠️ Эътибор талаб қиладиганлар</h2><p class="small muted">Илгари фаол бўлиб, ҳозир кирмаётган ҳисоблар — уларни эълон орқали қайтаришга ҳаракат қилинг.</p><div class="table" id="anRisk"></div></div>
+        <div class="card">
+          <h2>Барча фойдаланувчилар</h2>
+          <div class="toolbar">
+            <select id="anSort" aria-label="Тартиб">
+              <option value="score">Фаоллик балли бўйича</option>
+              <option value="last">Охирги фаоллик</option>
+              <option value="done">Тугатилган дарслар</option>
+              <option value="secs">Ўтказилган вақт</option>
+              <option value="new">Янги келганлар</option>
+            </select>
+            <span class="small muted" id="anCount"></span>
+          </div>
+          <p class="small muted">Исмни боссангиз — шу одамнинг барча ташрифлари, дарслари ва тестлари очилади.</p>
+          <div class="table" id="anPeople"></div>
+          <div class="fb-more" id="anMoreWrap" hidden><button class="btn ghost sm" id="anMore" type="button">Яна кўрсатиш</button></div>
+        </div>
       </section>
 
       <section data-view="results" hidden>

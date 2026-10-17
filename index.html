@@ -704,6 +704,14 @@ a { text-underline-offset: 3px; }
   :root:not([data-theme="light"]) .theme-btn .i-moon { display: none; }
 }
 .user-chip { min-height: 44px; padding: 6px 14px; background: var(--glass); border: 1px solid var(--glass-line); font-weight: 600; }
+/* Тор телефонлар (≤420px): юқори панел экрандан чиқиб кетмасин */
+@media (max-width: 420px) {
+  .topbar-inner { gap: 6px; }
+  .brand { min-width: 0; flex-shrink: 1; }
+  .user-chip { padding: 6px 9px; gap: 4px; }
+  .lang-btn { padding: 0 8px; }
+  .theme-btn, .menu-btn, .lang-btn { min-width: 40px; }
+}
 .auth-btn { height: 44px; border-radius: 14px; padding: 0 18px; background: var(--btn-grad); box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--primary) 70%, transparent); }
 .auth-btn.signed { background: var(--glass); box-shadow: none; }
 @media (max-width: 1439px) {
@@ -1025,6 +1033,7 @@ html.no-profile body { overflow: hidden; }
 .reg-stage.on { border-color: var(--primary); background: var(--primary-soft); }
 .reg-preview { min-height: 1.4em; font-weight: 600; color: var(--primary); margin: 0; }
 .reg-error { color: #dc2626; margin: 0; min-height: 1.2em; font-size: .9rem; }
+.reg-preview:empty, .reg-error:empty { display: none; }
 .reg-note { font-size: .8rem; color: var(--muted); margin: 6px 0 0; }
 
 .profile-card { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin: 0 0 18px; padding: 14px 16px; border-radius: 18px;
@@ -1820,7 +1829,8 @@ html.plus-lock { overflow: hidden; }
 .plus-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; }
 .plus-dots button { width: 9px; height: 9px; padding: 0; border-radius: 99px; border: 0; background: var(--line); cursor: pointer; transition: width .2s; }
 .plus-dots button.on { width: 26px; background: var(--c); }
-.plus-tbox .plus-row { width: 100%; }
+.plus-tbox .plus-row { width: 100%; flex-wrap: nowrap; }
+.plus-tbox .plus-row .btn { flex: 1 1 0; min-width: 0; padding-inline: 10px; font-size: .94rem; line-height: 1.2; }
 /* Пастки навигация: фақат телефонда */
 .plus-nav { display: none; }
 @media (max-width: 720px) {
