@@ -1747,9 +1747,9 @@ html.stage-maktab .hb-text { font-size: 1.15rem; }
 .app-cat { color: var(--text); font-size: .98rem; }
 .app-cat i { width: 30px; height: 30px; display: inline-grid; place-items: center; border-radius: 10px; color: #fff; font-size: .85rem; box-shadow: 0 6px 14px -6px currentColor; }
 .app-cat[data-cat="learn"] i { background: linear-gradient(140deg, #34d399, #059669); }
-.app-cat[data-cat="lab"] i { background: linear-gradient(140deg, #22d3ee, #7c3aed); }
+.app-cat[data-cat="lab"] i { background: linear-gradient(140deg, #c4b5fd, #6d28d9); }
 .app-cat[data-cat="act"] i { background: linear-gradient(140deg, #fdba74, #ea580c); }
-.app-cat[data-cat="tool"] i { background: linear-gradient(140deg, #f9a8d4, #db2777); }
+.app-cat[data-cat="tool"] i { background: linear-gradient(140deg, #67e8f9, #0e7490); }
 .app-cat::after { background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 35%, transparent), transparent); }
 /* Тунги режим: карточкалар қоронғи шиша, иконка ёғдуси кучлироқ */
 :root[data-theme="dark"] .app { background: linear-gradient(165deg, color-mix(in srgb, var(--c, var(--primary)) 20%, rgba(10, 25, 20, .7)) 0%, rgba(10, 25, 20, .55) 60%); border-color: color-mix(in srgb, var(--c1) 18%, transparent); }
@@ -1948,7 +1948,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
 .vd-lchip b { display: inline-block; min-width: 1.9em; padding: 1px 5px; border-radius: 6px; background: var(--lc); color: #fff; font-size: .74rem; text-align: center; }
 .vd-sum { margin: 0; font-size: .88rem; line-height: 1.45; color: var(--text); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .vd-orig { margin: 0; font-size: .8rem; color: var(--muted); font-style: italic; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
-.vd-ch .fa-youtube { color: #c00; }
+.vd-ch .fa-circle-play { color: #c00; }
 .vd-stg { white-space: nowrap; }
 .vd-lead { font-size: 1.02rem; line-height: 1.55; max-width: 820px; }
 .vd-info { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr)); gap: 8px; margin: 12px 0 4px; font-size: .9rem; line-height: 1.4; }
@@ -2060,6 +2060,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <a href="#lab" data-stage="maktab">Лаборатория</a>
         <a href="#ilmiy" data-stage="uni">Илмий лаборатория</a>
         <a href="#lab3d">3D лаборатория</a>
+        <a href="#labxona">Лаборатория хонаси</a>
         <a href="#loyiha" data-stage="uni">Лойиҳалар</a>
         <a href="#qonun" data-stage="uni">Экологик ҳуқуқ</a>
         <a href="#bolahuquq" data-stage="maktab">Табиат ҳимоячиси</a>
@@ -2073,6 +2074,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <a href="#maktab">Мактаб</a>
         <a href="#kurslar">Курслар</a>
         <a href="#video">Видео дарслар</a>
+        <a href="#maqola">Илмий мақолалар</a>
         <a class="nav-x" href="#yangiliklar">Янгиликлар</a>
         <a href="#kutubxona">Кутубхона</a>
         <a href="#havo">Ҳаво</a>
@@ -2145,47 +2147,49 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <div class="app-recent" id="appRecent" hidden></div>
         <nav class="app-grid" aria-label="Бўлимлар">
           <h3 class="app-cat" data-cat="learn"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Ўрганиш</h3>
-          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#e80d33;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
-          <a class="app" data-cat="learn" href="#kurslar" data-crs="xalqaro" data-stage="uni" style="--c:#0369a1;--c1:#fcd34d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-americas"></i></span><b>Халқаро тажриба</b><small>АҚШ, Германия, Япония, Корея</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#kurslar" data-crs="dunyo" data-stage="maktab" style="--c:#0369a1;--c1:#fcd34d"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>Дунё саёҳати</b><small>4 давлат тажрибаси</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#video" style="--c:#b91c1c;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>31 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#kurslar" style="--c:#05875f;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
-          <a class="app" data-cat="learn" href="#yol" style="--c:#6d28d9;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-route"></i></span><b>Шахсий йўл</b><small>Сизга мос кейинги қадам</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#pasport" style="--c:#1d4ed8;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-passport"></i></span><b>Кўникмалар паспорти</b><small>SDG, ESD, Open Badges 3.0</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#12883e;--c1:#bef264"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#b16105;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
-          <a class="app" data-cat="learn" href="#adabiyot" style="--c:#4f46e5;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#027ab8;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
-          <a class="app" data-cat="learn" href="#takror" style="--c:#db2777;--c1:#f9a8d4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-brain"></i></span><b>Такрорлаш хонаси</b><small>Карталар, хатолар дафтари</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#krossvord" style="--c:#9333ea;--c1:#d8b4fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
-          <a class="app" data-cat="learn" href="#kutubxona" style="--c:#c2410c;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
-          <a class="app" data-cat="learn" href="#yangiliklar" style="--c:#e11d48;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
-          <a class="app" data-cat="learn" href="#internet" style="--c:#2563eb;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="learn" href="#sayyora" style="--c:#0f766e;--c1:#86efac"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-heart-pulse"></i></span><b>Сайёра саломатлиги</b><small>Жонли мониторинг, COP</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
+          <a class="app" data-cat="learn" href="#kurslar" data-crs="xalqaro" data-stage="uni" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-americas"></i></span><b>Халқаро тажриба</b><small>АҚШ, Германия, Япония, Корея</small></a>
+          <a class="app" data-cat="learn" href="#kurslar" data-crs="dunyo" data-stage="maktab" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>Дунё саёҳати</b><small>4 давлат тажрибаси</small></a>
+          <a class="app" data-cat="learn" href="#video" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>113 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#kurslar" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
+          <a class="app" data-cat="learn" href="#yol" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-route"></i></span><b>Шахсий йўл</b><small>Сизга мос кейинги қадам</small></a>
+          <a class="app" data-cat="learn" href="#pasport" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-passport"></i></span><b>Кўникмалар паспорти</b><small>SDG, ESD, Open Badges 3.0</small></a>
+          <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small></a>
+          <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small></a>
+          <a class="app" data-cat="learn" href="#onlayn" data-stage="uni" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-open-reader"></i></span><b>Онлайн дарсликлар</b><small>Ҳаволалар ва манбалар</small></a>
+          <a class="app" data-cat="learn" href="#maqola" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></span><b>Илмий мақолалар</b><small>Scopus: 60 мақола, DOI</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#adabiyot" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book-atlas"></i></span><b>Хорижий адабиёт</b><small>Илмий манбалар ва ҳаволалар</small></a>
+          <a class="app" data-cat="learn" href="#monografiya" data-stage="uni" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><b>Сув ва ҳаво</b><small>Тозалаш технологиялари</small></a>
+          <a class="app" data-cat="learn" href="#takror" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-brain"></i></span><b>Такрорлаш хонаси</b><small>Карталар, хатолар дафтари</small></a>
+          <a class="app" data-cat="learn" href="#krossvord" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span><b>Кроссвордлар</b><small>Ўйлаб, ечиб ўрган</small></a>
+          <a class="app" data-cat="learn" href="#kutubxona" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-book"></i></span><b>Кутубхона</b><small>Китоб ва материаллар</small></a>
+          <a class="app" data-cat="learn" href="#yangiliklar" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><b>Янгиликлар</b><small>Экология хабарлари</small></a>
+          <a class="app" data-cat="learn" href="#internet" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small></a>
+          <a class="app" data-cat="learn" href="#sayyora" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-heart-pulse"></i></span><b>Сайёра саломатлиги</b><small>Жонли мониторинг, COP</small></a>
           <h3 class="app-cat" data-cat="lab"><i class="fa-solid fa-flask" aria-hidden="true"></i> Лабораториялар</h3>
-          <a class="app" data-cat="lab" href="#lab3d" style="--c:#7c3aed;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>20 тажриба, 4 давлат тажрибаси</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#07819e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
-          <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#6d28d9;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
-          <a class="app" data-cat="lab" href="#mro" data-stage="uni" style="--c:#15803d;--c1:#86efac"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-recycle"></i></span><b>Чиқиндилар ҳисоби</b><small>10 методика, калькулятор</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="lab" href="#ilmiy" data-stage="uni" style="--c:#2563eb;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
+          <a class="app" data-cat="lab" href="#labxona" style="--c:#6d28d9;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Лаборатория хонаси</b><small>32 модда, аралаштириш, хавфсизлик</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="lab" href="#lab3d" style="--c:#4338ca;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>22 тажриба, вақт бошқаруви</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#7c3aed;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
+          <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#6d28d9;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
+          <a class="app" data-cat="lab" href="#mro" data-stage="uni" style="--c:#4338ca;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-recycle"></i></span><b>Чиқиндилар ҳисоби</b><small>10 методика, калькулятор</small></a>
+          <a class="app" data-cat="lab" href="#ilmiy" data-stage="uni" style="--c:#7c3aed;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-microscope"></i></span><b>Илмий лаборатория</b><small>Далилга асосланган таълим</small></a>
           <h3 class="app-cat" data-cat="act"><i class="fa-solid fa-seedling" aria-hidden="true"></i> Амалиёт ва лойиҳалар</h3>
-          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#cd4d0b;--c1:#fed7aa"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="act" href="#oyinmarkaz" style="--c:#a21caf;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span><b>Ўйин маркази</b><small>Вазифа, танга, босс жанги</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="act" href="#turnir" style="--c:#b45309;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-medal"></i></span><b>Ҳафталик турнир</b><small>Вилоятлар рейтинги</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="act" href="#chellenj" style="--c:#a36907;--c1:#fde047"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
-          <a class="app" data-cat="act" href="#hashar" style="--c:#0b8177;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
-          <a class="app" data-cat="act" href="#maktab" style="--c:#5e61f1;--c1:#c7d2fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
-          <a class="app" data-cat="act" href="#ustoz" data-stage="uni" style="--c:#be123c;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-chalkboard-user"></i></span><b>Ўқитувчи устахонаси</b><small>Тест, дарс, ISO 14001</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8452f5;--c1:#ddd6fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
-          <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#dc2626;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
+          <a class="app" data-cat="act" href="#loyiha" data-stage="uni" style="--c:#c2410c;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span><b>Лойиҳалар</b><small>PBL, Design Thinking, Capstone</small></a>
+          <a class="app" data-cat="act" href="#oyinmarkaz" style="--c:#b45309;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span><b>Ўйин маркази</b><small>Вазифа, танга, босс жанги</small></a>
+          <a class="app" data-cat="act" href="#turnir" style="--c:#be123c;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-medal"></i></span><b>Ҳафталик турнир</b><small>Вилоятлар рейтинги</small></a>
+          <a class="app" data-cat="act" href="#chellenj" style="--c:#c2410c;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
+          <a class="app" data-cat="act" href="#hashar" style="--c:#b45309;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
+          <a class="app" data-cat="act" href="#maktab" style="--c:#be123c;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
+          <a class="app" data-cat="act" href="#ustoz" data-stage="uni" style="--c:#c2410c;--c1:#fdba74"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-chalkboard-user"></i></span><b>Ўқитувчи устахонаси</b><small>Тест, дарс, ISO 14001</small></a>
+          <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#b45309;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
+          <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#be123c;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
           <h3 class="app-cat" data-cat="tool"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Ўйин ва асбоблар</h3>
-          <a class="app" data-cat="tool" href="#dunyo3d" data-stage="maktab" style="--c:#047857;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>3D Эко-дунё</b><small>Саралаш, орол, Ер шари</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#cd4d0b;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
-          <a class="app" data-cat="tool" href="#havo" style="--c:#0369a1;--c1:#bae6fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
-          <a class="app" data-cat="tool" href="#kalkulyator" style="--c:#be185d;--c1:#fbcfe8"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
-          <a class="app" data-cat="tool" href="#fikr" style="--c:#0f766e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></span><b>Фикр-мулоҳаза</b><small>Таклиф ва хатоларни ёзинг</small><span class="app-new" aria-hidden="true">Янги</span></a>
-          <a class="app" data-cat="tool" href="#yordamchi" style="--c:#0e7490;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
+          <a class="app" data-cat="tool" href="#dunyo3d" data-stage="maktab" style="--c:#0e7490;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>3D Эко-дунё</b><small>Саралаш, орол, Ер шари</small></a>
+          <a class="app" data-cat="tool" href="#oyinlar" data-stage="maktab" style="--c:#1d4ed8;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-gamepad"></i></span><b>Ўйинлар</b><small>Ўйнаб ўрган</small></a>
+          <a class="app" data-cat="tool" href="#havo" style="--c:#0f766e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
+          <a class="app" data-cat="tool" href="#kalkulyator" style="--c:#0e7490;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
+          <a class="app" data-cat="tool" href="#fikr" style="--c:#1d4ed8;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></span><b>Фикр-мулоҳаза</b><small>Таклиф ва хатоларни ёзинг</small></a>
+          <a class="app" data-cat="tool" href="#yordamchi" style="--c:#0f766e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
         </nav>
         <p class="muted app-none" id="appNone" hidden>Бундай бўлим топилмади.</p>
       </div>
@@ -2568,6 +2572,16 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
     <!-- 3D VIRTUAL LABORATORIYA (maktab va universitet) — vendor/eko-lab3d.js -->
     <section class="section alt" id="lab3d">
       <div class="wrap" id="l3Root" data-notr></div>
+    </section>
+
+    <!-- ILMIY MAQOLALAR (Scopus) — vendor/eko-scopus.js -->
+    <section class="section alt" id="maqola">
+      <div class="wrap" id="scRoot" data-notr></div>
+    </section>
+
+    <!-- LABORATORIYA XONASI (maktab va universitet) — vendor/eko-labxona.js -->
+    <section class="section" id="labxona">
+      <div class="wrap" id="lxRoot" data-notr></div>
     </section>
 
     <!-- MAKTAB: 3D EKO-DUNYO (bolalar o'yinlari) — vendor/eko-dunyo3d.js -->
@@ -50190,6 +50204,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
         <ul>${lesson.evidence.map((e) => `<li>${esc(e.f)}<cite>— ${esc(e.s)}</cite></li>`).join("")}</ul>
       </div>` : ""}
       ${lessonRefs(lk, lesson)}
+      ${window.EkoScopus ? EkoScopus.lessonHtml(course, lesson, li) : ""}
       ${lesson.words && lesson.words.length > 2 ? `<div class="lesson-method" data-pdf-skip>
         <h3>🕸 Кластер</h3>
         <p class="small muted">Марказда — мавзу, тармоқларда — калит тушунчалар. Тармоқни босинг: изоҳи чиқади. Ўзингиз ҳам тармоқ қўшинг.</p>
@@ -54215,6 +54230,9 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
 })();
 </script>
   <script src="/vendor/eko-lab3d.js" defer></script>
+  <script src="/vendor/eko-labxona-kimyo.js" defer></script>
+  <script src="/vendor/eko-labxona.js" defer></script>
+  <script src="/vendor/eko-scopus.js" defer></script>
   <script src="/vendor/eko-plus.js" defer></script>
   <script src="/vendor/eko-dunyo3d.js" defer></script>
   <script src="/vendor/eko-loyiha.js" defer></script>
