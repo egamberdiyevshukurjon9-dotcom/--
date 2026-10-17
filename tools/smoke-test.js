@@ -47,7 +47,7 @@ async function main() {
     r = await get(p);
     ok(r.status === 200, "Саҳифа " + p, r.status);
   }
-  for (const f of ["eko-global.css", "eko-pasport.js", "eko-yol.js", "eko-sayyora.js", "eko-ustoz.js", "eko-turnir.js"]) {
+  for (const f of ["eko-global.css", "eko-pasport.js", "eko-yol.js", "eko-sayyora.js", "eko-ustoz.js", "eko-turnir.js", "eko-pro.js"]) {
     r = await get("/vendor/" + f);
     ok(r.status === 200, "Файл /vendor/" + f, r.status);
   }

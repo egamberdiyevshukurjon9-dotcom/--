@@ -54,6 +54,8 @@
   /* ---------- Умумий матнлар ---------- */
   const TX = {
     pill: { uz: "🧊 3D лаборатория · мактаб ва университет", ru: "🧊 3D-лаборатория · школа и университет", en: "🧊 3D lab · school and university" },
+    pillK: { uz: "🧊 3D лаборатория · мактаб босқичи", ru: "🧊 3D-лаборатория · школьный этап", en: "🧊 3D lab · school stage" },
+    pillU: { uz: "🧊 3D лаборатория · университет босқичи", ru: "🧊 3D-лаборатория · университетский этап", en: "🧊 3D lab · university stage" },
     title: { uz: "3D виртуал лаборатория", ru: "3D виртуальная лаборатория", en: "3D virtual laboratory" },
     leadK: { uz: "Ер, молекула ва сувни уч ўлчамда кўринг: бармоқ билан айлантиринг, сурилмаларни суринг ва нима бўлишини кузатинг. Ҳар бир тажриба учун +5 XP.", ru: "Посмотрите на Землю, молекулы и воду в трёх измерениях: вращайте пальцем, двигайте ползунки и наблюдайте. За каждый опыт +5 XP.", en: "See the Earth, molecules and water in 3D: rotate with your finger, move the sliders and watch what happens. +5 XP for each experiment." },
     leadU: { uz: "Илмий моделларга асосланган 3D тажрибалар: параметрларни ўзгартиринг, саҳнани айлантириб кузатинг, формулани текширинг ва амалий топшириқни ечинг (+10 XP).", ru: "3D-опыты на основе научных моделей: меняйте параметры, вращайте сцену, проверяйте формулу и решайте практическое задание (+10 XP).", en: "3D experiments built on scientific models: change parameters, rotate the scene, check the formula and solve the practical task (+10 XP)." },
@@ -81,8 +83,8 @@
   const METHODS = [
     ["🧊", { uz: "Виртуал лаборатория (PhET, Колорадо университети)", ru: "Виртуальная лаборатория (PhET, Университет Колорадо)", en: "Virtual lab (PhET, University of Colorado)" }, { uz: "Кўринмас жараёнларни (фотон, молекула тебраниши) кўринадиган қилади; хавфсиз ва бепул.", ru: "Делает невидимое (фотоны, колебания молекул) видимым; безопасно и бесплатно.", en: "Makes invisible processes (photons, molecular vibrations) visible; safe and free." }],
     ["🔁", { uz: "5E модели (BSCS, АҚШ)", ru: "Модель 5E (BSCS, США)", en: "5E model (BSCS, USA)" }, { uz: "Қизиқтириш → тадқиқ қилиш → тушунтириш → кенгайтириш → баҳолаш: ҳар бир тажриба шу тартибда.", ru: "Вовлечение → исследование → объяснение → расширение → оценка: каждый опыт построен так.", en: "Engage → explore → explain → elaborate → evaluate: every experiment follows this order." }],
-    ["🧮", { uz: "Модель асосидаги таълим (Modeling Instruction)", ru: "Обучение через модели (Modeling Instruction)", en: "Modeling Instruction" }, { uz: "Университет режимида формула ва параметрлар очиқ: талаба моделни ўзи синайди ва чегараларини кўради.", ru: "В университетском режиме формулы открыты: студент сам проверяет модель и её границы.", en: "In university mode formulas are open: students test the model and its limits." }],
-    ["🎮", { uz: "Ўйин орқали ўрганиш (мактаб)", ru: "Обучение через игру (школа)", en: "Game-based learning (school)" }, { uz: "Ҳар бир тажрибада юлдузли вазифа ва XP; хато қилиш мумкин, қайта уриниш бепул.", ru: "В каждом опыте задание со звездой и XP; ошибаться можно, повтор бесплатный.", en: "Every experiment has a star mission and XP; mistakes are fine, retries are free." }]
+    ["🧮", { st: "uni", uz: "Модель асосидаги таълим (Modeling Instruction)", ru: "Обучение через модели (Modeling Instruction)", en: "Modeling Instruction" }, { uz: "Университет режимида формула ва параметрлар очиқ: талаба моделни ўзи синайди ва чегараларини кўради.", ru: "В университетском режиме формулы открыты: студент сам проверяет модель и её границы.", en: "In university mode formulas are open: students test the model and its limits." }],
+    ["🎮", { st: "maktab", uz: "Ўйин орқали ўрганиш (мактаб)", ru: "Обучение через игру (школа)", en: "Game-based learning (school)" }, { uz: "Ҳар бир тажрибада юлдузли вазифа ва XP; хато қилиш мумкин, қайта уриниш бепул.", ru: "В каждом опыте задание со звездой и XP; ошибаться можно, повтор бесплатный.", en: "Every experiment has a star mission and XP; mistakes are fine, retries are free." }]
   ];
 
   /* ---------- Фойдаланиш йўриқномаси: ҳар бир тажриба учун қадамлар (k — мактаб, u — университет) ---------- */
@@ -137,7 +139,7 @@
     ["fa-hand-pointer", t3("Тажрибани танланг", "Выберите опыт", "Pick an experiment"), t3("Юқоридаги тугмалардан", "Кнопками сверху", "Using the buttons above")],
     ["fa-rotate", t3("Саҳнани айлантиринг", "Вращайте сцену", "Rotate the scene"), t3("Бармоқ ёки сичқонча билан; ＋/− яқинлаштиради", "Пальцем или мышью; ＋/− масштаб", "Finger or mouse; ＋/− to zoom")],
     ["fa-sliders", t3("Параметрни ўзгартиринг", "Меняйте параметры", "Change parameters"), t3("Ўнгдаги панелда — натижа дарров ўзгаради", "На панели справа — результат меняется сразу", "In the side panel — results update instantly")],
-    ["fa-star", t3("Вазифани бажаринг", "Выполните задание", "Complete the task"), t3("Мактабда ⭐ вазифа, университетда 📝 машғулот — XP берилади", "В школе ⭐ задание, в вузе 📝 практика — даётся XP", "School ⭐ missions, university 📝 tasks — earn XP")]
+    ["fa-star", t3("Вазифани бажаринг", "Выполните задание", "Complete the task"), { k: t3("⭐ Вазифани бажаринг — XP берилади", "⭐ Выполните задание — получите XP", "⭐ Complete the star mission to earn XP"), u: t3("📝 Амалий машғулотни бажаринг — XP берилади", "📝 Выполните практическое задание — получите XP", "📝 Complete the practical task to earn XP"), x: t3("Мактабда ⭐ вазифа, университетда 📝 машғулот — XP берилади", "В школе ⭐ задание, в вузе 📝 практика — даётся XP", "School ⭐ missions, university 📝 tasks — earn XP") }]
   ];
   const HOWT = {
     title: t3("📖 Бу тажрибадан қандай фойдаланилади?", "📖 Как пользоваться этим опытом?", "📖 How to use this experiment"),
@@ -3116,12 +3118,14 @@
       const xs = ids.map((id) => EXPS.find((x) => x.id === id)).filter(Boolean);
       return xs.length ? `<div class="l3-cat"><h3 class="l3-cath"><span aria-hidden="true">${ic}</span> ${H(nm)} <small>${xs.filter((x) => isDone(x.id)).length}/${xs.length}</small></h3><div class="l3-rail" role="tablist">${xs.map(card).join("")}</div></div>` : "";
     }).join("");
-    ROOT.innerHTML = `<span class="pill">${H(TX.pill)}</span>
+    const rcl = document.documentElement.classList, stg = rcl.contains("stage-maktab") ? "maktab" : rcl.contains("stage-uni") ? "uni" : "";
+    const pick = (d) => (d && d.x ? (stg === "maktab" ? d.k : stg === "uni" ? d.u : d.x) : d);
+    ROOT.innerHTML = `<span class="pill">${H(stg === "maktab" ? TX.pillK : stg === "uni" ? TX.pillU : TX.pill)}</span>
       <h2 class="section-title">${H(TX.title)}</h2>
       <p class="muted">${H(uni ? TX.leadU : TX.leadK)}</p>
       <div class="l3-progress"><div><b>⭐ ${H(TX2.prog)}: ${nDone} / ${EXPS.length}</b><small>🎯 ${nGoal} ${H(TX2.goalsN)}</small></div><span class="l3-pbar"><i style="width:${Math.round((nDone / EXPS.length) * 100)}%"></i></span></div>
       <details class="l3-guide" ${guideOpen() ? "open" : ""}><summary><b>${H(HOWT.guide)}</b></summary>
-        <ol class="l3-steps">${GUIDE.map(([ic, t, d]) => `<li><i class="fa-solid ${ic}" aria-hidden="true"></i><b>${H(t)}</b><small>${H(d)}</small></li>`).join("")}</ol>
+        <ol class="l3-steps">${GUIDE.map(([ic, t, d]) => `<li><i class="fa-solid ${ic}" aria-hidden="true"></i><b>${H(t)}</b><small>${H(pick(d))}</small></li>`).join("")}</ol>
       </details>
       <div class="l3-gallery lab-tabs">${gallery}</div>
       <div class="lab-stage l3-stage">
@@ -3155,7 +3159,7 @@
       </div>
       <details class="fin-card say-method" style="margin-top:18px">
         <summary><span class="fin-flag" aria-hidden="true">🧊</span><b>${H(TX.method)}</b></summary>
-        <div class="fin-grid">${METHODS.map(([i, t, d]) => `<div class="fin-item"><span aria-hidden="true">${i}</span><div><b>${H(t)}</b><small>${H(d)}</small></div></div>`).join("")}</div>
+        <div class="fin-grid">${METHODS.filter(([, t]) => !t.st || !stg || t.st === stg).map(([i, t, d]) => `<div class="fin-item"><span aria-hidden="true">${i}</span><div><b>${H(t)}</b><small>${H(d)}</small></div></div>`).join("")}</div>
       </details>`;
     ROOT.querySelectorAll("[data-x]").forEach((b) => b.addEventListener("click", () => { if (b.dataset.x !== cur) { cur = b.dataset.x; mount(); const st = ROOT.querySelector(".l3-stage"); if (st && st.scrollIntoView && innerWidth < 900) st.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" }); } }));
     const act = ROOT.querySelector(".l3-card.active");

@@ -465,7 +465,9 @@
   function renderGame() {
     const qs = questList();
     const tabs = [["d", "☀️ Бугун"], ["w", "📅 Ҳафта"], ["s", "🎉 Мавсумий"]];
-    const cs = courses().filter((c) => c.lessons && c.lessons.some((l) => l.quiz && l.quiz.length));
+    /* Босс жанглари фақат фойдаланувчи босқичидаги курслардан */
+    const rc = document.documentElement.classList, st = rc.contains("stage-maktab") ? "maktab" : rc.contains("stage-uni") ? "uni" : "";
+    const cs = courses().filter((c) => c.lessons && c.lessons.some((l) => l.quiz && l.quiz.length) && (!st || (c.stage || (c.audience === "bola" ? "maktab" : "uni")) === st));
     const started = new Set(doneLessons().map((x) => x.cid));
     const order = cs.slice().sort((a, b) => (started.has(b.id) ? 1 : 0) - (started.has(a.id) ? 1 : 0));
     ROOT_G.innerHTML = `

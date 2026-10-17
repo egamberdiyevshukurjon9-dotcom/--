@@ -25,6 +25,7 @@
      ADMIN_ALLOW_IPS       — админ сайт фақат шу IP манзиллардан очилсин (вергул билан; бўш — ҳамма жойдан)
      STATS_TZ_MINUTES      — статистика кунлари қайси вақт минтақасида (асл қиймат 300 = Тошкент, UTC+5)
      GEO_PROVIDER          — IP бўйича ҳудудни аниқлаш: ipwho (асл қиймат, ipwho.is + ip-api.com) ёки off
+     PRO ва тўловлар (Payme, Click, қўлда тасдиқлаш, синов режими, AI агент) — pro.js бошидаги изоҳга қаранг
 
    Ўзгарувчиларни .env файлига ҳам ёзиш мумкин (намуна: .env.example), сервер уни ўзи ўқийди.
    Жойлаштириш қўлланмаси: JOYLASHTIRISH.md
@@ -383,7 +384,7 @@ function startSession(user, req, res) {
   res.setHeader("Set-Cookie", cookie("eko_session", token, SESSION_MS, req));
 }
 /* by/bm — туғилган йил ва ой: илова босқични (мактаб / университет) аниқлаши учун */
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, adult: !!u.adult, approved: u.approved || 0, by: u.by || 0, bm: u.bm || 0 });
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, adult: !!u.adult, approved: u.approved || 0, by: u.by || 0, bm: u.bm || 0, pro: proMod.publicPro(u) });
 
 /* Жим қолган сессияларни «офлайн» деб белгилаш ва муддати ўтганларини ўчириш */
 function sweep() {
@@ -500,6 +501,7 @@ function purgeUser(user) {
   /* Фикр-мулоҳаза матни қолади (жамоа учун), лекин муаллифи билан алоқаси узилади */
   for (const f of db.feedback) if (f.userId === id) { f.userId = null; f.name = ""; f.email = ""; f.contact = ""; }
   for (const list of Object.values(db.turnir)) for (const e of list) if (e.userId === id) e.userId = null;
+  proMod.onPurge(user);
 }
 
 /* ---------- Ташрифлар (анонимлаштирилган фойдаланиш статистикаси) ----------
@@ -799,15 +801,17 @@ function aiRoll() {
   const d = new Date().toISOString().slice(0, 10);
   if (aiUsage.day !== d) { aiUsage.day = d; aiUsage.total = 0; aiUsage.users.clear(); }
 }
-function aiQuota(userId) {
+/* PRO фойдаланувчида кунлик чеклов юқорироқ (AI_PRO_DAILY_LIMIT) */
+const aiDaily = (user) => (user && proMod.aiDailyLimit(user)) || AI_USER_DAILY;
+function aiQuota(user) {
   aiRoll();
   if (aiUsage.total >= AI_GLOBAL_DAILY) return "Бугунги умумий чеклов тугади. Эртага қайта уриниб кўринг";
-  if ((aiUsage.users.get(userId) || 0) >= AI_USER_DAILY) return `Кунига ${AI_USER_DAILY} та расм юбориш мумкин. Эртага қайта уриниб кўринг`;
+  if ((aiUsage.users.get(user.id) || 0) >= aiDaily(user)) return `Кунига ${aiDaily(user)} та расм юбориш мумкин. Эртага қайта уриниб кўринг`;
   return "";
 }
 function aiCount(userId) { aiRoll(); aiUsage.total++; aiUsage.users.set(userId, (aiUsage.users.get(userId) || 0) + 1); }
 function aiRefund(userId) { aiUsage.total = Math.max(0, aiUsage.total - 1); aiUsage.users.set(userId, Math.max(0, (aiUsage.users.get(userId) || 1) - 1)); }
-function aiLeft(userId) { aiRoll(); return Math.max(0, AI_USER_DAILY - (aiUsage.users.get(userId) || 0)); }
+function aiLeft(user) { aiRoll(); return Math.max(0, aiDaily(user) - (aiUsage.users.get(user.id) || 0)); }
 
 const AI_SYSTEM = `Сен «Экомун» иловасидаги «Эко-кўз» ёрдамчисисан. Фойдаланувчи Ўзбекистонда телефонда олинган расмни юборади. Вазифанг — расмни ФАҚАТ экологик нуқтаи назардан тушунтириш.
 
@@ -921,6 +925,17 @@ const REPORT_CATS = ["dump", "burning", "smoke", "tree", "water", "other"];
 const inUzbekistan = (lat, lng) => lat >= 37.1 && lat <= 45.7 && lng >= 55.9 && lng <= 73.2;
 const round = (n, d) => Math.round(n * 10 ** d) / 10 ** d;
 const cleanText = (s, max) => String(s || "").replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g, "").trim().slice(0, max);
+
+/* ---------- PRO обуна, тўловлар (Payme, Click, қўлда) ва шахсий AI агент — pro.js ---------- */
+const proMod = require("./pro")({
+  db, save, send, readBody, currentUser, isAdmin, newId, now, logEvent, clientIp, publicOrigin, cleanText, Anthropic, AI_MODEL, DATA_DIR,
+  getAi: () => ai,
+  aiGlobal: {
+    blocked: () => { aiRoll(); return aiUsage.total >= AI_GLOBAL_DAILY; },
+    count: () => { aiRoll(); aiUsage.total++; },
+    refund: () => { aiUsage.total = Math.max(0, aiUsage.total - 1); }
+  }
+});
 /* Оммага координаталар ~100 м аниқликда кўрсатилади, муаллиф кўрсатилмайди */
 const publicReport = (r) => ({ id: r.id, category: r.category, text: r.text, lat: round(r.lat, 3), lng: round(r.lng, 3), createdAt: r.createdAt, reviewedAt: r.reviewedAt });
 
@@ -1107,7 +1122,14 @@ async function api(req, res, pathname) {
   if (pathname === "/api/health" && (method === "GET" || method === "HEAD")) return send(res, 200, { ok: true, uptime: Math.round(process.uptime()) });
 
   /* Блокланган IP дан келган сўровлар (админ API бундан мустасно) */
-  if (!pathname.startsWith("/api/admin/") && db.blockedIps[ip]) return send(res, 403, { error: BLOCK_MSG, blocked: true });
+  if (!pathname.startsWith("/api/admin/") && !pathname.startsWith("/api/pay/") && db.blockedIps[ip]) return send(res, 403, { error: BLOCK_MSG, blocked: true });
+
+  /* PRO, тўловлар ва AI агент (pro.js) */
+  if (/^\/api\/(pro|pay|agent)(\/|$)/.test(pathname) || pathname.startsWith("/api/admin/pay")) {
+    if (pathname.startsWith("/api/admin/") && !adminAllowed(req)) return send(res, 404, { error: "Топилмади" });
+    const r = await proMod.api(req, res, pathname);
+    if (r !== null) return r;
+  }
 
   if (pathname === "/api/me" && method === "GET") {
     const cur = currentUser(req);
@@ -1201,7 +1223,7 @@ async function api(req, res, pathname) {
     if (!cur) return send(res, 401, { error: "Эко-кўздан фойдаланиш учун ҳисобингизга киринг" });
     if (!cur.user.adult) return send(res, 403, { error: "Эко-кўз фақат 18 ёшдан катталар учун" });
     if (!ai) return send(res, 503, { error: "Эко-кўз ҳали созланмаган. Админ серверга ANTHROPIC_API_KEY ни қўшиши керак" });
-    const limitErr = aiQuota(cur.user.id);
+    const limitErr = aiQuota(cur.user);
     if (limitErr) return send(res, 429, { error: limitErr });
     /* Ўрин дарҳол банд қилинади — параллел сўровлар чекловни айланиб ўта олмасин */
     aiCount(cur.user.id);
@@ -1215,7 +1237,7 @@ async function api(req, res, pathname) {
     try {
       const result = await analyzeImage(m[1], m[2]);
       logEvent("ai", cur.user, req, { note: result.status });
-      return send(res, 200, { result, left: aiLeft(cur.user.id) });
+      return send(res, 200, { result, left: aiLeft(cur.user) });
     } catch (e) {
       aiRefund(cur.user.id);
       console.error("AI error:", e.status || "", e.message);
@@ -1230,7 +1252,7 @@ async function api(req, res, pathname) {
     if (!cur) return send(res, 401, { error: "Аввал ҳисобга киринг" });
     if (!cur.user.adult) return send(res, 403, { error: "Бу функция фақат 18 ёшдан катталар учун" });
     if (!ai) return send(res, 503, { error: "СИ ҳали созланмаган. Админ серверга ANTHROPIC_API_KEY ни қўшиши керак" });
-    const limitErr = aiQuota(cur.user.id);
+    const limitErr = aiQuota(cur.user);
     if (limitErr) return send(res, 429, { error: limitErr });
     aiCount(cur.user.id);
     let body;
@@ -1248,7 +1270,7 @@ async function api(req, res, pathname) {
     try {
       const appeal = await writeAppeal(input);
       logEvent("ai", cur.user, req, { note: "appeal" });
-      return send(res, 200, { appeal, left: aiLeft(cur.user.id) });
+      return send(res, 200, { appeal, left: aiLeft(cur.user) });
     } catch (e) {
       aiRefund(cur.user.id);
       console.error("AI appeal error:", e.status || "", e.message);
@@ -1474,6 +1496,7 @@ async function api(req, res, pathname) {
       contact: stage === "maktab" ? "" : cleanText(body.contact, 100),
       stage, lang: ["cyr", "lat", "ru", "en"].includes(String(body.lang)) ? String(body.lang) : "",
       ver: cleanText(body.ver, 20), vid, userId: cur ? cur.user.id : null, name: cur ? cur.user.name : "", email: cur ? cur.user.email : "",
+      pro: !!(cur && proMod.proActive(cur.user)),
       ip, device: devOf(req), read: false, readAt: 0, reply: "", replyAt: 0, archived: false
     };
     db.feedback.push(f);
@@ -1702,7 +1725,7 @@ async function api(req, res, pathname) {
       .filter((o, i, arr) => arr.findIndex((x) => x.id === o.id) === i); // бир одамнинг бир нечта сессияси — битта қатор
     const users = db.users
       .map((u) => ({ id: u.id, name: u.name, email: u.email, createdAt: u.createdAt, lastLogin: u.lastLogin, loginCount: u.loginCount || 0,
-        adult: !!u.adult, by: u.by || 0, blocked: u.blocked || null, approved: u.approved || 0,
+        adult: !!u.adult, by: u.by || 0, blocked: u.blocked || null, approved: u.approved || 0, pro: proMod.proActive(u) ? u.pro.until : 0,
         online: online.some((o) => o.email === u.email) }))
       .sort((a, b) => (b.lastLogin || b.createdAt) - (a.lastLogin || a.createdAt));
     const today = db.events.filter((e) => e.at >= startOfDay.getTime());
@@ -2029,6 +2052,9 @@ async function api(req, res, pathname) {
       name = "ekomun-fikr-mulohazalar.csv";
       body = csv([["Вақт", "Тури", "Баҳо", "Бўлим", "Мулоҳаза", "Алоқа", "Исм", "Почта", "Босқич", "Тил", "Версия", "Ўқилди", "Жавоб", "Жавоб вақти", "Архив", "Қурилма", "IP"],
         ...db.feedback.slice().reverse().map((f) => [iso(f.at), f.kind, f.rating || "", f.sec, f.text, f.contact, f.name, f.email, f.stage, f.lang, f.ver, f.read ? "ҳа" : "йўқ", f.reply, iso(f.replyAt), f.archived ? "ҳа" : "", f.device, f.ip])]);
+    } else if (type === "payments") {
+      name = "ekomun-tolovlar.csv";
+      body = csv(proMod.exportRows(iso));
     } else return send(res, 400, { error: "Нотўғри тур" });
     res.writeHead(200, { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": `attachment; filename="${name}"`, "Cache-Control": "no-store" });
     return res.end(body);
@@ -2097,6 +2123,7 @@ const STATIC = {
   "/vendor/eko-sayyora.js": { file: "vendor/eko-sayyora.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-ustoz.js": { file: "vendor/eko-ustoz.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-turnir.js": { file: "vendor/eko-turnir.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-pro.js": { file: "vendor/eko-pro.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-plus.js": { file: "vendor/eko-plus.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun-darslik-data.js": { file: "vendor/eko-qonun-darslik-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-qonun-darslik.js": { file: "vendor/eko-qonun-darslik.js", type: "text/javascript; charset=utf-8" },
@@ -2122,6 +2149,7 @@ const ADMIN_FILES = {
   "": { file: "admin/index.html", type: HTML },
   "/": { file: "admin/index.html", type: HTML },
   "/app.js": { file: "admin/app.js", type: "text/javascript; charset=utf-8" },
+  "/pay.js": { file: "admin/pay.js", type: "text/javascript; charset=utf-8" },
   "/app.css": { file: "admin/app.css", type: "text/css; charset=utf-8" },
   "/theme.js": { file: "admin/theme.js", type: "text/javascript; charset=utf-8" },
   "/fonts/onest-cyrillic.woff2": { file: "vendor/fonts/onest-cyrillic-wght-normal.woff2", type: "font/woff2" },

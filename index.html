@@ -1006,6 +1006,8 @@ a { text-underline-offset: 3px; }
 @media (max-width: 720px) { .app-ic i { font-size: 1.45rem; } }
 /* ===== Босқичлар: 🎒 Мактаб (5–15 ёш) ва 🎓 Университет (16–60 ёш) ===== */
 html.stage-maktab [data-stage="uni"], html.stage-uni [data-stage="maktab"] { display: none !important; }
+html.stage-maktab .stage-any, html.stage-uni .stage-any { display: none !important; }
+html.stage-maktab .stage-cards, html.stage-uni .stage-cards { grid-template-columns: 1fr; }
 html.no-profile body { overflow: hidden; }
 .reg-gate { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 16px; overflow-y: auto;
   background: radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 60%),
@@ -2052,6 +2054,8 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <a class="nav-x" href="#kalkulyator">Калькулятор</a>
         <a class="nav-x" href="#chellenj">Челленж</a>
         <a class="nav-x" href="#yordamchi">Ёрдамчи</a>
+        <a class="nav-x pro-agent" href="#agent">Шахсий агент</a>
+        <a class="nav-x pro-sell" href="#pro">PRO</a>
       </nav>
       <div class="user-chip" id="userChip" title="Сизнинг даражангиз">
         <span id="levelIcon">🌰</span>
@@ -2123,6 +2127,8 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <a class="app" data-cat="learn" href="#video" style="--c:#b91c1c;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>31 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#kurslar" style="--c:#05875f;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
           <a class="app" data-cat="learn" href="#yol" style="--c:#6d28d9;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-route"></i></span><b>Шахсий йўл</b><small>Сизга мос кейинги қадам</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app pro-agent" data-cat="learn" href="#agent" style="--c:#b45309;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-robot"></i></span><b>Шахсий агент</b><small>PRO · AI ёрдамчингиз</small><span class="app-new" aria-hidden="true">PRO</span></a>
+          <a class="app pro-sell" data-cat="learn" href="#pro" style="--c:#a16207;--c1:#fef08a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-crown"></i></span><b>Ekomun PRO</b><small>Агент ва VIP имкониятлар</small></a>
           <a class="app" data-cat="learn" href="#pasport" style="--c:#1d4ed8;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-passport"></i></span><b>Кўникмалар паспорти</b><small>SDG, ESD, Open Badges 3.0</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#bolahuquq" data-stage="maktab" style="--c:#12883e;--c1:#bef264"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-child-reaching"></i></span><b>Табиат ҳимоячиси</b><small>Болалар учун экологик ҳуқуқ</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#qonun" data-stage="uni" style="--c:#b16105;--c1:#fde68a"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span><b>Экологик ҳуқуқ</b><small>Конституция, қонунлар, эко-суд</small><span class="app-new" aria-hidden="true">Янги</span></a>
@@ -2148,7 +2154,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <a class="app" data-cat="act" href="#chellenj" style="--c:#a36907;--c1:#fde047"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-trophy"></i></span><b>Челленж</b><small>Вазифа ва нишонлар</small></a>
           <a class="app" data-cat="act" href="#hashar" style="--c:#0b8177;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-broom"></i></span><b>Ҳашар</b><small>Олдин ва кейин</small></a>
           <a class="app" data-cat="act" href="#maktab" style="--c:#5e61f1;--c1:#c7d2fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-school"></i></span><b>Мактаб</b><small>Ўқитувчи ва синф</small></a>
-          <a class="app" data-cat="act" href="#ustoz" style="--c:#be123c;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-chalkboard-user"></i></span><b>Ўқитувчи устахонаси</b><small>Тест, дарс, ISO 14001</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="act" href="#ustoz" data-stage="uni" style="--c:#be123c;--c1:#fda4af"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-chalkboard-user"></i></span><b>Ўқитувчи устахонаси</b><small>Тест, дарс, ISO 14001</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="act" href="#ekokoz" data-stage="uni" style="--c:#8452f5;--c1:#ddd6fe"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-camera"></i></span><b>Эко-кўз</b><small>Расмни СИ таҳлил қилади</small></a>
           <a class="app" data-cat="act" href="#xarita" data-stage="uni" style="--c:#dc2626;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></span><b>Эко-харита</b><small>Муаммони белгиланг</small></a>
           <h3 class="app-cat" data-cat="tool"><i class="fa-solid fa-toolbox" aria-hidden="true"></i> Ўйин ва асбоблар</h3>
@@ -2173,10 +2179,14 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
     <!-- STAGES: MAKTAB / UNIVERSITET -->
     <section class="section home-only">
       <div class="wrap">
-        <h2 class="section-title">Икки босқич — икки хил усул</h2>
-        <p class="muted">Рўйхатдан ўтишда киритилган ёшингизга қараб платформа ўзи мос босқични очади. 16 ёшга тўлганингизда университет босқичига автоматик ўтасиз — мактабда тўплаган XP ва нишонлар сақланади.</p>
+        <h2 class="section-title stage-any">Икки босқич — икки хил усул</h2>
+        <h2 class="section-title" data-stage="maktab">Сизнинг босқичингиз: Мактаб</h2>
+        <h2 class="section-title" data-stage="uni">Сизнинг босқичингиз: Университет</h2>
+        <p class="muted stage-any">Рўйхатдан ўтишда киритилган ёшингизга қараб платформа ўзи мос босқични очади. 16 ёшга тўлганингизда университет босқичига автоматик ўтасиз — мактабда тўплаган XP ва нишонлар сақланади.</p>
+        <p class="muted" data-stage="maktab">Ёшингизга мос ўйин асосидаги дарслар очилган. Тўплаган XP ва нишонларингиз доим сақланади.</p>
+        <p class="muted" data-stage="uni">Илмий далилларга таянган дарслар, лабораториялар ва лойиҳалар очилган.</p>
         <div class="stage-cards">
-          <article class="aud" id="stageCardMaktab">
+          <article class="aud" id="stageCardMaktab" data-stage="maktab">
             <div class="aud-icon">🎒</div>
             <h3>Мактаб босқичи · 5–15 ёш</h3>
             <p>Ўйин асосидаги методика: ҳар бир дарс — қисқа эртак ва 4–6 та мини-ўйин. Ёшга қараб топшириқлар қийинлашади.</p>
@@ -2189,7 +2199,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
               <li>⚖️ «Табиат ҳимоячиси»: ҳикоя, болалар суди (Street Law), квест-хона (Breakout EDU), P4C</li>
             </ul>
           </article>
-          <article class="aud" id="stageCardUni">
+          <article class="aud" id="stageCardUni" data-stage="uni">
             <div class="aud-icon">🎓</div>
             <h3>Университет босқичи · 16–60 ёш</h3>
             <p>Илмий далилларга таянган дарслар: рақамлар, манбалар, кейслар ва ҳисоб-китоблар. Дарсликлар асосида.</p>
@@ -2583,8 +2593,16 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
       <div class="wrap" id="trRoot" data-notr></div>
     </section>
 
+    <!-- PRO OBUNA va SHAXSIY AI AGENT — vendor/eko-pro.js, server: pro.js -->
+    <section class="section alt" id="pro">
+      <div class="wrap" id="proRoot" data-notr></div>
+    </section>
+    <section class="section" id="agent">
+      <div class="wrap" id="agRoot" data-notr></div>
+    </section>
+
     <!-- O'QITUVCHI USTAXONASI: test generatori, dars yaratgich, ISO 14001 — vendor/eko-ustoz.js -->
-    <section class="section alt" id="ustoz">
+    <section class="section alt" id="ustoz" data-stage="uni">
       <div class="wrap" id="usRoot" data-notr></div>
     </section>
 
@@ -4525,35 +4543,35 @@ const NEWS = [
   {
     date: "2026-10-15",
     cat: "platforma",
-    title: "Янги курслар: «Литосферани чиқиндилардан ҳимоя қилиш» ва «Ер қалқони»",
+    title: "Янги курслар: «Литосферани чиқиндилардан ҳимоя қилиш» ва «Ер қалқони»", stage: "uni",
     text: "А.Г. Ветошкиннинг «Защита литосферы от отходов» (2005) ва В.М. Гарин, А.Г. Хвостиковнинг (2010) дарсликлари асосида университет босқичида 6 боб, 47 дарсли курс очилди: чиқиндилар синфи, оқова сув чўкмалари, майдалаш ва бойитиш, термик усуллар, утилизация ва полигонлар. Мактаб ўқувчилари учун худди шу боблар «Ер қалқони» курсида 12 та дарс ва уйда хавфсиз тажрибалар билан берилди.",
     img: "🪨"
   },
   {
     date: "2026-10-10",
     cat: "platforma",
-    title: "Янги курс: «Экология» дарслиги асосида 49 дарс",
+    title: "Янги курс: «Экология» дарслиги асосида 49 дарс", stage: "uni",
     text: "А. Нигматов ва Х. Пулатовнинг «Экология» дарслиги (2026) асосида университет босқичида 13 бобли янги курс очилди: экотизим ва экосфера, экологик омиллар, экологик бошқарув ва Конституциявий ҳуқуқлар, барқарор ривожланиш, экологик таълим ва маданият, атмосфера, гидросфера ва литосфера муҳофазаси. Ҳар бир боб учун кроссворд, луғатга 45 та янги атама ва «Экологик мониторинг» курси учун 150 саволли якуний тест қўшилди.",
     img: "🌍"
   },
   {
     date: "2026-10-10",
     cat: "platforma",
-    title: "Учта янги 3D лаборатория ва болалар учун «3D Эко-дунё»",
+    title: "Учта янги 3D лаборатория ва «3D Эко-дунё»",
     text: "3D лабораторияга завод мўрисидан тутун тарқалиши (Гаусс модели), дарёдаги кислород мувозанати (Стритер–Фелпс модели) ва экологик пирамида (10 % қоидаси) тажрибалари қўшилди. Ҳар бир тажриба учун қадам-бақадам йўриқнома бор. Мактаб ўқувчилари учун эса уч ўлчамли ўйинлар: ахлатни саралаш, оролни яшартириш ва Ер шари бўйлаб саёҳат.",
     img: "🧪"
   },
   {
     date: "2026-10-10",
     cat: "platforma",
-    title: "Янги курс: идиш-қадоқ ва чиқиндиларни қайта ишлаш",
+    title: "Янги курс: идиш-қадоқ ва чиқиндиларни қайта ишлаш", stage: "uni",
     text: "Тамбов давлат техника университети олимлари А.С. Клинков ва ҳаммуаллифларнинг «Рециклинг и утилизация тары и упаковки» ўқув қўлланмаси (1–2 қисм) асосида университет босқичига 42 дарслик курс қўшилди: алоҳида йиғиш ва «Яшил нуқта», полигон гази, компост ва пиролиз, пластик кодлари ва флотация, ПЭТ бутилка линияси, автомобиль, электроника ва музлаткич утилизацияси, ёғоч чиқиндилари, биопластик ва экомаркировка. Дарсларда жараён схемалари ва рақамли диаграммалар, 3D лабораторияда эса «Пластикни сувда саралаш» ва «Гранулалаш линияси» тажрибалари бор.",
     img: "♻️"
   },
   {
     date: "2026-10-07",
     cat: "platforma",
-    title: "Иккита янги курс: биологик тозалаш ва экологик мониторинг",
+    title: "Иккита янги курс: биологик тозалаш ва экологик мониторинг", stage: "uni",
     text: "Тошкент кимё-технология институти олимлари Х.Л. Пулатов ва ҳаммуаллифларнинг ўқув қўлланмаси ва дарслиги асосида «Микроблар сувни қандай тозалайди» ва «Экологик мониторинг» курслари қўшилди. Китобларнинг ҳар бир мавзуси алоҳида дарс (жами 55 дарс): инсерт, кластер, Венн диаграммаси, синквейн ва Блум босқичлари билан. Ҳар боб учун кроссворд (13 та) ва луғатга 30 та янги атама.",
     img: "📗"
   },
@@ -4609,7 +4627,7 @@ const NEWS = [
   {
     date: "2026-08-12",
     cat: "maslahat",
-    title: "Корхоналар учун: энергия аудитидан бошланг",
+    title: "Корхоналар учун: энергия аудитидан бошланг", stage: "uni",
     text: "Энергия аудити қаерда энергия исроф бўлаётганини кўрсатади. Кўп ҳолларда LED ёритгичлар ва сизиб чиқишларни бартараф этиш биринчи йилдаёқ харажатларни қоплайди.",
     img: "⚡"
   }
@@ -5405,7 +5423,7 @@ const FIN_PRINCIPLES = [
 /* Мавзули кроссвордлар */
 const CROSSWORDS = [
   {
-    id: "bolalar", icon: "🧒", level: "Осон", title: "Болалар учун", color: "#f59e0b",
+    id: "bolalar", icon: "🧒", level: "Осон", title: "Болалар учун", color: "#f59e0b", stage: "maktab",
     words: [["ДАРАХТ", "Кислород берадиган катта ўсимлик"], ["ЛОЛА", "Баҳорда очиладиган қизил гул"], ["ҚУШ", "Дарахтда уя қуради, сайрайди"], ["БУЛОҚ", "Ердан чиқадиган тоза сув"], ["ҚУЁШ", "Бизни иситадиган юлдуз"], ["АРИ", "Асал берадиган ҳашарот"], ["БАЛИҚ", "Дарёда сузади"]]
   },
   {
@@ -50588,7 +50606,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
       </button>`;
     /* Курс боблари кроссвордлари фақат шу курс босқичида кўринади (мактаб ўқувчисига университет кроссворди чиқмайди) */
     const groups = [...new Set(CROSSWORDS.filter((x) => x.group).map((x) => x.group))].filter((g) => { const c = COURSES.find((k) => k.id === g); return !c || courseStage(c) === curStage(); });
-    $("#xwPicker").innerHTML = CROSSWORDS.filter((x) => !x.group).map(card).join("") + groups.map((g) => {
+    $("#xwPicker").innerHTML = CROSSWORDS.filter((x) => !x.group && (!x.stage || x.stage === curStage())).map(card).join("") + groups.map((g) => {
       const c = COURSES.find((k) => k.id === g);
       const list = CROSSWORDS.filter((x) => x.group === g);
       return `<h3 class="xw-group">📗 Дарслик боблари бўйича: ${esc(c ? c.title : g)} <small class="muted">${list.filter((x) => state.xw[x.id]).length}/${list.length}</small></h3>${list.map(card).join("")}`;
@@ -50990,6 +51008,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     const items = [...NEWS]
       .sort((a, b) => b.date.localeCompare(a.date))
       .filter((n) => newsCat === "all" || n.cat === newsCat)
+      .filter((n) => !n.stage || !document.documentElement.classList.contains(n.stage === "uni" ? "stage-maktab" : "stage-uni"))
       .filter((n) => !newsQ || EkoLang.matches(n.title + " " + n.text, newsQ));
     $("#newsGrid").innerHTML = items.length ? items.map((n) => {
       const age = (now - new Date(n.date + "T00:00:00").getTime()) / 864e5;
@@ -51274,11 +51293,11 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     { id: "c12", icon: "🌐", name: "Халқаро эколог", test: () => state.flags.course_xalqaro },
     { id: "c13", icon: "🗺️", name: "Дунё саёҳатчиси", test: () => state.flags.course_dunyo },
     { id: "exam", icon: "📝", name: "Имтиҳон устаси", test: () => Object.values(state.exams || {}).some((v) => v >= 80) },
-    { id: "cer5", icon: "✍️", name: "Ёш тадқиқотчи", test: () => Object.keys(state.cer || {}).length >= 5 },
-    { id: "say10", icon: "🎒", name: "Эко-саёҳатчи", test: () => Object.keys(state.say || {}).length >= 10 },
-    { id: "say30", icon: "⭐", name: "30 юлдуз", test: () => state.flags.say30 },
-    { id: "promo", icon: "🎓", name: "Мактабни тамомлади", test: () => state.flags.promoted },
-    { id: "mono", icon: "📘", name: "Олим шогирди", test: () => state.flags.mono_quiz },
+    { id: "cer5", st: "uni", icon: "✍️", name: "Ёш тадқиқотчи", test: () => Object.keys(state.cer || {}).length >= 5 },
+    { id: "say10", st: "maktab", icon: "🎒", name: "Эко-саёҳатчи", test: () => Object.keys(state.say || {}).length >= 10 },
+    { id: "say30", st: "maktab", icon: "⭐", name: "30 юлдуз", test: () => state.flags.say30 },
+    { id: "promo", st: "uni", icon: "🎓", name: "Мактабни тамомлади", test: () => state.flags.promoted },
+    { id: "mono", st: "uni", icon: "📘", name: "Олим шогирди", test: () => state.flags.mono_quiz },
     { id: "s3", icon: "🔥", name: "3 кун серия", test: () => streak() >= 3 },
     { id: "s7", icon: "⚡", name: "7 кун серия", test: () => streak() >= 7 },
     { id: "calc", icon: "🧮", name: "Углерод ҳисобчиси", test: () => state.flags.calc },
@@ -51308,14 +51327,19 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     $("#levelBar").style.width = next ? `${((state.xp - lv.min) / (next.min - lv.min)) * 100}%` : "100%";
     $("#levelNext").textContent = next ? `Кейинги даража «${next.name}» учун яна ${next.min - state.xp} XP керак.` : "Сиз энг юқори даражага етдингиз! 🌍";
     if ($("#streakVal")) $("#streakVal").textContent = streak();
+    /* Бошқа босқичнинг нишонлари (олинмаган бўлса) кўрсатилмайди */
+    const rc = document.documentElement.classList, stNow = rc.contains("stage-maktab") ? "maktab" : rc.contains("stage-uni") ? "uni" : "";
+    const badgeStage = (b) => { if (b.st) return b.st; const m = /^c\d+$/.test(b.id) && /course_(\w+)/.exec(String(b.test)); const c = m && COURSES.find((k) => k.id === m[1]); return c ? (c.stage || (c.audience === "bola" ? "maktab" : "uni")) : ""; };
     $("#badges").innerHTML = BADGES.map((b) => {
       let ok = false;
       try { ok = !!b.test(); } catch (e) { /* ҳисоблаб бўлмаса — олинмаган */ }
+      if (!ok && stNow) { const bs = badgeStage(b); if (bs && bs !== stNow) return ""; }
       if (!ok && b.secret) return `<div class="badge locked" title="Яширин нишон"><span class="bi">❓</span>Яширин нишон</div>`;
       return `<div class="badge ${ok ? "" : "locked"}" title="${esc(ok ? "Олинган" : b.hint || "Ҳали олинмаган")}"><span class="bi">${b.icon}</span>${esc(b.name)}</div>`;
     }).join("");
     window.dispatchEvent(new Event("eko:xp"));
   }
+  window.addEventListener("eko:stage", () => setTimeout(renderGamification, 0));
 
   /* ---------- Эко-ёрдамчи ---------- */
   const log = $("#chatLog");
@@ -51388,6 +51412,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
 
   renderCourses();
   renderNews();
+  window.addEventListener("eko:stage", () => setTimeout(renderNews, 0));
   renderLibFeature();
   renderLibrary();
   calc();
@@ -54191,5 +54216,6 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
   <script src="/vendor/eko-sayyora.js" defer></script>
   <script src="/vendor/eko-ustoz.js" defer></script>
   <script src="/vendor/eko-turnir.js" defer></script>
+  <script src="/vendor/eko-pro.js" defer></script>
 </body>
 </html>

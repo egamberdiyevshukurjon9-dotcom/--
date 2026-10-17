@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tools/smoke-test.js",
+    "test": "node tools/smoke-test.js && node tools/pay-test.js",
     "totp": "node tools/admin-totp.js"
   },
   "engines": {

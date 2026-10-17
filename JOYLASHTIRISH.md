@@ -204,6 +204,21 @@ node tools/smoke-test.js https://ekomun.uz /boshqaruv-7k2q
 
 Тўлиқ рўйхат — `.env.example` ва `server.js` бошидаги изоҳ.
 
+## PRO обуна ва тўловлар
+
+PRO (шахсий AI агент ва VIP имкониятлар) сайтда сотилади. Android иловада нарх ва тўлов тугмаси йўқ (Google Play қоидаси): сайтда сотиб олинган PRO иловада ўша ҳисоб билан ўзи очилади. PRO ни фақат 18 ёшдан катталар сотиб олади (ўзига ёки 13+ ёшли фарзанд/ўқувчисининг ҳисобига совға); 13 ёшгача болаларга PRO ҳақида ҳеч нарса кўрсатилмайди.
+
+| Ўзгарувчи | Нима учун |
+|---|---|
+| `PAY_MANUAL_INFO` | Шартнома йўқ пайтда: карта/ҳисоб рақами. Фойдаланувчи пул ўтказиб чек юборади, «Тўловлар ва PRO» бўлимида тасдиқлайсиз |
+| `PAYME_MERCHANT_ID`, `PAYME_KEY` | Payme Business. Кабинетда Endpoint URL: `https://сайт/api/pay/payme`, ҳисоб майдони: `order_id` |
+| `CLICK_SERVICE_ID`, `CLICK_MERCHANT_ID`, `CLICK_SECRET_KEY` | Click. Prepare URL: `https://сайт/api/pay/click/prepare`, Complete URL: `https://сайт/api/pay/click/complete` |
+| `PAY_SANDBOX=1` | Синов: Payme тест кассаси (`PAYME_TEST_KEY`) ва «🧪 Синов тўлови» тугмаси. Ишлаб чиқаришда ёқманг |
+| `PRO_PRICE_MONTH`, `PRO_PRICE_YEAR` | Нархлар (асл 25 000 ва 199 000 сўм) |
+| `AGENT_MONTHLY_LIMIT` | Шахсий агентга ойлик савол чеклови (асл 60). Агент `ANTHROPIC_API_KEY` билан ишлайди |
+
+Ҳеч бир калит берилмаса, сайтда «Онлайн тўлов тез орада» ёзуви чиқади. Тўлов тизимини текшириш: `node tools/pay-test.js` (Payme ва Click сўровларини синов режимида ўзи юборади).
+
 ## Android илова (APK) ни сайтга улаш
 
 Сайт манзили маълум бўлгач, `android/res/values/strings.xml` даги `server_url` га уни ёзиб (масалан `https://ekomun.uz`) янги APK йиғилса, иловада ҳам кириш, сертификатни рўйхатга олиш ва фикр юбориш сервер орқали ишлайди. Ҳозирги APK интернетсиз, серверсиз ишлайди.
