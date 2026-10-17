@@ -84,6 +84,8 @@
     ["🧊", { uz: "Виртуал лаборатория (PhET, Колорадо университети)", ru: "Виртуальная лаборатория (PhET, Университет Колорадо)", en: "Virtual lab (PhET, University of Colorado)" }, { uz: "Кўринмас жараёнларни (фотон, молекула тебраниши) кўринадиган қилади; хавфсиз ва бепул.", ru: "Делает невидимое (фотоны, колебания молекул) видимым; безопасно и бесплатно.", en: "Makes invisible processes (photons, molecular vibrations) visible; safe and free." }],
     ["🔁", { uz: "5E модели (BSCS, АҚШ)", ru: "Модель 5E (BSCS, США)", en: "5E model (BSCS, USA)" }, { uz: "Қизиқтириш → тадқиқ қилиш → тушунтириш → кенгайтириш → баҳолаш: ҳар бир тажриба шу тартибда.", ru: "Вовлечение → исследование → объяснение → расширение → оценка: каждый опыт построен так.", en: "Engage → explore → explain → elaborate → evaluate: every experiment follows this order." }],
     ["🧮", { st: "uni", uz: "Модель асосидаги таълим (Modeling Instruction)", ru: "Обучение через модели (Modeling Instruction)", en: "Modeling Instruction" }, { uz: "Университет режимида формула ва параметрлар очиқ: талаба моделни ўзи синайди ва чегараларини кўради.", ru: "В университетском режиме формулы открыты: студент сам проверяет модель и её границы.", en: "In university mode formulas are open: students test the model and its limits." }],
+    ["⏯️", { uz: "Вақт бошқаруви ва «яширин йўналтириш» (PhET)", ru: "Управление временем и «скрытые подсказки» (PhET)", en: "Time controls and implicit scaffolding (PhET)" }, { uz: "Пауза, қадам ва секин/тез тугмалари жараённи босқичма-босқич кузатишга ёрдам беради; интерфейснинг ўзи кейинги қадамга йўналтиради.", ru: "Пауза, шаг и замедление/ускорение помогают наблюдать процесс по шагам; сам интерфейс подсказывает следующий шаг.", en: "Pause, step and slow/fast buttons let learners follow a process step by step; the interface itself hints at the next move." }],
+    ["🧪", { uz: "Очиқ виртуал лабораториялар: ChemCollective, Open Source Physics, Labster", ru: "Открытые виртуальные лаборатории: ChemCollective, Open Source Physics, Labster", en: "Open virtual labs: ChemCollective, Open Source Physics, Labster" }, { uz: "Улардан ғоялар олинди (эркин аралаштириш, ўлчов журнали, сценарийли вазифалар); моделлар ва код Экомуннинг ўзиники.", ru: "Взяты идеи (свободное смешивание, журнал измерений, сценарные задания); модели и код — Экомуна.", en: "Ideas borrowed (free mixing, measurement log, scenario missions); models and code are Ekomun's own." }],
     ["🎮", { st: "maktab", uz: "Ўйин орқали ўрганиш (мактаб)", ru: "Обучение через игру (школа)", en: "Game-based learning (school)" }, { uz: "Ҳар бир тажрибада юлдузли вазифа ва XP; хато қилиш мумкин, қайта уриниш бепул.", ru: "В каждом опыте задание со звездой и XP; ошибаться можно, повтор бесплатный.", en: "Every experiment has a star mission and XP; mistakes are fine, retries are free." }]
   ];
 
@@ -129,6 +131,14 @@
     daryo: {
       k: [t3("Дарё рангини кузатинг: кўк — кислород кўп, жигарранг — кам.", "Смотрите на цвет реки: синий — кислорода много, коричневый — мало.", "Watch the river colour: blue means lots of oxygen, brown means little."), t3("Ҳароратни ўзгартиринг ва заводга тозалаш иншооти қуриб кўринг.", "Меняйте температуру и постройте у завода очистные сооружения.", "Change the temperature and build a treatment plant at the factory."), t3("Балиқлар сонини санаб, ҳаммасини хурсанд қилинг.", "Посчитайте рыб и сделайте их всех довольными.", "Count the fish and make them all happy.")],
       u: [t3("Дарё ва оқова сув сарфи, БКИ₅, оқим тезлиги ва ҳароратни беринг.", "Задайте расходы реки и сточных вод, БПК₅, скорость течения и температуру.", "Set river and wastewater flows, BOD₅, velocity and temperature."), t3("Учта створни дарслик қоидаси бўйича жойлаштиринг: фон — 1 км юқорида, назорат — 80 % аралашган жойда (жадвалда ✅).", "Расставьте три створа по правилу учебника: фоновый — в 1 км выше, контрольный — где смешение ≥ 80 % (✅ в таблице).", "Place three sections by the textbook rule: background 1 km upstream, control where mixing ≥ 80% (✅ in the table)."), t3("Чуқурликка қараб горизонтлар сонини ва кислород энг кам бўлган масофани аниқланг; машғулотни ечинг.", "Определите число горизонтов по глубине и расстояние минимума кислорода; решите задание.", "Find the number of sampling depths and the distance of minimum oxygen; solve the task.")]
+    },
+    ph: {
+      k: [t3("Юқоридан моддани танланг: лимон, ёмғир, сут, совун…", "Выберите вещество сверху: лимон, дождь, молоко, мыло…", "Pick a substance on top: lemon, rain, milk, soap…"), t3("Қизил шарчалар — кислота (H₃O⁺), кўклари — ишқор (OH⁻). Қайси бири кўп?", "Красные шарики — кислота (H₃O⁺), синие — щёлочь (OH⁻). Каких больше?", "Red balls are acid (H₃O⁺), blue ones are alkali (OH⁻). Which are more?"), t3("Сув қўшиб, ранг ва pH қандай ўзгаришини кузатинг.", "Добавляйте воду и смотрите, как меняются цвет и pH.", "Add water and watch the colour and pH change.")],
+      u: [t3("Эритмани танланг ва сув қўшиш сурилмасини суринг.", "Выберите раствор и двигайте ползунок воды.", "Choose a solution and move the water slider."), t3("10 марта суюлтиришда pH қанча ўзгаришини графикдан ўлчанг.", "Измерьте по графику, как меняется pH при 10-кратном разбавлении.", "Use the graph to measure the pH change for a 10-fold dilution."), t3("Нега pH 7 дан ўтмаслигини тушунтиринг; машғулотни ечинг.", "Объясните, почему pH не переходит 7; решите задание.", "Explain why the pH never crosses 7; solve the task.")]
+    },
+    yirtqich: {
+      k: [t3("Пастдаги вақт тугмалари билан симуляцияни тезлаштиринг ёки тўхтатинг.", "Ускоряйте или останавливайте модель кнопками времени.", "Speed up or pause the model with the time buttons."), t3("🐇 ва 🦊 қўшинг ёки «Ов» тугмасини босиб, нима бўлишини кузатинг.", "Добавляйте 🐇 и 🦊 или нажмите «Охота» и наблюдайте.", "Add 🐇 and 🦊 or press “Hunt” and watch."), t3("Графикда тўлқинлар: аввал қуёнлар, кейин тулкилар кўпаяди.", "На графике волны: сначала растут зайцы, потом лисы.", "The graph shows waves: rabbits rise first, then foxes.")],
+      u: [t3("α, β, γ, δ параметрларини ўзгартиринг ва фаза силжишини кузатинг.", "Меняйте α, β, γ, δ и наблюдайте сдвиг фаз.", "Change α, β, γ, δ and watch the phase shift."), t3("Мувозанат x* = γ/δ, y* = α/β ни ҳисобланг ва бошланғич қийматни унга яқин қўйинг.", "Вычислите равновесие x* = γ/δ, y* = α/β и задайте близкие начальные значения.", "Compute x* = γ/δ, y* = α/β and start near it."), t3("Модель чекловларини муҳокама қилинг (ўт ресурси йўқ, тасодифийлик йўқ).", "Обсудите ограничения модели (нет ресурса травы, нет случайности).", "Discuss the model's limits (no grass resource, no randomness).")]
     },
     piramida: {
       k: [t3("Жонзотларни тартиб билан босинг: ўсимликдан бошланг, кейин уни ким ейди?", "Нажимайте живых существ по порядку: начните с растения, а кто его ест?", "Tap the living things in order: start with the plant — who eats it?"), t3("Пирамида қаватлари қандай кичрайиб боришини кузатинг.", "Смотрите, как уменьшаются этажи пирамиды.", "Watch the pyramid floors get smaller."), t3("Сариқ учқун — энергия, қизили — иссиқлик бўлиб йўқолган энергия.", "Жёлтая искра — энергия, красная — энергия, потерянная в виде тепла.", "Yellow sparks are energy; red ones are energy lost as heat.")],
@@ -177,6 +187,8 @@
       this.minD = opts.minD || 1.5; this.maxD = opts.maxD || 14;
       this.auto = !reduce && opts.auto !== false;
       this.updaters = [];
+      /* Вақт бошқаруви (PhET услубида): пауза, қадам, секин/тез */
+      this.speed = 1; this.paused = false; this.st = 0;
       this.running = false; this.raf = 0; this.last = 0; this.t = 0;
       this.scene.add(new T.HemisphereLight(0xffffff, 0x334155, 1.1));
       const sun = new T.DirectionalLight(0xffffff, 1.6);
@@ -227,6 +239,8 @@
     }
     /* Расм олиш: шу кадрни қайта чизиб PNG қилиш */
     snapshot() { this.render(); return this.canvas.toDataURL("image/png"); }
+    /* Пауза пайтида битта қадам (1/30 с) */
+    stepOnce() { const h = 1 / 30 * this.speed; this.st += h; this.updaters.forEach((f) => f(h, this.st)); this.render(); }
     zoom(f) { this.fly = null; this.d = clamp(this.d * f, this.minD, this.maxD); this.place(); }
     resetView() { this.fly = null; Object.assign(this, { th: this.home.th, ph: this.home.ph, d: this.home.d }); this.place(); }
     place() {
@@ -275,7 +289,8 @@
       let last = performance.now();
       r.setAnimationLoop((now) => {
         const dt = clamp((now - last) / 1000, 0, 0.1); last = now; this.t += dt;
-        this.updaters.forEach((f) => f(dt, this.t));
+        const sdt = this.paused ? 0 : dt * this.speed; this.st += sdt;
+        this.updaters.forEach((f) => f(sdt, this.st));
         r.render(this.scene, this.camera);
       });
       session.addEventListener("end", () => {
@@ -300,7 +315,8 @@
           if (f.t >= 1) this.fly = null;
           this.place();
         } else if (this.auto) { this.th += dt * 0.25; this.place(); }
-        this.updaters.forEach((f) => f(dt, this.t));
+        const sdt = this.paused ? 0 : dt * this.speed; this.st += sdt;
+        this.updaters.forEach((f) => f(sdt, this.st));
         this.render();
         this.raf = requestAnimationFrame(loop);
       };
@@ -3059,15 +3075,181 @@
     ["🌐", t3("Халқаро тажрибалар: АҚШ (EPA AQI), Германия (Energiewende), Япония (Минамата), Корея (Чхонгечхон)", "Международный опыт: США (EPA AQI), Германия (Energiewende), Япония (Минамата), Корея (Чхонгечхон)", "International cases: USA (EPA AQI), Germany (Energiewende), Japan (Minamata), Korea (Cheonggyecheon)"), t3("Ҳар бир тажриба шу давлатнинг ҳақиқий сиёсати ёки фожиасига асосланган ва узлуксиз анимацияда кўрсатилади.", "Каждый опыт основан на реальной политике или трагедии страны и показан в непрерывной анимации.", "Each experiment is based on a real policy or event in that country and runs as a live animation.")]
   );
 
-  const EXPS = [GH, MOLS, TANK, SOLAR, TREE, FLOT, LINE, PLUME, RIVER, PYR, WIND, PHOTO, HOUSE, AQUI, CYCL, COMPOST, AQI, ENERGY, MINA, CHEONG];
+  /* =====================================================================
+     21) 🧫 pH шкаласи ва кислотали ёмғир — суюлтириш: [H⁺] = [H⁺]₀·V₀/(V₀+Vсув)
+     (PhET «pH Scale» ғоясидан илҳомланган, ўз модели ва коди)
+     ===================================================================== */
+  const PH_SOL = [
+    ["lemon", "🍋", t3("Лимон шарбати", "Лимонный сок", "Lemon juice"), 2.4],
+    ["rainA", "🌧️", t3("Кислотали ёмғир", "Кислотный дождь", "Acid rain"), 4.2],
+    ["coffee", "☕", t3("Қаҳва", "Кофе", "Coffee"), 5.0],
+    ["rain", "💧", t3("Тоза ёмғир", "Чистый дождь", "Clean rain"), 5.6],
+    ["milk", "🥛", t3("Сут", "Молоко", "Milk"), 6.6],
+    ["water", "🚰", t3("Тоза сув", "Чистая вода", "Pure water"), 7.0],
+    ["sea", "🌊", t3("Денгиз суви", "Морская вода", "Seawater"), 8.1],
+    ["soda", "🧂", t3("Сода эритмаси", "Раствор соды", "Baking soda solution"), 8.3],
+    ["soap", "🧼", t3("Совунли сув", "Мыльная вода", "Soapy water"), 10.0],
+    ["lime", "🥣", t3("Оҳак суви", "Известковая вода", "Limewater"), 12.4]
+  ];
+  const phColor = (p) => { const st = [[1, [0.85, 0.1, 0.1]], [4, [0.98, 0.5, 0.1]], [6, [0.98, 0.85, 0.15]], [7, [0.35, 0.75, 0.25]], [9, [0.15, 0.45, 0.8]], [11, [0.35, 0.2, 0.65]], [14, [0.42, 0.12, 0.5]]]; let a = st[0]; for (const b of st) { if (p <= b[0]) { const k = (p - a[0]) / Math.max(1e-9, b[0] - a[0]); return a[1].map((v, i) => v + (b[1][i] - v) * clamp(k, 0, 1)); } a = b; } return st[st.length - 1][1]; };
+  const PHX = {
+    id: "ph", icon: "🧫",
+    name: t3("pH шкаласи ва кислотали ёмғир", "Шкала pH и кислотный дождь", "pH scale and acid rain"),
+    q: t3("Лимон шарбатини сув билан суюлтирсак, у нейтрал (pH 7) бўлиб қоладими?", "Если разбавлять лимонный сок водой, станет ли он нейтральным (pH 7)?", "If you keep diluting lemon juice with water, will it ever become neutral (pH 7)?"),
+    poe: { o: [t3("Ҳа, сув етарли бўлса pH 7 дан ошиб кетади", "Да, при большом количестве воды pH станет выше 7", "Yes — with enough water the pH goes above 7"), t3("pH 7 га яқинлашади, лекин ундан ошмайди", "pH приближается к 7, но не превышает его", "The pH approaches 7 but never passes it"), t3("pH ўзгармайди", "pH не меняется", "The pH does not change")], a: 1,
+      w: t3("Ҳар 10 марта суюлтириш pH ни тахминан 1 га оширади, лекин сувнинг ўзи pH 7 — кислота ҳеч қачон ишқорга айланмайди.", "Каждое 10-кратное разбавление повышает pH примерно на 1, но у самой воды pH 7 — кислота никогда не станет щёлочью.", "Each 10-fold dilution raises the pH by about 1, but water itself is pH 7, so an acid never turns alkaline.") },
+    src: t3("pH = −lg[H⁺], Kw = 10⁻¹⁴ (25 °C); тоза ёмғир pH ≈ 5,6 (атмосфера CO₂ мувозанати); US EPA «What is Acid Rain?» (2024); ғоя: PhET «pH Scale» (Колорадо университети, CC BY 4.0) — модель ва код Экомунники", "pH = −lg[H⁺], Kw = 10⁻¹⁴ (25 °C); чистый дождь pH ≈ 5,6 (равновесие с CO₂ атмосферы); US EPA «What is Acid Rain?» (2024); идея: PhET «pH Scale» (Университет Колорадо, CC BY 4.0) — модель и код Экомуна", "pH = −log[H⁺], Kw = 10⁻¹⁴ (25 °C); clean rain pH ≈ 5.6 (equilibrium with atmospheric CO₂); US EPA “What is Acid Rain?” (2024); idea: PhET “pH Scale” (University of Colorado, CC BY 4.0) — Ekomun's own model and code"),
+    view: { bg: "#e0f2fe", d: 5.6, ph: 1.2, th: 0.25, target: [0.35, 1, 0], minD: 2.5, maxD: 10 },
+    quiz: [
+      { q: t3("pH 4 бўлган эритмада [H⁺] pH 6 дагидан неча марта кўп?", "Во сколько раз [H⁺] при pH 4 больше, чем при pH 6?", "How many times more [H⁺] is there at pH 4 than at pH 6?"), o: [t3("2 марта", "в 2 раза", "2 times"), t3("100 марта", "в 100 раз", "100 times"), t3("20 марта", "в 20 раз", "20 times")], a: 1, w: t3("Шкала логарифмик: ҳар бир бирлик — 10 марта.", "Шкала логарифмическая: каждая единица — в 10 раз.", "The scale is logarithmic: each unit is 10 times.") },
+      { q: t3("Қайси ёмғир кислотали ҳисобланади?", "Какой дождь считается кислотным?", "Which rain counts as acid rain?"), o: [t3("pH < 5,6", "pH < 5,6", "pH < 5.6"), t3("pH > 7", "pH > 7", "pH > 7"), t3("pH = 7", "pH = 7", "pH = 7")], a: 0, w: t3("Тоза ёмғир CO₂ туфайли бироз кислотали (5,6); SO₂ ва NOₓ уни янада пасайтиради.", "Чистый дождь слегка кислый из-за CO₂ (5,6); SO₂ и NOₓ понижают его ещё.", "Clean rain is slightly acidic from CO₂ (5.6); SO₂ and NOₓ push it lower.") }
+    ],
+    build(v, ui) {
+      const T = THREE, S = { s: "lemon", w: 0, seen: new Set(["lemon"]) };
+      const V0 = 50;
+      const sol = () => PH_SOL.find((x) => x[0] === S.s);
+      const phNow = () => {
+        const p0 = sol()[3], f = V0 / (V0 + S.w);
+        if (p0 < 7) { const h = Math.pow(10, -p0) * f + 1e-7 * (1 - f); return -Math.log10(Math.max(h, 1e-7)); }
+        if (p0 > 7) { const oh = Math.pow(10, p0 - 14) * f + 1e-7 * (1 - f); return 14 + Math.log10(Math.max(oh, 1e-7)); }
+        return 7;
+      };
+      ui.goals = stage() === "uni" ? [
+        { id: "dil", t: t3("Лимон шарбатини суюлтириб pH ни 3 дан юқори қилинг", "Разбавьте лимонный сок до pH выше 3", "Dilute lemon juice to above pH 3"), ok: () => S.s === "lemon" && phNow() > 3 },
+        { id: "base", t: t3("Оҳак сувини суюлтириб pH ни 11 дан пастга туширинг", "Разбавьте известковую воду до pH ниже 11", "Dilute limewater to below pH 11"), ok: () => S.s === "lime" && phNow() < 11 }
+      ] : [
+        { id: "all", t: t3("Камида 6 та модданинг pH ини текширинг", "Проверьте pH хотя бы 6 веществ", "Check the pH of at least 6 substances"), ok: () => S.seen.size >= 6 }
+      ];
+      /* Стакан, суюқлик, H₃O⁺ (қизил) ва OH⁻ (кўк) заррачалар */
+      const glass = new T.Mesh(new T.CylinderGeometry(0.9, 0.85, 2, 40, 1, true), new T.MeshStandardMaterial({ color: 0xf0f9ff, transparent: true, opacity: 0.25, side: T.DoubleSide, roughness: 0.05 })); glass.position.y = 1; v.scene.add(glass);
+      const base = new T.Mesh(new T.CylinderGeometry(1.4, 1.4, 0.08, 40), mat(0x94a3b8)); base.position.y = -0.04; v.scene.add(base);
+      const liqM = new T.MeshStandardMaterial({ color: 0x22c55e, transparent: true, opacity: 0.55, roughness: 0.2 });
+      const liq = new T.Mesh(new T.CylinderGeometry(0.86, 0.83, 1, 40), liqM); v.scene.add(liq);
+      const hM = mat(0xef4444, { roughness: 0.3 }), oM = mat(0x2563eb, { roughness: 0.3 });
+      const NP = 60, ions = Array.from({ length: NP }, (_, i) => { const m = new T.Mesh(new T.SphereGeometry(0.06, 10, 8), i % 2 ? hM : oM); m.userData = { a: Math.random() * 6.28, r: Math.random() * 0.75, y: Math.random(), s: 0.2 + Math.random() * 0.5 }; v.scene.add(m); return m; });
+      const lbl = liveLabel(v, [0, 2.35, 0], "#0f172a", 0.36);
+      /* pH шкаласи (рангли устун) ва кўрсатгич */
+      for (let i = 0; i < 14; i++) { const c = phColor(i + 0.5); const b = new T.Mesh(new T.BoxGeometry(0.14, 0.14, 0.14), new T.MeshBasicMaterial({ color: new T.Color(c[0], c[1], c[2]) })); b.position.set(1.55, 0.1 + i * 0.15, 0.3); v.scene.add(b); }
+      const ptr = new T.Mesh(new T.ConeGeometry(0.07, 0.18, 12), mat(0x0f172a)); ptr.rotation.z = Math.PI / 2; v.scene.add(ptr);
+      const draw = () => {
+        const p = phNow(), c = phColor(p), lv = clamp((V0 + S.w) / 550, 0.12, 1) * 1.85;
+        liqM.color.setRGB(c[0], c[1], c[2]);
+        liq.scale.y = lv; liq.position.y = lv / 2 + 0.02;
+        /* H⁺:OH⁻ нисбати логарифмда: pH 7 да тенг; ҳар бир бирлик — улуш ўзгаради */
+        const fracH = 1 / (1 + Math.pow(10, (p - 7) * 0.5));
+        ions.forEach((m, i) => { m.material = i / NP < fracH ? hM : oM; m.userData.lv = lv; });
+        ptr.position.set(1.75, 0.1 + p * 0.15, 0.3);
+        lbl("pH " + fmt(p, 2));
+      };
+      v.updaters.push((dt) => ions.forEach((m) => { const u = m.userData; u.a += dt * u.s; u.y += dt * 0.05 * u.s; if (u.y > 1) u.y = 0; m.position.set(Math.cos(u.a) * u.r, 0.08 + u.y * ((u.lv || 1) - 0.12), Math.sin(u.a) * u.r); }));
+      ui.read = () => ({ p: L(sol()[2]) + "; " + S.w + " ml H₂O", r: "pH " + fmt(phNow(), 2), x: S.w, y: phNow(), xl: L(t3("Қўшилган сув, мл", "Добавлено воды, мл", "Water added, mL")), yl: "pH" });
+      ui.html = () => {
+        const p = phNow(), uni = stage() === "uni", h = Math.pow(10, -p), oh = Math.pow(10, p - 14);
+        const kind = p < 6.9 ? t3("кислота", "кислота", "acid") : p > 7.1 ? t3("асос (ишқор)", "основание (щёлочь)", "base (alkali)") : t3("нейтрал", "нейтральный", "neutral");
+        const curve = uni ? chartSvg([{ pts: Array.from({ length: 41 }, (_, i) => { const w = i * 12.5, f = V0 / (V0 + w), p0 = sol()[3]; const y = p0 < 7 ? -Math.log10(Math.pow(10, -p0) * f + 1e-7 * (1 - f)) : p0 > 7 ? 14 + Math.log10(Math.pow(10, p0 - 14) * f + 1e-7 * (1 - f)) : 7; return [w, y]; }), c: "#0891b2" }], { xl: L(t3("Қўшилган сув, мл", "Добавлено воды, мл", "Water added, mL")), yl: "pH", y0: 0, y1: 14, mark: [S.w, p] }) : "";
+        return `${optsH("s", PH_SOL.map(([id, e, n]) => [id, e, n]), S.s)}
+          ${rngH("w", H(t3("Сув қўшиш", "Добавить воду", "Add water")), S.w, 0, 500, 10, S.w + " ml")}
+          <div class="l3-big"><span>${sol()[1]}</span><b>pH ${fmt(p, 2)}</b></div>
+          <p class="lab-out">${H(sol()[2])}: <b>${H(kind)}</b>${p < 5.6 && S.s.startsWith("rain") ? " · " + H(t3("кислотали ёмғир чегарасидан паст!", "ниже границы кислотного дождя!", "below the acid-rain threshold!")) : ""}</p>
+          ${uni ? `<div class="lab-formula">pH = −lg[H⁺] → [H⁺] = <b>${h.toExponential(2)}</b> M · [OH⁻] = <b>${oh.toExponential(2)}</b> M<br>[H⁺]·[OH⁻] = Kw = 10⁻¹⁴ · ${H(t3("суюлтириш", "разбавление", "dilution"))} ×${fmt((V0 + S.w) / V0, 1)}</div>${curve}` : `<p class="small">🔴 H₃O⁺ · 🔵 OH⁻ — ${H(t3("қизил кўп бўлса кислота, кўк кўп бўлса ишқор.", "больше красных — кислота, больше синих — щёлочь.", "more red means acid, more blue means alkali."))}</p><p class="l3-mission" data-star>${H(TX.mission)}: ${H(t3("6 та моддани текширинг ва кислота ҳамда ишқорларни топинг.", "Проверьте 6 веществ и найдите кислоты и щёлочи.", "Test 6 substances and find the acids and alkalis."))}</p>`}`;
+      };
+      ui.bind = (el) => {
+        bindOpts(el, S, () => { S.seen.add(S.s); S.w = 0; draw(); ui.render(); if (S.seen.size >= 6) star("ph", ui.el.querySelector("[data-star]")); });
+        liveBind(el, S, (k, val) => val + " ml", () => "", () => draw());
+        el.querySelectorAll("input[data-k]").forEach((r) => r.addEventListener("change", () => ui.render()));
+      };
+      ui.task = () => ({ q: t3("Кислотали ёмғир намунаси pH 4,2. Уни тоза ёмғир даражаси pH 5,6 гача етказиш учун тахминан неча марта суюлтириш керак? (кучли кислота деб ҳисобланг)", "Проба кислотного дождя имеет pH 4,2. Во сколько раз примерно нужно её разбавить, чтобы получить pH 5,6? (считайте кислоту сильной)", "An acid-rain sample has pH 4.2. Roughly how many times must it be diluted to reach pH 5.6? (treat it as a strong acid)"), a: 25.1, tol: 1.5, unit: "×", hint: t3("10^(5,6 − 4,2) = 10^1,4", "10^(5,6 − 4,2) = 10^1,4", "10^(5.6 − 4.2) = 10^1.4"), dec: 1 });
+      draw();
+    }
+  };
+
+  /* =====================================================================
+     22) 🦊 Йиртқич ва ўлжа — Лотка–Вольтерра: dx/dt = αx − βxy, dy/dt = δxy − γy
+     ===================================================================== */
+  const LV = {
+    id: "yirtqich", icon: "🦊",
+    name: t3("Йиртқич ва ўлжа (популяция)", "Хищник и жертва (популяции)", "Predator and prey (populations)"),
+    q: t3("Тулкиларнинг ҳаммасини овлаб йўқотсак, қуёнлар учун яхши бўладими?", "Если истребить всех лис, будет ли это хорошо для зайцев?", "If we hunt all the foxes, is that good for the rabbits?"),
+    poe: { o: [t3("Ҳа, қуёнлар доим кўпайиб, бахтли яшайди", "Да, зайцы будут всегда процветать", "Yes, rabbits will thrive forever"), t3("Қуёнлар аввал кўпаяди, кейин ўт тугаб, касаллик ва очликдан камаяди", "Зайцы сначала размножатся, затем кончится трава и придут голод и болезни", "Rabbits boom, then run out of grass and crash from hunger and disease"), t3("Ҳеч нарса ўзгармайди", "Ничего не изменится", "Nothing changes")], a: 1,
+      w: t3("Йиртқич популяцияни мувозанатда ушлайди. Модел шуни кўрсатади: йиртқич кам бўлса ўлжа тез кўпаяди, кейин йиртқич ҳам кўпаяди — тўлқинсимон цикл ҳосил бўлади (Ҳудсон кўрфази компаниясининг силовсин–қуён маълумотлари).", "Хищник держит популяцию в равновесии. Модель показывает: при малом числе хищников жертва быстро растёт, затем растут и хищники — возникают циклы (данные компании Гудзонова залива по рыси и зайцу).", "Predators keep populations in balance. The model shows: with few predators prey boom, then predators grow too — producing cycles (the Hudson's Bay Company lynx–hare records).") },
+    src: t3("Lotka A.J. «Elements of Physical Biology», 1925; Volterra V., Nature 118:558, 1926; Elton C., Nicholson M., J. Anim. Ecol. 11:215, 1942 (силовсин–қуён циклари); ғоя: PhET «Natural Selection» ва NetLogo «Wolf Sheep Predation» — модел ва код Экомунники", "Lotka A.J. «Elements of Physical Biology», 1925; Volterra V., Nature 118:558, 1926; Elton C., Nicholson M., J. Anim. Ecol. 11:215, 1942 (циклы рыси и зайца); идея: PhET «Natural Selection» и NetLogo «Wolf Sheep Predation» — модель и код Экомуна", "Lotka A.J. “Elements of Physical Biology”, 1925; Volterra V., Nature 118:558, 1926; Elton C., Nicholson M., J. Anim. Ecol. 11:215, 1942 (lynx–hare cycles); idea: PhET “Natural Selection” and NetLogo “Wolf Sheep Predation” — Ekomun's own model and code"),
+    view: { bg: "#d9f99d", d: 9, ph: 1.0, th: 0.6, target: [0, 0.4, 0], minD: 4, maxD: 16 },
+    quiz: [
+      { q: t3("Модельда ўлжанинг мувозанат сони нимага боғлиқ?", "От чего зависит равновесная численность жертвы в модели?", "What sets the prey equilibrium in the model?"), o: [t3("x* = γ/δ — йиртқичнинг ўлими ва овдан фойда", "x* = γ/δ — смертность хищника и польза от охоты", "x* = γ/δ — predator death rate and hunting gain"), t3("Фақат ўлжанинг кўпайиш тезлигига", "Только от скорости размножения жертвы", "Only the prey birth rate"), t3("Ҳеч нарсага", "Ни от чего", "Nothing")], a: 0, w: t3("Қизиқ натижа: ўлжа мувозанати йиртқич параметрларига боғлиқ, йиртқич мувозанати эса y* = α/β — ўлжаникига.", "Любопытно: равновесие жертвы зависит от параметров хищника, а хищника y* = α/β — от параметров жертвы.", "A curious result: prey equilibrium depends on predator parameters, and the predator's y* = α/β on the prey's.") }
+    ],
+    build(v, ui) {
+      const T = THREE, S = { a: 1.0, b: 0.02, g: 0.6, d: 0.01, x: 40, y: 15, t: 0, hist: [], alive: 0 };
+      ui.goals = stage() === "uni" ? [
+        { id: "eq", t: t3("Популяцияларни мувозанат нуқтасига яқин ушланг (тебраниш кичик)", "Удержите популяции у точки равновесия (малые колебания)", "Hold populations near equilibrium (small swings)"), ok: () => S.hist.length > 40 && (() => { const xs = S.hist.slice(-40).map((h) => h[1]); return Math.max(...xs) - Math.min(...xs) < 10; })() },
+        { id: "cyc", t: t3("Камида 3 та тўлиқ циклни кузатинг (30 йил)", "Пронаблюдайте не менее 3 циклов (30 лет)", "Watch at least 3 full cycles (30 years)"), ok: () => S.t > 30 }
+      ] : [
+        { id: "live", t: t3("Тулки ва қуёнларни 20 йил давомида сақлаб қолинг", "Сохраните лис и зайцев 20 лет", "Keep both foxes and rabbits alive for 20 years"), ok: () => S.alive > 20 }
+      ];
+      const ground = new T.Mesh(new T.CircleGeometry(5, 48), mat(0x84cc16)); ground.rotation.x = -Math.PI / 2; v.scene.add(ground);
+      for (let i = 0; i < 18; i++) { const a = i / 18 * 6.28, r = 4 + Math.random() * 0.6; const tr = new T.Mesh(new T.ConeGeometry(0.35, 1.1, 8), mat(0x15803d)); tr.position.set(Math.cos(a) * r, 0.55, Math.sin(a) * r); v.scene.add(tr); }
+      const rabM = mat(0xf8fafc), foxM = mat(0xea580c);
+      const mkR = () => { const g = new T.Group(); const b = new T.Mesh(new T.SphereGeometry(0.12, 10, 8), rabM); b.scale.set(1.2, 0.9, 1); g.add(b); const e1 = new T.Mesh(new T.CylinderGeometry(0.02, 0.025, 0.16, 6), rabM); e1.position.set(0.08, 0.15, 0.03); g.add(e1); const e2 = e1.clone(); e2.position.z = -0.03; g.add(e2); return g; };
+      const mkF = () => { const g = new T.Group(); const b = new T.Mesh(new T.ConeGeometry(0.14, 0.42, 10), foxM); b.rotation.z = Math.PI / 2; g.add(b); const tl = new T.Mesh(new T.ConeGeometry(0.06, 0.25, 8), mat(0xffffff)); tl.rotation.z = -Math.PI / 2; tl.position.x = -0.3; g.add(tl); const hd = new T.Mesh(new T.SphereGeometry(0.09, 10, 8), foxM); hd.position.set(0.24, 0.06, 0); g.add(hd); [-0.04, 0.04].forEach((z) => { const ear = new T.Mesh(new T.ConeGeometry(0.03, 0.08, 6), foxM); ear.position.set(0.24, 0.16, z); g.add(ear); }); const ns = new T.Mesh(new T.SphereGeometry(0.02, 6, 5), mat(0x111827)); ns.position.set(0.33, 0.05, 0); g.add(ns); return g; };
+      const MAXR = 120, MAXF = 50;
+      const rabs = Array.from({ length: MAXR }, () => { const m = mkR(); m.userData = { a: Math.random() * 6.28, r: Math.random() * 3.6, p: Math.random() * 6 }; v.scene.add(m); return m; });
+      const foxes = Array.from({ length: MAXF }, () => { const m = mkF(); m.userData = { a: Math.random() * 6.28, r: Math.random() * 3.4, p: Math.random() * 6 }; v.scene.add(m); return m; });
+      const lbl = liveLabel(v, [0, 2.6, 0], "#14532d", 0.4);
+      const f = (x, y) => [S.a * x - S.b * x * y, S.d * x * y - S.g * y];
+      const step = (h) => {
+        const [k1x, k1y] = f(S.x, S.y), [k2x, k2y] = f(S.x + h / 2 * k1x, S.y + h / 2 * k1y), [k3x, k3y] = f(S.x + h / 2 * k2x, S.y + h / 2 * k2y), [k4x, k4y] = f(S.x + h * k3x, S.y + h * k3y);
+        S.x = Math.max(0, S.x + h / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)); S.y = Math.max(0, S.y + h / 6 * (k1y + 2 * k2y + 2 * k3y + k4y));
+        if (S.x < 0.5) S.x = 0; if (S.y < 0.5) S.y = 0;
+      };
+      let acc = 0, pa = 0;
+      v.updaters.push((dt, t) => {
+        /* 1 сония = 1 йил (вақт тугмалари билан тезлаштириш ёки секинлаштириш мумкин) */
+        const yrs = dt;
+        for (let i = 0; i < 10; i++) step(yrs / 10);
+        S.t += yrs; if (S.x > 0 && S.y > 0) S.alive += yrs;
+        acc += yrs;
+        if (acc > 0.2) { acc = 0; S.hist.push([+S.t.toFixed(2), S.x, S.y]); if (S.hist.length > 240) S.hist.shift(); }
+        const nr = Math.min(MAXR, Math.round(S.x)), nf = Math.min(MAXF, Math.round(S.y));
+        rabs.forEach((m, i) => { m.visible = i < nr; if (!m.visible) return; const u = m.userData; u.a += dt * 0.3; m.position.set(Math.cos(u.a) * u.r, 0.1 + Math.abs(Math.sin(t * 6 + u.p)) * 0.12, Math.sin(u.a) * u.r); m.rotation.y = -u.a; });
+        foxes.forEach((m, i) => { m.visible = i < nf; if (!m.visible) return; const u = m.userData; u.a -= dt * 0.45; m.position.set(Math.cos(u.a) * u.r, 0.14, Math.sin(u.a) * u.r); m.rotation.y = -u.a + Math.PI; });
+        lbl(`🐇 ${Math.round(S.x)} · 🦊 ${Math.round(S.y)} · ${Math.floor(S.t)} ${L(t3("йил", "лет", "yr"))}`);
+        pa += dt; if (pa > 0.5) { pa = 0; const o = ui.el.querySelector("[data-out]"); if (o) o.innerHTML = outH(); }
+      });
+      const outH = () => {
+        const uni = stage() === "uni";
+        const ch = chartSvg([{ pts: S.hist.map((h) => [h[0], h[1]]), c: "#64748b" }, { pts: S.hist.map((h) => [h[0], h[2]]), c: "#ea580c" }], { xl: L(t3("Вақт, йил", "Время, лет", "Time, years")), yl: L(t3("Сони", "Численность", "Count")), y0: 0 });
+        const dead = S.x === 0 ? t3("🐇 Қуёнлар йўқолди — тулкилар ҳам очликдан қирилади.", "🐇 Зайцы исчезли — лисы тоже вымрут от голода.", "🐇 Rabbits are gone — foxes will starve too.") : S.y === 0 ? t3("🦊 Тулкилар йўқолди — қуёнлар назоратсиз кўпаймоқда (ҳақиқатда ўт тугаб, ҳалокат бошланади).", "🦊 Лисы исчезли — зайцы размножаются бесконтрольно (в реальности кончится трава и придёт крах).", "🦊 Foxes are gone — rabbits grow unchecked (in reality the grass runs out and a crash follows).") : null;
+        return `${ch}<p class="small"><span style="color:#64748b">━ 🐇</span> · <span style="color:#ea580c">━ 🦊</span>${dead ? `<br><b>${H(dead)}</b>` : ""}</p>${uni ? `<div class="lab-formula">dx/dt = αx − βxy · dy/dt = δxy − γy<br>x* = γ/δ = <b>${fmt(S.g / S.d, 0)}</b> · y* = α/β = <b>${fmt(S.a / S.b, 0)}</b></div>` : ""}`;
+      };
+      ui.read = () => ({ p: `α ${S.a}; β ${S.b}; γ ${S.g}; δ ${S.d}`, r: `🐇 ${Math.round(S.x)} · 🦊 ${Math.round(S.y)}`, x: +S.t.toFixed(1), y: S.x, xl: L(t3("Вақт, йил", "Время, лет", "Time, years")), yl: "🐇" });
+      ui.html = () => {
+        const uni = stage() === "uni";
+        const btns = `<div class="lab-opts"><button type="button" class="sg-opt" data-act="r"><span class="e" aria-hidden="true">🐇</span>+10 ${H(t3("қуён", "зайцев", "rabbits"))}</button><button type="button" class="sg-opt" data-act="f"><span class="e" aria-hidden="true">🦊</span>+5 ${H(t3("тулки", "лис", "foxes"))}</button><button type="button" class="sg-opt" data-act="h"><span class="e" aria-hidden="true">🏹</span>${H(t3("Ов: тулкилар −50 %", "Охота: лисы −50 %", "Hunt: foxes −50 %"))}</button><button type="button" class="sg-opt" data-act="z"><span class="e" aria-hidden="true">↺</span>${H(t3("Қайтадан", "Заново", "Restart"))}</button></div>`;
+        return `${btns}${uni ? rngH("a", "α " + H(t3("қуён кўпайиши", "рождаемость зайцев", "rabbit birth rate")), S.a, 0.4, 1.6, 0.05, S.a) + rngH("b", "β " + H(t3("овланиш", "поедание", "predation")), S.b, 0.005, 0.05, 0.005, S.b) + rngH("g", "γ " + H(t3("тулки ўлими", "смертность лис", "fox death rate")), S.g, 0.2, 1.2, 0.05, S.g) + rngH("d", "δ " + H(t3("овдан фойда", "польза от охоты", "hunting gain")), S.d, 0.002, 0.03, 0.001, S.d) : ""}
+          <div data-out>${outH()}</div>
+          ${uni ? "" : `<p class="l3-mission" data-star>${H(TX.mission)}: ${H(t3("Тулки ва қуёнларни 20 йил сақлаб қолинг (вақт тугмаларидан фойдаланинг).", "Сохраните лис и зайцев 20 лет (используйте кнопки времени).", "Keep foxes and rabbits alive for 20 years (use the time buttons)."))}</p>`}`;
+      };
+      ui.bind = (el) => {
+        el.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => {
+          const k = b.dataset.act;
+          if (k === "r") S.x += 10; if (k === "f") S.y += 5; if (k === "h") S.y *= 0.5;
+          if (k === "z") Object.assign(S, { x: 40, y: 15, t: 0, hist: [], alive: 0 });
+        }));
+        liveBind(el, S, (k, val) => val, outH);
+      };
+      v.updaters.push(() => { if (stage() !== "uni" && S.alive > 20) star("yirtqich", ui.el.querySelector("[data-star]")); });
+      ui.task = () => ({ q: t3("α = 1, β = 0,02, γ = 0,6, δ = 0,01 бўлса, қуёнларнинг мувозанат сони x* қанча?", "При α = 1, β = 0,02, γ = 0,6, δ = 0,01 какова равновесная численность зайцев x*?", "With α = 1, β = 0.02, γ = 0.6, δ = 0.01, what is the rabbit equilibrium x*?"), a: 60, tol: 0.5, unit: "", hint: t3("x* = γ/δ", "x* = γ/δ", "x* = γ/δ"), dec: 0 });
+    }
+  };
+
+  const EXPS = [GH, MOLS, TANK, SOLAR, TREE, FLOT, LINE, PLUME, RIVER, PYR, WIND, PHOTO, HOUSE, AQUI, CYCL, COMPOST, AQI, ENERGY, MINA, CHEONG, PHX, LV];
 
   /* ---------- Бўлимни чизиш ---------- */
   /* Тажрибалар мавзу бўйича гуруҳланади (галерея) */
   const CATS = [
     ["climate", "🌍", t3("Иқлим ва энергия", "Климат и энергия", "Climate and energy"), ["issiq", "molekula", "quyosh", "shamol", "uy"]],
-    ["water", "💧", t3("Сув ва тупроқ", "Вода и почва", "Water and soil"), ["tindir", "daryo", "yerosti"]],
+    ["water", "💧", t3("Сув ва тупроқ", "Вода и почва", "Water and soil"), ["tindir", "daryo", "yerosti", "ph"]],
     ["waste", "♻️", t3("Чиқинди ва ҳаво", "Отходы и воздух", "Waste and air"), ["flotatsiya", "liniya", "tutun", "siklon", "kompost"]],
-    ["life", "🌿", t3("Тирик табиат", "Живая природа", "Living nature"), ["daraxt", "piramida", "fotosintez"]],
+    ["life", "🌿", t3("Тирик табиат", "Живая природа", "Living nature"), ["daraxt", "piramida", "fotosintez", "yirtqich"]],
     ["world", "🌐", t3("Халқаро тажриба: АҚШ, Германия, Япония, Корея", "Международный опыт: США, Германия, Япония, Корея", "International: USA, Germany, Japan, Korea"), ["aqi", "energiya", "minamata", "chhonggye"]]
   ];
   const TX2 = {
@@ -3103,11 +3285,18 @@
     poeYou: t3("Сизнинг тахминингиз қабул қилинди. Энди тажрибада текширинг ва кузатинг!", "Ваш прогноз принят. Теперь проверьте и понаблюдайте в опыте!", "Prediction saved. Now test it in the experiment and observe!"),
     poeShow: t3("Тўғри жавобни кўриш", "Показать правильный ответ", "Show the answer"),
     poeOk: t3("✅ Тахминингиз тўғри чиқди!", "✅ Ваш прогноз верен!", "✅ Your prediction was right!"),
+    time: t3("Вақт бошқаруви", "Управление временем", "Time controls"),
+    pause: t3("Пауза / давом эттириш", "Пауза / продолжить", "Pause / play"),
+    step: t3("Бир қадам олдинга", "Шаг вперёд", "Step forward"),
+    resetAll: t3("Тажрибани бошидан бошлаш", "Начать опыт заново", "Restart the experiment"),
+    roomT: t3("🧪 Янги: Лаборатория хонаси", "🧪 Новое: Лабораторная комната", "🧪 New: the Lab room"),
+    roomD: t3("Жавондаги 32 та модда билан ҳақиқий кимё тажрибалари: аралаштиринг, қиздиринг, pH ни ўлчанг.", "Настоящие химические опыты с 32 веществами с полки: смешивайте, нагревайте, измеряйте pH.", "Real chemistry with 32 substances from the shelf: mix, heat and measure pH."),
+    roomGo: t3("Хонага кириш", "Войти в комнату", "Enter the room"),
     poeNo: t3("🤔 Тахмин бошқача эди — фан шундай ривожланади!", "🤔 Прогноз был другим — так и развивается наука!", "🤔 Your guess was different — that's how science works!")
   };
   const CAT_OF = {}; CATS.forEach(([c, , , ids]) => ids.forEach((id) => (CAT_OF[id] = c)));
   const isDone = (id) => { const f = flags(); return !!(f["l3k_" + id] || f["l3t_" + id]); };
-  const NEWX = new Set(["aqi", "energiya", "minamata", "chhonggye"]);
+  const NEWX = new Set(["ph", "yirtqich"]);
   let cur = EXPS[0].id, view = null, built = false, glFail = false;
   function shell() {
     const uni = stage() === "uni", exp = EXPS.find((x) => x.id === cur) || EXPS[0];
@@ -3127,6 +3316,7 @@
       <details class="l3-guide" ${guideOpen() ? "open" : ""}><summary><b>${H(HOWT.guide)}</b></summary>
         <ol class="l3-steps">${GUIDE.map(([ic, t, d]) => `<li><i class="fa-solid ${ic}" aria-hidden="true"></i><b>${H(t)}</b><small>${H(pick(d))}</small></li>`).join("")}</ol>
       </details>
+      <a class="l3-room" href="#labxona"><span aria-hidden="true">🧪</span><div><b>${H(TX2.roomT)}</b><small>${H(TX2.roomD)}</small></div><em>${H(TX2.roomGo)} →</em></a>
       <div class="l3-gallery lab-tabs">${gallery}</div>
       <div class="lab-stage l3-stage">
         <p class="lab-q">${exp.icon} ${H(exp.name)} · 🤔 ${H(exp.q)}</p>
@@ -3145,6 +3335,12 @@
               <button type="button" class="l3-tb" data-tool="full" title="${H(TX2.full)}" aria-label="${H(TX2.full)}" aria-pressed="false"><i class="fa-solid fa-expand"></i></button>
               <button type="button" class="l3-tb" data-tool="stereo" title="${H(TX2.stereo)}" aria-label="${H(TX2.stereo)}" aria-pressed="false"><i class="fa-solid fa-glasses"></i></button>
               <button type="button" class="l3-tb" data-tool="vr" title="${H(TX2.vr)}" aria-label="${H(TX2.vr)}" aria-pressed="false" hidden><i class="fa-solid fa-vr-cardboard"></i></button>
+            </div>
+            <div class="l3-time" role="group" aria-label="${H(TX2.time)}">
+              <button type="button" class="l3-tm" data-time="play" aria-pressed="true" title="${H(TX2.pause)}" aria-label="${H(TX2.pause)}"><i class="fa-solid fa-pause"></i></button>
+              <button type="button" class="l3-tm" data-time="step" title="${H(TX2.step)}" aria-label="${H(TX2.step)}" disabled><i class="fa-solid fa-forward-step"></i></button>
+              <span class="l3-spd">${[0.25, 0.5, 1, 2].map((k) => `<button type="button" class="l3-tm ${k === 1 ? "on" : ""}" data-spd="${k}" aria-pressed="${k === 1}">${String(k).replace("0.", lang() === "en" ? "0." : "0,")}×</button>`).join("")}</span>
+              <button type="button" class="l3-tm l3-rst" data-time="reset" title="${H(TX2.resetAll)}" aria-label="${H(TX2.resetAll)}"><i class="fa-solid fa-arrow-rotate-left"></i></button>
             </div>
             <p class="l3-readout" data-readout aria-live="polite" hidden></p>
             <p class="small muted l3-hint">${H(TX.hint)}</p>
@@ -3402,6 +3598,15 @@
             .then(() => { b.setAttribute("aria-pressed", "true"); b.classList.add("on"); once("l3vr_" + exp.id, 2, TX.why); })
             .catch(() => { const a0 = App(); if (a0 && a0.toast) a0.toast(L(TX2.vrFail)); });
         }
+      });
+      const tbar = ROOT.querySelector(".l3-time");
+      if (tbar) tbar.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-time],[data-spd]"); if (!b || !view) return;
+        if (b.dataset.spd) { view.speed = +b.dataset.spd; tbar.querySelectorAll("[data-spd]").forEach((x) => { const on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-pressed", String(on)); }); return; }
+        const t = b.dataset.time;
+        if (t === "play") { view.paused = !view.paused; b.setAttribute("aria-pressed", String(!view.paused)); b.querySelector("i").className = "fa-solid " + (view.paused ? "fa-play" : "fa-pause"); b.classList.toggle("on", view.paused); tbar.querySelector('[data-time="step"]').disabled = !view.paused; }
+        if (t === "step" && view.paused) view.stepOnce();
+        if (t === "reset") mount();
       });
       /* WebXR қўллаб-қувватланса, VR тугмаси кўринади */
       if (navigator.xr && navigator.xr.isSessionSupported) {

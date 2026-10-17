@@ -1339,8 +1339,769 @@
           [t("Аккумуляторлар ва гидроаккумуляция станциялари", "Аккумуляторы и ГАЭС", "Batteries and pumped hydro"), t("Кўмир", "Уголь", "Coal"), t("Пахта", "Хлопок", "Cotton")], 0,
           t("ГАЭС сувни юқорига чиқариб, кейин туширади.", "ГАЭС закачивает воду наверх и затем сбрасывает её.", "Pumped hydro lifts water and later releases it."))
       ],
-      task: t("«Мактаб томига қуёш панели» мавзусида дебат ўтказинг: 3 афзаллик ва 3 камчиликни ёзиб, хулоса чиқаринг.", "Проведите дебаты «Солнечные панели на крыше школы»: 3 плюса, 3 минуса и вывод.", "Hold a debate on “solar panels on the school roof”: 3 pros, 3 cons and a verdict.") }
+      task: t("«Мактаб томига қуёш панели» мавзусида дебат ўтказинг: 3 афзаллик ва 3 камчиликни ёзиб, хулоса чиқаринг.", "Проведите дебаты «Солнечные панели на крыше школы»: 3 плюса, 3 минуса и вывод.", "Hold a debate on “solar panels on the school roof”: 3 pros, 3 cons and a verdict.") },
+
+    /* ---------- Ekomun 3.2: 40 та янги видео (26 таси ўзбекча), 2026-10-17 да oEmbed орқали текширилди ---------- */
+/* ---------- Янги видеолар (2026-10-17): ўзбек тилида ---------- */
+    { id: "v-organizm-uz", yt: "it6OQ1MkY-4", top: "asos", st: "m", lng: "uz", ch: "BIOLOG UZ", orig: "ORGANIZM VA TASHQI MUHIT HAQIDA | ОРГАНИЗМ ВА ТАШҚИ МУҲИТ ҲАҚИДА.", ck: "2026-10-17",
+      t: t("Организм ва ташқи муҳит", "Организм и внешняя среда", "The organism and its environment"),
+      sum: t("Ҳар бир организм атроф-муҳит омиллари таъсирида яшайди: абиотик, биотик ва антропоген. Ҳар бир омил учун организмнинг чидамлилик чегараси бор.", "Каждый организм живёт под действием факторов среды: абиотических, биотических и антропогенных. Для каждого фактора у организма есть пределы выносливости.", "Every organism lives under the influence of environmental factors: abiotic, biotic and human-made. For each factor an organism has limits of tolerance."),
+      pre: t("Нега кактус чўлда яшай олади-ю, ботқоқда ўлиб қолади?", "Почему кактус живёт в пустыне, но гибнет на болоте?", "Why can a cactus live in a desert but die in a swamp?"),
+      k: [
+        t("Экологик омиллар уч гуруҳга бўлинади: абиотик (ҳарорат, намлик, ёруғлик), биотик (бошқа организмлар) ва антропоген (инсон фаолияти).", "Экологические факторы делят на три группы: абиотические (температура, влажность, свет), биотические (другие организмы) и антропогенные (деятельность человека).", "Ecological factors fall into three groups: abiotic (temperature, moisture, light), biotic (other organisms) and anthropogenic (human activity)."),
+        t("Организм ҳар бир омилнинг маълум оралиғида (чидамлилик чегарасида) яшай олади; энг қулай нуқта — оптимум.", "Организм может жить лишь в определённом диапазоне каждого фактора (пределы выносливости); самая благоприятная точка — оптимум.", "An organism can live only within a certain range of each factor (its tolerance limits); the most favourable point is the optimum."),
+        t("Энг етишмайдиган омил ўсишни чеклайди (Либих минимум қонуни) — масалан, чўлда сув.", "Рост ограничивает фактор, находящийся в наибольшем недостатке (закон минимума Либиха), — например, вода в пустыне.", "Growth is limited by the scarcest factor (Liebig’s law of the minimum) — for example, water in a desert.")
+      ],
+      q: [
+        q(t("Қайси бири антропоген омил?", "Какой фактор антропогенный?", "Which factor is anthropogenic?"),
+          [t("Ёмғир", "Дождь", "Rain"), t("Заводдан чиқадиган тутун", "Дым завода", "Smoke from a factory"), t("Тулки овлаши", "Охота лисы", "A fox hunting")], 1,
+          t("Антропоген омил — инсон фаолияти натижаси.", "Антропогенный фактор — результат деятельности человека.", "An anthropogenic factor results from human activity.")),
+        q(t("Либих минимум қонунига кўра ўсишни нима чеклайди?", "Что ограничивает рост по закону минимума Либиха?", "Under Liebig’s law, what limits growth?"),
+          [t("Энг кўп бўлган омил", "Фактор, которого больше всего", "The most abundant factor"), t("Энг етишмайдиган омил", "Фактор в наибольшем недостатке", "The scarcest factor"), t("Фақат ҳарорат", "Только температура", "Only temperature")], 1,
+          t("Бочканинг энг калта тахтаси сингари, энг етишмайдиган омил чегара қўяди.", "Как самая короткая доска бочки, недостающий фактор задаёт предел.", "Like the shortest stave of a barrel, the scarcest factor sets the limit."))
+      ],
+      task: t("Уй ўсимлигини танланг ва унинг учун 3 та абиотик омилни (ёруғлик, сув, ҳарорат) кузатиб, қайси бири чекловчи эканини ёзинг.", "Выберите комнатное растение, понаблюдайте 3 абиотических фактора (свет, вода, температура) и напишите, какой из них ограничивающий.", "Pick a house plant, observe 3 abiotic factors (light, water, temperature) and write which one is limiting.") },
+
+    { id: "v-orol-kema-uz", yt: "ShMweQybvoY", top: "orol", st: "m", lng: "uz", ch: "JC CameraMan", orig: "Orol dengizi fojiasi, kemalar qabristoni", ck: "2026-10-17",
+      t: t("Орол фожиаси: кемалар қабристони", "Трагедия Арала: кладбище кораблей", "The Aral tragedy: a ship graveyard"),
+      sum: t("Бир вақтлар порт бўлган Мўйноқда энди қумда занглаган кемалар турибди. Улар Орол денгизи қанчалик тез чекинганининг жонли гувоҳи.", "В Муйнаке, бывшем порту, теперь на песке стоят ржавые корабли — живые свидетели того, как быстро отступило Аральское море.", "In Muynak, once a port, rusting ships now stand on sand — living witnesses of how fast the Aral Sea retreated."),
+      pre: t("Нега кемалар сувсиз, қум устида қолиб кетган бўлиши мумкин? Тахминингизни ёзинг.", "Почему корабли могли остаться на песке без воды? Запишите догадку.", "Why might ships be left stranded on sand with no water? Write down your guess."),
+      k: [
+        t("Мўйноқ шаҳри 1960-йилларгача балиқчилик порти эди; ҳозир денгиз соҳили ундан 100 км дан ҳам узоқда.", "Муйнак до 1960-х был рыболовецким портом; сейчас берег моря более чем в 100 км от него.", "Muynak was a fishing port until the 1960s; today the shoreline is more than 100 km away."),
+        t("Денгиз асосан Амударё ва Сирдарё сувининг пахта суғоришига олиниши туфайли қуриди.", "Море высохло главным образом из-за забора воды Амударьи и Сырдарьи на орошение хлопка.", "The sea dried up mainly because Amu Darya and Syr Darya water was taken to irrigate cotton."),
+        t("Кемалар қабристони бугун эслатма ва туризм объекти: у сувни оқилона ишлатиш зарурлигини кўрсатади.", "Кладбище кораблей сегодня — памятник и туристический объект, напоминающий о бережном отношении к воде.", "The ship graveyard is now a memorial and tourist site reminding us to use water wisely.")
+      ],
+      q: [
+        q(t("Мўйноқ олдин қандай шаҳар эди?", "Каким городом был раньше Муйнак?", "What kind of town was Muynak before?"),
+          [t("Балиқчилик порти", "Рыболовецкий порт", "A fishing port"), t("Тоғ курорти", "Горный курорт", "A mountain resort"), t("Нефть шаҳри", "Нефтяной город", "An oil town")], 0,
+          t("Мўйноқда балиқ консерва заводи ва флот бўлган.", "В Муйнаке были рыбоконсервный завод и флот.", "Muynak had a fish cannery and a fishing fleet.")),
+        q(t("Орол қуришининг асосий сабаби нима?", "Главная причина высыхания Арала?", "What is the main cause of the Aral drying up?"),
+          [t("Дарё сувининг суғоришга олиниши", "Забор речной воды на орошение", "River water taken for irrigation"), t("Зилзила", "Землетрясение", "An earthquake"), t("Денгизга метеорит тушиши", "Падение метеорита", "A meteorite impact")], 0,
+          t("Амударё ва Сирдарё суви далаларга бурилгач, денгизга оз сув етиб борди.", "Когда воду рек отвели на поля, до моря стало доходить мало воды.", "Once river water was diverted to fields, little reached the sea."))
+      ],
+      task: t("Орол харитасини 1960 ва бугунги ҳолатда чизинг ва Мўйноқни белгиланг.", "Нарисуйте карту Арала в 1960 году и сегодня и отметьте Муйнак.", "Draw the Aral Sea in 1960 and today and mark Muynak.") },
+
+    { id: "v-orol-undp-uz", yt: "l3b5OxXkpDA", top: "orol", st: "u", lng: "uz", ch: "UNDP Uzbekistan", orig: "Akiko Fujii Orol dengizi fojiasi va uning atrof-muhit, iqtisodiyot va aholi hayotiga ta’siri haqida", ck: "2026-10-17",
+      t: t("БМТТД: Орол фожиасининг табиат, иқтисод ва аҳолига таъсири", "ПРООН: влияние трагедии Арала на природу, экономику и людей", "UNDP: how the Aral disaster affects nature, the economy and people"),
+      sum: t("БМТ Тараққиёт дастури вакили Орол фожиаси уч томонлама — экологик, иқтисодий ва ижтимоий муаммо эканини тушунтиради.", "Представитель ПРООН объясняет, что трагедия Арала — проблема сразу экологическая, экономическая и социальная.", "A UNDP representative explains that the Aral disaster is at once an environmental, economic and social problem."),
+      pre: t("Денгизнинг қуриши одамларнинг соғлиғи ва иш жойларига қандай таъсир қилиши мумкин?", "Как высыхание моря может повлиять на здоровье и работу людей?", "How might a drying sea affect people’s health and jobs?"),
+      k: [
+        t("Экологик таъсир: туз ва чанг бўронлари, тупроқ шўрланиши, тўқай ва дельта экотизимларининг йўқолиши.", "Экологические последствия: солевые и пыльные бури, засоление почв, гибель тугаев и дельтовых экосистем.", "Environmental impact: salt and dust storms, soil salinisation, loss of tugai and delta ecosystems."),
+        t("Иқтисодий таъсир: балиқчилик ва у билан боғлиқ саноат йўқолди, ишсизлик ва миграция кучайди.", "Экономические последствия: исчезли рыболовство и связанная промышленность, выросли безработица и миграция.", "Economic impact: fishing and related industry vanished, unemployment and migration rose."),
+        t("Ижтимоий таъсир: ичимлик суви сифати ва аҳоли соғлиғи ёмонлашди; БМТ ва ҳукумат ҳудудни тиклаш дастурларини олиб бормоқда.", "Социальные последствия: ухудшились качество питьевой воды и здоровье людей; ООН и правительство ведут программы восстановления региона.", "Social impact: drinking-water quality and public health declined; the UN and government run programmes to restore the region.")
+      ],
+      q: [
+        q(t("Қайси бири Орол фожиасининг иқтисодий оқибати?", "Что является экономическим последствием?", "Which is an economic consequence?"),
+          [t("Балиқчиликнинг йўқолиши", "Исчезновение рыболовства", "The loss of fishing"), t("Туз бўронлари", "Солевые бури", "Salt storms"), t("Ҳаво ҳароратининг ўзгариши", "Изменение температуры", "A change in temperature")], 0,
+          t("Балиқчилик ҳудуднинг асосий даромад манбаи эди.", "Рыболовство было главным источником дохода региона.", "Fishing was the region’s main source of income.")),
+        q(t("Нега Орол муаммоси «уч томонлама» дейилади?", "Почему проблему Арала называют «тройной»?", "Why is the Aral problem called “three-sided”?"),
+          [t("У экология, иқтисод ва ижтимоий соҳага тегади", "Она затрагивает экологию, экономику и общество", "It touches ecology, the economy and society"), t("Учта давлатда бор", "Она есть в трёх странах", "It exists in three countries"), t("Уч йилда бошланган", "Началась за три года", "It began in three years")], 0,
+          t("Барқарор ривожланиш ҳам худди шу уч устунга таянади.", "Устойчивое развитие опирается на те же три опоры.", "Sustainable development rests on the same three pillars."))
+      ],
+      task: t("Орол бўйи аҳолиси учун 3 та ёрдам лойиҳасини (экологик, иқтисодий, ижтимоий) таклиф қилинг.", "Предложите 3 проекта помощи жителям Приаралья: экологический, экономический и социальный.", "Propose 3 projects to help people of the Aral region: environmental, economic and social.") },
+
+    { id: "v-orol-sabab-uz", yt: "fIMwKCrDZc8", top: "orol", st: "m", lng: "uz", ch: "GEO OLAM", orig: "OROL DENGIZI QURISH SABABLARI VA OQIBATI", ck: "2026-10-17",
+      t: t("Орол денгизи қуришининг сабаблари ва оқибатлари", "Причины и последствия высыхания Арала", "Why the Aral Sea dried up and what followed"),
+      sum: t("География нуқтаи назаридан Орол қуришининг сабаблари (дарё сувининг суғоришга олиниши) ва оқибатлари (Оролқум чўли, шўрланиш, иқлим ўзгариши) кўриб чиқилади.", "С точки зрения географии разбираются причины (забор речной воды на орошение) и последствия (пустыня Аралкум, засоление, изменение климата) высыхания Арала.", "From a geography viewpoint: the causes (river water taken for irrigation) and consequences (the Aralkum desert, salinisation, local climate change) of the Aral’s drying."),
+      pre: t("Сабаб ва оқибатни ажратинг: «пахта майдонлари кенгайди» ва «чанг бўронлари кўпайди» — қайси бири сабаб?", "Различите причину и следствие: «расширились хлопковые поля» и «участились пыльные бури» — что из них причина?", "Separate cause and effect: “cotton fields expanded” and “dust storms increased” — which is the cause?"),
+      k: [
+        t("Орол 1960 йилда дунёдаги тўртинчи энг катта кўл эди (≈68 минг км²).", "В 1960 году Арал был четвёртым по площади озером мира (≈68 тыс. км²).", "In 1960 the Aral was the world’s fourth-largest lake (≈68,000 km²)."),
+        t("Амударё ва Сирдарё суви каналлар орқали суғоришга олингач, денгиз сувининг катта қисми йўқолди ва шўрлиги кескин ошди.", "Когда воду Амударьи и Сырдарьи отвели каналами на орошение, море потеряло бо́льшую часть воды, а солёность резко выросла.", "When Amu Darya and Syr Darya water was channelled to irrigation, the sea lost most of its water and its salinity soared."),
+        t("Қуриган тубда Оролқум чўли пайдо бўлди; ундан кўтариладиган туз ва чанг минглаб километрга тарқалади.", "На осушенном дне возникла пустыня Аралкум; соль и пыль с неё разносятся на тысячи километров.", "The exposed bed became the Aralkum desert; salt and dust from it spread for thousands of kilometres.")
+      ],
+      q: [
+        q(t("1960 йилда Орол дунёдаги нечанчи энг катта кўл эди?", "Каким по площади озером мира был Арал в 1960 году?", "How did the Aral rank among the world’s lakes in 1960?"),
+          [t("Тўртинчи", "Четвёртым", "Fourth"), t("Биринчи", "Первым", "First"), t("Йигирманчи", "Двадцатым", "Twentieth")], 0,
+          t("Каспий, Юқори кўл ва Виктория кўлидан кейин.", "После Каспия, Верхнего озера и Виктории.", "After the Caspian, Lake Superior and Lake Victoria.")),
+        q(t("Оролқум нима?", "Что такое Аралкум?", "What is the Aralkum?"),
+          [t("Денгизнинг қуриган тубида пайдо бўлган чўл", "Пустыня на осушенном дне моря", "A desert on the dried sea bed"), t("Янги сув омбори", "Новое водохранилище", "A new reservoir"), t("Тоғ тизмаси", "Горный хребет", "A mountain range")], 0,
+          t("Оролқум — дунёдаги энг ёш чўллардан бири.", "Аралкум — одна из самых молодых пустынь мира.", "The Aralkum is one of the youngest deserts on Earth."))
+      ],
+      task: t("«Сабаб → оқибат» занжирини тузинг: суғориш → … → чанг бўронлари → … (камида 5 бўғин).", "Составьте цепочку «причина → следствие»: орошение → … → пыльные бури → … (не меньше 5 звеньев).", "Build a cause → effect chain: irrigation → … → dust storms → … (at least 5 links).") },
+
+    { id: "v-moynoq-uz", yt: "dy1Fs0fUjQE", top: "orol", st: "m", lng: "uz", ch: "Davronbek Tojialiyev", orig: "Moʻynoq, Orol dengizi tubiga sayohat | Мўйноқ, Орол денгизи тубига саёҳат", ck: "2026-10-17",
+      t: t("Мўйноқ: Орол денгизи тубига саёҳат", "Муйнак: путешествие по дну Аральского моря", "Muynak: a trip across the Aral Sea bed"),
+      sum: t("Саёҳатчи Мўйноқдан денгизнинг собиқ тубига йўл олади: бир вақтлар сув бўлган жой энди қум, туз ва чўл ўсимликлари билан қопланган.", "Путешественник едет из Муйнака по бывшему дну моря: там, где была вода, теперь песок, соль и пустынные растения.", "A traveller heads out from Muynak across the former sea bed: where there was water there is now sand, salt and desert plants."),
+      pre: t("Денгиз туби қуригач, у ерда биринчи бўлиб қандай ўсимликлар пайдо бўлиши мумкин?", "Какие растения могут первыми появиться на высохшем дне моря?", "Which plants might appear first on a dried-out sea bed?"),
+      k: [
+        t("Собиқ денгиз тубида шўрга чидамли ўсимликлар — саксовул, шўра, юлғун — ўсади.", "На бывшем дне растут солеустойчивые растения — саксаул, солянки, тамариск.", "Salt-tolerant plants — saxaul, saltworts, tamarisk — grow on the former sea bed."),
+        t("Қуруқ, шўр юза шамолда чанг ва туз кўтаради — бу аҳоли ва экинлар учун хавфли.", "Сухая солёная поверхность поднимает на ветру пыль и соль — это опасно для людей и посевов.", "The dry, salty surface lifts dust and salt in the wind — a hazard for people and crops."),
+        t("Мўйноқ бугун эко-туризм ва «Stihia» каби тадбирлар орқали ҳудудга эътибор қаратмоқда.", "Сегодня Муйнак привлекает внимание к региону через экотуризм и события вроде фестиваля «Stihia».", "Today Muynak draws attention to the region through eco-tourism and events such as the Stihia festival.")
+      ],
+      q: [
+        q(t("Қайси ўсимлик шўр қумда яхши ўсади?", "Какое растение хорошо растёт на солёном песке?", "Which plant grows well on salty sand?"),
+          [t("Саксовул", "Саксаул", "Saxaul"), t("Шолғом", "Репа", "Turnip"), t("Гилос", "Черешня", "Cherry")], 0,
+          t("Саксовулнинг илдизлари чуқур ва у шўрга чидамли.", "У саксаула глубокие корни и он солеустойчив.", "Saxaul has deep roots and tolerates salt.")),
+        q(t("Қуриган денгиз тубининг асосий хавфи нима?", "Главная опасность высохшего дна?", "What is the main hazard of a dried sea bed?"),
+          [t("Туз ва чанг бўронлари", "Солевые и пыльные бури", "Salt and dust storms"), t("Сув тошқини", "Наводнение", "Flooding"), t("Вулқон", "Вулкан", "A volcano")], 0,
+          t("Шамол тузни узоқ масофаларга олиб кетади.", "Ветер уносит соль на большие расстояния.", "Wind carries the salt over long distances."))
+      ],
+      task: t("Видеода кўрган 3 та манзарани тасвирланг ва ҳар бирини Орол фожиасининг қайси оқибатига боғланг.", "Опишите 3 увиденных в видео пейзажа и свяжите каждый с последствием трагедии Арала.", "Describe 3 scenes from the video and link each to a consequence of the Aral disaster.") },
+
+    { id: "v-orol-yolchi-uz", yt: "aLlIAjDumwY", top: "orol", st: "", lng: "uz", ch: "Yo'lchi TV", orig: "Orol dengizi", ck: "2026-10-17",
+      t: t("Орол денгизи бугун", "Аральское море сегодня", "The Aral Sea today"),
+      sum: t("Йўл-видео бугунги Орол денгизи ва унинг атрофини кўрсатади. Кўриш давомида денгизнинг катталиги, сув ва соҳил ҳолатига эътибор беринг.", "Видео-путешествие показывает сегодняшнее Аральское море и его окрестности. Обратите внимание на размеры моря, воду и берега.", "A travel video shows the Aral Sea and its surroundings today. Pay attention to the size of the sea, the water and the shores."),
+      pre: t("Сизнингча, Оролнинг ҳали ҳам сув бор қисмлари қаерда?", "Как вы думаете, где у Арала ещё осталась вода?", "Where do you think the Aral still has water?"),
+      k: [
+        t("1980-йиллар охирида Орол Шимолий (Кичик) ва Жанубий (Катта) Оролга бўлиниб кетди.", "В конце 1980-х Арал разделился на Северный (Малый) и Южный (Большой).", "In the late 1980s the Aral split into the North (Small) and South (Large) Aral."),
+        t("Қозоғистондаги Кўкарал тўғони (2005) туфайли Кичик Оролда сув сатҳи кўтарилиб, балиқчилик қисман тикланди.", "Благодаря Кокаральской плотине (2005) в Казахстане уровень Малого Арала поднялся и рыболовство частично восстановилось.", "Thanks to the Kokaral Dam (2005) in Kazakhstan, the Small Aral’s level rose and fishing partly recovered."),
+        t("Жанубий Оролнинг шарқий қисми деярли қуриган, ғарбий қисмида эса жуда шўр сув сақланиб қолган.", "Восточная часть Южного Арала почти высохла, а в западной сохранилась очень солёная вода.", "The eastern South Aral has almost dried out, while the western part keeps very salty water.")
+      ],
+      q: [
+        q(t("Кичик Оролни қутқаришга нима ёрдам берди?", "Что помогло спасти Малый Арал?", "What helped save the Small Aral?"),
+          [t("Кўкарал тўғони", "Кокаральская плотина", "The Kokaral Dam"), t("Янги канал қазиш", "Новый оросительный канал", "A new irrigation canal"), t("Кўпроқ пахта экиш", "Больше хлопка", "Planting more cotton")], 0,
+          t("Тўғон Сирдарё сувини Кичик Оролда ушлаб қолди.", "Плотина удержала воду Сырдарьи в Малом Арале.", "The dam held Syr Darya water in the Small Aral.")),
+        q(t("Орол қачон иккига бўлинди?", "Когда Арал разделился надвое?", "When did the Aral split in two?"),
+          [t("1980-йиллар охирида", "В конце 1980-х", "In the late 1980s"), t("1900 йилда", "В 1900 году", "In 1900"), t("2020 йилда", "В 2020 году", "In 2020")], 0,
+          t("Сув сатҳи пасайгач, денгиз туби орол бўлиб чиқди.", "Когда уровень упал, дно разделило море на части.", "As the level dropped, the sea bed split it into parts."))
+      ],
+      task: t("Харитада Шимолий ва Жанубий Оролни, Сирдарё ва Амударёни белгиланг ва Кўкарал тўғонини кўрсатинг.", "Отметьте на карте Северный и Южный Арал, Сырдарью, Амударью и Кокаральскую плотину.", "On a map, mark the North and South Aral, the Syr Darya, the Amu Darya and the Kokaral Dam.") },
+
+    { id: "v-orol-ormon-uz", yt: "Xl7IJq2rozs", top: "yer", st: "", lng: "uz", ch: "BBC News Uzbek", orig: "Ўзбекистон Орол тубини ўрмонга айлантирмоқда", ck: "2026-10-17",
+      t: t("Орол тубида ўрмон барпо қилиш", "Лес на дне Арала", "Growing a forest on the Aral sea bed"),
+      sum: t("Ўзбекистон қуриган Орол тубида саксовул ва бошқа чўл ўсимликлари экиб, туз-чанг бўронларини камайтириш ва қумни мустаҳкамлашга ҳаракат қилмоқда.", "Узбекистан сажает саксаул и другие пустынные растения на высохшем дне Арала, чтобы закрепить пески и ослабить солевые бури.", "Uzbekistan is planting saxaul and other desert plants on the dried Aral bed to fix the sand and reduce salt-dust storms."),
+      pre: t("Нега чўлда айнан саксовул экилади, терак эмас?", "Почему в пустыне сажают именно саксаул, а не тополь?", "Why plant saxaul in the desert rather than poplar?"),
+      k: [
+        t("Саксовул қурғоқчилик ва шўрга чидамли, илдизлари қумни ушлаб туради.", "Саксаул устойчив к засухе и засолению, его корни удерживают песок.", "Saxaul tolerates drought and salt, and its roots hold the sand."),
+        t("Ўсимлик қоплами шамол тезлигини пасайтиради ва туз-чанг кўтарилишини камайтиради.", "Растительный покров снижает скорость ветра и вынос соли и пыли.", "Plant cover lowers wind speed and reduces salt and dust uplift."),
+        t("Экилган кўчатларнинг ҳаммаси ҳам кўкармайди: муваффақият уруғ сифати, экиш вақти ва парваришга боғлиқ.", "Приживаются не все посадки: успех зависит от качества семян, сроков и ухода.", "Not all plantings survive: success depends on seed quality, timing and care.")
+      ],
+      q: [
+        q(t("Орол тубига кўпинча қайси ўсимлик экилади?", "Что чаще всего сажают на дне Арала?", "What is most often planted on the Aral bed?"),
+          [t("Саксовул", "Саксаул", "Saxaul"), t("Шоли", "Рис", "Rice"), t("Олма", "Яблоня", "Apple trees")], 0,
+          t("Саксовул — чўл шароитига мослашган бута-дарахт.", "Саксаул — кустарник-дерево, приспособленное к пустыне.", "Saxaul is a desert-adapted shrubby tree.")),
+        q(t("Ўрмон полосалари бу ерда асосан нима учун керак?", "Зачем здесь в основном нужны лесополосы?", "What are the plantations mainly for?"),
+          [t("Қум ва тузни ушлаб, бўронларни камайтириш", "Закрепить песок и соль, ослабить бури", "To fix sand and salt and reduce storms"), t("Ёғоч сотиш", "Продажа древесины", "To sell timber"), t("Денгизни тўлдириш", "Наполнить море", "To refill the sea")], 0,
+          t("Ўсимликлар денгизни қайтармайди, лекин чангни камайтиради.", "Растения не вернут море, но уменьшат пыль.", "Plants will not bring the sea back, but they cut the dust."))
+      ],
+      task: t("Мактаб ҳовлиси учун «шамолдан ҳимоя полосаси» схемасини чизинг: қайси ўсимликларни, қаерга экардингиз?", "Нарисуйте схему ветрозащитной полосы для школы: какие растения и где бы вы посадили?", "Sketch a windbreak plan for your school: which plants would you plant, and where?") },
+
+    { id: "v-iqlim-fantex-uz", yt: "Qi8E5Kto_4c", top: "iqlim", st: "", lng: "uz", ch: "FANTEX", orig: "Global Iqlim O'zgarishi: Insoniyat Omon Qoladimi?", ck: "2026-10-17",
+      t: t("Глобал иқлим ўзгариши: инсоният омон қоладими?", "Глобальное изменение климата: выживет ли человечество?", "Global climate change: will humanity survive?"),
+      sum: t("Илмий-оммабоп видео иқлим ўзгаришининг хавфлари ҳақида. Олимлар фикрича, иқлим ўзгариши жиддий хавф, лекин инсониятни «йўқ қилмайди» — оқибатлар биз ҳозир қиладиган танловга боғлиқ.", "Научно-популярное видео о рисках изменения климата. По оценкам учёных, это серьёзная угроза, но не «конец человечества» — последствия зависят от наших сегодняшних решений.", "A popular-science video on climate risks. Scientists see climate change as a serious threat but not the “end of humanity” — the outcome depends on choices we make now."),
+      pre: t("Иқлим ўзгариши ҳақида эшитган энг қўрқинчли гапингиз нима? Видеодан кейин у қанчалик илмий эканини текширинг.", "Какое самое страшное утверждение о климате вы слышали? После видео проверьте, насколько оно научно.", "What is the scariest climate claim you have heard? After the video, check how scientific it is."),
+      k: [
+        t("IPCC маълумотига кўра, Ер саноатлашувдан олдинги даврга нисбатан тахминан 1,1 °C га исиган.", "По данным МГЭИК, Земля потеплела примерно на 1,1 °C по сравнению с доиндустриальной эпохой.", "According to the IPCC, Earth has warmed by about 1.1 °C since pre-industrial times."),
+        t("Хавфлар: иссиқ тўлқинлар, қурғоқчилик, денгиз сатҳи кўтарилиши, ҳосилдорликнинг пасайиши.", "Риски: волны жары, засухи, подъём уровня моря, снижение урожаев.", "Risks: heatwaves, droughts, sea-level rise, falling crop yields."),
+        t("Ҳар бир даража ўндан бир қисми муҳим: исишни 1,5 °C да тўхтатиш 2 °C га нисбатан зарарни сезиларли камайтиради.", "Важна каждая десятая градуса: остановить потепление на 1,5 °C гораздо лучше, чем на 2 °C.", "Every tenth of a degree matters: stopping at 1.5 °C avoids much more damage than 2 °C.")
+      ],
+      q: [
+        q(t("Ер саноатлашувдан бери тахминан қанча исиди?", "Насколько потеплела Земля с доиндустриальной эпохи?", "How much has Earth warmed since pre-industrial times?"),
+          [t("≈1,1 °C", "≈1,1 °C", "≈1.1 °C"), t("≈10 °C", "≈10 °C", "≈10 °C"), t("Умуман исимаган", "Не потеплела", "Not at all")], 0,
+          t("Бу IPCC AR6 (2021) баҳоси.", "Это оценка МГЭИК AR6 (2021).", "This is the IPCC AR6 (2021) estimate.")),
+        q(t("Нима учун 1,5 °C ва 2 °C ўртасидаги фарқ муҳим?", "Почему важна разница между 1,5 °C и 2 °C?", "Why does the gap between 1.5 °C and 2 °C matter?"),
+          [t("Ҳар бир қўшимча исиш хавфларни оширади", "Каждое дополнительное потепление увеличивает риски", "Each extra bit of warming raises risks"), t("Фарқи йўқ", "Разницы нет", "There is no difference"), t("2 °C хавфсизроқ", "2 °C безопаснее", "2 °C is safer")], 0,
+          t("Масалан, 2 °C да маржон рифларининг деярли барчаси йўқолиши мумкин.", "Например, при 2 °C могут погибнуть почти все коралловые рифы.", "For example, at 2 °C nearly all coral reefs could be lost."))
+      ],
+      task: t("Видеодаги битта даъвони танланг ва уни NASA ёки IPCC сайтидаги маълумот билан солиштиринг.", "Выберите одно утверждение из видео и сверьте его с данными NASA или МГЭИК.", "Pick one claim from the video and check it against NASA or IPCC data.") },
+
+    { id: "v-iqlim-daryo-uz", yt: "Z8P-c2xeqFs", top: "iqlim", st: "", lng: "uz", ch: "Daryo", orig: "Iqlim oʻzgarishi: Oʻzbekistonda endi qor yogʻmasligi, qurgʻoqchilik avj olishi rostmi?", ck: "2026-10-17",
+      t: t("Ўзбекистонда қор камаяди, қурғоқчилик кучаяди — ростми?", "В Узбекистане исчезнет снег и усилится засуха — правда ли?", "Will Uzbekistan lose its snow and face more drought — is it true?"),
+      sum: t("Daryo репортажи Ўзбекистонда иқлим ўзгариши — қорнинг камайиши ва қурғоқчилик хавфи ҳақидаги саволларни муҳокама қилади.", "Репортаж Daryo обсуждает вопросы изменения климата в Узбекистане — сокращение снега и риск засух.", "A Daryo report discusses climate change in Uzbekistan — less snow and the risk of drought."),
+      pre: t("Сиз эслаган қишлар билан ҳозирги қишлар орасида фарқ борми?", "Есть ли разница между зимами, которые помните вы, и нынешними?", "Do the winters you remember differ from today’s?"),
+      k: [
+        t("Марказий Осиё жаҳон ўртачасидан тезроқ исимоқда.", "Центральная Азия нагревается быстрее среднемирового.", "Central Asia is warming faster than the global average."),
+        t("Амударё ва Сирдарё тоғлардаги қор ва музликлардан озиқланади; қор камайса, ёзда дарё суви ҳам камаяди.", "Амударья и Сырдарья питаются снегом и ледниками гор; меньше снега — меньше воды летом.", "The Amu Darya and Syr Darya are fed by mountain snow and glaciers; less snow means less summer river water."),
+        t("Бир йиллик об-ҳаво (масалан, қорсиз қиш) иқлим эмас — иқлим 30 йиллик ўртача кўрсаткич.", "Погода одного года (например, бесснежная зима) — ещё не климат; климат — это среднее за 30 лет.", "One year’s weather (say, a snowless winter) is not climate — climate is the 30-year average.")
+      ],
+      q: [
+        q(t("Ўзбекистон дарёлари асосан нимадан озиқланади?", "Чем в основном питаются реки Узбекистана?", "What mainly feeds Uzbekistan’s rivers?"),
+          [t("Тоғ қорлари ва музликлардан", "Горными снегами и ледниками", "Mountain snow and glaciers"), t("Денгиз сувидан", "Морской водой", "Sea water"), t("Фақат ёмғирдан", "Только дождём", "Only rain")], 0,
+          t("Шунинг учун тоғларда қор камайиши хавфли.", "Поэтому сокращение снега в горах опасно.", "That is why less mountain snow is dangerous.")),
+        q(t("Иқлим ва об-ҳаво фарқи нимада?", "Чем климат отличается от погоды?", "How does climate differ from weather?"),
+          [t("Иқлим — узоқ муддатли ўртача, об-ҳаво — ҳозирги ҳолат", "Климат — многолетнее среднее, погода — текущее состояние", "Climate is the long-term average; weather is the current state"), t("Улар бир хил", "Это одно и то же", "They are the same"), t("Об-ҳаво узоқроқ давом этади", "Погода длится дольше", "Weather lasts longer")], 0,
+          t("ЖМТ (WMO) иқлимни 30 йиллик давр бўйича ҳисоблайди.", "ВМО считает климат по 30-летним периодам.", "The WMO defines climate over 30-year periods."))
+      ],
+      task: t("Оила аъзоларингиздан 20–30 йил олдинги қишлар ҳақида сўраб, 3 та фарқни ёзинг.", "Расспросите родных о зимах 20–30 лет назад и запишите 3 отличия.", "Ask relatives about winters 20–30 years ago and write down 3 differences.") },
+
+    { id: "v-iqlim-voa-uz", yt: "lFPd4NgPswU", top: "iqlim", st: "", lng: "uz", ch: "Amerika Ovozi", orig: "Iqlim o'zgarishi qanchalar xavotirli?", ck: "2026-10-17",
+      t: t("Иқлим ўзгариши қанчалик хавотирли?", "Насколько тревожно изменение климата?", "How worrying is climate change?"),
+      sum: t("«Америка овози» иқлим ўзгаришининг жиддийлиги ҳақида сўз юритади. Асосий хулоса: исиш инсон фаолияти туфайли, хавф реал, лекин чоралар ҳали ҳам ёрдам беради.", "«Голос Америки» рассказывает о серьёзности изменения климата. Главный вывод: потепление вызвано человеком, риск реален, но меры ещё помогают.", "Voice of America discusses how serious climate change is. Key point: warming is human-caused, the risk is real, but action still helps."),
+      pre: t("Иқлим ўзгариши сизнинг шаҳрингизга қандай таъсир қилиши мумкин? 2 та фикр ёзинг.", "Как изменение климата может повлиять на ваш город? Запишите 2 мысли.", "How might climate change affect your town? Write down 2 ideas."),
+      k: [
+        t("Исишнинг асосий сабаби — кўмир, нефть ва газ ёқишдан чиқадиган CO₂.", "Главная причина потепления — CO₂ от сжигания угля, нефти и газа.", "The main cause of warming is CO₂ from burning coal, oil and gas."),
+        t("Атмосферадаги CO₂ миқдори 280 ppm дан 420 ppm дан ортиққа кўтарилди.", "Концентрация CO₂ в атмосфере выросла с 280 до более чем 420 ppm.", "Atmospheric CO₂ has risen from 280 ppm to over 420 ppm."),
+        t("Париж келишуви (2015) исишни 2 °C дан анча паст, имкон қадар 1,5 °C да ушлашни мақсад қилган.", "Парижское соглашение (2015) ставит цель удержать потепление намного ниже 2 °C, по возможности на 1,5 °C.", "The Paris Agreement (2015) aims to keep warming well below 2 °C, ideally 1.5 °C.")
+      ],
+      q: [
+        q(t("Ҳозирги исишнинг асосий сабаби нима?", "Главная причина нынешнего потепления?", "What is the main cause of current warming?"),
+          [t("Қазилма ёқилғиларни ёқиш", "Сжигание ископаемого топлива", "Burning fossil fuels"), t("Қуёш фаоллигининг кескин ошиши", "Резкий рост активности Солнца", "A sharp rise in solar activity"), t("Вулқонлар", "Вулканы", "Volcanoes")], 0,
+          t("Қуёш фаоллиги охирги ўн йилликларда деярли ўзгармаган.", "Активность Солнца в последние десятилетия почти не менялась.", "Solar activity has barely changed in recent decades.")),
+        q(t("Париж келишувининг мақсади қайси?", "Какова цель Парижского соглашения?", "What is the Paris Agreement goal?"),
+          [t("Исишни 2 °C дан паст, имкон бўлса 1,5 °C да ушлаш", "Удержать потепление ниже 2 °C, по возможности 1,5 °C", "Keep warming below 2 °C, ideally 1.5 °C"), t("Ҳароратни 5 °C га тушириш", "Снизить температуру на 5 °C", "Cut temperature by 5 °C"), t("Нефть қазишни ошириш", "Увеличить добычу нефти", "Increase oil drilling")], 0,
+          t("Келишув 2015 йилда Парижда қабул қилинган.", "Соглашение принято в Париже в 2015 году.", "It was adopted in Paris in 2015."))
+      ],
+      task: t("Оилангиз бир кунда энергия ишлатадиган 5 та ҳолатни ёзинг ва уларнинг қайси бирида тежаш мумкинлигини белгиланг.", "Запишите 5 случаев, когда ваша семья тратит энергию за день, и отметьте, где можно сэкономить.", "List 5 ways your family uses energy in a day and mark where you could save.") },
+
+    { id: "v-iqlim-kun-uz", yt: "o6eKf2Ebxh4", top: "iqlim", st: "u", lng: "uz", ch: "KunUZ", orig: "Iqlim o‘zgarishiga qarshi kurash: dunyo nimaga erishdi?", ck: "2026-10-17",
+      t: t("Иқлим ўзгаришига қарши кураш: дунё нимага эришди?", "Борьба с изменением климата: чего добился мир?", "Fighting climate change: what has the world achieved?"),
+      sum: t("Kun.uz иқлим ўзгаришига қарши халқаро саъй-ҳаракатлар натижаларини таҳлил қилади: келишувлар, ваъдалар ва ҳақиқий натижалар ўртасидаги фарқ.", "Kun.uz разбирает итоги международной борьбы с изменением климата: соглашения, обещания и реальные результаты.", "Kun.uz reviews the results of international climate action: agreements, pledges and actual outcomes."),
+      pre: t("Сизнингча, давлатлар иқлим бўйича ўз ваъдаларини бажармоқдами?", "Как вы думаете, выполняют ли страны свои климатические обещания?", "Do you think countries are keeping their climate promises?"),
+      k: [
+        t("Асосий ҳужжатлар: БМТ Иқлим конвенцияси (1992), Киото протоколи (1997), Париж келишуви (2015).", "Ключевые документы: Рамочная конвенция ООН (1992), Киотский протокол (1997), Парижское соглашение (2015).", "Key documents: the UN Framework Convention (1992), the Kyoto Protocol (1997), the Paris Agreement (2015)."),
+        t("Ютуқлар: қуёш ва шамол энергияси кескин арзонлашиб, жуда тез ўсмоқда.", "Достижения: солнечная и ветровая энергия резко подешевели и быстро растут.", "Achievements: solar and wind power have become much cheaper and are growing fast."),
+        t("Муаммо: жаҳон чиқиндилари ҳали ҳам юқори; UNEP «тафовут ҳисоботи»га кўра ҳозирги ваъдалар 1,5 °C учун етарли эмас.", "Проблема: мировые выбросы всё ещё высоки; по «Докладу о разрыве» UNEP нынешних обещаний недостаточно для 1,5 °C.", "Problem: global emissions are still high; UNEP’s Emissions Gap Report finds current pledges are not enough for 1.5 °C.")
+      ],
+      q: [
+        q(t("Париж келишуви қачон қабул қилинган?", "Когда принято Парижское соглашение?", "When was the Paris Agreement adopted?"),
+          [t("2015 йил", "2015 год", "2015"), t("1972 йил", "1972 год", "1972"), t("2030 йил", "2030 год", "2030")], 0,
+          t("COP21 конференциясида.", "На конференции COP21.", "At the COP21 conference.")),
+        q(t("UNEP «тафовут ҳисоботи» нимани кўрсатади?", "Что показывает «Доклад о разрыве» UNEP?", "What does UNEP’s Emissions Gap Report show?"),
+          [t("Ваъдалар ва зарур қисқартириш ўртасидаги фарқни", "Разрыв между обещаниями и нужным сокращением выбросов", "The gap between pledges and the cuts needed"), t("Бой ва камбағал ўртасидаги фарқни", "Разрыв между богатыми и бедными", "The gap between rich and poor"), t("Музликлар орасидаги масофани", "Расстояние между ледниками", "The distance between glaciers")], 0,
+          t("Ҳисобот ҳар йили чиқади.", "Доклад выходит ежегодно.", "The report is published every year."))
+      ],
+      task: t("Ўзбекистоннинг иқлим бўйича битта миллий мақсадини топинг (масалан, қайта тикланувчи энергия улуши) ва унинг бажарилишини баҳоланг.", "Найдите одну национальную климатическую цель Узбекистана (например, долю ВИЭ) и оцените её выполнение.", "Find one national climate target of Uzbekistan (e.g. renewable share) and assess progress on it.") },
+
+    { id: "v-isish-uz", yt: "UvQKzv4DT7M", top: "iqlim", st: "m", lng: "uz", ch: "Bugun UZ", orig: "Dunyo boʻylab global isish jarayoni kuzatilmoqda. Bunga kim sababchi?", ck: "2026-10-17",
+      t: t("Глобал исиш: бунга ким сабабчи?", "Глобальное потепление: кто виноват?", "Global warming: who is to blame?"),
+      sum: t("Янгиликлар лавҳаси бутун дунёда кузатилаётган исиш ва унинг сабабларини муҳокама қилади. Илм хулосаси аниқ: асосий сабаб — инсон фаолиятидан чиқадиган иссиқхона газлари.", "Новостной сюжет о потеплении по всему миру и его причинах. Вывод науки однозначен: главная причина — парниковые газы от деятельности человека.", "A news piece on warming worldwide and its causes. The science is clear: the main cause is greenhouse gases from human activity."),
+      pre: t("Иссиқхона ичида нега ташқаридан иссиқроқ бўлади?", "Почему в теплице теплее, чем снаружи?", "Why is it warmer inside a greenhouse than outside?"),
+      k: [
+        t("Иссиқхона газлари (CO₂, метан, азот оксиди) Ердан қайтган иссиқликни ушлаб қолади.", "Парниковые газы (CO₂, метан, закись азота) удерживают тепло, уходящее от Земли.", "Greenhouse gases (CO₂, methane, nitrous oxide) trap heat leaving the Earth."),
+        t("Табиий иссиқхона эффекти ҳаёт учун зарур, муаммо — унинг инсон томонидан кучайтирилиши.", "Естественный парниковый эффект нужен для жизни; проблема — его усиление человеком.", "The natural greenhouse effect is needed for life; the problem is humans strengthening it."),
+        t("Манбалар: энергетика, транспорт, саноат, чорвачилик ва ўрмонларни кесиш.", "Источники: энергетика, транспорт, промышленность, животноводство, вырубка лесов.", "Sources: power, transport, industry, livestock and deforestation.")
+      ],
+      q: [
+        q(t("Қайси газ иссиқхона гази эмас?", "Какой газ не парниковый?", "Which gas is not a greenhouse gas?"),
+          [t("Азот (N₂)", "Азот (N₂)", "Nitrogen (N₂)"), t("Метан", "Метан", "Methane"), t("Карбонат ангидрид", "Углекислый газ", "Carbon dioxide")], 0,
+          t("N₂ ҳаво таркибида 78%, лекин иссиқликни ютмайди.", "N₂ составляет 78% воздуха, но тепло не поглощает.", "N₂ makes up 78% of air but does not absorb heat.")),
+        q(t("Табиий иссиқхона эффекти бўлмаса нима бўларди?", "Что было бы без естественного парникового эффекта?", "What would happen without the natural greenhouse effect?"),
+          [t("Ер жуда совуқ бўларди (≈ −18 °C)", "Земля была бы очень холодной (≈ −18 °C)", "Earth would be very cold (≈ −18 °C)"), t("Ер исиб кетарди", "Земля перегрелась бы", "Earth would overheat"), t("Ҳеч нарса ўзгармасди", "Ничего бы не изменилось", "Nothing would change")], 0,
+          t("Ҳозирги ўртача ҳарорат ≈ +15 °C.", "Сейчас средняя температура ≈ +15 °C.", "Today’s average is ≈ +15 °C."))
+      ],
+      task: t("Иккита шиша идиш олинг, бирини плёнка билан ёпиб қуёшга қўйинг ва 20 дақиқадан сўнг ичидаги ҳароратни солиштиринг.", "Возьмите две банки, одну накройте плёнкой, поставьте на солнце и через 20 минут сравните температуру внутри.", "Take two jars, cover one with film, put both in the sun and compare inside temperatures after 20 minutes.") },
+    { id: "v-aydarkol-uz", yt: "mq4wiSqxIjU", top: "suv", st: "", lng: "uz", ch: "Daryo", orig: "Iqlim o‘zgarishining ayanchli oqibatlari: Aydarko‘l ham quriydimi?", ck: "2026-10-17",
+      t: t("Айдаркўл ҳам қурийдими?", "Высохнет ли Айдаркуль?", "Will Lake Aydarkul dry up too?"),
+      sum: t("Daryo репортажи Айдар–Арнасой кўллар тизимининг келажаги ҳақида: иссиқ ва қурғоқчил йилларда сув камайиши кўлни хавф остига қўяди.", "Репортаж Daryo о будущем Айдаро-Арнасайской системы озёр: в жаркие и засушливые годы нехватка воды ставит озеро под угрозу.", "A Daryo report on the future of the Aydar–Arnasay lake system: in hot, dry years water shortage puts the lake at risk."),
+      pre: t("Айдаркўл табиий кўлми ёки инсон фаолияти туфайли пайдо бўлганми? Тахмин қилинг.", "Айдаркуль — природное озеро или возникшее из-за человека? Угадайте.", "Is Aydarkul a natural lake or one created by human activity? Guess."),
+      k: [
+        t("Айдаркўл 1969 йилда Чордара сув омборидан Сирдарёнинг тошқин суви Арнасой пастқамлигига ташлангач пайдо бўлган.", "Айдаркуль возник в 1969 году, когда паводковые воды Сырдарьи из Чардаринского водохранилища сбросили в Арнасайскую низменность.", "Aydarkul formed in 1969 when Syr Darya flood water from the Chardara reservoir was released into the Arnasay depression."),
+        t("Кўл балиқчилик, қушлар (сув қушлари учун муҳим ҳудуд) ва туризм учун аҳамиятли.", "Озеро важно для рыболовства, птиц (важное место для водоплавающих) и туризма.", "The lake matters for fishing, birds (an important wetland for waterbirds) and tourism."),
+        t("Иссиқ ҳаво буғланишни кучайтиради, сув кам келса кўл кичраяди ва шўрлашади.", "Жара усиливает испарение; при малом притоке озеро мелеет и засоляется.", "Heat speeds evaporation; with low inflow the lake shrinks and grows saltier.")
+      ],
+      q: [
+        q(t("Айдаркўл қачон пайдо бўлган?", "Когда возник Айдаркуль?", "When did Aydarkul appear?"),
+          [t("1969 йилда", "В 1969 году", "In 1969"), t("Музлик даврида", "В ледниковый период", "In the Ice Age"), t("2010 йилда", "В 2010 году", "In 2010")], 0,
+          t("У Сирдарё тошқин сувидан ҳосил бўлган.", "Он образовался из паводковых вод Сырдарьи.", "It formed from Syr Darya flood water.")),
+        q(t("Нима учун иссиқ ёзда кўл сатҳи тез пасаяди?", "Почему жарким летом уровень озера быстро падает?", "Why does the lake level fall fast in hot summers?"),
+          [t("Буғланиш кучаяди", "Усиливается испарение", "Evaporation increases"), t("Сув музлайди", "Вода замерзает", "The water freezes"), t("Ёмғир кўпаяди", "Больше дождей", "More rain falls")], 0,
+          t("Чўл иқлимида буғланиш жуда юқори.", "В пустынном климате испарение очень велико.", "Evaporation is very high in a desert climate."))
+      ],
+      task: t("Айдар–Арнасой тизимини харитада топинг ва у Орол билан қандай ўхшаш ёки фарқли эканини 3 жумлада ёзинг.", "Найдите систему Айдар–Арнасай на карте и в 3 предложениях сравните её с Аралом.", "Find the Aydar–Arnasay system on a map and compare it with the Aral in 3 sentences.") },
+
+    { id: "v-chiqindi-uz", yt: "j0Xf4WFcRQI", top: "ifl", st: "", lng: "uz", ch: "UZREPORT TV", orig: "Chiqindilar — insoniyatning global muammosi", ck: "2026-10-17",
+      t: t("Чиқиндилар — инсониятнинг глобал муаммоси", "Отходы — глобальная проблема человечества", "Waste — a global problem for humanity"),
+      sum: t("UzReport кўрсатуви маиший чиқиндилар ҳажми, полигонлар ва қайта ишлаш ҳақида ҳикоя қилади. Чиқиндини камайтиришнинг энг яхши йўли — уни умуман ҳосил қилмаслик.", "Передача UzReport о количестве бытовых отходов, полигонах и переработке. Лучший способ сократить мусор — не создавать его вовсе.", "A UzReport programme on household waste, landfills and recycling. The best way to cut waste is not to create it at all."),
+      pre: t("Оилангиз бир ҳафтада неча халта чиқинди чиқаради? Тахмин қилинг.", "Сколько пакетов мусора выносит ваша семья за неделю? Прикиньте.", "How many bags of rubbish does your family throw out a week? Estimate."),
+      k: [
+        t("Жаҳон банки маълумотига кўра, дунёда йилига 2 млрд тоннадан ортиқ маиший қаттиқ чиқинди ҳосил бўлади.", "По данным Всемирного банка, в мире ежегодно образуется более 2 млрд т твёрдых бытовых отходов.", "According to the World Bank, the world produces over 2 billion tonnes of municipal solid waste a year."),
+        t("Очиқ полигонлар тупроқ ва ер ости сувини ифлослайди, метан гази чиқаради.", "Открытые свалки загрязняют почву и грунтовые воды и выделяют метан.", "Open dumps pollute soil and groundwater and release methane."),
+        t("Чиқинди иерархияси: камайтириш → қайта фойдаланиш → қайта ишлаш → энергия олиш → кўмиш.", "Иерархия отходов: сократить → использовать повторно → переработать → получить энергию → захоронить.", "The waste hierarchy: reduce → reuse → recycle → recover energy → dispose.")
+      ],
+      q: [
+        q(t("Чиқинди иерархиясида биринчи ўринда нима туради?", "Что на первом месте в иерархии отходов?", "What comes first in the waste hierarchy?"),
+          [t("Камайтириш", "Сокращение", "Reduce"), t("Кўмиш", "Захоронение", "Landfill"), t("Ёқиш", "Сжигание", "Burning")], 0,
+          t("Ҳосил бўлмаган чиқинди — энг яхши чиқинди.", "Лучший мусор — тот, что не появился.", "The best waste is the waste never made.")),
+        q(t("Полигонлардан қайси иссиқхона гази чиқади?", "Какой парниковый газ выделяют свалки?", "Which greenhouse gas do landfills release?"),
+          [t("Метан", "Метан", "Methane"), t("Кислород", "Кислород", "Oxygen"), t("Гелий", "Гелий", "Helium")], 0,
+          t("Органик чиқинди кислородсиз чириганда метан ҳосил бўлади.", "Органика, гниющая без кислорода, выделяет метан.", "Organic waste rotting without oxygen produces methane."))
+      ],
+      task: t("Бир ҳафта давомида уйдаги чиқиндини 4 турга (органик, пластик, қоғоз, бошқа) ажратиб, ҳар бирини тортинг ёки санаб ёзинг.", "Неделю сортируйте домашний мусор на 4 вида (органика, пластик, бумага, прочее) и взвешивайте или считайте каждый.", "For a week, sort home waste into 4 types (organic, plastic, paper, other) and weigh or count each.") },
+
+    { id: "v-ifl-uz", yt: "mZ0vOjpfzDw", top: "ifl", st: "m", lng: "uz", ch: "Asadulla Maxammadiyev", orig: "Atrof-muhitning ifloslanishi va chiqindilar muammosi", ck: "2026-10-17",
+      t: t("Атроф-муҳитнинг ифлосланиши ва чиқиндилар муаммоси", "Загрязнение окружающей среды и проблема отходов", "Environmental pollution and the waste problem"),
+      sum: t("Видео ифлосланишнинг асосий турлари — ҳаво, сув ва тупроқ ифлосланиши ҳамда чиқиндилар муаммосини тушунтиради.", "Видео объясняет основные виды загрязнения — воздуха, воды и почвы — и проблему отходов.", "The video explains the main types of pollution — air, water and soil — and the waste problem."),
+      pre: t("Уйингиз атрофида ифлосланишнинг қайси турини кўрасиз?", "Какой вид загрязнения вы видите рядом с домом?", "Which kind of pollution do you see near your home?"),
+      k: [
+        t("Ҳаво ифлосланиши: транспорт, саноат ва иситишдан чиқадиган чанг (PM2.5), азот ва олтингугурт оксидлари.", "Загрязнение воздуха: пыль (PM2.5), оксиды азота и серы от транспорта, промышленности и отопления.", "Air pollution: dust (PM2.5), nitrogen and sulphur oxides from transport, industry and heating."),
+        t("Сув ифлосланиши: тозаланмаган оқова сув, ўғит ва пестицидлар, саноат чиқиндилари.", "Загрязнение воды: неочищенные стоки, удобрения и пестициды, промышленные отходы.", "Water pollution: untreated sewage, fertilisers and pesticides, industrial waste."),
+        t("Тупроқ ифлосланиши: чиқинди полигонлари, оғир металлар ва пластик.", "Загрязнение почвы: свалки, тяжёлые металлы и пластик.", "Soil pollution: dumps, heavy metals and plastic.")
+      ],
+      q: [
+        q(t("Қайси бири сув ифлосланишининг манбаи?", "Что является источником загрязнения воды?", "Which is a source of water pollution?"),
+          [t("Тозаланмаган оқова сув", "Неочищенные стоки", "Untreated sewage"), t("Қуёш нури", "Солнечный свет", "Sunlight"), t("Шамол", "Ветер", "Wind")], 0,
+          t("Оқова сувни тозалаш иншоотлари бу хавфни камайтиради.", "Очистные сооружения снижают эту опасность.", "Treatment plants reduce this risk.")),
+        q(t("PM2.5 нима?", "Что такое PM2.5?", "What is PM2.5?"),
+          [t("Жуда майда чанг заррачалари", "Очень мелкие частицы пыли", "Very fine dust particles"), t("Сув тури", "Вид воды", "A type of water"), t("Дарахт тури", "Вид дерева", "A tree species")], 0,
+          t("Улар 2,5 мкм дан кичик ва ўпкага чуқур киради.", "Они меньше 2,5 мкм и проникают глубоко в лёгкие.", "They are smaller than 2.5 µm and reach deep into the lungs."))
+      ],
+      task: t("Маҳаллангиздаги битта ифлосланиш манбаини суратга олинг ва уни камайтириш учун 2 та таклиф ёзинг.", "Сфотографируйте источник загрязнения в вашем районе и напишите 2 предложения, как его уменьшить.", "Photograph one pollution source in your neighbourhood and write 2 ideas to reduce it.") },
+
+    { id: "v-okeanplastik-uz", yt: "cpDgDW4_ldU", top: "ifl", st: "m", lng: "uz", ch: "Yerdan gapiramiz", orig: "Okeanda qancha plastik chiqindi bor?", ck: "2026-10-17",
+      t: t("Океанда қанча пластик чиқинди бор?", "Сколько пластика в океане?", "How much plastic is in the ocean?"),
+      sum: t("Видео океанга тушаётган пластик миқдори ва унинг денгиз ҳаётига таъсири ҳақида. Пластик парчаланмайди, балки микропластикка майдаланади.", "Видео о том, сколько пластика попадает в океан и как он влияет на морскую жизнь. Пластик не разлагается, а крошится в микропластик.", "A video on how much plastic enters the ocean and how it affects sea life. Plastic does not decompose; it breaks into microplastics."),
+      pre: t("Пластик бутилка табиатда неча йилда йўқолади деб ўйлайсиз?", "За сколько лет, по-вашему, пластиковая бутылка исчезает в природе?", "How many years do you think a plastic bottle takes to disappear in nature?"),
+      k: [
+        t("UNEP баҳосига кўра, ҳар йили сув экотизимларига тахминан 11 млн тонна пластик тушади.", "По оценке UNEP, ежегодно в водные экосистемы попадает около 11 млн т пластика.", "UNEP estimates that about 11 million tonnes of plastic enter aquatic ecosystems each year."),
+        t("Пластик қуёш ва тўлқин таъсирида 5 мм дан кичик микропластикка майдаланади.", "Под действием солнца и волн пластик крошится в микропластик меньше 5 мм.", "Sun and waves break plastic into microplastics smaller than 5 mm."),
+        t("Тошбақа, қуш ва балиқлар пластикни ютиб ёки унга ўралиб нобуд бўлади.", "Черепахи, птицы и рыбы гибнут, глотая пластик или запутываясь в нём.", "Turtles, birds and fish die by swallowing plastic or getting entangled in it.")
+      ],
+      q: [
+        q(t("Микропластик нима?", "Что такое микропластик?", "What is microplastic?"),
+          [t("5 мм дан кичик пластик бўлаклари", "Частицы пластика меньше 5 мм", "Plastic pieces smaller than 5 mm"), t("Биологик парчаланадиган пластик", "Биоразлагаемый пластик", "Biodegradable plastic"), t("Пластик ишлаб чиқарадиган завод", "Завод пластика", "A plastic factory")], 0,
+          t("Улар сув, тупроқ ва ҳатто инсон танасида топилган.", "Их находят в воде, почве и даже в теле человека.", "They have been found in water, soil and even the human body.")),
+        q(t("Нима учун пластик океанда узоқ сақланади?", "Почему пластик долго остаётся в океане?", "Why does plastic persist in the ocean?"),
+          [t("Микроблар уни деярли парчалай олмайди", "Микробы почти не могут его разложить", "Microbes can barely break it down"), t("У сувда эрийди", "Он растворяется в воде", "It dissolves in water"), t("Уни балиқлар ҳазм қилади", "Его переваривают рыбы", "Fish digest it")], 0,
+          t("Пластик фақат майдаланади, лекин йўқолмайди.", "Пластик лишь измельчается, но не исчезает.", "Plastic only fragments; it does not vanish."))
+      ],
+      task: t("Бир кун давомида ишлатган бир марталик пластик буюмларингизни ёзинг ва уларнинг 3 тасига кўп марталик ўриндош топинг.", "Запишите одноразовый пластик, которым пользовались за день, и найдите многоразовую замену для 3 предметов.", "List the single-use plastics you used in a day and find reusable swaps for 3 of them.") },
+
+    { id: "v-suv90-uz", yt: "j7JH-Z6l5xA", top: "suv", st: "", lng: "uz", ch: "Daryo", orig: "O‘zbekistonda ichimlik suvining 90 foizi hali ham qishloq xo‘jaligiga yo‘naltirilmoqda", ck: "2026-10-17",
+      t: t("Ўзбекистонда сувнинг 90 фоизи қишлоқ хўжалигига кетади", "В Узбекистане 90% воды уходит в сельское хозяйство", "In Uzbekistan 90% of water goes to farming"),
+      sum: t("Репортаж Ўзбекистонда олинадиган чучук сувнинг катта қисми суғоришга сарфланишини кўрсатади. Сувни тежайдиган технологиялар — томчилатиб суғориш ва каналларни таъмирлаш — муҳим ечим.", "Репортаж показывает, что бо́льшая часть забираемой пресной воды в Узбекистане уходит на орошение. Важное решение — водосберегающие технологии: капельный полив и ремонт каналов.", "The report shows most freshwater withdrawn in Uzbekistan goes to irrigation. Key solutions are water-saving technologies: drip irrigation and repaired canals."),
+      pre: t("Сизнингча, сув кўпроқ уйларда сарфланадими ёки далаларда?", "Как вы думаете, больше воды тратят дома или на полях?", "Do you think more water is used in homes or in fields?"),
+      k: [
+        t("FAO маълумотига кўра, дунёда олинадиган чучук сувнинг ≈70 фоизи қишлоқ хўжалигига кетади; Ўзбекистонда бу улуш ≈90%.", "По данным ФАО, в мире ≈70% забираемой пресной воды идёт в сельское хозяйство; в Узбекистане — ≈90%.", "According to FAO, ≈70% of freshwater withdrawals worldwide go to agriculture; in Uzbekistan it is ≈90%."),
+        t("Эски тупроқ каналларда сувнинг катта қисми шимилиш ва буғланишга йўқолади.", "В старых земляных каналах много воды теряется на фильтрацию и испарение.", "Old earthen canals lose much water to seepage and evaporation."),
+        t("Томчилатиб суғориш эгатлаб суғоришга нисбатан сувни сезиларли тежайди.", "Капельное орошение заметно экономит воду по сравнению с бороздковым.", "Drip irrigation saves a lot of water compared with furrow irrigation.")
+      ],
+      q: [
+        q(t("Ўзбекистонда олинадиган сувнинг қанча қисми қишлоқ хўжалигига кетади?", "Какая доля воды в Узбекистане идёт на сельское хозяйство?", "What share of water in Uzbekistan goes to agriculture?"),
+          [t("≈90%", "≈90%", "≈90%"), t("≈10%", "≈10%", "≈10%"), t("≈40%", "≈40%", "≈40%")], 0,
+          t("Шунинг учун суғоришдаги тежаш энг катта самара беради.", "Поэтому экономия в орошении даёт наибольший эффект.", "So saving in irrigation has the biggest effect.")),
+        q(t("Қайси усул сувни энг кўп тежайди?", "Какой способ больше всего экономит воду?", "Which method saves the most water?"),
+          [t("Томчилатиб суғориш", "Капельное орошение", "Drip irrigation"), t("Далани бостириб суғориш", "Затопление поля", "Flooding the field"), t("Очиқ тупроқ каналлар", "Открытые земляные каналы", "Open earthen canals")], 0,
+          t("Сув тўғридан-тўғри илдизга етказилади.", "Вода подаётся прямо к корням.", "Water goes straight to the roots."))
+      ],
+      task: t("Уйдаги битта жўмракдан 1 дақиқада қанча сув оқишини ўлчанг ва бир йилда қанча бўлишини ҳисобланг.", "Измерьте, сколько воды течёт из крана за 1 минуту, и посчитайте объём за год.", "Measure how much water a tap runs in 1 minute and calculate the yearly total.") },
+
+    { id: "v-suvhayot-uz", yt: "uv5lnog6lmc", top: "suv", st: "m", lng: "uz", ch: "IMRS  MHTI  ИМРИ", orig: "Suv — hayot manbai!", ck: "2026-10-17",
+      t: t("Сув — ҳаёт манбаи!", "Вода — источник жизни!", "Water is the source of life!"),
+      sum: t("Қисқа ижтимоий ролик сувнинг ҳаёт учун аҳамиятини ва уни асраш зарурлигини эслатади.", "Короткий социальный ролик напоминает о значении воды для жизни и о необходимости её беречь.", "A short public-awareness clip reminds us how vital water is and why we must protect it."),
+      pre: t("Инсон сувсиз неча кун яшай олади? Тахмин қилинг.", "Сколько дней человек может прожить без воды? Угадайте.", "How many days can a person live without water? Guess."),
+      k: [
+        t("Ердаги сувнинг фақат ≈2,5 фоизи чучук, унинг ҳам кўп қисми музликлар ва ер ости сувларида.", "Лишь ≈2,5% воды на Земле пресная, и бо́льшая её часть — в ледниках и под землёй.", "Only ≈2.5% of Earth’s water is fresh, and most of that is in glaciers and underground."),
+        t("Инсон танасининг тахминан 60 фоизи сувдан иборат; сувсиз инсон бир неча кун яшай олади.", "Тело человека примерно на 60% состоит из воды; без воды человек живёт лишь несколько дней.", "The human body is about 60% water; without water a person survives only a few days."),
+        t("ЖССТ маълумотига кўра, дунёда ҳали ҳам 2 млрд га яқин одам хавфсиз ичимлик сувидан бебаҳра.", "По данным ВОЗ, около 2 млрд человек всё ещё лишены безопасной питьевой воды.", "According to WHO, around 2 billion people still lack safely managed drinking water.")
+      ],
+      q: [
+        q(t("Ердаги сувнинг қанча қисми чучук?", "Какая доля воды на Земле пресная?", "What share of Earth’s water is fresh?"),
+          [t("≈2,5%", "≈2,5%", "≈2.5%"), t("≈50%", "≈50%", "≈50%"), t("≈97%", "≈97%", "≈97%")], 0,
+          t("≈97% — океанлардаги шўр сув.", "≈97% — солёная вода океанов.", "≈97% is salty ocean water.")),
+        q(t("Чучук сувнинг энг катта захираси қаерда?", "Где самые большие запасы пресной воды?", "Where is most fresh water stored?"),
+          [t("Музликлар ва қутб музларида", "В ледниках и полярных льдах", "In glaciers and polar ice"), t("Дарёларда", "В реках", "In rivers"), t("Булутларда", "В облаках", "In clouds")], 0,
+          t("Дарё ва кўллардаги сув жуда оз улушни ташкил қилади.", "Вода рек и озёр составляет совсем малую долю.", "Rivers and lakes hold only a tiny share."))
+      ],
+      task: t("«Сувни асранг» мавзусида синфингиз учун қисқа плакат ёки 30 сониялик видео шиор тайёрланг.", "Подготовьте для класса плакат или 30-секундный ролик на тему «Берегите воду».", "Make a poster or a 30-second clip for your class on “Save water”.") },
+
+    { id: "v-suvtejang-uz", yt: "_AoqQfOrZPg", top: "suv", st: "m", lng: "uz", ch: "Qarshi shahridagi Prezident maktabi", orig: "Suvni tejang!", ck: "2026-10-17",
+      t: t("Сувни тежанг!", "Экономьте воду!", "Save water!"),
+      sum: t("Қаршидаги Президент мактаби ўқувчилари тайёрлаган ролик кундалик ҳаётда сувни тежашга чақиради — тенгдошлардан тенгдошларга ўрнак.", "Ролик учеников Президентской школы в Карши призывает экономить воду в быту — пример от сверстников.", "A clip by students of the Presidential School in Karshi urges saving water in daily life — a peer-to-peer example."),
+      pre: t("Уйда сувни қаерда беҳуда сарфлаймиз? 3 та мисол ёзинг.", "Где дома мы тратим воду впустую? Запишите 3 примера.", "Where do we waste water at home? Write down 3 examples."),
+      k: [
+        t("Тиш ювишда жўмракни ёпиб қўйиш ҳар сафар бир неча литр сувни тежайди.", "Закрытый кран во время чистки зубов экономит несколько литров каждый раз.", "Turning off the tap while brushing saves several litres each time."),
+        t("Томчилаётган жўмрак бир йилда минглаб литр сувни исроф қилиши мумкин.", "Капающий кран может терять тысячи литров воды в год.", "A dripping tap can waste thousands of litres a year."),
+        t("Душ ваннага нисбатан одатда камроқ сув сарфлайди.", "Душ обычно расходует меньше воды, чем ванна.", "A shower usually uses less water than a bath.")
+      ],
+      q: [
+        q(t("Қайси одат сувни тежайди?", "Какая привычка экономит воду?", "Which habit saves water?"),
+          [t("Тиш ювишда жўмракни ёпиш", "Закрывать кран при чистке зубов", "Turning off the tap while brushing"), t("Идишни оқар сув остида узоқ ювиш", "Долго мыть посуду под струёй", "Washing dishes under running water"), t("Томчилаётган жўмракни тузатмаслик", "Не чинить капающий кран", "Ignoring a dripping tap")], 0,
+          t("Кичик одатлар йилига катта тежамга айланади.", "Мелкие привычки дают большую экономию за год.", "Small habits add up to big savings over a year.")),
+        q(t("Томчилаётган жўмрак бир йилда қанча сувни йўқотиши мумкин?", "Сколько воды может потерять капающий кран за год?", "How much water can a dripping tap lose in a year?"),
+          [t("Минглаб литр", "Тысячи литров", "Thousands of litres"), t("Бир стакан", "Один стакан", "One glass"), t("Ҳеч қанча", "Нисколько", "None")], 0,
+          t("Сония сайин томчи — йилига тонналаб сув.", "Капля в секунду — тонны воды в год.", "A drop a second becomes tonnes a year."))
+      ],
+      task: t("Уйингиздаги барча жўмракларни текширинг; томчилаётганини ота-онангизга айтиб, тузатишга ёрдам беринг.", "Проверьте все краны дома; о капающих скажите родителям и помогите починить.", "Check every tap at home; report any drips to your parents and help fix them.") },
+
+    { id: "v-toshhavo-uz", yt: "-ylSbcqez_A", top: "ifl", st: "", lng: "uz", ch: "Daryo", orig: "Toshkent havosining ifloslanishiga qarshi keskin choralar koʻriladi", ck: "2026-10-17",
+      t: t("Тошкент ҳавосини тозалаш чоралари", "Меры против загрязнения воздуха в Ташкенте", "Measures against air pollution in Tashkent"),
+      sum: t("Репортаж Тошкентда ҳаво ифлосланишига қарши кўриладиган чоралар ҳақида. Асосий манбалар — транспорт, қурилиш чанги, иситиш ва табиий чанг.", "Репортаж о мерах против загрязнения воздуха в Ташкенте. Основные источники — транспорт, строительная пыль, отопление и природная пыль.", "A report on measures against air pollution in Tashkent. Main sources are traffic, construction dust, heating and natural dust."),
+      pre: t("Ҳаво сифатини қандай билса бўлади? Қайси иловалар ёки кўрсаткичларни биласиз?", "Как узнать качество воздуха? Какие приложения или индексы вы знаете?", "How can you tell air quality? Which apps or indices do you know?"),
+      k: [
+        t("ЖССТ (2021) PM2.5 учун йиллик тавсия чегарасини 5 мкг/м³ қилиб белгилаган.", "ВОЗ (2021) установила годовой ориентир для PM2.5 в 5 мкг/м³.", "WHO (2021) set the annual PM2.5 guideline at 5 µg/m³."),
+        t("Шаҳарда чангнинг манбалари: автомобиль, қурилиш, кўмир ва газ ёқиш, чўллардан келадиган чанг.", "Источники пыли в городе: автомобили, стройки, сжигание угля и газа, пыль из пустынь.", "Urban dust sources: cars, construction, burning coal and gas, and desert dust."),
+        t("Чоралар: қурилиш майдонларини ёпиш, жамоат транспортини ривожлантириш, кўкаламзорлаштириш, мониторинг станциялари.", "Меры: укрытие строек, развитие общественного транспорта, озеленение, станции мониторинга.", "Measures: covering building sites, better public transport, greening and monitoring stations.")
+      ],
+      q: [
+        q(t("ЖССТ бўйича PM2.5 нинг йиллик тавсия чегараси қанча?", "Каков годовой ориентир ВОЗ для PM2.5?", "What is WHO’s annual PM2.5 guideline?"),
+          [t("5 мкг/м³", "5 мкг/м³", "5 µg/m³"), t("500 мкг/м³", "500 мкг/м³", "500 µg/m³"), t("Чегара йўқ", "Ориентира нет", "There is none")], 0,
+          t("Бу чегара 2021 йилда 10 дан 5 гача туширилган.", "В 2021 году ориентир снизили с 10 до 5.", "It was lowered from 10 to 5 in 2021.")),
+        q(t("Қайси чора ҳаводаги чангни камайтиради?", "Какая мера уменьшает пыль в воздухе?", "Which measure reduces dust in the air?"),
+          [t("Қурилиш майдонларини ёпиш ва сувлаш", "Укрытие и полив строек", "Covering and wetting building sites"), t("Дарахтларни кесиш", "Вырубка деревьев", "Cutting trees"), t("Кўпроқ кўмир ёқиш", "Больше сжигать угля", "Burning more coal")], 0,
+          t("Кўкаламзорлаштириш ҳам чангни ушлайди.", "Озеленение тоже задерживает пыль.", "Greening also traps dust."))
+      ],
+      task: t("Бир ҳафта давомида шаҳрингиз ҳаво сифати индексини (AQI) ҳар куни ёзиб, график чизинг.", "Неделю записывайте индекс качества воздуха (AQI) вашего города и постройте график.", "Record your city’s air quality index (AQI) daily for a week and draw a graph.") },
+
+    { id: "v-havoilm-uz", yt: "fQxI47qq_dM", top: "ifl", st: "u", lng: "uz", ch: "KunUZ", orig: "“O‘zbekistonga havo ifloslanishi bo‘yicha ilmiy tadqiqotlar kerak” — amerikalik olim", ck: "2026-10-17",
+      t: t("Ҳаво ифлосланишини илмий ўрганиш нега керак?", "Зачем нужны научные исследования загрязнения воздуха?", "Why air pollution needs scientific research"),
+      sum: t("Америкалик олим Ўзбекистонда ҳаво ифлосланиши манбаларини аниқ билиш учун илмий тадқиқот ва мониторинг зарурлигини айтади: тўғри маълумотсиз тўғри чора бўлмайди.", "Американский учёный говорит, что Узбекистану нужны исследования и мониторинг, чтобы точно знать источники загрязнения воздуха: без данных нет верных мер.", "An American scientist says Uzbekistan needs research and monitoring to pin down air-pollution sources: without data there are no right measures."),
+      pre: t("Шаҳарда чангнинг қанча қисми машиналардан, қанчаси табиатдан келишини қандай аниқлаш мумкин?", "Как определить, сколько пыли в городе от машин, а сколько от природы?", "How could you tell how much city dust comes from cars versus nature?"),
+      k: [
+        t("Манбаларни аниқлаш (source apportionment) учун заррачаларнинг кимёвий таркиби ўрганилади.", "Для определения источников (source apportionment) изучают химический состав частиц.", "Source apportionment studies the chemical make-up of particles to identify sources."),
+        t("Доимий мониторинг станциялари ва очиқ маълумотлар жамоатчилик ва сиёсат учун асос.", "Постоянные станции мониторинга и открытые данные — основа для общества и политики.", "Continuous monitoring stations and open data underpin public awareness and policy."),
+        t("ЖССТ баҳосига кўра, ташқи ва уй ичидаги ҳаво ифлосланиши йилига ≈7 млн муддатидан олдинги ўлимга сабаб бўлади.", "По оценке ВОЗ, загрязнение наружного и домашнего воздуха приводит к ≈7 млн преждевременных смертей в год.", "WHO estimates outdoor and household air pollution cause ≈7 million premature deaths a year.")
+      ],
+      q: [
+        q(t("Ифлосланиш манбаини аниқлаш учун олимлар нимани ўрганади?", "Что изучают учёные, чтобы найти источник загрязнения?", "What do scientists study to find pollution sources?"),
+          [t("Заррачаларнинг кимёвий таркибини", "Химический состав частиц", "The chemical make-up of particles"), t("Фақат ҳаво ҳароратини", "Только температуру воздуха", "Only air temperature"), t("Булутлар шаклини", "Форму облаков", "Cloud shapes")], 0,
+          t("Масалан, тупроқ чанги ва ёнилғи қурумининг «излари» турлича.", "Например, «следы» почвенной пыли и сажи различаются.", "For example, soil dust and soot leave different chemical fingerprints.")),
+        q(t("ЖССТ бўйича ҳаво ифлосланиши йилига тахминан неча ўлимга сабаб бўлади?", "Сколько смертей в год, по ВОЗ, вызывает загрязнение воздуха?", "About how many deaths a year does air pollution cause, per WHO?"),
+          [t("≈7 млн", "≈7 млн", "≈7 million"), t("≈7 минг", "≈7 тыс.", "≈7 thousand"), t("≈700", "≈700", "≈700")], 0,
+          t("Бу — энг катта экологик соғлиқ хавфи.", "Это крупнейший экологический риск для здоровья.", "It is the largest environmental health risk."))
+      ],
+      task: t("Шаҳрингизда ҳаво сифатини ўлчайдиган станциялар қаерда жойлашганини аниқлаб, ўз маҳаллангиз учун тадқиқот режасини тузинг.", "Выясните, где в вашем городе станции мониторинга воздуха, и составьте план исследования для своего района.", "Find where air monitoring stations are in your city and draft a research plan for your neighbourhood.") },
+
+    { id: "v-qizilkitob-uz", yt: "VMLpiHatV6c", top: "bio", st: "m", lng: "uz", ch: "BIOLOG UZ", orig: "O'zbekiston Qizil Kitobiga Kiritilgan O'simliklar, Hayvonlar Ro'yhati.", ck: "2026-10-17",
+      t: t("Ўзбекистон Қизил китобига киритилган ўсимлик ва ҳайвонлар", "Растения и животные Красной книги Узбекистана", "Plants and animals in Uzbekistan’s Red Data Book"),
+      sum: t("Видео Ўзбекистон Қизил китобига киритилган ўсимлик ва ҳайвонлар рўйхатини таништиради. Қизил китоб — йўқолиб кетиш хавфи остидаги турлар рўйхати ва уларни муҳофаза қилиш асоси.", "Видео знакомит со списком растений и животных Красной книги Узбекистана. Красная книга — перечень видов под угрозой и основа для их охраны.", "The video introduces the plants and animals listed in Uzbekistan’s Red Data Book — the list of threatened species and the basis for protecting them."),
+      pre: t("Ўзбекистонда яшайдиган қайси ноёб ҳайвонни биласиз?", "Какое редкое животное Узбекистана вы знаете?", "Which rare animal of Uzbekistan do you know?"),
+      k: [
+        t("Қизил китоб турларни хавф даражасига кўра тоифаларга ажратади (йўқолиб кетган, хавф остида, камёб ва ҳ.к.).", "Красная книга делит виды на категории по степени угрозы (исчезнувшие, под угрозой, редкие и т. д.).", "The Red Data Book groups species by threat level (extinct, endangered, rare, etc.)."),
+        t("Ўзбекистондаги мисоллар: қор қоплони, Бухоро буғуси, сайғоқ, йўрға тувалоқ.", "Примеры в Узбекистане: снежный барс, бухарский олень, сайгак, джек (дрофа-красотка).", "Examples in Uzbekistan: snow leopard, Bukhara deer, saiga, houbara bustard."),
+        t("Турлар йўқолишининг асосий сабаблари: яшаш жойининг бузилиши, браконьерлик, ортиқча фойдаланиш.", "Главные причины исчезновения: разрушение мест обитания, браконьерство, чрезмерное использование.", "Main causes of loss: habitat destruction, poaching and overuse.")
+      ],
+      q: [
+        q(t("Қизил китоб нима?", "Что такое Красная книга?", "What is the Red Data Book?"),
+          [t("Хавф остидаги турлар рўйхати", "Список видов под угрозой", "A list of threatened species"), t("Ошпазлик китоби", "Кулинарная книга", "A cookbook"), t("Ов қоидалари", "Правила охоты", "Hunting rules")], 0,
+          t("Китобга киритилган турларни овлаш ва йиғиш тақиқланади.", "Добыча и сбор занесённых видов запрещены.", "Hunting or collecting listed species is prohibited.")),
+        q(t("Қайси ҳайвон Ўзбекистон Қизил китобида?", "Какое животное занесено в Красную книгу Узбекистана?", "Which animal is in Uzbekistan’s Red Data Book?"),
+          [t("Қор қоплони", "Снежный барс", "Snow leopard"), t("Уй мушуги", "Домашняя кошка", "House cat"), t("Чумчуқ", "Воробей", "Sparrow")], 0,
+          t("Қор қоплони Ҳисор ва Чотқол тоғларида учрайди.", "Снежный барс встречается в Гиссарских и Чаткальских горах.", "Snow leopards live in the Hissar and Chatkal mountains."))
+      ],
+      task: t("Қизил китобдаги битта турни танлаб, у ҳақида паспорт-карточка тузинг: яшаш жойи, сони, хавфлар, ҳимоя чоралари.", "Выберите вид из Красной книги и сделайте карточку: ареал, численность, угрозы, меры охраны.", "Choose one Red Data Book species and make a fact card: habitat, numbers, threats, protection.") },
+
+    { id: "v-qk-osimlik-uz", yt: "lmQbL_jQQ50", top: "bio", st: "m", lng: "uz", ch: "BIOLOGIYA MARKAZI", orig: "Qizil kitobga kiritilgan o'simliklar", ck: "2026-10-17",
+      t: t("Қизил китобга киритилган ўсимликлар", "Растения Красной книги", "Plants in the Red Data Book"),
+      sum: t("Видео Қизил китобга киритилган ноёб ўсимликлар билан таништиради. Ўсимликлар экотизимнинг асоси, уларнинг йўқолиши бутун озиқ занжирига таъсир қилади.", "Видео знакомит с редкими растениями Красной книги. Растения — основа экосистемы, их исчезновение затрагивает всю пищевую цепь.", "The video presents rare plants from the Red Data Book. Plants are the base of ecosystems; losing them affects the whole food chain."),
+      pre: t("Баҳорда тоғларда лола териш нега тақиқланган бўлиши мумкин?", "Почему весной в горах может быть запрещено собирать тюльпаны?", "Why might picking wild tulips in the mountains be banned?"),
+      k: [
+        t("Ўзбекистон ёввойи лолаларнинг ватанларидан бири; уларнинг бир неча тури Қизил китобга киритилган.", "Узбекистан — одна из родин диких тюльпанов; несколько их видов занесены в Красную книгу.", "Uzbekistan is one of the homelands of wild tulips; several species are in the Red Data Book."),
+        t("Ўсимликларга асосий хавф: ортиқча ўтлатиш, гул ва пиёзларни териш, ерларни ўзлаштириш.", "Главные угрозы растениям: перевыпас, сбор цветов и луковиц, распашка земель.", "Main threats to plants: overgrazing, picking flowers and bulbs, and land conversion."),
+        t("Ҳимоя йўллари: қўриқхона ва миллий боғлар, ботаника боғларида кўпайтириш, уруғ банклари.", "Способы охраны: заповедники и нацпарки, размножение в ботсадах, банки семян.", "Protection: reserves and national parks, propagation in botanical gardens, seed banks.")
+      ],
+      q: [
+        q(t("Ноёб ўсимликларни сақлашнинг қайси йўли тўғри?", "Какой способ сохранить редкие растения верный?", "Which is a valid way to conserve rare plants?"),
+          [t("Уруғ банки ва ботаника боғлари", "Банки семян и ботсады", "Seed banks and botanical gardens"), t("Гулларни териб сотиш", "Собирать и продавать цветы", "Picking and selling flowers"), t("Ортиқча ўтлатиш", "Перевыпас", "Overgrazing")], 0,
+          t("Ex situ (табиатдан ташқарида) муҳофаза — қўшимча кафолат.", "Охрана ex situ — дополнительная страховка.", "Ex situ conservation is an extra safeguard.")),
+        q(t("Ўсимлик тури йўқолса, нима бўлиши мумкин?", "Что может случиться, если исчезнет вид растения?", "What can happen if a plant species disappears?"),
+          [t("Унга боғлиқ ҳашарот ва ҳайвонлар ҳам зарар кўради", "Пострадают зависящие от него насекомые и животные", "Insects and animals that depend on it suffer too"), t("Ҳеч нарса", "Ничего", "Nothing"), t("Ҳаво тозароқ бўлади", "Воздух станет чище", "The air gets cleaner")], 0,
+          t("Ўсимликлар озиқ занжирининг биринчи бўғини.", "Растения — первое звено пищевой цепи.", "Plants are the first link of the food chain."))
+      ],
+      task: t("Ҳудудингиздаги битта ноёб ўсимлик ҳақида маълумот тўплаб, «Термайлик, суратга олайлик» шиорли плакат чизинг.", "Соберите сведения о редком растении вашего края и нарисуйте плакат «Не рвать — фотографировать».", "Research one rare local plant and draw a “Photograph, don’t pick” poster.") },
+
+    { id: "v-qk-qush-uz", yt: "AfWpNNzVzaY", top: "bio", st: "m", lng: "uz", ch: "BIOLOGIYA MARKAZI", orig: "Qizil kitobga kiritilgan qushlar", ck: "2026-10-17",
+      t: t("Қизил китобга киритилган қушлар", "Птицы Красной книги", "Birds in the Red Data Book"),
+      sum: t("Видео Қизил китобга киритилган ноёб қушларни кўрсатади. Йиртқич қушлар ва тувалоқлар айниқса хавф остида.", "Видео показывает редких птиц Красной книги. Особенно уязвимы хищные птицы и дрофиные.", "The video shows rare birds of the Red Data Book. Birds of prey and bustards are especially threatened."),
+      pre: t("Нега баъзи қушлар учун хавф бир неча мамлакатда бир вақтда пайдо бўлади?", "Почему угрозы для некоторых птиц возникают сразу в нескольких странах?", "Why do threats to some birds arise in several countries at once?"),
+      k: [
+        t("Мисоллар: итолғи (лочин тури) ва йўрға тувалоқ — овчилик ва ноқонуний савдо туфайли камайган.", "Примеры: балобан и джек (дрофа-красотка) — сократились из-за охоты и незаконной торговли.", "Examples: the saker falcon and houbara bustard — declined through hunting and illegal trade."),
+        t("Кўчиб юрувчи қушлар учун сув-ботқоқ ерлар (масалан, Айдаркўл, Тудакўл) муҳим дам олиш жойлари.", "Для перелётных птиц важны водно-болотные угодья (например, Айдаркуль, Тудакуль).", "Wetlands such as Aydarkul and Tudakul are vital stopovers for migratory birds."),
+        t("Кўчиб юрувчи турларни ҳимоя қилиш учун халқаро ҳамкорлик (масалан, Бонн конвенцияси) зарур.", "Для охраны перелётных видов нужна международная кооперация (например, Боннская конвенция).", "Protecting migratory species needs international cooperation (e.g. the Bonn Convention).")
+      ],
+      q: [
+        q(t("Итолғи сонининг камайишига асосий сабаб нима?", "Главная причина сокращения балобана?", "Main reason the saker falcon declined?"),
+          [t("Ноқонуний тутиш ва савдо", "Незаконный отлов и торговля", "Illegal capture and trade"), t("Ортиқча ем", "Избыток корма", "Too much food"), t("Совуқ қишлар", "Холодные зимы", "Cold winters")], 0,
+          t("Итолғилар овчилик учун ноқонуний тутилади.", "Балобанов незаконно ловят для соколиной охоты.", "Sakers are illegally caught for falconry.")),
+        q(t("Кўчиб юрувчи қушларни ҳимоя қилиш учун нима керак?", "Что нужно для охраны перелётных птиц?", "What is needed to protect migratory birds?"),
+          [t("Мамлакатлараро ҳамкорлик", "Сотрудничество стран", "Cooperation between countries"), t("Фақат битта давлат қонуни", "Закон одной страны", "Just one country’s law"), t("Ҳеч нарса", "Ничего", "Nothing")], 0,
+          t("Қушлар чегарани билмайди.", "Птицы не знают границ.", "Birds ignore borders."))
+      ],
+      task: t("Бир ҳафта мактаб атрофида учратган қушларни кузатиб, рўйхатини тузинг ва уларни аниқлаш учун илова ёки аниқлагичдан фойдаланинг.", "Неделю наблюдайте птиц у школы, составьте список и определите их по приложению или определителю.", "Watch birds around school for a week, list them and identify them with an app or field guide.") },
+
+    { id: "v-qtem-uz", yt: "tQCIqs_ogfs", top: "energ", st: "u", lng: "uz", ch: "TIIAME", orig: "QAYTA TIKLANUVCHI ENERGIYA MANBALARI", ck: "2026-10-17",
+      t: t("Қайта тикланувчи энергия манбалари", "Возобновляемые источники энергии", "Renewable energy sources"),
+      sum: t("ТИҚХММИ (TIIAME) университети маърузаси қайта тикланувчи энергия манбаларини — қуёш, шамол, сув, биомасса ва геотермал энергияни таништиради.", "Лекция университета ТИИИМСХ (TIIAME) знакомит с возобновляемыми источниками энергии — солнцем, ветром, водой, биомассой и геотермальной энергией.", "A TIIAME university lecture introduces renewable energy sources — solar, wind, hydro, biomass and geothermal."),
+      pre: t("Нима учун кўмир «қайта тикланмайдиган», қуёш эса «қайта тикланувчи» манба дейилади?", "Почему уголь — «невозобновляемый», а солнце — «возобновляемый» источник?", "Why is coal “non-renewable” while sunlight is “renewable”?"),
+      k: [
+        t("Қайта тикланувчи манбалар табиатда инсон ҳаёти миқёсида тикланади: қуёш, шамол, сув оқими, биомасса, ер иссиқлиги.", "Возобновляемые источники восполняются в масштабе жизни человека: солнце, ветер, течение воды, биомасса, тепло Земли.", "Renewable sources replenish on a human timescale: sun, wind, flowing water, biomass, Earth’s heat."),
+        t("Қуёш ва шамол ўзгарувчан, шунинг учун энергия сақлаш (аккумулятор, ГАЭС) ва ақлли тармоқлар керак.", "Солнце и ветер переменчивы, поэтому нужны накопители (аккумуляторы, ГАЭС) и умные сети.", "Sun and wind are variable, so storage (batteries, pumped hydro) and smart grids are needed."),
+        t("Ўзбекистонда йилига 300 га яқин қуёшли кун бор — қуёш энергетикаси учун катта салоҳият.", "В Узбекистане около 300 солнечных дней в году — большой потенциал для солнечной энергетики.", "Uzbekistan has around 300 sunny days a year — great potential for solar power.")
+      ],
+      q: [
+        q(t("Қайси манба қайта тикланмайди?", "Какой источник невозобновляемый?", "Which source is non-renewable?"),
+          [t("Табиий газ", "Природный газ", "Natural gas"), t("Шамол", "Ветер", "Wind"), t("Қуёш", "Солнце", "Sunlight")], 0,
+          t("Газ миллионлаб йилда ҳосил бўлган.", "Газ образовывался миллионы лет.", "Gas formed over millions of years.")),
+        q(t("Қуёш ва шамол энергиясининг асосий камчилиги нима?", "Главный недостаток солнца и ветра?", "Main drawback of solar and wind?"),
+          [t("Ўзгарувчанлик (кечаси, шамолсиз кунлар)", "Непостоянство (ночь, безветрие)", "Variability (night, calm days)"), t("Кўп CO₂ чиқаради", "Много CO₂", "High CO₂ emissions"), t("Тугаб қолади", "Заканчиваются", "They run out")], 0,
+          t("Бу муаммо энергия сақлаш билан ҳал қилинади.", "Эта проблема решается накопителями.", "Storage addresses this."))
+      ],
+      task: t("Мактабингиз томи учун қуёш панели лойиҳасини таклиф қилинг: майдон, панеллар сони ва тахминий фойда.", "Предложите проект солнечных панелей на крыше школы: площадь, число панелей, примерная польза.", "Propose a solar-panel project for your school roof: area, number of panels, rough benefit.") },
+
+    { id: "v-ilkqes-uz", yt: "_qQAXJmTgdo", top: "energ", st: "", lng: "uz", ch: "KunUZ", orig: "O‘zbekistondagi ilk quyosh elektr stansiyasi — eksklyuziv reportaj", ck: "2026-10-17",
+      t: t("Ўзбекистондаги илк қуёш электр станцияси", "Первая солнечная электростанция Узбекистана", "Uzbekistan’s first solar power plant"),
+      sum: t("Kun.uz репортажи Ўзбекистондаги илк йирик қуёш электр станциясини кўрсатади: панеллар қуёш нурини тўғридан-тўғри электрга айлантиради.", "Репортаж Kun.uz показывает первую крупную солнечную электростанцию Узбекистана: панели напрямую превращают солнечный свет в электричество.", "A Kun.uz report shows Uzbekistan’s first large solar power plant: panels turn sunlight directly into electricity."),
+      pre: t("Қуёш панели кечаси ишлайдими? Нега?", "Работает ли солнечная панель ночью? Почему?", "Does a solar panel work at night? Why?"),
+      k: [
+        t("Фотоэлектрик (PV) панеллар кремний ярим ўтказгичида фотоэффект ёрдамида ток ҳосил қилади.", "Фотоэлектрические (PV) панели создают ток за счёт фотоэффекта в кремниевом полупроводнике.", "Photovoltaic (PV) panels generate current via the photovoltaic effect in silicon semiconductors."),
+        t("Қуёш станцияси ишлаганда CO₂ чиқармайди ва сув деярли талаб қилмайди.", "Солнечная станция при работе не выбрасывает CO₂ и почти не требует воды.", "A solar plant emits no CO₂ while operating and needs almost no water."),
+        t("Панеллар чангланса самарадорлиги пасаяди, шунинг учун чўл ҳудудларида уларни тозалаб туриш керак.", "Запылённые панели теряют эффективность, поэтому в пустынных районах их нужно чистить.", "Dusty panels lose efficiency, so in desert areas they must be cleaned regularly.")
+      ],
+      q: [
+        q(t("Қуёш панели қайси ҳодисага асосланган?", "На каком явлении основана солнечная панель?", "What effect does a solar panel rely on?"),
+          [t("Фотоэффект", "Фотоэффект", "The photovoltaic effect"), t("Ёниш", "Горение", "Combustion"), t("Ядро парчаланиши", "Деление ядра", "Nuclear fission")], 0,
+          t("Ёруғлик фотонлари электронларни ҳаракатга келтиради.", "Фотоны света приводят электроны в движение.", "Photons of light set electrons moving.")),
+        q(t("Чўлдаги қуёш станцияси учун қандай қўшимча иш керак?", "Что нужно дополнительно для солнечной станции в пустыне?", "What extra upkeep does a desert solar plant need?"),
+          [t("Панелларни чангдан тозалаш", "Очищать панели от пыли", "Cleaning dust off panels"), t("Кўмир ташиш", "Подвоз угля", "Delivering coal"), t("Совутиш учун кўп сув", "Много воды на охлаждение", "Lots of cooling water")], 0,
+          t("Чанг ёруғликни тўсади.", "Пыль закрывает свет.", "Dust blocks the light."))
+      ],
+      task: t("Кичик қуёш панели ёки калькулятор панелини турли бурчакда қуёшга қаратиб, қайси ҳолатда кўпроқ ишлашини текширинг.", "Поверните маленькую солнечную панель (или панель калькулятора) под разными углами и проверьте, когда она работает лучше.", "Tilt a small solar panel (or a calculator cell) at different angles and test when it works best.") },
+    /* ---------- Янги видеолар (2026-10-17): рус ва инглиз тилида ---------- */
+    { id: "v-rgo-aral-ru", yt: "xpDzVP0N9VQ", top: "orol", st: "", lng: "ru", ch: "Русское географическое общество", orig: "Фильм РГО: Страсти по Аралу | @Русское географическое общество", ck: "2026-10-17",
+      t: t("«Орол ҳасрати» — РГЖ ҳужжатли фильми", "«Страсти по Аралу» — фильм РГО", "“Passions of the Aral” — an RGS documentary"),
+      sum: t("Рус география жамияти фильми Орол денгизининг ўтмиши, қуриши ва бугунги Оролбўйи ҳаётини кўрсатади.", "Фильм Русского географического общества о прошлом Аральского моря, его высыхании и сегодняшней жизни Приаралья.", "A Russian Geographical Society film on the Aral Sea’s past, its drying and life in the Aral region today."),
+      pre: t("Фильмни кўришдан олдин: Орол фожиасида ким ёки нима айбдор деб ўйлайсиз?", "До просмотра: кто или что, по-вашему, виноват в трагедии Арала?", "Before watching: who or what do you think is to blame for the Aral disaster?"),
+      k: [
+        t("1960-йилларда суғориладиган ерлар кескин кенгайтирилиб, Амударё ва Сирдарё суви денгизга етмай қолди.", "В 1960-е резко расширили орошаемые земли, и вода Амударьи и Сырдарьи перестала доходить до моря.", "In the 1960s irrigated land expanded sharply and Amu Darya and Syr Darya water stopped reaching the sea."),
+        t("Денгиз ҳажмининг 90% га яқини йўқолди, шўрлик бир неча баравар ошиб, маҳаллий балиқ турлари йўқолди.", "Море потеряло около 90% объёма, солёность выросла в разы, местные виды рыб исчезли.", "The sea lost about 90% of its volume, salinity rose several-fold and native fish vanished."),
+        t("Оролбўйи аҳолиси учун оқибатлар бугун ҳам давом этмоқда: соғлиқ, иш ва миграция муаммолари.", "Последствия для жителей Приаралья продолжаются: здоровье, работа, миграция.", "Consequences for Aral residents continue today: health, jobs and migration.")
+      ],
+      q: [
+        q(t("Орол ҳажмининг тахминан қанча қисми йўқолди?", "Какую часть объёма потерял Арал?", "About how much of its volume has the Aral lost?"),
+          [t("≈90%", "≈90%", "≈90%"), t("≈10%", "≈10%", "≈10%"), t("≈30%", "≈30%", "≈30%")], 0,
+          t("Майдони эса 1960 йилга нисбатан тахминан 10 баравар кичрайди.", "Площадь сократилась примерно в 10 раз к уровню 1960 года.", "Its area shrank roughly tenfold from 1960.")),
+        q(t("Нима учун маҳаллий балиқлар йўқолди?", "Почему исчезли местные рыбы?", "Why did native fish disappear?"),
+          [t("Сув жуда шўрланиб кетди", "Вода стала слишком солёной", "The water became too salty"), t("Сув жуда совиб кетди", "Вода слишком остыла", "The water got too cold"), t("Уларни қушлар еб битирди", "Их съели птицы", "Birds ate them all")], 0,
+          t("Шўрлик чучук сув балиқлари чидамлилик чегарасидан ошиб кетди.", "Солёность превысила предел выносливости пресноводных рыб.", "Salinity exceeded freshwater fish tolerance."))
+      ],
+      task: t("Фильмдан 3 та фактни ёзиб, уларни Орол ҳақидаги бошқа манба (масалан, NASA сунъий йўлдош суратлари) билан текширинг.", "Выпишите 3 факта из фильма и проверьте их по другому источнику (например, снимкам NASA).", "Note 3 facts from the film and check them against another source (e.g. NASA satellite images).") },
+
+    { id: "v-aral1963-ru", yt: "Q5SnoR5Ddes", top: "orol", st: "", lng: "ru", ch: "Майя Бекбаева", orig: "Когда жило Аральское море. Документальный фильм, 1963 г. Казахфильм", ck: "2026-10-17",
+      t: t("Орол тирик пайтида: 1963 йилги ҳужжатли фильм", "Когда жило Аральское море: фильм 1963 года", "When the Aral Sea was alive: a 1963 documentary"),
+      sum: t("«Қозоғистонфильм»нинг 1963 йилги ҳужжатли фильми — Орол ҳали тўла, балиқчилик ва кемачилик гуллаган даврнинг ноёб тарихий гувоҳи.", "Документальный фильм «Казахфильма» 1963 года — редкое свидетельство эпохи, когда Арал был полноводен, а рыболовство и судоходство процветали.", "A 1963 Kazakhfilm documentary — a rare record of the time when the Aral was full and fishing and shipping thrived."),
+      pre: t("1963 ва бугунги Оролни солиштириш учун фильмда нималарга эътибор берасиз?", "На что обратить внимание в фильме, чтобы сравнить Арал 1963 года и сегодняшний?", "What will you look for in the film to compare the Aral of 1963 with today?"),
+      k: [
+        t("1960-йиллар бошида Оролда йилига ўн минглаб тонна балиқ овланган.", "В начале 1960-х на Арале вылавливали десятки тысяч тонн рыбы в год.", "In the early 1960s tens of thousands of tonnes of fish were caught on the Aral each year."),
+        t("Орол атрофдаги иқлимни юмшатган: ёзни салқинроқ, қишни илиқроқ қилган.", "Арал смягчал климат региона: летом было прохладнее, зимой теплее.", "The Aral moderated the regional climate: cooler summers, milder winters."),
+        t("Тарихий фильмлар ўзгаришни «олдин ва кейин» таққослаш орқали кўришга ёрдам беради.", "Исторические фильмы помогают увидеть перемены через сравнение «до и после».", "Historical films help us see change through “before and after” comparison.")
+      ],
+      q: [
+        q(t("Катта сув ҳавзаси иқлимга қандай таъсир қилади?", "Как большой водоём влияет на климат?", "How does a large body of water affect climate?"),
+          [t("Ҳароратни юмшатади", "Смягчает температуру", "It moderates temperature"), t("Ҳароратни кескинлаштиради", "Делает её резче", "It makes it more extreme"), t("Таъсир қилмайди", "Не влияет", "No effect")], 0,
+          t("Сув секин исийди ва секин совийди.", "Вода медленно нагревается и медленно остывает.", "Water heats and cools slowly.")),
+        q(t("1963 йилда Орол қандай эди?", "Каким был Арал в 1963 году?", "What was the Aral like in 1963?"),
+          [t("Тўла, балиқчилик ривожланган", "Полноводным, с развитым рыболовством", "Full, with thriving fisheries"), t("Аллақачон қуриган", "Уже высохшим", "Already dry"), t("Муз билан қопланган", "Покрытым льдом", "Covered in ice")], 0,
+          t("Кескин қисқариш 1960-йиллар ўрталаридан бошланган.", "Резкое падение началось с середины 1960-х.", "The sharp decline began in the mid-1960s."))
+      ],
+      task: t("Фильмдан 2 та кадр танлаб, уларни бугунги Мўйноқ ёки Арал (Қозоғистон) шаҳри суратлари билан «олдин–кейин» коллажига жойланг.", "Выберите 2 кадра из фильма и составьте коллаж «до–после» со снимками сегодняшнего Муйнака или Аральска.", "Pick 2 frames from the film and make a before/after collage with photos of Muynak or Aralsk today.") },
+
+    { id: "v-klimatkurs-ru", yt: "7HWESh7Wrvc", top: "iqlim", st: "u", lng: "ru", ch: "ПостНаука", orig: "Изменение климата — курс на ПостНауке", ck: "2026-10-17",
+      t: t("Иқлим ўзгариши — ПостНаука курси", "Изменение климата — курс ПостНауки", "Climate change — a PostNauka course"),
+      sum: t("Олимлар курси иқлим тизими қандай ишлаши, ўтмишдаги иқлим ўзгаришлари ва ҳозирги исишнинг инсон фаолияти билан боғлиқлигини тушунтиради.", "Курс учёных объясняет, как устроена климатическая система, как менялся климат в прошлом и почему нынешнее потепление связано с человеком.", "A course by scientists explaining how the climate system works, past climate changes and why today’s warming is linked to humans."),
+      pre: t("Ер иқлими ўтмишда ҳам ўзгарган бўлса, ҳозирги ўзгариш нима билан фарқ қилади?", "Если климат Земли менялся и раньше, чем отличается нынешнее изменение?", "If Earth’s climate changed before, how is today’s change different?"),
+      k: [
+        t("Иқлим тизими: атмосфера, океан, музликлар (криосфера), қуруқлик ва биосфера ўзаро таъсирда.", "Климатическая система: атмосфера, океан, криосфера, суша и биосфера во взаимодействии.", "The climate system: atmosphere, ocean, cryosphere, land and biosphere interacting."),
+        t("Ўтмишдаги ўзгаришлар минг йиллар давомида рўй берган; ҳозирги исиш эса бир неча ўн йилликда тез кечмоқда.", "Прошлые изменения шли тысячелетиями; нынешнее потепление идёт за десятилетия.", "Past changes unfolded over millennia; today’s warming is happening within decades."),
+        t("Музлик намуналари (керн) ўтмишдаги CO₂ ва ҳароратни 800 минг йил орқага тиклашга имкон беради.", "Ледовые керны позволяют восстановить CO₂ и температуру на 800 тыс. лет назад.", "Ice cores let us reconstruct CO₂ and temperature back 800,000 years.")
+      ],
+      q: [
+        q(t("Ўтмишдаги иқлимни нима орқали билиб оламиз?", "Как мы узнаём о климате прошлого?", "How do we learn about past climates?"),
+          [t("Музлик кернлари", "Ледовые керны", "Ice cores"), t("Об-ҳаво прогнози", "Прогноз погоды", "Weather forecasts"), t("Телефон GPS", "GPS телефона", "Phone GPS")], 0,
+          t("Музда ўтмиш ҳавосининг пуфакчалари сақланган.", "Во льду сохранились пузырьки древнего воздуха.", "Ice traps bubbles of ancient air.")),
+        q(t("Ҳозирги исишнинг ўзига хослиги нимада?", "В чём особенность нынешнего потепления?", "What is special about today’s warming?"),
+          [t("У жуда тез ва инсон фаолияти билан боғлиқ", "Оно очень быстрое и связано с человеком", "It is very fast and human-caused"), t("У секин ва табиий", "Оно медленное и естественное", "It is slow and natural"), t("Ҳеч фарқи йўқ", "Ничем не отличается", "Nothing")], 0,
+          t("IPCC: инсон таъсири «шубҳасиз».", "МГЭИК: влияние человека «однозначно».", "IPCC: human influence is “unequivocal”."))
+      ],
+      task: t("Курсдан битта маърузани кўриб, унинг асосий ғоясини 5 жумлада ёзинг ва битта савол тузинг.", "Посмотрите одну лекцию курса, изложите главную мысль в 5 предложениях и сформулируйте вопрос.", "Watch one lecture of the course, summarise its main idea in 5 sentences and write one question.") },
+
+    { id: "v-3sabab-ru", yt: "wVMqI570ak8", top: "iqlim", st: "", lng: "ru", ch: "Телеканал 24kz", orig: "Три главные причины глобального потепления", ck: "2026-10-17",
+      t: t("Глобал исишнинг уч асосий сабаби", "Три главные причины глобального потепления", "Three main causes of global warming"),
+      sum: t("Қозоғистоннинг 24kz телеканали глобал исишнинг асосий сабаблари ҳақида гапиради. Илмий манбаларга кўра, асосий сабаблар инсон фаолиятидан чиқадиган иссиқхона газлари билан боғлиқ.", "Казахстанский телеканал 24kz рассказывает о главных причинах глобального потепления. По научным данным, они связаны с парниковыми газами от деятельности человека.", "Kazakhstan’s 24kz channel discusses the main causes of global warming. Scientific sources link them to greenhouse gases from human activity."),
+      pre: t("Видеодан олдин ўзингиз 3 та сабабни тахмин қилиб ёзинг, кейин солиштиринг.", "До просмотра запишите свои 3 причины, потом сравните.", "Before watching, write your own 3 causes, then compare."),
+      k: [
+        t("Энергетика ва транспортда кўмир, нефть ва газ ёқиш — CO₂ нинг асосий манбаи.", "Сжигание угля, нефти и газа в энергетике и транспорте — главный источник CO₂.", "Burning coal, oil and gas for power and transport is the main CO₂ source."),
+        t("Ўрмонларни кесиш CO₂ ютадиган «ўпка»ни йўқ қилади ва карбонни ҳавога чиқаради.", "Вырубка лесов уничтожает поглотители CO₂ и выпускает углерод в воздух.", "Deforestation removes CO₂ sinks and releases carbon."),
+        t("Қишлоқ хўжалиги (чорва, шоли) ва чиқинди полигонлари кучли иссиқхона гази — метанни чиқаради.", "Сельское хозяйство (скот, рис) и свалки выделяют метан — мощный парниковый газ.", "Farming (livestock, rice) and landfills emit methane — a potent greenhouse gas.")
+      ],
+      q: [
+        q(t("Қайси бири CO₂ нинг энг катта манбаи?", "Крупнейший источник CO₂?", "Largest source of CO₂?"),
+          [t("Қазилма ёқилғиларни ёқиш", "Сжигание ископаемого топлива", "Burning fossil fuels"), t("Нафас олиш", "Дыхание людей", "Human breathing"), t("Кўллар", "Озёра", "Lakes")], 0,
+          t("Улар инсон CO₂ чиқиндиларининг катта қисмини беради.", "Они дают бо́льшую часть антропогенного CO₂.", "They account for most human CO₂ emissions.")),
+        q(t("Чорвачилик асосан қайси газни чиқаради?", "Какой газ в основном выделяет скот?", "Which gas does livestock mainly emit?"),
+          [t("Метан", "Метан", "Methane"), t("Кислород", "Кислород", "Oxygen"), t("Неон", "Неон", "Neon")], 0,
+          t("Метан CO₂ дан 20 йиллик даврда 80 баравар кучли.", "За 20 лет метан примерно в 80 раз сильнее CO₂.", "Over 20 years methane is about 80 times stronger than CO₂."))
+      ],
+      task: t("Учта сабабнинг ҳар бири учун Ўзбекистонда қўлланиши мумкин бўлган битта ечим ёзинг.", "Для каждой из трёх причин запишите одно решение, применимое в Узбекистане.", "For each of the three causes, write one solution that could work in Uzbekistan.") },
+
+    { id: "v-pustyni-ru", yt: "zl-QWTAYEwo", top: "yer", st: "", lng: "ru", ch: "CGTN на русском", orig: "Как исчезают пустыни?", ck: "2026-10-17",
+      t: t("Чўллар қандай чекинади?", "Как исчезают пустыни?", "How do deserts retreat?"),
+      sum: t("CGTN сюжети қумни мустаҳкамлаш ва кўкаламзорлаштириш орқали чўлланишни тўхтатиш тажрибасини кўрсатади.", "Сюжет CGTN показывает опыт остановки опустынивания через закрепление песков и озеленение.", "A CGTN piece shows experience in halting desertification by fixing sand and planting vegetation."),
+      pre: t("Чўлни «қайтариш» учун биринчи навбатда нима қилиш керак: дарахт экиш, сув олиб келиш ёки қумни тўхтатиш?", "Что сделать первым, чтобы «отодвинуть» пустыню: посадить деревья, привести воду или остановить песок?", "What comes first in pushing back a desert: planting trees, bringing water or stopping the sand?"),
+      k: [
+        t("Қумни тўхтатиш учун кўпинча похол ёки шох-шаббадан «катак» (шахмат тўри) ясалади, кейин чидамли ўсимликлар экилади.", "Для закрепления песка часто делают «клетки» из соломы или веток, затем сажают стойкие растения.", "Sand is often fixed with straw or brush checkerboards before hardy plants are sown."),
+        t("Хитойнинг «Яшил девор» (Уч шимол ҳимоя ўрмони) дастури 1978 йилдан бери давом этмоқда.", "Китайская программа «Зелёной стены» (лесозащитный пояс «Три Севера») идёт с 1978 года.", "China’s “Green Wall” (Three-North Shelterbelt) programme has run since 1978."),
+        t("Муваффақият учун маҳаллий, сувни кам талаб қиладиган турлар ва ўтлатишни назорат қилиш зарур.", "Для успеха нужны местные засухоустойчивые виды и контроль выпаса.", "Success needs local drought-hardy species and grazing control.")
+      ],
+      q: [
+        q(t("Қумни мустаҳкамлашнинг оддий усули қайси?", "Простой способ закрепить песок?", "A simple way to fix sand?"),
+          [t("Похол катаклари ва чидамли ўсимликлар", "Соломенные клетки и стойкие растения", "Straw checkerboards and hardy plants"), t("Қумни асфальт билан қоплаш", "Залить песок асфальтом", "Paving the sand"), t("Барча ўсимликларни олиб ташлаш", "Убрать все растения", "Removing all plants")], 0,
+          t("Катаклар шамолни сусайтиради, ўсимликлар илдиз отишга улгуради.", "Клетки гасят ветер, растения успевают укорениться.", "Checkerboards slow the wind so plants can take root.")),
+        q(t("Чўлга дарахт экишда нима муҳим?", "Что важно при посадках в пустыне?", "What matters when planting in deserts?"),
+          [t("Маҳаллий қурғоқчиликка чидамли турлар", "Местные засухоустойчивые виды", "Local drought-tolerant species"), t("Кўп сув талаб қиладиган турлар", "Влаголюбивые виды", "Thirsty species"), t("Фақат мевали дарахтлар", "Только плодовые деревья", "Only fruit trees")], 0,
+          t("Нотўғри тур ер ости сувини тугатиши мумкин.", "Неподходящие виды могут истощить грунтовые воды.", "The wrong species can drain groundwater."))
+      ],
+      task: t("Қум, похол ва фен (шамол) билан модел ясаб, катаклар қумнинг учишини қанчалик камайтиришини синаб кўринг.", "Сделайте модель из песка, соломы и фена и проверьте, насколько «клетки» уменьшают вынос песка.", "Build a model with sand, straw and a hair dryer to test how much checkerboards reduce blowing sand.") },
+
+    { id: "v-krugovorot-ru", yt: "tjJcZdu3aEY", top: "suv", st: "m", lng: "ru", ch: "Умные Пластилинки", orig: "Про круговорот воды в природе. Познавательный мультик", ck: "2026-10-17",
+      t: t("Табиатда сувнинг айланиши — мультфильм", "Круговорот воды в природе — мультфильм", "The water cycle — a cartoon"),
+      sum: t("Пластилин мультфильм болаларга сув айланишини тушунтиради: буғланиш, конденсация, ёғин ва сувнинг дарё ҳамда денгизга қайтиши.", "Пластилиновый мультфильм объясняет детям круговорот воды: испарение, конденсацию, осадки и возвращение воды в реки и моря.", "A clay-animation cartoon explains the water cycle to children: evaporation, condensation, precipitation and water returning to rivers and seas."),
+      pre: t("Кўлмак қуриганда сув қаерга кетади?", "Куда девается вода, когда высыхает лужа?", "Where does the water go when a puddle dries up?"),
+      k: [
+        t("Қуёш иссиғи сувни буғлатади — сув буғи ҳавога кўтарилади.", "Солнце нагревает воду, и она испаряется — пар поднимается в воздух.", "The Sun heats water and it evaporates — vapour rises into the air."),
+        t("Юқорида буғ совиб, томчиларга айланади ва булут ҳосил бўлади (конденсация).", "Наверху пар остывает, превращается в капли и образует облака (конденсация).", "Higher up the vapour cools into droplets and forms clouds (condensation)."),
+        t("Томчилар оғирлашгач ёмғир ёки қор бўлиб ёғади ва дарё, кўл, ер ости орқали денгизга қайтади.", "Тяжёлые капли выпадают дождём или снегом и через реки, озёра и подземные воды возвращаются в море.", "Heavy drops fall as rain or snow and return to the sea via rivers, lakes and groundwater.")
+      ],
+      q: [
+        q(t("Булут қандай ҳосил бўлади?", "Как образуется облако?", "How does a cloud form?"),
+          [t("Сув буғи совиб томчиларга айланади", "Пар остывает и превращается в капли", "Vapour cools into droplets"), t("Шамол чангни йиғади", "Ветер собирает пыль", "Wind gathers dust"), t("Қуёш нурини ютади", "Поглощает солнечный свет", "It absorbs sunlight")], 0,
+          t("Бу жараён конденсация дейилади.", "Этот процесс — конденсация.", "This process is condensation.")),
+        q(t("Сув айланишини нима ҳаракатга келтиради?", "Что приводит в движение круговорот воды?", "What drives the water cycle?"),
+          [t("Қуёш энергияси ва оғирлик кучи", "Энергия Солнца и сила тяжести", "Solar energy and gravity"), t("Ой нури", "Свет Луны", "Moonlight"), t("Инсонлар", "Люди", "People")], 0,
+          t("Қуёш буғлатади, оғирлик кучи ёмғирни туширади.", "Солнце испаряет, тяжесть опускает дождь.", "The Sun evaporates; gravity brings rain down."))
+      ],
+      task: t("Шиша идишга иссиқ сув қуйиб, устини муз солинган ликопча билан ёпинг: «ёмғир» ҳосил бўлишини кузатинг ва расмини чизинг.", "Налейте в банку горячую воду и накройте тарелкой со льдом: понаблюдайте «дождь» и нарисуйте схему.", "Pour hot water into a jar and cover it with a plate of ice: watch the “rain” form and draw it.") },
+
+    { id: "v-invaziv-en", yt: "spTWwqVP_2s", top: "bio", st: "", lng: "en", ch: "TED-Ed", orig: "The threat of invasive species - Jennifer Klos", ck: "2026-10-17",
+      t: t("Инвазив турлар хавфи", "Угроза инвазивных видов", "The threat of invasive species"),
+      sum: t("TED-Ed дарси инвазив (бегона) турлар нима эканини ва улар янги жойда табиий душмани йўқлиги учун қандай тез кўпайиб, маҳаллий турларни сиқиб чиқаришини тушунтиради.", "Урок TED-Ed объясняет, что такое инвазивные виды и как они, не имея врагов на новом месте, быстро размножаются и вытесняют местные виды.", "A TED-Ed lesson explaining what invasive species are and how, lacking natural enemies in a new place, they spread fast and push out native species."),
+      pre: t("Бошқа қитъадан келтирилган ҳайвон янги жойда нега жуда кўпайиб кетиши мумкин?", "Почему завезённое с другого континента животное может сильно размножиться?", "Why might an animal brought from another continent multiply out of control?"),
+      k: [
+        t("Инвазив тур — инсон томонидан янги ҳудудга олиб келинган ва у ерда зарар келтираётган тур.", "Инвазивный вид — занесённый человеком в новый регион и наносящий там вред.", "An invasive species is one introduced by humans to a new area where it causes harm."),
+        t("Янги жойда йиртқич, касаллик ва рақобатчи бўлмагани учун у тез кўпаяди.", "На новом месте нет хищников, болезней и конкурентов, поэтому он быстро размножается.", "With no predators, diseases or competitors in the new place, it multiplies quickly."),
+        t("Энг яхши ҳимоя — олдини олиш: юк, кема ва саёҳатчилар орқали тасодифий олиб киришни назорат қилиш.", "Лучшая защита — профилактика: контроль случайного завоза с грузами, судами и туристами.", "The best defence is prevention: controlling accidental transport via cargo, ships and travellers.")
+      ],
+      q: [
+        q(t("Инвазив тур нега тез тарқалади?", "Почему инвазивный вид быстро распространяется?", "Why does an invasive species spread fast?"),
+          [t("Янги жойда табиий душмани йўқ", "На новом месте нет естественных врагов", "No natural enemies in the new place"), t("У жуда секин кўпаяди", "Он медленно размножается", "It breeds slowly"), t("Уни ҳамма ейди", "Его все едят", "Everything eats it")], 0,
+          t("Масалан, Австралиядаги қамиш қурбақаси (ага).", "Например, жаба-ага в Австралии.", "For example, the cane toad in Australia.")),
+        q(t("Инвазив турларга қарши энг арзон усул?", "Самый дешёвый способ борьбы с инвазивными видами?", "The cheapest approach to invasive species?"),
+          [t("Олдини олиш", "Профилактика", "Prevention"), t("Кейинчалик йўқ қилиш", "Уничтожение потом", "Eradication later"), t("Эътибор бермаслик", "Игнорирование", "Ignoring them")], 0,
+          t("Тарқалгандан кейин йўқ қилиш жуда қиммат ва қийин.", "После распространения уничтожить очень дорого и трудно.", "Eradication after spread is very costly and hard."))
+      ],
+      task: t("Ўзбекистонда учрайдиган битта бегона турни (масалан, оқ амур, амброзия ёки майна) ўрганиб, унинг келиб чиқиши ва таъсирини ёзинг.", "Изучите один чужеродный вид в Узбекистане (например, белый амур, амброзия или майна) и опишите происхождение и влияние.", "Research one alien species in Uzbekistan (e.g. grass carp, ragweed or the common myna) and describe its origin and impact.") },
+
+    { id: "v-detrit-en", yt: "KI7u_pcfAQE", top: "asos", st: "", lng: "en", ch: "TED-Ed", orig: "Dead stuff: The secret ingredient in our food chain - John C. Moore", ck: "2026-10-17",
+      t: t("Ўлик органика — озиқ занжирининг яширин таркиби", "Мёртвая органика — секретный ингредиент пищевой цепи", "Dead stuff: the secret ingredient in our food chain"),
+      sum: t("TED-Ed дарси детрит (ўлик органик модда) ва уни парчаловчи организмлар озиқ занжирида қандай муҳим ўрин тутишини кўрсатади: ўлим — моддалар айланишининг бошланиши.", "Урок TED-Ed показывает роль детрита (мёртвой органики) и разлагающих его организмов в пищевой цепи: смерть — начало круговорота веществ.", "A TED-Ed lesson on detritus (dead organic matter) and the decomposers that process it: death is where nutrient cycling begins."),
+      pre: t("Ўрмондаги барг ва ўлик ҳайвонлар нега «тўпланиб» қолмайди?", "Почему листья и мёртвые животные в лесу не накапливаются горами?", "Why don’t dead leaves and animals pile up forever in a forest?"),
+      k: [
+        t("Детрит — ўлик ўсимлик, ҳайвон қолдиқлари ва ахлат; у бактерия, замбуруғ ва ёмғир чувалчанглари учун озиқ.", "Детрит — мёртвые остатки растений и животных, экскременты; это пища для бактерий, грибов и червей.", "Detritus is dead plant and animal remains and waste; it feeds bacteria, fungi and earthworms."),
+        t("Парчаловчилар озиқ моддаларни (азот, фосфор) тупроққа қайтаради, ўсимликлар уларни яна ишлатади.", "Редуценты возвращают в почву азот и фосфор, и растения используют их вновь.", "Decomposers return nutrients (nitrogen, phosphorus) to the soil for plants to reuse."),
+        t("Детрит асосидаги «қўнғир» озиқ тармоғи яшил ўсимликлар асосидаги «яшил» тармоқ билан боғланган.", "«Бурая» пищевая сеть на основе детрита связана с «зелёной», основанной на растениях.", "The detritus-based “brown” food web links to the plant-based “green” web.")
+      ],
+      q: [
+        q(t("Детритни ким парчалайди?", "Кто разлагает детрит?", "Who breaks down detritus?"),
+          [t("Бактерия ва замбуруғлар", "Бактерии и грибы", "Bacteria and fungi"), t("Бургутлар", "Орлы", "Eagles"), t("Қуёш панеллари", "Солнечные панели", "Solar panels")], 0,
+          t("Улар редуцентлар дейилади.", "Их называют редуцентами.", "They are called decomposers.")),
+        q(t("Парчаловчилар бўлмаса нима бўларди?", "Что было бы без редуцентов?", "What would happen without decomposers?"),
+          [t("Озиқ моддалар тупроққа қайтмасди", "Питательные вещества не возвращались бы в почву", "Nutrients would not return to the soil"), t("Ўсимликлар тезроқ ўсарди", "Растения росли бы быстрее", "Plants would grow faster"), t("Ҳеч нарса ўзгармасди", "Ничего бы не изменилось", "Nothing would change")], 0,
+          t("Моддалар айланиши тўхтаб қоларди.", "Круговорот веществ бы остановился.", "Nutrient cycling would stop."))
+      ],
+      task: t("Компост идиши ясанг: озиқ-овқат қолдиқлари ва қуруқ баргни аралаштириб, 4 ҳафта давомида ўзгаришни кузатинг.", "Сделайте компостер: смешайте пищевые очистки и сухие листья и 4 недели наблюдайте изменения.", "Start a compost bin: mix food scraps and dry leaves and observe changes for 4 weeks.") },
+
+    { id: "v-feedback-en", yt: "inVZoI1AkC8", top: "asos", st: "u", lng: "en", ch: "TED-Ed", orig: "Feedback loops: How nature gets its rhythms - Anje-Margriet Neutel", ck: "2026-10-17",
+      t: t("Тескари алоқа ҳалқалари: табиат ритми", "Петли обратной связи: ритмы природы", "Feedback loops: how nature gets its rhythms"),
+      sum: t("TED-Ed дарси экотизимлардаги тескари алоқа ҳалқаларини тушунтиради: йиртқич ва ўлжа сонининг даврий тебраниши ва барқарорликнинг сири.", "Урок TED-Ed объясняет петли обратной связи в экосистемах: циклические колебания численности хищника и жертвы и секрет устойчивости.", "A TED-Ed lesson explaining feedback loops in ecosystems: predator–prey population cycles and the secret of stability."),
+      pre: t("Қуёнлар кўпайса, тулкилар сони нима бўлади? Кейин қуёнлар-чи?", "Если зайцев станет больше, что будет с лисами? А потом с зайцами?", "If hares increase, what happens to foxes? And then to hares?"),
+      k: [
+        t("Манфий (баланслаштирувчи) тескари алоқа тизимни мувозанатда ушлайди: ўлжа кўпайса — йиртқич кўпаяди — ўлжа камаяди.", "Отрицательная (балансирующая) обратная связь держит систему в равновесии: жертв больше — хищников больше — жертв меньше.", "Negative (balancing) feedback keeps a system in balance: more prey → more predators → fewer prey."),
+        t("Мусбат (кучайтирувчи) тескари алоқа ўзгаришни кучайтиради — масалан, муз эриши → Ер кўпроқ иссиқлик ютади → яна эриш.", "Положительная (усиливающая) связь усиливает изменения — например, таяние льда → Земля поглощает больше тепла → таяние сильнее.", "Positive (reinforcing) feedback amplifies change — e.g. ice melts → Earth absorbs more heat → more melting."),
+        t("Йиртқич–ўлжа сони кечикиш билан даврий тебранади (Лотка–Вольтерра модели).", "Численности хищника и жертвы колеблются с запаздыванием (модель Лотки–Вольтерры).", "Predator and prey numbers oscillate with a lag (the Lotka–Volterra model).")
+      ],
+      q: [
+        q(t("Қайси мисол мусбат тескари алоқа?", "Какой пример — положительная обратная связь?", "Which is an example of positive feedback?"),
+          [t("Муз эриши → кўпроқ иссиқлик ютилиши → яна эриш", "Таяние льда → больше поглощения тепла → ещё таяние", "Ice melt → more heat absorbed → more melt"), t("Ўлжа кўпайса йиртқич кўпайиб, ўлжани камайтиради", "Больше жертв → больше хищников → меньше жертв", "More prey → more predators → fewer prey"), t("Термостат иситишни ўчиради", "Термостат выключает отопление", "A thermostat switching off heating")], 0,
+          t("Мусбат алоқа ўзгаришни кучайтиради.", "Положительная связь усиливает изменения.", "Positive feedback amplifies change.")),
+        q(t("Йиртқич сони ўлжа сонига нисбатан қандай ўзгаради?", "Как меняется численность хищника относительно жертвы?", "How do predator numbers change relative to prey?"),
+          [t("Кечикиш билан ортидан эргашади", "Следует с запаздыванием", "They follow with a lag"), t("Ҳар доим тенг", "Всегда равна", "They are always equal"), t("Ҳеч боғлиқ эмас", "Не связана", "They are unrelated")], 0,
+          t("Классик мисол — Канададаги силовсин ва қуён маълумотлари.", "Классика — данные о рыси и зайце в Канаде.", "The classic case is lynx and hare records from Canada."))
+      ],
+      task: t("Қуён ва тулки сони ўзгаришининг 10 йиллик тахминий графигини чизиб, ҳар бир чўққининг сабабини изоҳланг.", "Нарисуйте примерный график численности зайцев и лис за 10 лет и объясните каждый пик.", "Sketch a 10-year graph of hare and fox numbers and explain each peak.") },
+
+    { id: "v-rewild-en", yt: "t3I9gDocYdk", top: "bio", st: "", lng: "en", ch: "TED-Ed", orig: "From the top of the food chain down: Rewilding our world - George Monbiot", ck: "2026-10-17",
+      t: t("Озиқ занжирининг тепасидан: табиатни ёввойилаштириш", "С вершины пищевой цепи: «ревайлдинг»", "From the top of the food chain down: rewilding"),
+      sum: t("Жорж Монбио «ревайлдинг» — йирик йиртқичлар ва табиий жараёнларни қайтариш орқали экотизимни тиклаш ғоясини тушунтиради. Йеллоустондаги бўрилар машҳур мисол.", "Джордж Монбио объясняет «ревайлдинг» — восстановление экосистем через возвращение крупных хищников и природных процессов. Известный пример — волки Йеллоустона.", "George Monbiot explains rewilding — restoring ecosystems by bringing back large predators and natural processes. The famous example is Yellowstone’s wolves."),
+      pre: t("Бўриларнинг қайтиши дарёларнинг шаклини ўзгартириши мумкинми? Нега?", "Может ли возвращение волков изменить форму рек? Почему?", "Could bringing back wolves change the shape of rivers? Why?"),
+      k: [
+        t("Трофик каскад: йиртқич ўлжанинг сони ва хулқини ўзгартиради, бу эса ўсимлик ва ландшафтга таъсир қилади.", "Трофический каскад: хищник меняет численность и поведение жертв, а это влияет на растения и ландшафт.", "Trophic cascade: a predator changes prey numbers and behaviour, which affects plants and landscape."),
+        t("1995 йилда Йеллоустонга бўрилар қайтарилгач, буғулар айрим водийлардан қочиб, у ердаги ўсимликлар тиклана бошлади.", "После возвращения волков в Йеллоустон в 1995 году олени стали избегать некоторых долин, и растительность там начала восстанавливаться.", "After wolves returned to Yellowstone in 1995, elk avoided some valleys and vegetation there began to recover."),
+        t("Олимлар каскаднинг кучини муҳокама қилишади: бошқа омиллар ҳам таъсир қилган.", "Учёные спорят о силе каскада: влияли и другие факторы.", "Scientists still debate how strong the cascade was: other factors also played a role.")
+      ],
+      q: [
+        q(t("Трофик каскад нима?", "Что такое трофический каскад?", "What is a trophic cascade?"),
+          [t("Йиртқичнинг таъсири озиқ занжири бўйлаб пастга тарқалиши", "Влияние хищника, распространяющееся вниз по пищевой цепи", "A predator’s effect rippling down the food chain"), t("Шаршара тури", "Вид водопада", "A type of waterfall"), t("Ўсимлик касаллиги", "Болезнь растений", "A plant disease")], 0,
+          t("Йиртқич → ўтхўр → ўсимлик → тупроқ ва дарё қирғоғи.", "Хищник → травоядное → растения → почва и берега.", "Predator → herbivore → plants → soil and riverbanks.")),
+        q(t("Бўрилар Йеллоустонга қачон қайтарилган?", "Когда волков вернули в Йеллоустон?", "When were wolves returned to Yellowstone?"),
+          [t("1995 йилда", "В 1995 году", "In 1995"), t("1850 йилда", "В 1850 году", "In 1850"), t("2020 йилда", "В 2020 году", "In 2020")], 0,
+          t("Улар Канададан келтирилган.", "Их привезли из Канады.", "They were brought from Canada."))
+      ],
+      task: t("Ўзбекистон учун ревайлдинг лойиҳасини ўйлаб топинг (масалан, Бухоро буғуси ёки жайронни қайтариш) ва унинг 3 та кутилган таъсирини ёзинг.", "Придумайте проект ревайлдинга для Узбекистана (например, возвращение бухарского оленя или джейрана) и опишите 3 ожидаемых эффекта.", "Design a rewilding project for Uzbekistan (e.g. bringing back Bukhara deer or goitered gazelle) and list 3 expected effects.") },
+
+    { id: "v-yadro-en", yt: "EhAemz1v7dQ", top: "energ", st: "u", lng: "en", ch: "Kurzgesagt – In a Nutshell", orig: "Do we Need Nuclear Energy to Stop Climate Change?", ck: "2026-10-17",
+      t: t("Иқлимни сақлаш учун атом энергияси керакми?", "Нужна ли атомная энергия для борьбы с изменением климата?", "Do we need nuclear energy to stop climate change?"),
+      sum: t("Kurzgesagt атом энергиясининг афзаллик ва камчиликларини таҳлил қилади: кам углеродли ва барқарор, лекин қиммат, қурилиши узоқ ва радиоактив чиқинди муаммоси бор.", "Kurzgesagt разбирает плюсы и минусы атомной энергии: низкоуглеродная и стабильная, но дорогая, долго строится и оставляет радиоактивные отходы.", "Kurzgesagt weighs nuclear power’s pros and cons: low-carbon and steady, but costly, slow to build and with radioactive waste."),
+      pre: t("Атом электр станцияси ҳақида биринчи хаёлингизга келган сўз қайси — «хавф» ёки «тоза энергия»?", "Какое слово первым приходит на ум про АЭС — «опасность» или «чистая энергия»?", "What word first comes to mind about nuclear plants — “danger” or “clean energy”?"),
+      k: [
+        t("Ҳаёт цикли бўйича атом энергияси CO₂ чиқиндиси шамол энергиясига яқин ва кўмирдан ўнлаб баравар кам.", "За жизненный цикл выбросы CO₂ атомной энергии близки к ветровой и в десятки раз ниже угольной.", "Over its life cycle nuclear power’s CO₂ is close to wind’s and dozens of times lower than coal’s."),
+        t("Атом станцияси об-ҳавога боғлиқ бўлмай, кечаю кундуз барқарор энергия беради.", "АЭС даёт стабильную энергию днём и ночью, независимо от погоды.", "A nuclear plant provides steady power day and night, regardless of weather."),
+        t("Камчиликлар: юқори нарх, қурилиш узоқ давом этиши, радиоактив чиқиндини узоқ муддат сақлаш.", "Минусы: высокая цена, долгое строительство, долгосрочное хранение радиоактивных отходов.", "Drawbacks: high cost, long construction times, long-term storage of radioactive waste.")
+      ],
+      q: [
+        q(t("Атом энергиясининг асосий афзаллиги нима?", "Главное преимущество атомной энергии?", "Main advantage of nuclear power?"),
+          [t("Кам CO₂ ва барқарор ишлаш", "Мало CO₂ и стабильная работа", "Low CO₂ and steady output"), t("Арзон ва тез қурилади", "Дёшево и быстро строится", "Cheap and quick to build"), t("Чиқинди йўқ", "Нет отходов", "No waste")], 0,
+          t("Нарх ва қурилиш муддати — аксинча, заиф томонлари.", "Цена и сроки строительства — наоборот, слабые стороны.", "Cost and build time are actually weak points.")),
+        q(t("Қайси муаммо атом энергиясига хос?", "Какая проблема характерна для атомной энергии?", "Which problem is specific to nuclear power?"),
+          [t("Радиоактив чиқиндини сақлаш", "Хранение радиоактивных отходов", "Storing radioactive waste"), t("Кечаси ишламаслик", "Не работает ночью", "Not working at night"), t("Шамолга боғлиқлик", "Зависимость от ветра", "Dependence on wind")], 0,
+          t("Баъзи чиқиндилар минг йиллар давомида хавфли.", "Некоторые отходы опасны тысячи лет.", "Some waste stays hazardous for thousands of years."))
+      ],
+      task: t("«Ўзбекистонга АЭС керакми?» мавзусида мунозара учун 3 та «тарафдор» ва 3 та «қарши» далил тайёрланг.", "Подготовьте для дебатов «Нужна ли Узбекистану АЭС?» по 3 аргумента «за» и «против».", "Prepare 3 arguments for and 3 against for a debate: “Does Uzbekistan need a nuclear plant?”") },
+
+    { id: "v-dwchol-en", yt: "D6Kz_OcOgvE", top: "yer", st: "", lng: "en", ch: "DW Planet A", orig: "Can we stop the deserts from spreading?", ck: "2026-10-17",
+      t: t("Чўлларнинг кенгайишини тўхтата оламизми?", "Можно ли остановить наступление пустынь?", "Can we stop the deserts from spreading?"),
+      sum: t("DW Planet A чўлланиш — қуруқ ерларнинг инсон фаолияти ва иқлим туфайли деградацияси ва уни тўхтатиш усулларини, жумладан Африкадаги «Буюк яшил девор»ни кўриб чиқади.", "DW Planet A разбирает опустынивание — деградацию засушливых земель из-за человека и климата — и способы его остановить, включая «Великую зелёную стену» в Африке.", "DW Planet A examines desertification — the degradation of drylands by human activity and climate — and ways to stop it, including Africa’s Great Green Wall."),
+      pre: t("Чўлланиш — бу чўлнинг ўз-ўзидан кенгайишими ёки ернинг бузилишими?", "Опустынивание — это само расширение пустыни или деградация земли?", "Is desertification deserts expanding on their own, or land being degraded?"),
+      k: [
+        t("БМТ чўлланишга қарши конвенцияси (UNCCD) бўйича чўлланиш — қуруқ ҳудудларда ер деградацияси.", "По Конвенции ООН по борьбе с опустыниванием (КБО), опустынивание — деградация земель в засушливых районах.", "Under the UNCCD, desertification means land degradation in drylands."),
+        t("Сабаблар: ортиқча ўтлатиш, ўрмон кесиш, нотўғри суғориш, қурғоқчилик ва исиш.", "Причины: перевыпас, вырубка, неправильное орошение, засухи и потепление.", "Causes: overgrazing, deforestation, poor irrigation, drought and warming."),
+        t("Ечимлар: ерни тиклаш, агроўрмончилик, «Буюк яшил девор» каби минтақавий лойиҳалар.", "Решения: восстановление земель, агролесоводство, региональные проекты вроде «Великой зелёной стены».", "Solutions: land restoration, agroforestry and regional projects like the Great Green Wall.")
+      ],
+      q: [
+        q(t("UNCCD бўйича чўлланиш нима?", "Что такое опустынивание по КБО ООН?", "What is desertification per the UNCCD?"),
+          [t("Қуруқ ҳудудларда ер деградацияси", "Деградация земель в засушливых районах", "Land degradation in drylands"), t("Қумнинг кўпайиши", "Рост количества песка", "More sand appearing"), t("Ёмғирнинг кўпайиши", "Рост осадков", "More rain")], 0,
+          t("Унинг асосий сабаблари инсон фаолияти ва иқлим.", "Главные причины — деятельность человека и климат.", "Its main drivers are human activity and climate.")),
+        q(t("«Буюк яшил девор» қайси қитъада?", "На каком континенте «Великая зелёная стена»?", "On which continent is the Great Green Wall?"),
+          [t("Африка", "Африка", "Africa"), t("Европа", "Европа", "Europe"), t("Антарктида", "Антарктида", "Antarctica")], 0,
+          t("У Сахел минтақаси бўйлаб Сенегалдан Жибутигача чўзилади.", "Она тянется через Сахель от Сенегала до Джибути.", "It runs across the Sahel from Senegal to Djibouti."))
+      ],
+      task: t("Ҳудудингиздаги бир ер участкасини (яйлов, дала ёки бўш ер) кузатиб, деградация белгиларини (эрозия, шўр доғлар, ўсимликсизлик) қайд қилинг.", "Осмотрите участок земли рядом (пастбище, поле, пустырь) и отметьте признаки деградации: эрозию, солевые пятна, голую почву.", "Survey a nearby plot (pasture, field or empty lot) and record signs of degradation: erosion, salt patches, bare soil.") },
+
+    { id: "v-quyoshted-en", yt: "k8d5Pf7VIiU", top: "energ", st: "", lng: "en", ch: "TED-Ed", orig: "Why aren't we only using solar power? - Alexandros George Charalambides", ck: "2026-10-17",
+      t: t("Нега фақат қуёш энергиясидан фойдаланмаймиз?", "Почему мы не используем только солнечную энергию?", "Why aren’t we only using solar power?"),
+      sum: t("TED-Ed дарси қуёш энергиясининг улкан салоҳияти ва уни ягона манбага айлантиришга халақит берадиган омилларни — ўзгарувчанлик, самарадорлик ва энергия сақлаш муаммоларини тушунтиради.", "Урок TED-Ed объясняет огромный потенциал солнечной энергии и что мешает сделать её единственным источником — непостоянство, КПД и хранение энергии.", "A TED-Ed lesson on solar power’s huge potential and what stops it being our only source — variability, efficiency and energy storage."),
+      pre: t("Агар Ерга бир соатда тушадиган қуёш энергияси бутун дунёга бир йилга етса, нега биз ҳали ҳам кўмир ёқамиз?", "Если солнечной энергии, падающей на Землю за час, хватило бы миру на год, почему мы всё ещё жжём уголь?", "If an hour of sunlight on Earth could power the world for a year, why do we still burn coal?"),
+      k: [
+        t("Ерга тушадиган қуёш энергияси инсоният эҳтиёжидан минглаб баравар кўп.", "Солнечной энергии на Землю приходит в тысячи раз больше, чем нужно человечеству.", "The solar energy reaching Earth is thousands of times greater than humanity’s needs."),
+        t("Тижорат панеллари қуёш нурининг тахминан 15–22 фоизини электрга айлантиради.", "Коммерческие панели превращают в электричество примерно 15–22% солнечного света.", "Commercial panels convert roughly 15–22% of sunlight into electricity."),
+        t("Тун, булут ва мавсумлар туфайли энергия сақлаш ва тармоқларни боғлаш зарур.", "Из-за ночи, облаков и сезонов нужны накопители и объединение сетей.", "Night, clouds and seasons mean storage and connected grids are needed.")
+      ],
+      q: [
+        q(t("Тижорат қуёш панелларининг самарадорлиги тахминан қанча?", "Каков КПД коммерческих солнечных панелей?", "Typical efficiency of commercial solar panels?"),
+          [t("15–22%", "15–22%", "15–22%"), t("90–100%", "90–100%", "90–100%"), t("1–2%", "1–2%", "1–2%")], 0,
+          t("Лаборатория рекордлари юқорироқ, лекин нархи баланд.", "Лабораторные рекорды выше, но дороже.", "Lab records are higher but costlier.")),
+        q(t("Қуёш энергиясининг асосий техник муаммоси?", "Главная техническая проблема солнечной энергии?", "Main technical challenge of solar power?"),
+          [t("Энергияни сақлаш (кечаси учун)", "Хранение энергии (на ночь)", "Storing energy (for night)"), t("Қуёш тугаб қолиши", "Солнце закончится", "The Sun running out"), t("Кўп CO₂ чиқариши", "Много CO₂", "High CO₂ emissions")], 0,
+          t("Аккумуляторлар тез арзонлашмоқда.", "Аккумуляторы быстро дешевеют.", "Batteries are getting cheaper fast."))
+      ],
+      task: t("Уйингиз бир кунда қанча электр (кВт·соат) ишлатишини ҳисоблагичдан аниқлаб, уни қоплаш учун нечта 400 Вт ли панел кераклигини ҳисобланг (кунига 5 соат қуёш).", "По счётчику узнайте суточное потребление дома (кВт·ч) и посчитайте, сколько панелей по 400 Вт нужно (5 солнечных часов в день).", "Read your home’s daily use (kWh) from the meter and calculate how many 400 W panels would cover it (5 sun-hours a day).") },
+
+    { id: "v-100vie-en", yt: "rQVGI9fZYqU", top: "energ", st: "u", lng: "en", ch: "TED Podcasts", orig: "Can 100% renewable energy power the world? | TED Climate", ck: "2026-10-17",
+      t: t("100% қайта тикланувчи энергия дунёни таъминлай оладими?", "Может ли мир жить на 100% возобновляемой энергии?", "Can 100% renewable energy power the world?"),
+      sum: t("TED Climate эпизоди дунёни тўлиқ қайта тикланувчи энергияга ўтказиш мумкинлиги ва бунинг учун зарур шартларни — электрлаштириш, энергия сақлаш ва тармоқларни муҳокама қилади.", "Эпизод TED Climate обсуждает, возможно ли перевести мир полностью на ВИЭ и что для этого нужно — электрификация, накопители, сети.", "A TED Climate episode on whether the world can run fully on renewables and what it takes — electrification, storage and grids."),
+      pre: t("Энергиянинг қайси соҳасини (электр, транспорт, иситиш, саноат) қайта тикланувчига ўтказиш энг қийин деб ўйлайсиз?", "Какую сферу (электричество, транспорт, отопление, промышленность) труднее всего перевести на ВИЭ?", "Which sector (power, transport, heating, industry) do you think is hardest to switch to renewables?"),
+      k: [
+        t("Электр соҳасини қуёш, шамол ва сув билан таъминлаш нисбатан осон; транспорт ва иситишни аввал электрлаштириш керак.", "Электроэнергетику проще перевести на солнце, ветер и воду; транспорт и отопление нужно сначала электрифицировать.", "Power is the easiest to supply with sun, wind and water; transport and heating must be electrified first."),
+        t("Пўлат, цемент ва авиация каби «қийин» соҳалар учун водород ва янги технологиялар керак.", "Для «трудных» отраслей — сталь, цемент, авиация — нужны водород и новые технологии.", "Hard sectors like steel, cement and aviation need hydrogen and new technologies."),
+        t("Тизим барқарорлиги учун энергия сақлаш, кенг тармоқ ва талабни бошқариш зарур.", "Для устойчивости системы нужны накопители, широкие сети и управление спросом.", "System reliability needs storage, wide grids and demand management.")
+      ],
+      q: [
+        q(t("Қайси соҳани қайта тикланувчига ўтказиш энг осон?", "Какую сферу проще всего перевести на ВИЭ?", "Which sector is easiest to switch to renewables?"),
+          [t("Электр ишлаб чиқариш", "Производство электроэнергии", "Electricity generation"), t("Авиация", "Авиация", "Aviation"), t("Цемент саноати", "Цементная промышленность", "Cement industry")], 0,
+          t("Қуёш ва шамол бевосита электр беради.", "Солнце и ветер напрямую дают электричество.", "Sun and wind produce electricity directly.")),
+        q(t("Электрлаштириш нима?", "Что такое электрификация?", "What is electrification?"),
+          [t("Ёқилғи ёқадиган қурилмаларни электр билан ишлайдиганларга алмаштириш", "Замена устройств на топливе электрическими", "Replacing fuel-burning devices with electric ones"), t("Кўпроқ кўмир станциялари қуриш", "Строить больше угольных станций", "Building more coal plants"), t("Электрни ўчириш", "Отключать свет", "Switching power off")], 0,
+          t("Масалан, электромобиль ва иссиқлик насоси.", "Например, электромобиль и тепловой насос.", "For example, electric cars and heat pumps."))
+      ],
+      task: t("Уйингиздаги ёқилғи ёқадиган 3 та қурилмани топиб, ҳар бирининг электр ўриндошини ёзинг.", "Найдите дома 3 устройства на топливе и запишите для каждого электрическую замену.", "Find 3 fuel-burning devices at home and write an electric alternative for each.") }
   ];
 
-  window.EKO_VIDEOS = { topics: TOPICS, list: V, checked: "2026-10-16" };
+  window.EKO_VIDEOS = { topics: TOPICS, list: V, checked: "2026-10-17" };
 })();

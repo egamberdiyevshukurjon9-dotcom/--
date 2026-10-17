@@ -150,7 +150,7 @@
         <h3><button type="button" class="vd-link" data-open="${v.id}">${H(v.t)}</button></h3>
         <p class="vd-sum">${H(v.sum || v.k[0])}</p>
         <p class="vd-orig" lang="${v.lng}">«${esc(v.orig)}»</p>
-        <p class="vd-ch"><i class="fa-brands fa-youtube" aria-hidden="true"></i> ${esc(v.ch)}${v.au ? ` · ${esc(v.au)}` : ""} · <span class="vd-stg">${H(TX.stg[v.st || ""])}</span></p>
+        <p class="vd-ch"><i class="fa-solid fa-circle-play" aria-hidden="true"></i> ${esc(v.ch)}${v.au ? ` · ${esc(v.au)}` : ""} · <span class="vd-stg">${H(TX.stg[v.st || ""])}</span></p>
       </div>
     </article>`;
   }
@@ -211,7 +211,7 @@
         </div>
         <p class="vd-net pdf-skip" data-net hidden role="status"></p>
         <div class="qn-acts pdf-skip">
-          <a class="btn btn-ghost btn-sm" href="${watchUrl(v)}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube" aria-hidden="true"></i> ${H(TX.onYt)} ↗</a>
+          <a class="btn btn-ghost btn-sm" href="${watchUrl(v)}" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-circle-play" aria-hidden="true"></i> ${H(TX.onYt)} ↗</a>
           ${st.seen[v.id] ? `<span class="vd-badge ok static"><i class="fa-solid fa-check" aria-hidden="true"></i> ${H(TX.seen)}</span>` : `<button type="button" class="btn btn-ghost btn-sm" data-act="seen">${H(TX.markSeen)}</button>`}
         </div>
         <p class="small muted pdf-skip">${H(TX.privacy)}${v.lng !== "uz" && v.lng !== uiLng() ? " " + esc(L(TX.subs)) : ""}</p>

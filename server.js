@@ -2141,6 +2141,9 @@ const STATIC = {
   /* Дизайн тизими ва Onest шрифти (SIL OFL) — ҳамма саҳифалар учун умумий */
   "/vendor/three/three.module.min.js": { file: "vendor/three/three.module.min.js", type: "text/javascript; charset=utf-8", cache: true },
   "/vendor/eko-lab3d.js": { file: "vendor/eko-lab3d.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-labxona-kimyo.js": { file: "vendor/eko-labxona-kimyo.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-labxona.js": { file: "vendor/eko-labxona.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-scopus.js": { file: "vendor/eko-scopus.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-dunyo3d.js": { file: "vendor/eko-dunyo3d.js", type: "text/javascript; charset=utf-8" },
   "/vendor/world-land.json": { file: "vendor/world-land.json", type: "application/json; charset=utf-8", cache: true },
   "/vendor/eko-loyiha.js": { file: "vendor/eko-loyiha.js", type: "text/javascript; charset=utf-8" },
