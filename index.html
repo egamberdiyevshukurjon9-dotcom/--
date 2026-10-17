@@ -14,6 +14,9 @@
     /* Бўлимлар алоҳида экранда очилади (pageNav). Скрипт ишламаса, ҳаммаси битта саҳифада қолади. */
     (function () { var d = document.documentElement, h = location.hash.slice(1); d.classList.add("spa"); if (h && h !== "bosh") d.classList.add("in-page");
       try { var t = localStorage.getItem("ekotalim:theme"); if (t) d.dataset.theme = t; } catch (e) { /* ignore */ }
+      /* Мавзу танланмаган бўлса, тизим мавзуси data-theme га ёзилади: [data-theme="dark"] қоидалари ҳам ишлайди */
+      try { var mq = matchMedia("(prefers-color-scheme: dark)"); if (!t) d.dataset.theme = mq.matches ? "dark" : "light";
+        mq.addEventListener("change", function (e) { try { if (!localStorage.getItem("ekotalim:theme")) d.dataset.theme = e.matches ? "dark" : "light"; } catch (x) { /* ignore */ } }); } catch (e) { /* ignore */ }
       /* Босқич (мактаб / университет) профилдаги туғилган санадан аниқланади — саҳифа «сакрамаслиги» учун олдиндан */
       var st = "no-profile";
       try { var p = JSON.parse(localStorage.getItem("ekotalim:profile") || "null"), n = new Date();
@@ -437,6 +440,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .pin.new { --pin: #dc2626; animation: bob 1s ease-in-out infinite alternate; }
 @keyframes bob { to { margin-top: -6px; } }
 .city-label { background: none; border: 0; box-shadow: none; font: 600 11px Inter, system-ui, sans-serif; color: #14532d; text-shadow: 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
+:root[data-theme="dark"] .city-label { color: #d1fae5; text-shadow: 0 0 3px #06110d, 0 0 3px #06110d; }
 .leaflet-popup-content { font: .9rem/1.45 Inter, system-ui, sans-serif; }
 .leaflet-container { font-family: Inter, system-ui, sans-serif; }
 .rep-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
@@ -2150,7 +2154,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
           <a class="app" data-cat="learn" href="#kurslar" data-crs="xalqaro" data-stage="uni" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-americas"></i></span><b>Халқаро тажриба</b><small>АҚШ, Германия, Япония, Корея</small></a>
           <a class="app" data-cat="learn" href="#kurslar" data-crs="dunyo" data-stage="maktab" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>Дунё саёҳати</b><small>4 давлат тажрибаси</small></a>
-          <a class="app" data-cat="learn" href="#video" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>113 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#video" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>137 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#kurslar" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
           <a class="app" data-cat="learn" href="#yol" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-route"></i></span><b>Шахсий йўл</b><small>Сизга мос кейинги қадам</small></a>
           <a class="app" data-cat="learn" href="#pasport" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-passport"></i></span><b>Кўникмалар паспорти</b><small>SDG, ESD, Open Badges 3.0</small></a>
@@ -2167,7 +2171,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <a class="app" data-cat="learn" href="#internet" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span><b>Онлайн маълумотлар</b><small>Интернетдан жонли</small></a>
           <a class="app" data-cat="learn" href="#sayyora" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-heart-pulse"></i></span><b>Сайёра саломатлиги</b><small>Жонли мониторинг, COP</small></a>
           <h3 class="app-cat" data-cat="lab"><i class="fa-solid fa-flask" aria-hidden="true"></i> Лабораториялар</h3>
-          <a class="app" data-cat="lab" href="#labxona" style="--c:#6d28d9;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Лаборатория хонаси</b><small>32 модда, аралаштириш, хавфсизлик</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="lab" href="#labxona" style="--c:#6d28d9;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Лаборатория хонаси</b><small>67 модда, 40 жиҳоз: тупроқ, сув, ҳаво</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="lab" href="#lab3d" style="--c:#4338ca;--c1:#a5b4fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-cube"></i></span><b>3D лаборатория</b><small>22 тажриба, вақт бошқаруви</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="lab" href="#lab" data-stage="maktab" style="--c:#7c3aed;--c1:#f0abfc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask"></i></span><b>Лаборатория</b><small>Тажриба қиламиз</small></a>
           <a class="app" data-cat="lab" href="#vlab" data-stage="uni" style="--c:#6d28d9;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span><b>Виртуал лаборатория</b><small>Амалий машғулотлар</small></a>
