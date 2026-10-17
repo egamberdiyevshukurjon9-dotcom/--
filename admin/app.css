@@ -212,3 +212,17 @@ details summary { cursor: pointer; color: var(--muted); font-size: 13px; padding
 /* Эълонлар формаси */
 .stack { display: grid; gap: 10px; }
 .stack input[type="text"], .stack input[type="url"], .stack textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line, #d0d7de); background: var(--card, #fff); color: inherit; font: inherit; }
+/* Таҳлил ва ҳисобот */
+.report-bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; border-left: 4px solid var(--c1); }
+.report-bar > div:first-child { flex: 1 1 320px; }
+.report-bar p { margin: 4px 0 0; }
+.report-bar .acts { gap: 8px; }
+.seg-btn { width: 100%; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; padding: 6px 8px; margin: -6px -8px; border-radius: 10px; cursor: pointer; box-sizing: content-box; }
+.seg-btn:hover, .seg-btn.on { background: var(--line); }
+.seg-btn:focus-visible { outline: 2px solid var(--brand); }
+@media (max-width: 600px) {
+  .report-bar .acts { width: 100%; }
+  .report-bar .acts .btn { flex: 1 1 auto; justify-content: center; }
+  .bar { grid-template-columns: 1fr auto; }
+  .bar .track { grid-column: 1 / -1; grid-row: 2; }
+}

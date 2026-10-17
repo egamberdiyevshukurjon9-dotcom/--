@@ -520,7 +520,7 @@
 
   /* ---------- Тасдиқлаш ойнаси ---------- */
   /* pay.js (Тўловлар бўлими) шу ёрдамчилардан фойдаланади */
-  window.EkoAdmin = { api: (u, b) => api(u, b), esc, nf, fmt, toast: (m) => toast(m), kpis: (el, l) => kpis(el, l), bars: (el, i, o) => bars(el, i, o), table: (h, r, e) => table(h, r, e), line: (el, d, sr, h) => lineChart(el, d, sr, h), who: (n, e, x) => who(n, e, x), confirm: (t, x, r) => confirmBox(t, x, r), person: (q) => openPerson(q) };
+  window.EkoAdmin = { api: (u, b) => api(u, b), esc, nf, fmt, toast: (m) => toast(m), kpis: (el, l) => kpis(el, l), bars: (el, i, o) => bars(el, i, o), table: (h, r, e) => table(h, r, e), line: (el, d, sr, h) => lineChart(el, d, sr, h), dur, devIcon, placeHtml, devHtml, who: (n, e, x) => who(n, e, x), confirm: (t, x, r) => confirmBox(t, x, r), person: (q) => openPerson(q) };
   function confirmBox(title, text, withReason) {
     const dlg = $("#confirm");
     $("#cTitle").textContent = title; $("#cText").textContent = text;
@@ -584,6 +584,7 @@
       await Promise.all([loadOverview(), loadStats(), loadSecurity(), loadReports(), loadFeedback(), loadGrowth(), loadSystem(), loadResults()]);
       renderAll();
       if (window.EkoPay) EkoPay.load();
+      if (tab === "analiz" && window.EkoAnaliz) EkoAnaliz.load();
       if (tab === "journal") { await loadRecent(); renderJournal(); }
     } catch (e) { if (e.message !== "auth") toast(e.message); }
   }
@@ -595,7 +596,7 @@
     }, 15000);
   }
 
-  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар", community: "Эълонлар ва турнир", pay: "Тўловлар ва PRO" };
+  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", analiz: "Фойдаланувчилар таҳлили ва ҳисобот", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар", community: "Эълонлар ва турнир", pay: "Тўловлар ва PRO" };
   $("#tabs").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tab]");
     if (!b) return;
@@ -612,6 +613,7 @@
     if (tab === "feedback") { try { await loadFeedback(); renderFeedback(); } catch (err) { /* ignore */ } }
     if (tab === "community") { try { await loadCommunity(); renderCommunity(); } catch (err) { /* ignore */ } }
     if (tab === "pay" && window.EkoPay) EkoPay.load();
+    if (tab === "analiz" && window.EkoAnaliz) EkoAnaliz.load();
   });
   $("#newsForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -633,7 +635,7 @@
     try { await api("/api/admin/turnir/hide", { week: trData.week, id: b.dataset.trh }); await loadCommunity(trData.week); renderCommunity(); }
     catch (err) { if (err.message !== "auth") toast(err.message); }
   });
-  $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth(), loadResults()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } });
+  $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth(), loadResults()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } if (tab === "analiz" && window.EkoAnaliz) EkoAnaliz.load(); });
   $("#refresh").addEventListener("click", reloadAll);
   ["#pSearch", "#pKind"].forEach((s) => $(s).addEventListener("input", renderPeople));
   ["#jSearch", "#jType"].forEach((s) => $(s).addEventListener("input", renderJournal));

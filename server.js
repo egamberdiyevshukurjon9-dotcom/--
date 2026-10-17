@@ -936,6 +936,14 @@ const proMod = require("./pro")({
     refund: () => { aiUsage.total = Math.max(0, aiUsage.total - 1); }
   }
 });
+/* ---------- Барча фойдаланувчилар таҳлили ва PDF / Word ҳисобот — analytics.js, report.js ---------- */
+const anMod = require("./analytics")({ db, now, placeOf, geoOf, deviceParts, proActive: (u) => proMod.proActive(u), STATS_TZ_MS, AGE_BANDS, EXAM_PASS });
+const anFilters = (q) => ({
+  stage: ["maktab", "uni"].includes(q.get("stage")) ? q.get("stage") : "",
+  kind: ["acc", "guest"].includes(q.get("kind")) ? q.get("kind") : "",
+  seg: Object.keys(anMod.SEGMENTS).includes(q.get("seg")) ? q.get("seg") : "",
+  q: String(q.get("q") || "").slice(0, 80)
+});
 /* Оммага координаталар ~100 м аниқликда кўрсатилади, муаллиф кўрсатилмайди */
 const publicReport = (r) => ({ id: r.id, category: r.category, text: r.text, lat: round(r.lat, 3), lng: round(r.lng, 3), createdAt: r.createdAt, reviewedAt: r.reviewedAt });
 
@@ -1999,6 +2007,31 @@ async function api(req, res, pathname) {
     return send(res, 200, computeResults(days));
   }
 
+  /* Барча фойдаланувчилар таҳлили: сегментлар, фаоллик балли, демография, ўқиш воронкаси */
+  if (pathname === "/api/admin/analytics" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const q = new URL(req.url, "http://x").searchParams;
+    const days = [1, 7, 30, 90, 180].includes(Number(q.get("days"))) ? Number(q.get("days")) : 30;
+    return send(res, 200, anMod.compute(days, anFilters(q)));
+  }
+  /* Таҳлилни PDF ёки Word (DOCX) ҳужжат қилиб юклаб олиш */
+  if (pathname === "/api/admin/report" && method === "GET") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const q = new URL(req.url, "http://x").searchParams;
+    const days = [1, 7, 30, 90, 180].includes(Number(q.get("days"))) ? Number(q.get("days")) : 30;
+    const format = q.get("format") === "docx" ? "docx" : "pdf";
+    let file;
+    try { file = anMod[format](anMod.compute(days, anFilters(q))); }
+    catch (e) { console.error("report", e); return send(res, 500, { error: "Ҳисоботни яратиб бўлмади" }); }
+    adminLog(req, true, `ҳисобот юклаб олинди (${format.toUpperCase()}, ${days} кун)`);
+    const name = `ekomun-tahlil-${new Date(now() + STATS_TZ_MS).toISOString().slice(0, 10)}-${days}kun.${format}`;
+    res.writeHead(200, {
+      "Content-Type": format === "pdf" ? "application/pdf" : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "Content-Disposition": `attachment; filename="${name}"`, "Content-Length": file.length, "Cache-Control": "no-store"
+    });
+    return res.end(file);
+  }
+
   /* Тизим ҳолати: ишлаш вақти, хотира, маълумотлар ҳажми, захира нусхалар, хатолар журнали */
   if (pathname === "/api/admin/system" && method === "GET") {
     if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
@@ -2052,6 +2085,16 @@ async function api(req, res, pathname) {
       name = "ekomun-fikr-mulohazalar.csv";
       body = csv([["Вақт", "Тури", "Баҳо", "Бўлим", "Мулоҳаза", "Алоқа", "Исм", "Почта", "Босқич", "Тил", "Версия", "Ўқилди", "Жавоб", "Жавоб вақти", "Архив", "Қурилма", "IP"],
         ...db.feedback.slice().reverse().map((f) => [iso(f.at), f.kind, f.rating || "", f.sec, f.text, f.contact, f.name, f.email, f.stage, f.lang, f.ver, f.read ? "ҳа" : "йўқ", f.reply, iso(f.replyAt), f.archived ? "ҳа" : "", f.device, f.ip])]);
+    } else if (type === "analytics") {
+      name = "ekomun-tahlil.csv";
+      const q = new URL(req.url, "http://x").searchParams;
+      const days = [1, 7, 30, 90, 180].includes(Number(q.get("days"))) ? Number(q.get("days")) : 30;
+      const a = anMod.compute(days, anFilters(q));
+      body = csv([["Исм", "Почта / телефон", "Тури", "Қурилма коди", "Босқич", "Ёш", "Ҳудуд", "Қурилма", "Рўйхатдан ўтган", "Биринчи ташриф", "Охирги фаоллик", "Сегмент", "Фаоллик балли",
+        "Ташрифлар (давр)", "Фаол кунлар", "Вақт (дақ)", "Очилган дарс", "Тугатилган дарс", "Тест жавоблари", "Тўғри %", "Якуний тест (энг яхши %)", "Сертификат", "PRO", "Блокланган", "Кўпроқ нима қилади"],
+        ...a.people.map((p) => [p.name, p.email, p.kind === "acc" ? "ҳисоб" : "меҳмон", p.vid, ({ maktab: "мактаб", uni: "университет" })[p.stage] || "", p.age || p.ag, p.place || p.region, p.device, iso(p.registered), iso(p.first), iso(p.last),
+          anMod.SEGMENTS[p.seg], p.score, p.visits, p.activeDays, Math.round(p.secs / 60), p.opened, p.done, p.qaN, p.qaPct == null ? "" : p.qaPct,
+          p.exams.map((e) => `${e.cid}:${e.best}`).join(" "), p.certs, p.pro ? "ҳа" : "", p.blocked ? "ҳа" : "", p.top.join(" ")])]);
     } else if (type === "payments") {
       name = "ekomun-tolovlar.csv";
       body = csv(proMod.exportRows(iso));
@@ -2150,6 +2193,7 @@ const ADMIN_FILES = {
   "/": { file: "admin/index.html", type: HTML },
   "/app.js": { file: "admin/app.js", type: "text/javascript; charset=utf-8" },
   "/pay.js": { file: "admin/pay.js", type: "text/javascript; charset=utf-8" },
+  "/analiz.js": { file: "admin/analiz.js", type: "text/javascript; charset=utf-8" },
   "/app.css": { file: "admin/app.css", type: "text/css; charset=utf-8" },
   "/theme.js": { file: "admin/theme.js", type: "text/javascript; charset=utf-8" },
   "/fonts/onest-cyrillic.woff2": { file: "vendor/fonts/onest-cyrillic-wght-normal.woff2", type: "font/woff2" },

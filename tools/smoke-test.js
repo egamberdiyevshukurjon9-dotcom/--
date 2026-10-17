@@ -84,6 +84,19 @@ async function main() {
     ok((await r.json()).items.some((x) => x.title === "Smoke эълон"), "Эълон фойдаланувчига кўринади");
     r = await get("/api/admin/news", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title: "x" }) });
     ok(r.status === 401, "Кирмасдан эълон қўшиб бўлмайди", r.status);
+    r = await get("/api/admin/analytics?days=30", { headers: { Cookie: ck } });
+    const an = r.ok ? await r.json() : {};
+    ok(r.ok && an.totals && Array.isArray(an.people) && an.segments, "Фойдаланувчилар таҳлили /api/admin/analytics", r.status);
+    r = await get("/api/admin/report?days=30&format=pdf", { headers: { Cookie: ck } });
+    let buf = Buffer.from(await r.arrayBuffer());
+    ok(r.ok && buf.subarray(0, 5).toString() === "%PDF-" && /%%EOF\s*$/.test(buf.subarray(-8).toString()), "PDF ҳисобот", r.status + " · " + Math.round(buf.length / 1024) + " KB");
+    r = await get("/api/admin/report?days=30&format=docx", { headers: { Cookie: ck } });
+    buf = Buffer.from(await r.arrayBuffer());
+    ok(r.ok && buf.readUInt32LE(0) === 0x04034b50 && buf.includes("word/document.xml"), "Word (DOCX) ҳисобот", r.status + " · " + Math.round(buf.length / 1024) + " KB");
+    r = await get("/api/admin/report?format=pdf");
+    ok(r.status === 401, "Кирмасдан ҳисобот берилмайди", r.status);
+    r = await get(ADMIN + "/analiz.js");
+    ok(r.status === 200, "Таҳлил бўлими скрипти", r.status);
   }
 }
 
