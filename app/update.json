@@ -8,7 +8,7 @@
   "notes": "• 🎒 Босқичлар тўлиқ ажратилди: мактаб ўқувчиси фақат мактаб блокларини, университет фойдаланувчиси фақат университет блокларини кўради\n• 🤖 Ҳар бир босқичда шахсий AI агент: мактабда «Эко-устоз», университетда илмий маслаҳатчи\n• ✨ Янги нишонлар, янгиликлар ва ўйин маркази босқичга мослашди"
  },
  "content": {
-  "version": "eb36321462cc76e4",
+  "version": "f126db064c13a0e2",
   "minApk": 3,
   "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
   "files": {
@@ -18,7 +18,7 @@
    "icons/icon-maskable-512.png": "b915b6e69616430fd084943e18024aab264fac920426f2c03e80420c96091748",
    "icons/icon-maskable.svg": "76a72a544e63a21bdfd69e33db4ee08da25dacd83eda2e2c0a40dcb189372594",
    "icons/icon.svg": "4f2227bd2a4ae862f39cefbf0a5b5550d2d63d56cd7ed6e969af43da0710797a",
-   "index.html": "2ca3982fe17d84c5f889ddd835c7bbc2c57b7abf65a246ff105c8a411e3a2db9",
+   "index.html": "f8be94d8bc6690b26f5a03c68a84413e0a64d459bd382bf84d84669d6c018343",
    "manifest.webmanifest": "491bf7d698454ba56601f663f9995c7ee1d11e7f07465ba36fce5ed2a22ca9a3",
    "privacy.html": "f17d6c5d49c8c3aedc6c2f79a46cd03f96460c0622087c8728e920daa7d310aa",
    "vendor/eko-adabiyot.js": "95c6476b7d931ed8c3dcc6bfa48bf36fc19ad34ee0d251554514ff4a18ca1ccc",
