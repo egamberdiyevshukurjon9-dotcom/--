@@ -1312,7 +1312,9 @@ window.EKO_ADABIYOT = {
   };
   const stageOk = (x) => {
     const st = document.documentElement.classList.contains("stage-maktab") ? "maktab" : "uni";
-    return x.level === "both" || x.level === st || st === "uni";
+    /* Мактаб босқичида ўқитиш методикаси ва давлат ҳужжатлари бўлимлари (ўқитувчи/талаба учун) кўрсатилмайди */
+    if (st === "maktab" && (x.topic === "talim" || x.topic === "davlat")) return false;
+    return x.level === "both" || x.level === st;
   };
 
   function card(x) {
@@ -1322,7 +1324,7 @@ window.EKO_ADABIYOT = {
       <h4>${esc(x.title_uz)}</h4>
       <p class="ad-cite" data-notr>${esc(x.cite)}</p>
       <p class="ad-sum">${esc(x.summary)}</p>
-      ${x.use ? `<p class="ad-use"><b>💡 Дарсда:</b> <span>${esc(x.use)}</span></p>` : ""}
+      ${x.use && !document.documentElement.classList.contains("stage-maktab") ? `<p class="ad-use"><b>💡 Дарсда:</b> <span>${esc(x.use)}</span></p>` : ""}
       ${ls.length ? `<div class="ad-lessons"><span class="small muted">Шу манбага асосланган дарслар:</span>${ls.map(([k, t]) => `<button type="button" class="chip" data-ad-lesson="${esc(k)}" title="${esc(t.course)}">${esc(t.title)}</button>`).join("")}</div>` : ""}
       <a class="btn btn-ghost btn-sm ad-go" href="${esc(x.url)}" target="_blank" rel="noopener">↗ Манбани очиш</a>${x.doi ? `<span class="small muted ad-doi" data-notr>DOI: ${esc(x.doi)}</span>` : ""}
     </article>`;

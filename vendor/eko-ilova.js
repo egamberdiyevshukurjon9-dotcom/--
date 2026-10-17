@@ -5,7 +5,7 @@
 (() => {
   "use strict";
   /* site — ўқитувчи ва таклиф ҳаволалари учун очиқ сайт манзили (Android иловада ўз манзили йўқ) */
-  const APP = { version: "2.9", date: "2026-10-16", site: "https://1-sk5m.onrender.com" };
+  const APP = { version: "3.0", date: "2026-10-17", site: "https://1-sk5m.onrender.com" };
   window.EKO_VERSION = APP;
 
   const EL = () => (typeof EkoLang !== "undefined" ? EkoLang : null);
@@ -45,6 +45,10 @@
     close: t3("Ёпиш", "Закрыть", "Close")
   };
   const CHANGES = [
+    { v: "3.0", d: "2026-10-17", items: [
+      t3("Босқичлар тўлиқ ажратилди: мактаб ўқувчисига университет блоклари (босқич картаси, «Ўқитувчи устахонаси», университет янгиликлари, нишонлар, босс жанглари, адабиёт) кўринмайди, университетда эса мактаб блоклари йўқ", "Этапы полностью разделены: школьник не видит университетские блоки (карточка этапа, «Мастерская учителя», новости, значки, бои с боссами, литература), а в университете нет школьных блоков", "Stages are fully separated: school students no longer see university blocks (stage card, Teacher workshop, news, badges, boss fights, literature), and university users don't see school blocks"),
+      t3("Ekomun PRO: ҳар бир босқичда шахсий AI агент (мактабда «Эко-устоз», университетда илмий маслаҳатчи), Эко-кўз 3 баробар кўп, PRO нишони ва олтин мавзу", "Ekomun PRO: личный AI-агент на каждом этапе («Эко-наставник» в школе, научный консультант в вузе), Эко-глаз в 3 раза больше, значок PRO и золотая тема", "Ekomun PRO: a personal AI agent at every stage (an Eco tutor at school, a science adviser at university), 3× more Eco-eye, a PRO badge and gold theme")
+    ] },
     { v: "2.9", d: "2026-10-16", items: [
       t3("🛂 «Глобал кўникмалар паспорти»: ҳар бир курс БМТнинг Барқарор ривожланиш мақсадлари (SDG) ва ЮНЕСКОнинг 8 та ESD компетенцияси билан боғланди; 40 → 120 → 360 соатлик микро-сертификат зинапояси; сертификатлар Open Badges 3.0 форматида (сервер текширганлари Ed25519 рақамли имзо билан)", "🛂 «Глобальный паспорт навыков»: каждый курс связан с Целями устойчивого развития ООН и 8 компетенциями ЮНЕСКО ОУР; лестница микросертификатов 40 → 120 → 360 часов; сертификаты в формате Open Badges 3.0 (проверенные сервером — с подписью Ed25519)", "🛂 Global Skills Passport: every course is linked to the UN SDGs and UNESCO's 8 ESD competencies; a 40 → 120 → 360-hour micro-credential ladder; certificates as Open Badges 3.0 (server-verified ones signed with Ed25519)"),
       t3("🧭 «Шахсий йўл»: жавоблардан билимни кузатиш (Bayesian Knowledge Tracing), кейинги дарс тавсияси «нега?» изоҳи билан, 7 кунлик режа, узоқ танаффусдан кейин «қайтиш режаси»; «Тежамкор трафик» (2G), «Диққат режими» (СДВГ, аутизм), ўқиш чизғичи ва диққат таймери", "🧭 «Личный маршрут»: отслеживание знаний по ответам (BKT), рекомендации с пояснением «почему», план на 7 дней, «план возвращения» после перерыва; режимы «Экономия трафика» (2G), «Концентрация» (СДВГ, аутизм), линейка для чтения и таймер", "🧭 My path: knowledge tracing from your answers (BKT), next-lesson tips with a “why”, a 7-day plan and a comeback plan after a break; low-bandwidth (2G) and focus (ADHD, autism) modes, a reading ruler and a focus timer"),
