@@ -283,8 +283,10 @@ html.eko-focus :focus-visible { outline: 3px solid #f59e0b !important; outline-o
 .lx-strip { display: inline-block; width: 30px; height: 12px; border-radius: 3px; vertical-align: middle; border: 1px solid var(--line); }
 .lx-shelfbox { margin-top: 18px; padding: 14px 16px; border-radius: 20px; border: 1px solid var(--line); background: linear-gradient(180deg, color-mix(in srgb, #8b5e34 10%, var(--card)), var(--card)); }
 .lx-shelfbox h3 { margin: 0 0 8px; }
+.lx-search { width: 100%; box-sizing: border-box; margin: 0 0 8px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: inherit; font: inherit; }
 .lx-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
 .lx-tabs .chip { white-space: nowrap; flex: none; }
+@media (min-width: 700px) { .lx-tabs { flex-wrap: wrap; overflow: visible; } }
 .lx-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 8px; margin-top: 10px; }
 .lx-btl { font: inherit; position: relative; display: grid; grid-template-columns: 34px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 8px; align-items: center; text-align: left; padding: 8px 10px; border-radius: 14px; border: 1px solid var(--line); border-bottom: 4px solid color-mix(in srgb, #8b5e34 45%, var(--line)); background: var(--card); color: var(--text); cursor: pointer; min-width: 0; }
 .lx-btl:hover, .lx-btl.sel { border-color: #7c3aed; }

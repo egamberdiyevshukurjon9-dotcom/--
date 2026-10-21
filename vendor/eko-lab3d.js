@@ -172,7 +172,9 @@
       /* Тежамкор трафик режимида (eko-yol.js) 3D енгилроқ: антиалиассиз ва пиксел зичлиги 1 */
       const lite = !!(window.EkoModes && window.EkoModes.lite);
       this.renderer = new T.WebGLRenderer({ antialias: !lite, alpha: false, powerPreference: "low-power" });
-      this.renderer.setPixelRatio(lite ? 1 : Math.min(window.devicePixelRatio || 1, 2));
+      /* Телефонда пиксел зичлиги 1,5 гача: 3× экранда 4 баравар кам пиксел, кўз фарқни сезмайди */
+      this.maxPR = lite ? 1 : Math.min(window.devicePixelRatio || 1, Math.min(screen.width || 9999, screen.height || 9999) < 600 ? 1.5 : 2);
+      this.renderer.setPixelRatio(this.maxPR);
       this.canvas = this.renderer.domElement;
       this.canvas.className = "l3-canvas";
       this.canvas.tabIndex = 0;
@@ -197,6 +199,12 @@
       this.bindInput();
       this.ro = new ResizeObserver(() => this.resize());
       this.ro.observe(host);
+      /* Саҳна экрандан чиқиб кетса (пастга айлантирилганда) кадр чизилмайди — жараёнлар эса давом этади */
+      this.onScreen = true;
+      if (typeof IntersectionObserver === "function") {
+        this.io = new IntersectionObserver((es) => { const was = this.onScreen; this.onScreen = es.some((x) => x.isIntersecting); if (this.onScreen && !was) this.render(); });
+        this.io.observe(host);
+      }
       /* Кириш анимацияси: камера узоқдан айланиб, саҳнага «учиб киради» */
       if (!reduce) { this.fly = { t: 0, d0: this.d * 1.9, th0: this.th - 1.1, ph0: Math.max(0.3, this.ph - 0.45) }; Object.assign(this, { d: this.fly.d0, th: this.fly.th0, ph: this.fly.ph0 }); }
       this.resize();
@@ -333,15 +341,28 @@
         } else if (this.auto) { this.th += dt * 0.25; this.place(); }
         const sdt = this.paused ? 0 : dt * this.speed; this.st += sdt;
         this.updaters.forEach((f) => f(sdt, this.st));
-        this.render();
+        if (this.onScreen || this.stereo) { this.render(); this.adapt(now); }
         this.raf = requestAnimationFrame(loop);
       };
       this.raf = requestAnimationFrame(loop);
     }
-    stop() { this.running = false; cancelAnimationFrame(this.raf); }
+    /* Секин қурилма: 2 сония давомида кадрлар 24 fps дан паст бўлса, пиксел зичлиги босқичма-босқич
+       пасайтирилади (1,5 → 1,25 → 1). Бу кўпчилик арзон Android телефонларда «қотиш»ни йўқотади. */
+    adapt(now) {
+      const a = this.perf || (this.perf = { t0: now, n: 0 });
+      a.n++;
+      if (now - a.t0 < 2000) return;
+      const fps = a.n * 1000 / (now - a.t0);
+      a.t0 = now; a.n = 0;
+      if (this.fly || document.hidden) return;
+      const pr = this.renderer.getPixelRatio();
+      if (fps < 24 && pr > 1) { this.renderer.setPixelRatio(Math.max(1, pr - 0.25)); this.resize(); }
+    }
+    stop() { this.running = false; cancelAnimationFrame(this.raf); this.perf = null; }
     dispose() {
       this.stop();
       this.ro.disconnect();
+      if (this.io) this.io.disconnect();
       this.scene.traverse((o) => {
         if (o.geometry) o.geometry.dispose();
         const m = o.material;

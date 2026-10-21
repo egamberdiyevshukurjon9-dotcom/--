@@ -21,6 +21,7 @@
      ADMIN_PATH            — админ сайтнинг махфий манзили (асл қиймат /admin), масалан /boshqaruv-7k2q
      ADMIN_HOST            — админ сайт учун алоҳида домен (масалан admin.ekomun.uz). Берилса, админ сайт
                              фақат шу доменда очилади, асосий сайтда эса умуман кўринмайди
+     ACCOUNT_SECRET        — ҳисоб калити (eko_pass) шифри; бўлмаса ADMIN_PASSWORD дан олинади. Ўзгартирилса, эски калитлар бекор бўлади
      ADMIN_TOTP_SECRET     — икки босқичли ҳимоя: Google Authenticator калити (tools/admin-totp.js яратади)
      ADMIN_ALLOW_IPS       — админ сайт фақат шу IP манзиллардан очилсин (вергул билан; бўш — ҳамма жойдан)
      STATS_TZ_MINUTES      — статистика кунлари қайси вақт минтақасида (асл қиймат 300 = Тошкент, UTC+5)
@@ -179,6 +180,11 @@ function parseCookies(req) {
 function cookie(name, value, maxAgeMs, req) {
   const secure = req.headers["x-forwarded-proto"] === "https" || req.socket.encrypted ? "; Secure" : "";
   return `${name}=${encodeURIComponent(value)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.floor(maxAgeMs / 1000)}${secure}`;
+}
+/* Бир жавобда бир нечта cookie (сессия ва ҳисоб калити) — setHeader олдингисини ўчириб юбормасин */
+function addCookie(res, c) {
+  const prev = res.getHeader("Set-Cookie");
+  res.setHeader("Set-Cookie", (Array.isArray(prev) ? prev : prev ? [String(prev)] : []).concat(c));
 }
 
 /* X-Forwarded-For фақат ишончли прокси ортида (TRUST_PROXY=1, масалан Render) ишлатилади.
@@ -381,10 +387,70 @@ function startSession(user, req, res) {
   user.lastLogin = now();
   user.loginCount = (user.loginCount || 0) + 1;
   logEvent("login", user, req);
-  res.setHeader("Set-Cookie", cookie("eko_session", token, SESSION_MS, req));
+  addCookie(res, cookie("eko_session", token, SESSION_MS, req));
+  setPass(user, req, res);
 }
 /* by/bm — туғилган йил ва ой: илова босқични (мактаб / университет) аниқлаши учун */
 const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, adult: !!u.adult, approved: u.approved || 0, by: u.by || 0, bm: u.bm || 0, pro: proMod.publicPro(u) });
+
+/* ---------- Ҳисоб калити (eko_pass): сервер маълумотлари ўчиб кетса, ҳисобни тиклаш ----------
+   Render бепул режимида диск доимий эмас: сервер 15 дақиқа жим турса ухлайди, уйғонганда db.json
+   бошидан бошланади ва барча ҳисоблар «йўқолади» — фойдаланувчи кира олмайди. Шунинг учун ҳар кирганда
+   браузерга шифрланган (AES-256-GCM) HttpOnly cookie берилади: унда ҳисобнинг ўзи (исм, почта/телефон,
+   парол хэши, туғилган йил-ой, PRO). Сессия топилмаса ва бу калит тўғри бўлса, ҳисоб қайта тикланади.
+   Калит ACCOUNT_SECRET дан (ёки ADMIN_PASSWORD + ADMIN_TOTP_SECRET дан) олинади — у сервер қайта
+   ишга тушганда ўзгармаслиги шарт. Иккаласи ҳам бўлмаса, DATA_DIR даги тасодифий калит ишлатилади. */
+const PASS_COOKIE = "eko_pass", PASS_MS = 400 * 24 * 60 * 60 * 1000;
+const PASS_KEY = (() => {
+  if (process.env.ACCOUNT_SECRET) return crypto.createHash("sha256").update("ekomun-pass|" + process.env.ACCOUNT_SECRET).digest();
+  if (ADMIN_PASSWORD) return crypto.createHash("sha256").update("ekomun-pass|" + ADMIN_PASSWORD + "|" + ADMIN_TOTP_SECRET).digest();
+  const f = path.join(DATA_DIR, "pass-key.json");
+  try { return Buffer.from(JSON.parse(fs.readFileSync(f, "utf8")).k, "hex"); } catch (e) { /* янги калит */ }
+  const k = crypto.randomBytes(32);
+  try { fs.writeFileSync(f, JSON.stringify({ k: k.toString("hex") })); } catch (e) { /* ignore */ }
+  return k;
+})();
+function makePass(u) {
+  const data = { v: 1, id: u.id, n: u.name, e: u.email, k: u.kind || "", p: u.password, a: !!u.adult, by: u.by || 0, bm: u.bm || 0, c: u.createdAt || now(), ap: u.approved || 0, pro: u.pro || null, t: now() };
+  const iv = crypto.randomBytes(12), c = crypto.createCipheriv("aes-256-gcm", PASS_KEY, iv);
+  const ct = Buffer.concat([c.update(JSON.stringify(data), "utf8"), c.final()]);
+  return Buffer.concat([iv, c.getAuthTag(), ct]).toString("base64url");
+}
+function readPass(tok) {
+  try {
+    const b = Buffer.from(String(tok || ""), "base64url");
+    if (b.length < 40 || b.length > 3000) return null;
+    const d = crypto.createDecipheriv("aes-256-gcm", PASS_KEY, b.subarray(0, 12));
+    d.setAuthTag(b.subarray(12, 28));
+    const v = JSON.parse(Buffer.concat([d.update(b.subarray(28)), d.final()]).toString("utf8"));
+    if (!v || v.v !== 1 || !v.id || !v.e || !v.p || now() - v.t > PASS_MS) return null;
+    return v;
+  } catch (e) { return null; }
+}
+function setPass(u, req, res) { addCookie(res, cookie(PASS_COOKIE, makePass(u), PASS_MS, req)); }
+/* Сессия йўқ, лекин калит бор: ҳисобни топамиз ёки қайта яратамиз ва янги сессия очамиз.
+   Шу сўровнинг ўзи ҳам «кирган» бўлиб ишлаши учун янги сессия cookie си req га ҳам қўшилади. */
+function restoreFromPass(req, res) {
+  const ck = parseCookies(req);
+  if (!ck[PASS_COOKIE] || currentUser(req)) return;
+  const v = readPass(ck[PASS_COOKIE]);
+  if (!v) { addCookie(res, cookie(PASS_COOKIE, "", 0, req)); return; }
+  let user = db.users.find((u) => u.id === v.id);
+  if (!user) {
+    /* Шу почта бошқа (янги) ҳисобга берилган бўлса — эскисини тикламаймиз */
+    if (db.users.some((u) => u.email === v.e)) { addCookie(res, cookie(PASS_COOKIE, "", 0, req)); return; }
+    user = { id: v.id, name: v.n, email: v.e, kind: v.k || (v.e.includes("@") ? "email" : "phone"), password: v.p, adult: !!v.a, by: v.by, bm: v.bm, createdAt: v.c, lastLogin: null, loginCount: 0, restored: now() };
+    if (v.ap) user.approved = v.ap;
+    if (v.pro && v.pro.until) user.pro = v.pro;
+    db.users.push(user);
+    logEvent("restored", user, req);
+  }
+  if (user.blocked) return;
+  startSession(user, req, res);
+  const tok = /eko_session=([^;]+)/.exec([].concat(res.getHeader("Set-Cookie") || []).join(";"));
+  if (tok) req.headers.cookie = (req.headers.cookie ? req.headers.cookie + "; " : "") + "eko_session=" + tok[1];
+  save();
+}
 
 /* Жим қолган сессияларни «офлайн» деб белгилаш ва муддати ўтганларини ўчириш */
 function sweep() {
@@ -1132,6 +1198,9 @@ async function api(req, res, pathname) {
   /* Блокланган IP дан келган сўровлар (админ API бундан мустасно) */
   if (!pathname.startsWith("/api/admin/") && !pathname.startsWith("/api/pay/") && db.blockedIps[ip]) return send(res, 403, { error: BLOCK_MSG, blocked: true });
 
+  /* Сервер маълумотлари ўчган бўлса (Render бепул режими) — ҳисобни калитдан тиклаш */
+  if (!pathname.startsWith("/api/admin/") && pathname !== "/api/logout") restoreFromPass(req, res);
+
   /* PRO, тўловлар ва AI агент (pro.js) */
   if (/^\/api\/(pro|pay|agent)(\/|$)/.test(pathname) || pathname.startsWith("/api/admin/pay")) {
     if (pathname.startsWith("/api/admin/") && !adminAllowed(req)) return send(res, 404, { error: "Топилмади" });
@@ -1202,7 +1271,8 @@ async function api(req, res, pathname) {
       delete db.sessions[cur.token];
       logEvent("logout", cur.user, req);
     }
-    res.setHeader("Set-Cookie", cookie("eko_session", "", 0, req));
+    addCookie(res, cookie("eko_session", "", 0, req));
+    addCookie(res, cookie(PASS_COOKIE, "", 0, req));
     return send(res, 200, { ok: true });
   }
 
@@ -1220,7 +1290,8 @@ async function api(req, res, pathname) {
     purgeUser(cur.user);
     db.events.push({ id: newId(), at: now(), type: "deleted", userId: null, name: "", email: "", ip: "", device: "" });
     save();
-    res.setHeader("Set-Cookie", cookie("eko_session", "", 0, req));
+    addCookie(res, cookie("eko_session", "", 0, req));
+    addCookie(res, cookie(PASS_COOKIE, "", 0, req));
     return send(res, 200, { ok: true });
   }
 
@@ -1416,7 +1487,7 @@ async function api(req, res, pathname) {
     if (!cur) {
       /* Админ блоклаган ҳисоб: сессия ёпилади */
       const tok = parseCookies(req).eko_session, s = tok && db.sessions[tok];
-      if (s) { delete db.sessions[tok]; save(); res.setHeader("Set-Cookie", cookie("eko_session", "", 0, req)); return send(res, 200, { user: null, blocked: true }); }
+      if (s) { delete db.sessions[tok]; save(); addCookie(res, cookie("eko_session", "", 0, req)); addCookie(res, cookie(PASS_COOKIE, "", 0, req)); return send(res, 200, { user: null, blocked: true }); }
       return send(res, 200, { user: null });
     }
     const s = cur.session;
@@ -1424,6 +1495,7 @@ async function api(req, res, pathname) {
     s.lastSeen = now();
     s.ip = ip;
     save();
+    setPass(cur.user, req, res);
     return send(res, 200, { user: publicUser(cur.user) });
   }
 

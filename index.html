@@ -51792,6 +51792,21 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
 })();
   </script>
   <script>
+/* Сервер сўрови: бепул хостингда (Render free) сервер 15 дақиқа жим турса ухлайди ва биринчи сўровга
+   30–60 сония кейин жавоб беради. Шунда тугма «қотиб» қолгандек кўринмаслиги учун 4 сониядан сўнг
+   «уйғонмоқда» хабари кўрсатилади, 90 сонияда эса сўров тўхтатилиб, тушунарли хато берилади. */
+window.ekoFetch = async function (url, opts, onSlow) {
+  const ac = typeof AbortController === "function" ? new AbortController() : null;
+  const slow = setTimeout(() => { if (onSlow) onSlow("⏳ Сервер уйғонмоқда — бу 30–60 сония олиши мумкин, саҳифани ёпманг…"); }, 4000);
+  const stop = setTimeout(() => { if (ac) ac.abort(); }, 90000);
+  try {
+    return await fetch(url, Object.assign({}, opts, ac ? { signal: ac.signal } : {}));
+  } catch (e) {
+    throw new Error(navigator.onLine === false ? "Интернет йўқ. Уланишни текшириб, қайта уриниб кўринг" : "Сервер жавоб бермади. Бир дақиқадан сўнг қайта уриниб кўринг");
+  } finally { clearTimeout(slow); clearTimeout(stop); }
+};
+  </script>
+  <script>
 /* Экомун — кириш ва чиқиш.
    Платформа server.js орқали очилганда ишлайди; файл тўғридан-тўғри очилса
    ёки сервер бўлмаса, «Кириш» тугмаси кўринмайди ва сайт аввалгидек ишлайди. */
@@ -51810,13 +51825,13 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     clearTimeout(notify.timer); notify.timer = setTimeout(() => t.classList.remove("show"), 2600);
   };
 
-  async function call(url, body) {
-    const res = await fetch(url, {
+  async function call(url, body, onSlow) {
+    const res = await window.ekoFetch(url, {
       method: body === undefined ? "GET" : "POST",
       headers: body === undefined ? {} : { "Content-Type": "application/json" },
       body: body === undefined ? undefined : JSON.stringify(body),
       credentials: "same-origin"
-    });
+    }, onSlow);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || "Хатолик юз берди");
     return data;
@@ -51914,7 +51929,7 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     }
     submit.disabled = true; errEl.textContent = "";
     try {
-      const data = await call(mode === "register" ? "/api/register" : "/api/login", body);
+      const data = await call(mode === "register" ? "/api/register" : "/api/login", body, (m) => { errEl.textContent = T(m); });
       user = data.user; form.reset(); modal.close(); render(); startPing();
       notify(mode === "register" ? "Хуш келибсиз! Ҳисоб яратилди" : "Хуш келибсиз!");
     } catch (err) {
@@ -53142,8 +53157,8 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     MONTHS.forEach((m, i) => f.bm.add(new Option(m, String(i + 1))));
   };
   fillBirth(form); fillBirth(lform);
-  async function api(path, body) {
-    const res = await fetch(path, { method: body ? "POST" : "GET", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: body ? JSON.stringify(body) : undefined });
+  async function api(path, body, onSlow) {
+    const res = await window.ekoFetch(path, { method: body ? "POST" : "GET", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: body ? JSON.stringify(body) : undefined }, onSlow);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || "Хатолик юз берди");
     return data;
@@ -53215,8 +53230,11 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     const by = +form.by.value, bm = +form.bm.value;
     let viaAccount = false;
     if (!edit && !$("#regOnline").hidden && form.online.checked) {
+      /* Серверга юбормасдан олдин оддий хатолар шу ерда кўрсатилади (сервер уйғонишини кутиб ўтирмаслик учун) */
+      if (!form.email.value.trim()) { err.textContent = T("Почта ёки телефон рақамингизни киритинг"); form.email.focus(); return; }
+      if (form.password.value.length < 6) { err.textContent = T("Парол камида 6 белгидан иборат бўлсин"); form.password.focus(); return; }
       const btn = form.querySelector("button[type=submit]"); btn.disabled = true;
-      try { await api("/api/register", { name, email: form.email.value.trim(), password: form.password.value, birthYear: by, birthMonth: bm }); viaAccount = true; }
+      try { await api("/api/register", { name, email: form.email.value.trim(), password: form.password.value, birthYear: by, birthMonth: bm }, (m) => { err.textContent = T(m); }); err.textContent = ""; viaAccount = true; }
       catch (ex) { err.textContent = T(ex.message); btn.disabled = false; return; }
       btn.disabled = false;
     }
@@ -53230,7 +53248,8 @@ COURSES.splice(COURSES.findIndex((c) => c.id === "yosh") + 1, 0, ...[
     const le = $("#loginError"); le.textContent = "";
     const btn = lform.querySelector("button[type=submit]"); btn.disabled = true;
     try {
-      const { user } = await api("/api/login", { email: lform.email.value.trim(), password: lform.password.value });
+      const { user } = await api("/api/login", { email: lform.email.value.trim(), password: lform.password.value }, (m) => { le.textContent = T(m); });
+      le.textContent = "";
       let by = user.by, bm = user.bm;
       /* Эски ҳисобларда туғилган сана йўқ — бир марта сўралади */
       if (!by || !bm) {
