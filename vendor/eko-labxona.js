@@ -100,7 +100,7 @@
     wOver: t3("👍 Бўлади, лекин бу ортиқча: зарарсиз аралашмани раковинага тўкса ҳам бўлади, махсус идишни тежанг.", "👍 Можно, но излишне: безвредную смесь можно слить в раковину, берегите спецконтейнер.", "👍 Fine, but unnecessary: a harmless mix can go down the sink — save the special container."),
     load: t3("3D хона юкланмоқда…", "Загрузка 3D-комнаты…", "Loading the 3D room…"),
     noGl: t3("Бу қурилмада 3D (WebGL) ишламади — лаборатория пастдаги тугмалар билан тўлиқ ишлайди.", "3D (WebGL) не запустился — лаборатория полностью работает через кнопки ниже.", "3D (WebGL) did not start — the lab works fully with the buttons below."),
-    hint: t3("🖱 Айлантиринг · жавондаги шишани босинг — идишга қуйилади", "🖱 Вращайте · нажмите на склянку на полке — она нальётся в сосуд", "🖱 Rotate · tap a bottle on the shelf to pour it"),
+    hint: t3("🖱 Айлантиринг · шишани босинг — идишга қуйилади · шиша, идиш ва асбобларни сичқонча ёки ✋ тугмаси билан суринг", "🖱 Вращайте · нажмите на склянку — она нальётся в сосуд · склянки, сосуд и приборы можно двигать мышью или кнопкой ✋", "🖱 Rotate · tap a bottle to pour it · drag bottles, the vessel and instruments with the mouse or the ✋ button"),
     reset: t3("Янги идиш", "Новый сосуд", "New vessel"),
     src: t3("📎 Манбалар: CRC Handbook of Chemistry and Physics (Ksp, pKa); Harris D.C. «Quantitative Chemical Analysis»; GHS (БМТ, 2023) хавф белгилари; ЎзР ССВ мактаб лабораторияси хавфсизлик қоидалари. Ғоялар: PhET (Колорадо университети, CC BY 4.0), ChemCollective (Carnegie Mellon), Labster.", "📎 Источники: CRC Handbook of Chemistry and Physics (Ksp, pKa); Harris D.C. «Quantitative Chemical Analysis»; знаки опасности GHS (ООН, 2023); правила безопасности школьной лаборатории. Идеи: PhET (Университет Колорадо, CC BY 4.0), ChemCollective (Carnegie Mellon), Labster.", "📎 Sources: CRC Handbook of Chemistry and Physics (Ksp, pKa); Harris D.C. “Quantitative Chemical Analysis”; GHS hazard pictograms (UN, 2023); school lab safety rules. Ideas: PhET (University of Colorado, CC BY 4.0), ChemCollective (Carnegie Mellon), Labster."),
     model: t3("Ўқув модели: 25 °C, суюлтирилган эритмалар, активлик коэффициентлари ҳисобга олинмаган.", "Учебная модель: 25 °C, разбавленные растворы, коэффициенты активности не учитываются.", "Teaching model: 25 °C, dilute solutions, activity coefficients ignored.")
@@ -205,7 +205,19 @@
     { id: "nstd", g: "std", st: "m", k: "l", f: "NO₃⁻-N 10 мг/л", col: "#f8fafc", n: t3("Нитрат стандарти 10 мг/л N", "Стандарт нитрата 10 мг/л N", "Nitrate standard 10 mg/L N"), c: { K: 0.000714, NO3: 0.000714 }, d: t3("KNO₃ эритмаси. Тест-тасма ва калибрлаш эгри чизиғи учун.", "Раствор KNO₃. Для тест-полосок и калибровочной кривой.", "KNO₃ solution for test strips and calibration curves.") },
     { id: "no2std", g: "std", st: "m", k: "l", f: "NO₂⁻-N 0,1 мг/л", col: "#f8fafc", n: t3("Нитрит стандарти 0,1 мг/л N", "Стандарт нитрита 0,1 мг/л N", "Nitrite standard 0.1 mg/L N"), c: { Na: 0.00000714, NO2: 0.00000714 }, d: t3("NaNO₂ эритмаси. Грисс реакцияси учун калибрлаш нуқтаси.", "Раствор NaNO₂. Точка калибровки для реакции Грисса.", "NaNO₂ solution — calibration point for the Griess test.") },
     { id: "pstd", g: "std", st: "m", k: "l", f: "PO₄³⁻-P 1 мг/л", col: "#f8fafc", n: t3("Фосфат стандарти 1 мг/л P", "Стандарт фосфата 1 мг/л P", "Phosphate standard 1 mg/L P"), c: { K: 0.0000323, P: 0.0000323 }, d: t3("KH₂PO₄ эритмаси. Молибден кўки усулида калибрлаш учун.", "Раствор KH₂PO₄. Для калибровки по молибденовой сини.", "KH₂PO₄ solution for molybdenum-blue calibration.") },
-    { id: "nhstd", g: "std", st: "m", k: "l", f: "NH₄⁺-N 1 мг/л", col: "#f8fafc", n: t3("Аммоний стандарти 1 мг/л N", "Стандарт аммония 1 мг/л N", "Ammonium standard 1 mg/L N"), c: { NH: 0.0000714, Cl: 0.0000714 }, d: t3("NH₄Cl эритмаси. Несслер усулида калибрлаш учун.", "Раствор NH₄Cl. Для калибровки по Несслеру.", "NH₄Cl solution for Nessler calibration.") }
+    { id: "nhstd", g: "std", st: "m", k: "l", f: "NH₄⁺-N 1 мг/л", col: "#f8fafc", n: t3("Аммоний стандарти 1 мг/л N", "Стандарт аммония 1 мг/л N", "Ammonium standard 1 mg/L N"), c: { NH: 0.0000714, Cl: 0.0000714 }, d: t3("NH₄Cl эритмаси. Несслер усулида калибрлаш учун.", "Раствор NH₄Cl. Для калибровки по Несслеру.", "NH₄Cl solution for Nessler calibration.") },
+    /* Қўшимча реактивлар: ўғит тузлари, буфер компонентлари, органика (Ekomun 3.4) */
+    { id: "hno301", g: "lab", st: "u", k: "l", f: "HNO₃ 0,1M", col: "#f8fafc", haz: ["cor", "ox"], n: t3("Нитрат кислота 0,1 М", "Азотная кислота 0,1 М", "Nitric acid 0.1 M"), c: { NO3: 0.1 }, d: t3("Кучли кислота ва оксидловчи. Металлар таҳлилида намунани эритиш (минерализация) ва сақлаш учун (pH < 2).", "Сильная кислота и окислитель. Для минерализации и консервации проб на металлы (pH < 2).", "Strong acid and oxidiser. Used to digest and preserve samples for metals (pH < 2).") },
+    { id: "nh4cl", g: "more", st: "m", k: "s", f: "NH₄Cl", col: "#ffffff", haz: ["irr"], n: t3("Аммоний хлорид (нашатир)", "Хлорид аммония (нашатырь)", "Ammonium chloride"), c: { NH: 18.7, Cl: 18.7 }, d: t3("1 г = 18,7 ммоль. Кучсиз кислотали туз (pH ≈ 5); ишқор билан аммиак ҳиди чиқади.", "1 г = 18,7 ммоль. Слабокислая соль (pH ≈ 5); со щёлочью даёт запах аммиака.", "1 g = 18.7 mmol. Weakly acidic salt (pH ≈ 5); with alkali it smells of ammonia.") },
+    { id: "kh2po4", g: "more", st: "m", k: "s", f: "KH₂PO₄", col: "#ffffff", n: t3("Калий дигидрофосфат", "Дигидрофосфат калия", "Potassium dihydrogen phosphate"), c: { K: 7.35, P: 7.35 }, d: t3("1 г = 7,35 ммоль. Фосфорли-калийли ўғит ва фосфат буфер компоненти (pH ≈ 4,5).", "1 г = 7,35 ммоль. Фосфорно-калийное удобрение и компонент буфера (pH ≈ 4,5).", "1 g = 7.35 mmol. P–K fertiliser and phosphate-buffer component (pH ≈ 4.5).") },
+    { id: "na2hpo4", g: "more", st: "m", k: "s", f: "Na₂HPO₄", col: "#ffffff", n: t3("Натрий гидрофосфат", "Гидрофосфат натрия", "Disodium hydrogen phosphate"), c: { Na: 14.09, P: 7.04 }, d: t3("1 г = 7,04 ммоль. KH₂PO₄ билан аралаштирилса pH 7 буфер ҳосил бўлади.", "1 г = 7,04 ммоль. В смеси с KH₂PO₄ даёт буфер pH 7.", "1 g = 7.04 mmol. Mixed with KH₂PO₄ it makes a pH 7 buffer.") },
+    { id: "mgso4", g: "more", st: "m", k: "s", f: "MgSO₄·7H₂O", col: "#ffffff", n: t3("Магний сульфат (аччиқ туз)", "Сульфат магния (английская соль)", "Magnesium sulfate (Epsom salt)"), c: { Mg: 4.06, SO4: 4.06 }, d: t3("1 г = 4,06 ммоль. Сувга магний қаттиқлигини беради; БПК суюлтириш сувининг озуқа тузи.", "1 г = 4,06 ммоль. Придаёт магниевую жёсткость; соль питания для разбавляющей воды БПК.", "1 g = 4.06 mmol. Adds magnesium hardness; a nutrient salt in BOD dilution water.") },
+    { id: "mgcl2", g: "more", st: "m", k: "s", f: "MgCl₂·6H₂O", col: "#ffffff", n: t3("Магний хлорид", "Хлорид магния", "Magnesium chloride"), c: { Mg: 4.92, Cl: 9.84 }, d: t3("1 г = 4,92 ммоль. Орол ва шўр кўллар сувининг асосий тузларидан бири.", "1 г = 4,92 ммоль. Одна из главных солей воды Арала и солёных озёр.", "1 g = 4.92 mmol. A major salt of the Aral Sea and salt lakes.") },
+    { id: "nh42so4", g: "more", st: "m", k: "s", f: "(NH₄)₂SO₄", col: "#ffffff", n: t3("Аммоний сульфат (азотли ўғит)", "Сульфат аммония (азотное удобрение)", "Ammonium sulfate (N fertiliser)"), c: { NH: 15.14, SO4: 7.57 }, d: t3("1 г = 7,57 ммоль. Азотли ўғит; ортиқчаси сувда аммоний ва нитратни оширади.", "1 г = 7,57 ммоль. Азотное удобрение; избыток повышает аммоний и нитраты в воде.", "1 g = 7.57 mmol. Nitrogen fertiliser; excess raises ammonium and nitrate in water.") },
+    { id: "k2so4", g: "more", st: "m", k: "s", f: "K₂SO₄", col: "#ffffff", n: t3("Калий сульфат (калийли ўғит)", "Сульфат калия (калийное удобрение)", "Potassium sulfate (K fertiliser)"), c: { K: 11.48, SO4: 5.74 }, d: t3("1 г = 5,74 ммоль. Хлорсиз калийли ўғит — шўрланишга мойил тупроқлар учун.", "1 г = 5,74 ммоль. Бесхлорное калийное удобрение для склонных к засолению почв.", "1 g = 5.74 mmol. Chloride-free potash for salinity-prone soils.") },
+    { id: "kno3", g: "more", st: "m", k: "s", f: "KNO₃", col: "#ffffff", haz: ["ox"], n: t3("Калий нитрат (селитра)", "Нитрат калия (селитра)", "Potassium nitrate (saltpetre)"), c: { K: 9.89, NO3: 9.89 }, d: t3("1 г = 9,89 ммоль. Азот-калийли ўғит; оксидловчи — олов ва органикадан узоқда сақланг.", "1 г = 9,89 ммоль. Азотно-калийное удобрение; окислитель — хранить вдали от огня и органики.", "1 g = 9.89 mmol. N–K fertiliser; an oxidiser — keep away from fire and organics.") },
+    { id: "etoh", g: "more", st: "m", k: "l", f: "C₂H₅OH 96%", col: "#f8fafc", haz: ["flam"], n: t3("Этил спирти 96 %", "Этиловый спирт 96 %", "Ethanol 96 %"), c: {}, d: t3("Эритувчи ва дезинфекция воситаси. Ионларга ажралмайди — pH ва EC ўзгармайди. Оловдан узоқда!", "Растворитель и дезинфектант. Не диссоциирует — pH и EC не меняются. Беречь от огня!", "Solvent and disinfectant. Does not ionise — pH and EC stay put. Keep away from flames!") },
+    { id: "gluc", g: "more", st: "m", k: "s", f: "C₆H₁₂O₆", col: "#ffffff", n: t3("Глюкоза (БПК стандарти)", "Глюкоза (стандарт БПК)", "Glucose (BOD standard)"), c: {}, d: t3("Глюкоза-глутамат аралашмаси БПК₅ усулини текширишда ишлатилади (198 ± 30 мг/л).", "Смесь глюкоза-глутамат применяют для проверки метода БПК₅ (198 ± 30 мг/л).", "A glucose–glutamate mix checks the BOD₅ method (198 ± 30 mg/L).") },
   ];
   const RG = [
     ["base", "fa-house", t3("Уй-рўзғор", "Бытовые", "Household")],
@@ -214,7 +226,8 @@
     ["soil", "fa-seedling", t3("Тупроқ", "Почва", "Soil")],
     ["wat", "fa-vials", t3("Сув таҳлили", "Анализ воды", "Water analysis")],
     ["lab", "fa-flask-vial", t3("Лаборатория реагентлари", "Лабораторные реактивы", "Lab reagents")],
-    ["std", "fa-sliders", t3("Буфер ва стандартлар", "Буферы и стандарты", "Buffers & standards")]
+    ["std", "fa-sliders", t3("Буфер ва стандартлар", "Буферы и стандарты", "Buffers & standards")],
+    ["more", "fa-plus", t3("Ўғитлар ва органика", "Удобрения и органика", "Fertilisers & organics")]
   ];
   const RID = Object.fromEntries(R.map((r) => [r.id, r]));
   const VES = {
@@ -392,6 +405,29 @@
     EQ_("bin", "safe", "fa-biohazard", "m", t3("Кимёвий чиқинди идишлари", "Контейнеры для химических отходов", "Chemical waste containers"), t3("Алоҳида: оғир металлар (Ag, Cu, Hg, Cr), органик эритувчилар, кислота/ишқор (нейтраллангандан кейин), тупроқ ва қаттиқ чиқинди.", "Раздельно: тяжёлые металлы (Ag, Cu, Hg, Cr), органические растворители, кислоты/щёлочи (после нейтрализации), почва и твёрдые отходы.", "Separate: heavy metals (Ag, Cu, Hg, Cr), organic solvents, acids/alkalis (after neutralising), soil and solid waste."), t3("Идишни 3/4 дан ортиқ тўлдирманг, ёрлиқ ёпиштиринг.", "Не заполняйте больше 3/4, наклейте этикетку.", "Never fill beyond 3/4 and always label it."), "empty"),
     EQ_("spill", "safe", "fa-bucket", "m", t3("Тўкилганда: сода, қум, адсорбент", "Набор для разливов: сода, песок, адсорбент", "Spill kit: soda, sand, absorbent"), t3("Кислота тўкилса — сода сепинг (кўпик тугагунча), ишқор — лимон кислотаси; кейин қум билан йиғинг.", "Пролита кислота — засыпьте содой (до конца вспенивания), щёлочь — лимонной кислотой; затем соберите песком.", "Acid spill: cover with soda until fizzing stops; alkali: citric acid; then collect with sand."), t3("Симоб тўкилса — хонадан чиқинг, махсус хизматни чақиринг.", "Пролита ртуть — покиньте помещение и вызовите спецслужбу.", "Mercury spill: leave the room and call specialists."), null)
   ];
+  /* Ekomun 3.4: йирик таҳлил асбоблари ва қўшимча жиҳозлар — «Таҳлил маркази» усулларига уланган (tz) */
+  const EQ2 = (id, cat, ic, st, n, d, sf, tz) => Object.assign(EQ_(id, cat, ic, st, n, d, sf), { tz });
+  EQUIP.push(
+    EQ2("gcms", "meas", "fa-chart-area", "u", t3("Газ хроматограф-масс-спектрометр (ГХ-МС)", "Газовый хромато-масс-спектрометр (ГХ-МС)", "Gas chromatograph–mass spectrometer (GC-MS)"), t3("Органик ифлосликларни ажратиб, масс-спектри бўйича аниқлайди: ПАУ, пестицидлар, PCB, бензол, нефть маҳсулотлари (нг/л даражасигача).", "Разделяет органические загрязнители и идентифицирует их по масс-спектру: ПАУ, пестициды, ПХБ, бензол, нефтепродукты (до нг/л).", "Separates organic pollutants and identifies them by mass spectrum: PAHs, pesticides, PCBs, benzene, oil (down to ng/L)."), t3("Гелий баллони юқори босимда; инжектор 280 °C — куйиш хавфи.", "Баллон с гелием под высоким давлением; инжектор 280 °C — риск ожога.", "Helium cylinder under high pressure; injector at 280 °C — burn risk."), ["soil", "bap"]),
+    EQ2("icpms", "meas", "fa-burst", "u", t3("ИСП-МС (индуктив боғланган плазма)", "ИСП-МС (индуктивно-связанная плазма)", "ICP-MS (inductively coupled plasma)"), t3("Аргон плазмасида (6000–10 000 K) атомларни ионлаб, 70 дан ортиқ элементни бир вақтда нг/л даражасида ўлчайди: Pb, Cd, As, Hg, U.", "Ионизирует атомы в аргоновой плазме (6000–10 000 K) и одновременно измеряет 70+ элементов на уровне нг/л: Pb, Cd, As, Hg, U.", "Ionises atoms in an argon plasma (6000–10 000 K) and measures 70+ elements at ng/L levels at once: Pb, Cd, As, Hg, U."), t3("Плазма УБ нурланиши ва юқори кучланиш — қопқоқни очманг; аргон хонада тўпланмасин.", "УФ-излучение плазмы и высокое напряжение — не открывайте кожух; аргон не должен скапливаться.", "Plasma UV and high voltage — keep covers shut; do not let argon accumulate."), ["water", "pb"]),
+    EQ2("ic", "meas", "fa-chart-column", "u", t3("Ион хроматограф", "Ионный хроматограф", "Ion chromatograph"), t3("Бир таҳлилда F⁻, Cl⁻, NO₂⁻, NO₃⁻, PO₄³⁻, SO₄²⁻ анионларини ажратиб ўлчайди (ISO 10304-1).", "За один анализ разделяет и измеряет F⁻, Cl⁻, NO₂⁻, NO₃⁻, PO₄³⁻, SO₄²⁻ (ISO 10304-1).", "Separates and measures F⁻, Cl⁻, NO₂⁻, NO₃⁻, PO₄³⁻, SO₄²⁻ in one run (ISO 10304-1)."), t3("Элюент ишқорий — кўзойнак тақинг.", "Элюент щелочной — наденьте очки.", "The eluent is alkaline — wear goggles."), ["water", "so4"]),
+    EQ2("hplc", "meas", "fa-chart-simple", "u", t3("Юқори самарали суюқлик хроматографи (ЮССХ)", "Высокоэффективный жидкостный хроматограф (ВЭЖХ)", "High-performance liquid chromatograph (HPLC)"), t3("Формальдегид (DNPH ҳосиласи), ПАУ ва пестицидларни УБ ёки флуоресцент детектор билан аниқлайди.", "Определяет формальдегид (DNPH-производные), ПАУ и пестициды с УФ- или флуоресцентным детектором.", "Determines formaldehyde (DNPH derivatives), PAHs and pesticides with UV or fluorescence detection."), t3("Ацетонитрил ёнувчан ва заҳарли — тортиш шкафида тайёрланг.", "Ацетонитрил горюч и токсичен — готовьте в вытяжном шкафу.", "Acetonitrile is flammable and toxic — prepare in the fume hood."), ["air", "form"]),
+    EQ2("toc", "meas", "fa-fire-flame-simple", "u", t3("TOC анализатори (умумий органик углерод)", "Анализатор TOC (общий органический углерод)", "TOC analyser (total organic carbon)"), t3("Органик углеродни 680 °C да CO₂ гача ёқиб, ИҚ детекторда ўлчайди (ISO 8245) — КПК га экологик тоза муқобил (бихромат ва симобсиз).", "Сжигает органический углерод до CO₂ при 680 °C и измеряет ИК-детектором (ISO 8245) — экологичная замена ХПК без бихромата и ртути.", "Burns organic carbon to CO₂ at 680 °C and reads it by IR (ISO 8245) — a greener alternative to COD without dichromate or mercury."), t3("Печь қизиган — қопқоқни совумасдан очманг.", "Печь горячая — не открывайте до остывания.", "The furnace is hot — do not open before it cools."), ["water", "cod"]),
+    EQ2("flame", "meas", "fa-fire", "m", t3("Аланга фотометри (K, Na, Ca, Li)", "Пламенный фотометр (K, Na, Ca, Li)", "Flame photometer (K, Na, Ca, Li)"), t3("Эритма алангага пуркалади: K бинафша, Na сариқ нур чиқаради — нур кучи концентрацияга мутаносиб.", "Раствор распыляется в пламя: K даёт фиолетовое, Na — жёлтое свечение, яркость пропорциональна концентрации.", "The solution is sprayed into a flame: K glows violet, Na yellow — intensity is proportional to concentration."), t3("Пропан алангаси — ёнувчан моддаларни узоқда сақланг.", "Пламя пропана — держите горючее подальше.", "Propane flame — keep flammables away."), ["soil", "k"]),
+    EQ2("kjel", "soil", "fa-flask", "u", t3("Кьельдаль аппарати (умумий азот)", "Аппарат Кьельдаля (общий азот)", "Kjeldahl apparatus (total nitrogen)"), t3("Намуна концентрланган H₂SO₄ да катализатор билан парчаланади, аммиак ҳайдалиб борат кислотага ютилади ва титрланади.", "Проба минерализуется в конц. H₂SO₄ с катализатором, аммиак отгоняется в борную кислоту и титруется.", "The sample is digested in conc. H₂SO₄ with a catalyst; ammonia is distilled into boric acid and titrated."), t3("Концентрланган кислота буғи — фақат тортиш шкафида.", "Пары концентрированной кислоты — только в вытяжном шкафу.", "Concentrated acid fumes — fume hood only."), ["soil", "ntot"]),
+    EQ2("sox", "soil", "fa-arrows-rotate", "u", t3("Сокслет экстрактори", "Экстрактор Сокслета", "Soxhlet extractor"), t3("Эритувчи қайта-қайта буғланиб тупроқдан нефть маҳсулотлари, ПАУ ва пестицидларни ювиб олади (6–16 соат).", "Растворитель многократно испаряется и вымывает из почвы нефтепродукты, ПАУ и пестициды (6–16 ч).", "Solvent repeatedly cycles to wash oil, PAHs and pesticides out of the soil (6–16 h)."), t3("Гексан ва ацетон ёнувчан — очиқ олов йўқ, совутгич суви ёқилган бўлсин.", "Гексан и ацетон горючи — без открытого огня, вода в холодильнике включена.", "Hexane and acetone are flammable — no open flame, condenser water on."), ["soil", "oil"]),
+    EQ2("mw", "soil", "fa-microchip", "u", t3("Микротўлқинли минерализатор", "Микроволновая система минерализации", "Microwave digestion system"), t3("Ёпиқ тефлон идишларда HNO₃/HCl билан 200 °C да намунани 30 дақиқада тўлиқ эритади (EPA 3051A) — металлар таҳлилидан олдин.", "В закрытых тефлоновых сосудах с HNO₃/HCl при 200 °C за 30 мин полностью разлагает пробу (EPA 3051A) — перед анализом металлов.", "Fully digests samples in closed PTFE vessels with HNO₃/HCl at 200 °C in 30 min (EPA 3051A) before metal analysis."), t3("Идишлар босим остида — совугандан кейингина очинг.", "Сосуды под давлением — открывайте только после остывания.", "Vessels are pressurised — open only once cool."), ["soil", "Pb"]),
+    EQ2("inc", "gen", "fa-egg", "m", t3("Термостат-инкубатор (22 / 36 / 44 °C)", "Термостат-инкубатор (22 / 36 / 44 °C)", "Incubator (22 / 36 / 44 °C)"), t3("Микроб экинларини ўстиради: колиформлар 36 °C, E. coli 44 °C, умумий санаш 22 °C; тупроқ нафас олиши 25 °C.", "Выращивает посевы: колиформы 36 °C, E. coli 44 °C, общий счёт 22 °C; дыхание почвы 25 °C.", "Grows cultures: coliforms at 36 °C, E. coli at 44 °C, plate count at 22 °C; soil respiration at 25 °C."), t3("Экинли ликопчаларни очманг; ишдан кейин автоклавда зарарсизлантиринг.", "Не открывайте чашки с посевами; после работы — автоклавирование.", "Do not open culture plates; autoclave them after use."), ["water", "coli"]),
+    EQ2("lam", "gen", "fa-shield-virus", "m", t3("Ламинар бокс (II синф биохавфсизлик)", "Ламинарный бокс (II класс биобезопасности)", "Biosafety cabinet (class II)"), t3("HEPA фильтрланган ҳаво оқими намуна ва одамни микроблардан ҳимоя қилади; экиш шу ерда бажарилади.", "Поток воздуха через HEPA-фильтр защищает пробу и человека; посевы делают здесь.", "HEPA-filtered airflow protects both sample and analyst; inoculation is done here."), t3("Ишдан олдин 15 дақиқа УБ лампани ёқинг, лекин УБ да ичкарига қараманг.", "Перед работой включите УФ на 15 мин, но не смотрите на УФ-лампу.", "Run the UV lamp for 15 min beforehand, but never look at it."), ["water", "ecoli"]),
+    EQ2("colony", "gen", "fa-braille", "m", t3("Колония санагич ва Петри ликопчалари", "Счётчик колоний и чашки Петри", "Colony counter and Petri dishes"), t3("Мембранадаги ёки агардаги колонияларни катталаштириб санайди: натижа КОЕ/100 мл.", "Подсчитывает колонии на мембране или агаре под лупой: результат в КОЕ/100 мл.", "Counts colonies on membranes or agar under magnification: result in CFU/100 mL."), t3("Ликопчани қопқоғини очмасдан санаш керак.", "Считайте, не снимая крышку чашки.", "Count without removing the lid."), ["water", "coli"]),
+    EQ2("vac", "water", "fa-filter", "m", t3("Вакуум фильтрлаш тизими (0,45 мкм)", "Вакуумная фильтрация (0,45 мкм)", "Vacuum filtration (0.45 µm)"), t3("Муаллақ моддалар, микробиология ва эриган моддалар учун намунани мембранадан сўриб ўтказади.", "Протягивает пробу через мембрану для взвешенных веществ, микробиологии и растворённых форм.", "Draws the sample through a membrane for suspended solids, microbiology and dissolved fractions."), t3("Шиша колбани вакуумда уриб олманг — портлаш хавфи.", "Не ударяйте колбу под вакуумом — риск имплозии.", "Never knock a flask under vacuum — implosion risk."), ["water", "tss"]),
+    EQ2("frz", "gen", "fa-icicles", "m", t3("Музлатгич −20 °C (намуналар архиви)", "Морозильник −20 °C (архив проб)", "Freezer −20 °C (sample archive)"), t3("Тупроқ ва сув намуналарини қайта текшириш учун узоқ сақлайди (нитрат, органика).", "Длительно хранит пробы почвы и воды для повторных анализов (нитраты, органика).", "Keeps soil and water samples long-term for re-testing (nitrate, organics)."), t3("Озиқ-овқат сақламанг; қўлқоп билан олинг.", "Не храните продукты; доставайте в перчатках.", "Never store food; handle with gloves."), null),
+    EQ2("noise", "air", "fa-volume-high", "m", t3("Шовқин ўлчагич (1-синф)", "Шумомер (1 класс)", "Sound level meter (class 1)"), t3("Шовқин даражасини дБА да ўлчайди (ISO 1996-2): кўча, мактаб, турар жой.", "Измеряет уровень шума в дБА (ISO 1996-2): улица, школа, жильё.", "Measures noise in dBA (ISO 1996-2): street, school, homes."), t3("85 дБА дан юқорида қулоқчин тақинг.", "Выше 85 дБА используйте наушники.", "Wear ear defenders above 85 dBA."), ["air", "noise"]),
+    EQ2("dose", "air", "fa-radiation", "m", t3("Дозиметр (гамма-нурланиш)", "Дозиметр (гамма-излучение)", "Dosimeter (gamma radiation)"), t3("Гамма-нурланиш дозаси қувватини мкЗв/соат да ўлчайди; табиий фон 0,1–0,3 мкЗв/соат.", "Измеряет мощность дозы в мкЗв/ч; естественный фон 0,1–0,3 мкЗв/ч.", "Measures dose rate in µSv/h; natural background is 0.1–0.3 µSv/h."), t3("Фон юқори бўлса, жойдан узоқлашинг ва мутахассисга хабар беринг.", "При повышенном фоне отойдите и сообщите специалисту.", "If readings are high, move away and inform a specialist."), ["air", "gamma"]),
+    EQ2("meteo", "air", "fa-cloud-sun", "m", t3("Метеостанция (T, намлик, шамол, босим)", "Метеостанция (T, влажность, ветер, давление)", "Weather station (T, humidity, wind, pressure)"), t3("Ҳаво намунаси олишда метеошароитни ёзади: улар ифлосланиш тарқалишини белгилайди (WMO-No. 8).", "Фиксирует метеоусловия при отборе: они определяют рассеивание загрязнений (WMO-No. 8).", "Logs weather during sampling — it controls pollutant dispersion (WMO-No. 8)."), t3("Момақалдироқда мачтага яқинлашманг.", "В грозу не подходите к мачте.", "Stay away from the mast in thunderstorms."), ["air", "temp"]),
+    EQ2("glass", "gen", "fa-vials", "m", t3("Ўлчов шиша идишлари (А синф)", "Мерная посуда (класс А)", "Volumetric glassware (class A)"), t3("Ўлчов колбалари, пипеткалар, цилиндрлар, кюветалар, Петри ликопчалари — сертификатланган аниқликда.", "Мерные колбы, пипетки, цилиндры, кюветы, чашки Петри — с сертифицированной точностью.", "Volumetric flasks, pipettes, cylinders, cuvettes, Petri dishes — certified accuracy."), t3("Синган шишани қўл билан йиғманг — чўтка ва махсус идиш.", "Не собирайте битое стекло руками — щётка и спецконтейнер.", "Never pick up broken glass by hand — use a brush and a sharps bin."), null),
+    EQ2("cab", "safe", "fa-box", "m", t3("Реактивлар шкафлари (кислота, ишқор, ёнувчан)", "Шкафы для реактивов (кислоты, щёлочи, ЛВЖ)", "Reagent cabinets (acids, bases, flammables)"), t3("Мос келмайдиган реактивлар алоҳида сақланади: кислоталар ишқордан, оксидловчилар органикадан узоқда; ёнувчанлар — ёнғинга чидамли шкафда.", "Несовместимые реактивы хранят раздельно: кислоты отдельно от щелочей, окислители — от органики; ЛВЖ — в огнестойком шкафу.", "Incompatible reagents are stored apart: acids from bases, oxidisers from organics; flammables in a fire cabinet."), t3("Ҳар бир идишда ёрлиқ ва GHS белгиси бўлсин.", "На каждой ёмкости — этикетка и знак GHS.", "Every container needs a label and GHS pictogram."), null)
+  );
   const EQID = Object.fromEntries(EQUIP.map((e) => [e.id, e]));
   /* Ҳаво намуна олиш жойлари: CO₂ ppm, PM мкг/м³, SO₂/NO₂ мкг/м³, CO мг/м³ (тахминий типик қийматлар) */
   const AIR = [
@@ -614,6 +650,13 @@
   function eqAct(id, arg) {
     const e = EQID[id] || {};
     if (e.st === "u" && !uni()) { toast(L(TX.lockEq)); return; }
+    if (e.id && e.tz !== undefined) {
+      const T = window.EkoLabTahlil;
+      meter(id, `<p class="small">${H(e.d)}</p>${e.tz ? `<p class="small">🧾 ${H(t3("Бу асбоб «Экологик таҳлил маркази» даги стандарт усулда ишлатилади — намуна танланг ва «Таҳлил қилиш» ни босинг.", "Этот прибор используется в стандартном методе «Центра экологического анализа» — выберите пробу и нажмите «Выполнить анализ».", "This instrument runs a standard method in the “Environmental analysis centre” — pick a sample and press “Run analysis”."))}</p>` : ""}`);
+      if (e.tz && T) T.focus(e.tz[0], e.tz[1]);
+      if (once("lx_eq_" + id, 1, WHY)) toast("✅ " + L(e.n) + " +1 XP");
+      return;
+    }
     const isAqTool = !["gas", "pm", "secchi", "sieve", "oven", "muffle", "fridge", "hood", "filt", "dist", "mstir"].includes(id);
     if (isAqTool && !ppeOk() && !["aas"].includes(id)) { warnPpe(); return; }
     if (id === "heat" || id === "empty") { tool(id); return; }
@@ -824,7 +867,10 @@
       const p = EQ.ppt; if (p.agcl > 0.002) seen.push(L(t3("AgCl нинг майда оқ кристаллари", "мелкие белые кристаллы AgCl", "tiny white AgCl crystals"))); if (p.caco3 > 0.01) seen.push(L(t3("CaCO₃ ромбоэдр кристаллари", "ромбоэдрические кристаллы CaCO₃", "rhombohedral CaCO₃ crystals")));
       if ((S.extra.yeast || 0) > 0) seen.push(L(t3("тухумсимон ачитқи ҳужайралари (куртакланяпти)", "овальные дрожжевые клетки (почкуются)", "oval yeast cells (budding)")));
       if ((S.extra.mic || 0) <= 0 && S.used.size && R.some((r) => r.ex && r.ex.mic && S.used.has(r.id))) seen.push(L(t3("ҳужайралар ҳаракатсиз — стерилланган", "клетки неподвижны — стерилизовано", "cells are motionless — sterilised")));
-      meter(id, `<p>🔬 ×400: ${esc(seen.length ? seen.join("; ") : L(MIC.clear))}.</p>`, "🔬 ×400");
+      const T = window.EkoLabTahlil, kinds = [...new Set(R.filter((r) => r.mic && S.used.has(r.id)).map((r) => r.mic))];
+      if (p.agcl > 0.002) kinds.push("agcl"); if (p.caco3 > 0.01) kinds.push("caco3"); if ((S.extra.yeast || 0) > 0) kinds.push("yeast");
+      meter(id, `<p>🔬 ×400: ${esc(seen.length ? seen.join("; ") : L(MIC.clear))}.</p>${T ? T.micro(kinds.length ? kinds : ["clear"]) : ""}`, "🔬 ×400");
+      if (T) T.micro(kinds.length ? kinds : ["clear"], ROOT.querySelector("[data-meter]"));
       once("lx_micro", 1, WHY); return;
     }
     /* Фақат маълумот берадиган жиҳозлар */
@@ -1016,6 +1062,7 @@
 
   /* ---------- 3D хона ---------- */
   let view = null, built = false, glFail = false, mountId = 0, R3 = null;
+  let moveMode = false, resetLayout = null;
   const hex = (h) => parseInt(h.slice(1), 16);
   function build3d(v, lib) {
     const T = lib.T, sc = v.scene;
@@ -1058,7 +1105,7 @@
       /* Ёрлиқ: оқ қоғоз; номи фақат танланган шиша устида кўринади (зич жавонда матнлар устма-уст тушмасин) */
       const plate = new T.Mesh(new T.PlaneGeometry(0.1, 0.07), new T.MeshBasicMaterial({ color: locked ? 0xfca5a5 : 0xffffff })); plate.position.set(0, r.k === "s" ? 0.08 : 0.1, (r.k === "s" ? 0.091 : 0.088)); g.add(plate);
       if (locked) { const lk = lib.textSprite("🔒", "#0f172a", 0.1); lk.position.set(0, 0.36, 0.04); g.add(lk); }
-      g.userData = { rid: r.id, locked };
+      g.userData = { rid: r.id, locked, home: [x, y, z], shelfY: y };
       g.traverse((o) => { o.userData.rid = r.id; });
       sc.add(g); bottles.push(g);
     });
@@ -1128,24 +1175,65 @@
       tSpr = lib.textSprite(t, "#b91c1c", 0.08); tSpr.position.set(0.26, 0.82, 0.08); vesG.add(tSpr);
     };
     void meter;
-    /* Хавфсизлик буюмлари: ўт ўчиргич, кўз ювгич, биринчи ёрдам, чиқинди идишлари */
-    const ext = new T.Mesh(new T.CylinderGeometry(0.11, 0.11, 0.5, 16), M(0xdc2626, { roughness: 0.4 })); ext.position.set(3.2, 0.25, -1.3); sc.add(ext);
-    [["🧯", 3.2, 0.8, -1.3], ["👁️💧", 2.6, 1.55, -1.55], ["⛑️", 3.4, 1.55, -1.55], ["🥼", -4.1, 1.7, -0.6], ["🥽", -4.1, 1.35, -0.3], ["🧤", -4.1, 1.05, 0]].forEach(([e, x, y, z]) => { const s = lib.textSprite(e, "#fff", 0.32); s.position.set(x, y, z); sc.add(s); });
-    const binY = box(0.45, 0.6, 0.45, M(0xfacc15), 2.75, 0.3, 0.7);
-    const binS = lib.textSprite("☣️", "#fff", 0.3); binS.position.set(2.75, 0.8, 0.7); sc.add(binS);
-    /* Асбоб-ускуналар: музлатгич, тортиш шкафи, спектрофотометр, тарози, микроскоп, дистиллятор, автоклав */
-    const metal = M(0x94a3b8, { metalness: 0.6, roughness: 0.35 }), white = M(0xf8fafc, { roughness: 0.5 }), dark = M(0x1e293b, { roughness: 0.4 });
-    box(0.8, 1.9, 0.7, white, 3.95, 0.95, -1.15); box(0.04, 0.5, 0.04, metal, 3.6, 1.2, -0.79); box(0.78, 0.01, 0.01, M(0xcbd5e1), 3.95, 1.3, -0.8);
-    const hoodB = box(1.5, 1.4, 0.7, M(0xe2e8f0), -3.6, 1.6, -1.2); void hoodB;
-    box(1.4, 0.9, 0.02, new T.MeshStandardMaterial({ color: 0xbae6fd, transparent: true, opacity: 0.35, roughness: 0.05 }), -3.6, 1.55, -0.84);
-    box(1.5, 0.08, 0.72, dark, -3.6, 0.9, -1.2); box(1.5, 0.86, 0.7, M(0xcbd5e1), -3.6, 0.43, -1.2);
-    box(0.55, 0.22, 0.4, M(0x334155), 1.65, 1.05, -0.35); box(0.2, 0.1, 0.01, new T.MeshBasicMaterial({ color: 0x22d3ee }), 1.55, 1.1, -0.145);
-    box(0.36, 0.06, 0.36, white, -0.95, 0.97, -0.4); box(0.3, 0.22, 0.3, new T.MeshStandardMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.4 }), -0.95, 1.11, -0.4);
-    box(0.12, 0.04, 0.2, dark, 1.0, 0.96, -0.45); box(0.04, 0.32, 0.04, dark, 1.0, 1.12, -0.52); box(0.06, 0.16, 0.06, dark, 1.0, 1.25, -0.42);
-    const ac = new T.Mesh(new T.CylinderGeometry(0.28, 0.28, 0.55, 20), metal); ac.position.set(-4.0, 0.28, 0.6); sc.add(ac);
-    box(0.3, 0.45, 0.18, white, -2.6, 2.4, -1.5);
-    [["🧊", 3.95, 2.05, -1.1], ["🌬️", -3.6, 2.45, -1.0], ["🔬", 1.0, 1.5, -0.45], ["⚖️", -0.95, 1.38, -0.4], ["📈", 1.65, 1.35, -0.35], ["♨️", -4.0, 0.75, 0.6], ["💧", -2.6, 2.8, -1.45]].forEach(([e, x, y, z]) => { const sp = lib.textSprite(e, "#fff", 0.26); sp.position.set(x, y, z); sc.add(sp); });
-    void binY;
+    /* Хавфсизлик буюмлари ва асбоб-ускуналар — ҳар бири алоҳида гуруҳ: босилса панелда очилади, суриш мумкин */
+    const metal = M(0x94a3b8, { metalness: 0.6, roughness: 0.35 }), white = M(0xf8fafc, { roughness: 0.5 }), dark = M(0x1e293b, { roughness: 0.4 }), glassB = new T.MeshStandardMaterial({ color: 0xbae6fd, transparent: true, opacity: 0.35, roughness: 0.05 });
+    const items = [];
+    const part = (g, w, h, d, m, x, y, z) => { const b = new T.Mesh(new T.BoxGeometry(w, h, d), m); b.position.set(x, y, z); g.add(b); return b; };
+    const cyl = (g, r, h, m, x, y, z) => { const c = new T.Mesh(new T.CylinderGeometry(r, r, h, 20), m); c.position.set(x, y, z); g.add(c); return c; };
+    const item = (id, x, y, z, emo, ey, build) => {
+      const g = new T.Group(); g.position.set(x, y, z); build(g);
+      if (emo) { const sp = lib.textSprite(emo, "#fff", 0.3); sp.position.set(0, ey, 0.05); g.add(sp); }
+      g.userData = { eq: id, home: [x, y, z] }; g.traverse((o) => { o.userData.eq = id; });
+      sc.add(g); items.push(g); return g;
+    };
+    item("ext", 3.2, 0, -1.3, "🧯", 0.8, (g) => { cyl(g, 0.11, 0.5, M(0xdc2626, { roughness: 0.4 }), 0, 0.25, 0); });
+    [["👁️💧", 2.6, 1.55, -1.55], ["⛑️", 3.4, 1.55, -1.55], ["🥼", -4.1, 1.7, -0.6], ["🥽", -4.1, 1.35, -0.3], ["🧤", -4.1, 1.05, 0]].forEach(([e, x, y, z]) => { const s = lib.textSprite(e, "#fff", 0.32); s.position.set(x, y, z); sc.add(s); });
+    item("bin", 2.75, 0, 0.7, "☣️", 0.8, (g) => { part(g, 0.45, 0.6, 0.45, M(0xfacc15), 0, 0.3, 0); });
+    item("fridge", 3.95, 0, -1.15, "🧊", 2.05, (g) => { part(g, 0.8, 1.9, 0.7, white, 0, 0.95, 0); part(g, 0.04, 0.5, 0.04, metal, -0.35, 1.2, 0.36); part(g, 0.78, 0.01, 0.01, M(0xcbd5e1), 0, 1.3, 0.35); });
+    item("hood", -3.6, 0, -1.2, "🌬️", 2.45, (g) => { part(g, 1.5, 1.4, 0.7, M(0xe2e8f0), 0, 1.6, 0); part(g, 1.4, 0.9, 0.02, glassB, 0, 1.55, 0.36); part(g, 1.5, 0.08, 0.72, dark, 0, 0.9, 0); part(g, 1.5, 0.86, 0.7, M(0xcbd5e1), 0, 0.43, 0); });
+    item("spec", 1.65, 0.94, -0.35, "📈", 0.41, (g) => { part(g, 0.55, 0.22, 0.4, M(0x334155), 0, 0.11, 0); part(g, 0.2, 0.1, 0.01, new T.MeshBasicMaterial({ color: 0x22d3ee }), -0.1, 0.16, 0.205); });
+    item("bal", -0.95, 0.94, -0.4, "⚖️", 0.44, (g) => { part(g, 0.36, 0.06, 0.36, white, 0, 0.03, 0); part(g, 0.3, 0.22, 0.3, new T.MeshStandardMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.4 }), 0, 0.17, 0); });
+    item("micro", 1.0, 0.94, -0.45, "🔬", 0.56, (g) => { part(g, 0.12, 0.04, 0.2, dark, 0, 0.02, 0); part(g, 0.04, 0.32, 0.04, dark, 0, 0.18, -0.07); part(g, 0.06, 0.16, 0.06, dark, 0, 0.31, 0.03); });
+    item("auto", -4.0, 0, 0.6, "♨️", 0.75, (g) => { cyl(g, 0.28, 0.55, metal, 0, 0.28, 0); });
+    item("dist", -2.6, 2.4, -1.5, "💧", 0.4, (g) => { part(g, 0.3, 0.45, 0.18, white, 0, 0, 0); });
+    /* Янги асбоблар столи (ўнг томонда): ГХ-МС, ИСП-МС, инкубатор, ион хроматограф */
+    const bench = new T.Group(); bench.position.set(3.95, 0, 0.75); part(bench, 0.85, 0.06, 1.9, M(0x1f2937, { roughness: 0.5 }), 0, 0.9, 0); part(bench, 0.8, 0.86, 1.8, M(0xf1f5f9), 0, 0.43, 0); sc.add(bench);
+    item("gcms", 3.95, 0.93, 0.05, "🧪", 0.62, (g) => { part(g, 0.55, 0.4, 0.45, M(0xe2e8f0), 0, 0.2, 0); part(g, 0.25, 0.08, 0.02, new T.MeshBasicMaterial({ color: 0x4ade80 }), -0.1, 0.3, 0.23); cyl(g, 0.05, 0.12, metal, 0.18, 0.46, 0); });
+    item("icpms", 3.95, 0.93, 0.75, "⚡", 0.66, (g) => { part(g, 0.6, 0.45, 0.5, M(0xcbd5e1), 0, 0.225, 0); part(g, 0.14, 0.14, 0.02, new T.MeshBasicMaterial({ color: 0xc084fc }), 0.12, 0.28, 0.26); });
+    item("inc", 3.95, 0.93, 1.42, "🦠", 0.6, (g) => { part(g, 0.5, 0.42, 0.45, white, 0, 0.21, 0); part(g, 0.36, 0.28, 0.02, glassB, 0, 0.22, 0.23); });
+    item("lam", -2.4, 0, 1.9, "🧫", 1.95, (g) => { part(g, 1.2, 0.9, 0.7, M(0xe2e8f0), 0, 0.45, 0); part(g, 1.2, 0.08, 0.72, dark, 0, 0.92, 0); part(g, 1.2, 0.8, 0.7, M(0xf8fafc), 0, 1.36, 0); part(g, 1.1, 0.5, 0.02, glassB, 0, 1.26, 0.36); });
+    /* Суриш: сичқонча билан ҳар доим; телефонда «✋» режими ёқилганда */
+    const TBL = { x: [-2.25, 2.25], z: [-0.7, 0.55], y: 0.94 };
+    const draggables = () => bottles.concat(items, [vesG]);
+    let drag = null;
+    const top = (o) => { while (o && !(o.userData && (o.userData.rid || o.userData.eq || o === vesG))) o = o.parent; return o; };
+    v.drag = {
+      start(e) {
+        if (e.pointerType !== "mouse" && !moveMode) return false;
+        const h = v.pick(e, draggables()); if (!h) return false;
+        let o = h.object; while (o.parent && o.parent !== sc) o = o.parent;
+        if (!draggables().includes(o)) return false;
+        const isBottle = bottles.includes(o), y0 = isBottle || o === vesG ? TBL.y : o.position.y;
+        const p = v.rayPlane(e, y0); if (!p) return false;
+        drag = { o, dx: o.position.x - p.x, dz: o.position.z - p.z, y0, isBottle };
+        return true;
+      },
+      move(e) {
+        if (!drag) return;
+        const p = v.rayPlane(e, drag.y0); if (!p) return;
+        const o = drag.o, x = clamp(p.x + drag.dx, -4.3, 4.3), z = clamp(p.z + drag.dz, -1.45, 2.8);
+        o.position.x = x; o.position.z = z;
+        if (drag.isBottle) { const onT = x > TBL.x[0] && x < TBL.x[1] && z > TBL.z[0] && z < TBL.z[1]; o.position.y = onT ? TBL.y : z < -1.2 && x > -2.2 && x < 2.4 ? o.userData.shelfY : 0; }
+        if (o === vesG) { const onT = x > TBL.x[0] && x < TBL.x[1] && z > TBL.z[0] && z < TBL.z[1]; o.position.y = onT ? TBL.y : 0; }
+        if (o.userData.rid && tagId === o.userData.rid && tagSpr) tagSpr.position.set(o.position.x, o.position.y + 0.42, o.position.z + 0.1);
+      },
+      end() { drag = null; }
+    };
+    resetLayout = () => {
+      bottles.forEach((g) => { const h = g.userData.home; g.position.set(h[0], h[1], h[2]); });
+      items.forEach((g) => { const h = g.userData.home; g.position.set(h[0], h[1], h[2]); });
+      vesG.position.set(0.2, 0.94, 0.15);
+    };
     /* Қуйиш анимацияси */
     let pour = null;
     const pourM = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 });
@@ -1168,7 +1256,8 @@
     };
     /* Шишани босиш — идишга қуйиш */
     v.onTap = (e) => {
-      const hit = v.pick(e, bottles); if (!hit) return;
+      const hit = v.pick(e, bottles.concat(items)); if (!hit) return;
+      if (hit.object.userData.eq) { const id = hit.object.userData.eq; if (EQID[id]) { eqSel = id; eqCat = EQID[id].cat; bindEq(); note("👆 " + L(EQID[id].n)); } return; }
       let o = hit.object; while (o && !o.userData.rid) o = o.parent;
       if (o && o.userData.rid) { selectR(o.userData.rid); add(o.userData.rid, curAmt(RID[o.userData.rid])); }
     };
@@ -1397,7 +1486,7 @@
     const lk = e && e.st === "u" && !isU;
     const on = (id) => (id === "hood" && hood) || (id === "fridge" && S.cold) || (id === "mstir" && S.mstir) || (id === "plate" && S.heat);
     const extra = !e ? "" : e.id === "asp" || e.id === "gas" || e.id === "pm" ? `<div class="lx-chips" role="group" aria-label="${H(TX.site)}">${AIR.map((a) => `<button type="button" class="chip ${a.id === airSite ? "active" : ""}" data-air="${a.id}" aria-pressed="${a.id === airSite}"><i class="fa-solid ${a.ic}" aria-hidden="true"></i> ${H(a.n)}</button>`).join("")}</div>${e.id === "asp" ? `<div class="lx-chips" role="group" aria-label="${H(TX.vol)}">${[1, 10, 100, 1000].map((v) => `<button type="button" class="chip ${v === airVol ? "active" : ""}" data-avol="${v}" aria-pressed="${v === airVol}">${v} ${lang() === "en" ? "L" : "л"}</button>`).join("")}</div>` : ""}` : "";
-    const btn = !e ? "" : lk ? `<p class="small lx-bad">${H(TX.lockEq)}</p>` : e.act ? `<button type="button" class="btn btn-sm ${on(e.id) ? "btn-ghost" : ""}" data-eqrun="${e.act}"><i class="fa-solid ${e.ic}" aria-hidden="true"></i> ${H(["fridge", "hood", "mstir", "plate"].includes(e.id) ? (on(e.id) ? t3("Ўчириш", "Выключить", "Switch off") : t3("Ёқиш", "Включить", "Switch on")) : TX.run)}</button>${e.id === "phm" ? ` <button type="button" class="btn btn-ghost btn-sm" data-eqrun="cal"><i class="fa-solid fa-sliders" aria-hidden="true"></i> ${H(TX.calB)} (${calPts.size}/2)</button>` : ""}` : `<button type="button" class="btn btn-ghost btn-sm" data-eqrun="${e.id}"><i class="fa-solid fa-check" aria-hidden="true"></i> ${H(TX.learnt)}</button>`;
+    const btn = !e ? "" : lk ? `<p class="small lx-bad">${H(TX.lockEq)}</p>` : e.act ? `<button type="button" class="btn btn-sm ${on(e.id) ? "btn-ghost" : ""}" data-eqrun="${e.act}"><i class="fa-solid ${e.ic}" aria-hidden="true"></i> ${H(["fridge", "hood", "mstir", "plate"].includes(e.id) ? (on(e.id) ? t3("Ўчириш", "Выключить", "Switch off") : t3("Ёқиш", "Включить", "Switch on")) : TX.run)}</button>${e.id === "phm" ? ` <button type="button" class="btn btn-ghost btn-sm" data-eqrun="cal"><i class="fa-solid fa-sliders" aria-hidden="true"></i> ${H(TX.calB)} (${calPts.size}/2)</button>` : ""}` : e.tz ? `<button type="button" class="btn btn-sm" data-eqrun="${e.id}"><i class="fa-solid fa-vial-circle-check" aria-hidden="true"></i> ${H(t3("Таҳлил марказида ишлатиш", "Использовать в центре анализа", "Use in the analysis centre"))}</button>` : `<button type="button" class="btn btn-ghost btn-sm" data-eqrun="${e.id}"><i class="fa-solid fa-check" aria-hidden="true"></i> ${H(TX.learnt)}</button>`;
     return `<div class="lx-tabs" role="tablist">${EQC.map(([c, ic, n]) => `<button type="button" role="tab" class="chip ${c === eqCat ? "active" : ""}" aria-selected="${c === eqCat}" data-eqc="${c}"><i class="fa-solid ${ic}" aria-hidden="true"></i> ${H(n)}</button>`).join("")}</div>
       <div class="lx-eqgrid">${list.map((x) => { const l = x.st === "u" && !isU; return `<button type="button" class="lx-eq ${x.id === eqSel ? "sel" : ""} ${l ? "lk" : ""} ${on(x.id) ? "on" : ""}" data-eq="${x.id}" aria-pressed="${x.id === eqSel}"><span class="lx-eqi" aria-hidden="true"><i class="fa-solid ${x.ic}"></i></span><b>${H(x.n)}</b>${l ? `<small>🔒</small>` : ""}</button>`; }).join("")}</div>
       ${e ? `<div class="lx-eqd"><p><span class="lx-eqi" aria-hidden="true"><i class="fa-solid ${e.ic}"></i></span> <b>${H(e.n)}</b></p><p class="small">${H(e.d)}</p><p class="small lx-sf"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> <b>${H(TX.safety)}:</b> ${H(e.sf)}</p>${extra}<div class="lx-eqbtn">${btn}</div></div>` : ""}`;
@@ -1425,6 +1514,8 @@
             <button type="button" class="l3-tb" data-vt="in" title="+" aria-label="+"><i class="fa-solid fa-plus"></i></button>
             <button type="button" class="l3-tb" data-vt="out" title="−" aria-label="−"><i class="fa-solid fa-minus"></i></button>
             <button type="button" class="l3-tb" data-vt="home" title="${H(t3("Аввалги ҳолат", "Сброс вида", "Reset view"))}" aria-label="${H(t3("Аввалги ҳолат", "Сброс вида", "Reset view"))}"><i class="fa-solid fa-house"></i></button>
+            <button type="button" class="l3-tb ${moveMode ? "on" : ""}" data-vt="move" aria-pressed="${moveMode}" title="${H(t3("Буюмларни суриш", "Перемещать предметы", "Move objects"))}" aria-label="${H(t3("Буюмларни суриш", "Перемещать предметы", "Move objects"))}"><i class="fa-solid fa-hand"></i></button>
+            <button type="button" class="l3-tb" data-vt="lay" title="${H(t3("Жойлашувни тиклаш", "Вернуть расстановку", "Reset layout"))}" aria-label="${H(t3("Жойлашувни тиклаш", "Вернуть расстановку", "Reset layout"))}"><i class="fa-solid fa-arrows-to-dot"></i></button>
           </div>
           <p class="small muted l3-hint">${H(TX.hint)}</p>
         </div>
@@ -1457,6 +1548,7 @@
         <div data-eqwrap>${eqHtml()}</div>
         <div class="lx-meter" data-meter aria-live="polite" hidden></div>
       </div>
+      <div class="lt-host" data-tahlil></div>
       <div class="ps-grid lx-grid">
         <div class="ps-box"><h3>${H(TX.mis)}</h3><div data-mis></div></div>
         <div class="ps-box"><h3>${H(TX.disc)}</h3><div data-disc></div></div>
@@ -1469,7 +1561,7 @@
       </div>
       <p class="small muted">${H(TX.src)}<br>${H(TX.model)}</p>`;
     bindPpe();
-    ROOT.querySelectorAll("[data-vt]").forEach((b) => b.addEventListener("click", () => { if (!view) return; const t = b.dataset.vt; if (t === "in") view.zoom(0.85); if (t === "out") view.zoom(1.18); if (t === "home") view.resetView(); }));
+    ROOT.querySelectorAll("[data-vt]").forEach((b) => b.addEventListener("click", () => { if (!view) return; const t = b.dataset.vt; if (t === "in") view.zoom(0.85); if (t === "out") view.zoom(1.18); if (t === "home") view.resetView(); if (t === "lay" && resetLayout) { resetLayout(); note("↩️ " + L(t3("Буюмлар жойига қайтди", "Предметы возвращены на места", "Objects returned to their places"))); } if (t === "move") { moveMode = !moveMode; b.classList.toggle("on", moveMode); b.setAttribute("aria-pressed", String(moveMode)); view.canvas.classList.toggle("lx-move", moveMode); note(moveMode ? "✋ " + L(t3("Суриш режими: шиша, идиш ёки асбобни бармоқ билан суринг", "Режим перемещения: тяните пальцем бутылку, сосуд или прибор", "Move mode: drag a bottle, vessel or instrument with your finger")) : "🔄 " + L(t3("Айлантириш режими", "Режим вращения", "Rotate mode"))); } }));
     ROOT.querySelectorAll("[data-ves]").forEach((b) => b.addEventListener("click", () => {
       if (b.dataset.ves === S.ves) return;
       if (S.V > VES[b.dataset.ves].max) { toast(L(TX.full)); return; }
@@ -1495,6 +1587,8 @@
       ROOT.querySelector("[data-quiz]").innerHTML = quizHtml();
     });
     syncVes(); renderDisc(); renderMis(); renderLog(); bindRecipes();
+    const th = ROOT.querySelector("[data-tahlil]");
+    if (th && window.EkoLabTahlil) window.EkoLabTahlil.mount(th, { EQUIP, EQID, EQC, R, RID, HAZ, uni, ppeOk, openEq: (id) => { const e = EQID[id]; if (!e) return; eqSel = id; eqCat = e.cat; bindEq(); const b = ROOT.querySelector("#lxEq"); if (b && b.scrollIntoView) b.scrollIntoView({ behavior: "smooth", block: "start" }); } });
     note(L(ppeOk() ? t3("Хуш келибсиз! Жавондан модда танланг.", "Добро пожаловать! Выберите вещество на полке.", "Welcome! Pick a substance from the shelf.") : TX.ppeNeed));
     paint();
   }
@@ -1513,6 +1607,7 @@
       const narrow = (host.clientWidth || innerWidth) < 600;
       view = L3.View(host, { bg: "#e2e8f0", d: narrow ? 4.4 : 3.3, th: 0.25, ph: narrow ? 1.3 : 1.2, target: narrow ? [0.05, 1.3, -0.45] : [0.1, 1.25, -0.3], minD: 1.2, maxD: 8, auto: false });
       view.canvas.setAttribute("aria-label", L(TX.title));
+      if (moveMode) view.canvas.classList.add("lx-move");
       const lp = host.querySelector(".l3-load"); if (lp) lp.remove();
       build3d(view, { T, textSprite: L3.textSprite });
       sync();

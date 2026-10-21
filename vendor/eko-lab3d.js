@@ -205,11 +205,15 @@
     bindInput() {
       const c = this.canvas, pts = new Map();
       let lx = 0, ly = 0;
+      /* Объектни суриш (this.drag = { start, move, end }): start true қайтарса, камера айланмайди */
+      let dragId = null;
       c.addEventListener("pointerdown", (e) => {
+        if (this.drag && this.drag.start(e)) { dragId = e.pointerId; lx = e.clientX; ly = e.clientY; this.moved = 0; this.fly = null; try { c.setPointerCapture(e.pointerId); } catch (er) { /* ignore */ } return; }
         pts.set(e.pointerId, e); lx = e.clientX; ly = e.clientY; this.moved = 0;
         if (e.pointerType === "mouse") c.setPointerCapture(e.pointerId);
       });
       c.addEventListener("pointermove", (e) => {
+        if (dragId === e.pointerId) { this.moved += Math.abs(e.clientX - lx) + Math.abs(e.clientY - ly); lx = e.clientX; ly = e.clientY; if (this.moved >= 6) { this.drag.move(e); if (!this.running) this.render(); } return; }
         if (!pts.has(e.pointerId)) return;
         const dx = e.clientX - lx, dy = e.clientY - ly; lx = e.clientX; ly = e.clientY;
         this.moved += Math.abs(dx) + Math.abs(dy); this.fly = null;
@@ -218,8 +222,10 @@
         this.auto = false; this.syncAuto(); this.place();
       });
       const up = (e) => { pts.delete(e.pointerId); };
-      c.addEventListener("pointerup", (e) => { up(e); if (this.moved < 6) { if (this.tool && this.tool(e)) return; if (this.onTap) this.onTap(e); } });
-      c.addEventListener("pointercancel", up);
+      c.addEventListener("pointerup", (e) => {
+        if (dragId === e.pointerId) { dragId = null; if (this.drag.end) this.drag.end(e); if (this.moved < 6 && this.onTap) this.onTap(e); return; }
+        up(e); if (this.moved < 6) { if (this.tool && this.tool(e)) return; if (this.onTap) this.onTap(e); } });
+      c.addEventListener("pointercancel", (e) => { if (dragId === e.pointerId) { dragId = null; if (this.drag && this.drag.end) this.drag.end(e); } up(e); });
       c.addEventListener("wheel", (e) => { e.preventDefault(); this.zoom(e.deltaY > 0 ? 1.1 : 0.9); }, { passive: false });
       c.addEventListener("keydown", (e) => {
         const k = { ArrowLeft: [0.12, 0], ArrowRight: [-0.12, 0], ArrowUp: [0, 0.08], ArrowDown: [0, -0.08] }[e.key];
@@ -236,6 +242,16 @@
       this.ray.setFromCamera(new T.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), this.camera);
       const hits = this.ray.intersectObjects(objs || this.scene.children, true).filter((h) => h.object.visible && !h.object.isSprite && !h.object.isPoints && !h.object.isLine && !(h.object.userData && h.object.userData.noPick));
       return hits[0] || null;
+    }
+    /* Экран нуқтасидан ўтган нурнинг y = const текислик билан кесишиши (суриш учун) */
+    rayPlane(e, y) {
+      const T = THREE, r = this.canvas.getBoundingClientRect();
+      this.ray = this.ray || new T.Raycaster();
+      this.ray.setFromCamera(new T.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), this.camera);
+      const o = this.ray.ray.origin, d = this.ray.ray.direction;
+      if (Math.abs(d.y) < 1e-4) return null;
+      const t = (y - o.y) / d.y; if (t < 0) return null;
+      return { x: o.x + d.x * t, z: o.z + d.z * t };
     }
     /* Расм олиш: шу кадрни қайта чизиб PNG қилиш */
     snapshot() { this.render(); return this.canvas.toDataURL("image/png"); }
