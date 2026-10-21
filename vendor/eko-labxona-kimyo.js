@@ -220,6 +220,17 @@
     for (let i = 1; i < st.length; i++) if (pH <= st[i][0]) return mix(st[i - 1][1], st[i][1], (pH - st[i - 1][0]) / (st[i][0] - st[i - 1][0]));
     return st[st.length - 1][1];
   }
+  const YEL = [0.98, 0.85, 0.15], BLU = [0.15, 0.35, 0.85], RED = [0.88, 0.15, 0.15];
+  const IND2 = {
+    btb: [[6.0, 7.6, YEL, BLU]],
+    lit: [[4.5, 8.3, RED, [0.25, 0.3, 0.8]]],
+    phr: [[6.8, 8.2, YEL, [0.9, 0.2, 0.45]]],
+    tur: [[7.4, 8.6, [0.95, 0.75, 0.1], [0.7, 0.25, 0.12]]],
+    mr: [[4.4, 6.2, RED, YEL]],
+    tb: [[1.2, 2.8, RED, YEL], [8.0, 9.6, YEL, BLU]],
+    bcg: [[3.8, 5.4, YEL, BLU]],
+    ali: [[10.1, 12.0, YEL, RED]]
+  };
   /* Эритма ранги: ҳар бир рангли модданинг «қоплаш кучи» концентрацияга боғлиқ */
   function color(st, eq) {
     const c = eq.c, ex = st.extra || {};
@@ -250,6 +261,13 @@
     if (ind.cab > 0) layer(cabbage(eq.pH), Math.min(0.9, ind.cab / V * 0.9));
     if (ind.uni > 0) layer(universal(eq.pH), Math.min(0.9, ind.uni / V * 1.6));
     if (ind.php > 0 && eq.pH > 8.2) layer([0.93, 0.18, 0.55], Math.min(0.9, (ind.php / V * 6) * Math.min(1, (eq.pH - 8.2) / 1.2)));
+    /* Қўшимча индикаторлар: [pH паст, pH юқори, кислотали ранг, ишқорий ранг] (Harris, 9-нашр, 11-3-жадвал) */
+    for (const k in IND2) {
+      if (!(ind[k] > 0)) continue;
+      let col = null;
+      for (const [lo, hi, a, b] of IND2[k]) { if (eq.pH <= lo) { col = col || a; break; } col = eq.pH >= hi ? b : mix(a, b, (eq.pH - lo) / (hi - lo)); if (eq.pH < hi) break; }
+      layer(col, Math.min(0.85, ind[k] / V * 4));
+    }
     if (ind.mo > 0) layer(eq.pH < 3.1 ? [0.88, 0.15, 0.15] : eq.pH > 4.4 ? [0.98, 0.78, 0.12] : mix([0.88, 0.15, 0.15], [0.98, 0.78, 0.12], (eq.pH - 3.1) / 1.3), Math.min(0.85, ind.mo / V * 4));
     /* Чўкма ва лойқалик */
     const p = eq.ppt, Vl = Math.max(V, 1e-6);
@@ -263,6 +281,6 @@
     return { rgb, op: Math.min(0.95, 0.35 + cov * 0.5 + tur * 0.5), tur, pcol, pptAmt: sw };
   }
 
-  window.EkoKimyo = { solveH, equil, alphas, color, cabbage, universal, conductivity, chromo, absorb, BANDS, doSat, pK, KSP, CO2SAT, KW };
+  window.EkoKimyo = { IND2, solveH, equil, alphas, color, cabbage, universal, conductivity, chromo, absorb, BANDS, doSat, pK, KSP, CO2SAT, KW };
   if (typeof module !== "undefined") module.exports = window.EkoKimyo;
 })();
