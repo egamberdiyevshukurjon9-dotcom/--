@@ -15,6 +15,8 @@ services:
         value: "1" # Render прокси ортида: мижоз IP си X-Forwarded-For дан олинади
       - key: ADMIN_PASSWORD
         sync: false # Render сиздан паролни сўрайди, у репозиторийга ёзилмайди
+      - key: ACCOUNT_SECRET
+        generateValue: true # Ҳисоб калити (eko_pass) учун: сервер ухлаб уйғонганда ҳам ҳисоблар тикланади
       - key: ADMIN_PATH
         sync: false # Бошқарув марказининг махфий манзили, масалан /boshqaruv-7k2q
       - key: ADMIN_TOTP_SECRET
@@ -26,6 +28,8 @@ services:
       - key: ANDROID_SHA256
         sync: false # Google Play иловаси учун: Play Console → App signing даги SHA-256 изи
     # Бепул (free) режимда сервер қайта ишга тушганда фойдаланувчилар ва журнал ўчиб кетади.
+    # Ҳисоблар браузердаги шифрланган калитдан (eko_pass) ўзи тикланади, лекин статистика, журнал,
+    # хабарлар ва тўловлар тарихи сақланмайди.
     # Маълумотлар сақланиб қолиши учун пулли режимга ўтиб, қуйидаги қаторларни очинг:
     #   plan: starter
     #   disk:

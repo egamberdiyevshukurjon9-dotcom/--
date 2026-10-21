@@ -19,9 +19,8 @@ const ok = (cond, name, extra = "") => {
   if (!cond) failed++;
 };
 
-async function start() {
-  tmp = fs.mkdtempSync(path.join(os.tmpdir(), "ekomun-"));
-  const port = 3100 + Math.floor(Math.random() * 800);
+async function start(port = 3100 + Math.floor(Math.random() * 800)) {
+  tmp = tmp || fs.mkdtempSync(path.join(os.tmpdir(), "ekomun-"));
   base = `http://127.0.0.1:${port}`;
   child = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], {
     env: { ...process.env, PORT: String(port), DATA_DIR: tmp, ADMIN_PASSWORD: PASS, ADMIN_PATH: ADMIN,
@@ -97,6 +96,27 @@ async function main() {
     ok(r.status === 401, "Кирмасдан ҳисобот берилмайди", r.status);
     r = await get(ADMIN + "/analiz.js");
     ok(r.status === 200, "Таҳлил бўлими скрипти", r.status);
+
+    /* Render бепул режими: сервер ухлаб уйғонганда db.json ўчади — ҳисоб eko_pass калитидан тикланиши керак */
+    const J = { "Content-Type": "application/json" };
+    r = await get("/api/register", { method: "POST", headers: J, body: JSON.stringify({ name: "Синов", email: "+998 90 111 22 33", password: "parol123", birthYear: 2000, birthMonth: 4 }) });
+    const sc = typeof r.headers.getSetCookie === "function" ? r.headers.getSetCookie() : [r.headers.get("set-cookie") || ""];
+    const passCk = (sc.find((c) => c.startsWith("eko_pass=")) || "").split(";")[0];
+    ok(r.status === 201 && passCk.length > 40, "Рўйхатдан ўтиш ва ҳисоб калити (eko_pass)", r.status);
+    const port = new URL(base).port;
+    child.kill("SIGTERM");
+    await new Promise((res) => child.once("exit", res));
+    fs.rmSync(path.join(tmp, "db.json"), { force: true });
+    await start(Number(port));
+    r = await get("/api/login", { method: "POST", headers: J, body: JSON.stringify({ email: "+998901112233", password: "parol123" }) });
+    ok(r.status === 401, "Маълумотлар ўчгач, калитсиз ҳисоб йўқ", r.status);
+    r = await get("/api/me", { headers: { Cookie: passCk } });
+    const me = r.ok ? await r.json() : {};
+    ok(me.user && me.user.email === "+998901112233" && me.user.by === 2000, "Ҳисоб калитдан тикланди", r.status);
+    r = await get("/api/login", { method: "POST", headers: J, body: JSON.stringify({ email: "+998901112233", password: "parol123" }) });
+    ok(r.status === 200, "Тикланган ҳисобга парол билан кириш", r.status);
+    r = await get("/api/me", { headers: { Cookie: passCk.slice(0, -6) + "AAAAAA" } });
+    ok(r.ok && !(await r.json()).user, "Сохта калит рад этилди", r.status);
   }
 }
 
