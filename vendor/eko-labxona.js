@@ -100,7 +100,7 @@
     wOver: t3("👍 Бўлади, лекин бу ортиқча: зарарсиз аралашмани раковинага тўкса ҳам бўлади, махсус идишни тежанг.", "👍 Можно, но излишне: безвредную смесь можно слить в раковину, берегите спецконтейнер.", "👍 Fine, but unnecessary: a harmless mix can go down the sink — save the special container."),
     load: t3("3D хона юкланмоқда…", "Загрузка 3D-комнаты…", "Loading the 3D room…"),
     noGl: t3("Бу қурилмада 3D (WebGL) ишламади — лаборатория пастдаги тугмалар билан тўлиқ ишлайди.", "3D (WebGL) не запустился — лаборатория полностью работает через кнопки ниже.", "3D (WebGL) did not start — the lab works fully with the buttons below."),
-    hint: t3("🖱 Айлантиринг · жавондаги шишани босинг — идишга қуйилади", "🖱 Вращайте · нажмите на склянку на полке — она нальётся в сосуд", "🖱 Rotate · tap a bottle on the shelf to pour it"),
+    hint: t3("🖐 Бир бармоқ — айлантириш, икки бармоқ — яқинлаштириш ва юриш (сичқонча: ўнг тугма). Ҳар бир шиша ва асбобни ушлаб суринг; шишани идишга олиб келсангиз — қуйилади; асбобни босинг — ишлатинг.", "🖐 Один палец — вращение, два — масштаб и перемещение (мышь: правая кнопка). Любую склянку и прибор можно перетащить; поднесите склянку к сосуду — она нальётся; нажмите на прибор — используйте его.", "🖐 One finger rotates, two fingers zoom and walk (mouse: right button). Drag any bottle or instrument; bring a bottle to the vessel to pour it; tap an instrument to use it."),
     reset: t3("Янги идиш", "Новый сосуд", "New vessel"),
     src: t3("📎 Манбалар: CRC Handbook of Chemistry and Physics (Ksp, pKa); Harris D.C. «Quantitative Chemical Analysis»; GHS (БМТ, 2023) хавф белгилари; ЎзР ССВ мактаб лабораторияси хавфсизлик қоидалари. Ғоялар: PhET (Колорадо университети, CC BY 4.0), ChemCollective (Carnegie Mellon), Labster.", "📎 Источники: CRC Handbook of Chemistry and Physics (Ksp, pKa); Harris D.C. «Quantitative Chemical Analysis»; знаки опасности GHS (ООН, 2023); правила безопасности школьной лаборатории. Идеи: PhET (Университет Колорадо, CC BY 4.0), ChemCollective (Carnegie Mellon), Labster.", "📎 Sources: CRC Handbook of Chemistry and Physics (Ksp, pKa); Harris D.C. “Quantitative Chemical Analysis”; GHS hazard pictograms (UN, 2023); school lab safety rules. Ideas: PhET (University of Colorado, CC BY 4.0), ChemCollective (Carnegie Mellon), Labster."),
     model: t3("Ўқув модели: 25 °C, суюлтирилган эритмалар, активлик коэффициентлари ҳисобга олинмаган.", "Учебная модель: 25 °C, разбавленные растворы, коэффициенты активности не учитываются.", "Teaching model: 25 °C, dilute solutions, activity coefficients ignored.")
@@ -197,6 +197,19 @@
     { id: "kcl1", g: "soil", st: "m", k: "l", f: "KCl 1M", col: "#f8fafc", n: t3("Калий хлорид 1 М (ажратгич)", "Хлорид калия 1 М (экстрагент)", "Potassium chloride 1 M (extractant)"), c: { K: 1, Cl: 1 }, d: t3("Тупроқдан алмашинувчи H⁺ ни сиқиб чиқаради: pH(KCl) < pH(H₂O) бўлса, тупроқда алмашинувчи кислоталик бор.", "Вытесняет обменный H⁺ из почвы: если pH(KCl) < pH(H₂O), в почве есть обменная кислотность.", "Displaces exchangeable H⁺: if pH(KCl) < pH(H₂O), the soil has exchangeable acidity.") },
     { id: "hcl10", g: "soil", st: "u", k: "l", f: "HCl 10%", col: "#f8fafc", haz: ["cor"], hood: true, n: t3("Хлорид кислота 10 %", "Соляная кислота 10 %", "Hydrochloric acid 10 %"), c: { Cl: 2.9 }, d: t3("Тупроқ карбонатлари: «қайнаш» (CO₂) кучига қараб CaCO₃ миқдори баҳоланади.", "Карбонаты почвы: по силе «вскипания» (CO₂) оценивают содержание CaCO₃.", "Soil carbonates: the strength of fizzing (CO₂) shows the CaCO₃ content.") },
     { id: "k2cr2o7", g: "soil", st: "u", k: "l", f: "K₂Cr₂O₇ 0,4н / H₂SO₄", col: "#ea580c", haz: ["tox", "ox", "cor", "hp", "env"], hood: true, dH: 900, n: t3("Калий бихромат 0,4 н (Тюрин)", "Бихромат калия 0,4 н (Тюрин)", "Potassium dichromate 0.4 N (Tyurin)"), c: { SO4: 9 }, ex: { cr6: 0.0667 }, d: t3("Қайнатилганда тупроқ органик углеродини оксидлайди: Cr(VI) зарғалдоқ → Cr(III) яшил. Гумус = C × 1,724. Канцероген!", "При кипячении окисляет органический углерод почвы: Cr(VI) оранжевый → Cr(III) зелёный. Гумус = C × 1,724. Канцероген!", "Boiling oxidises soil organic carbon: orange Cr(VI) → green Cr(III). Humus = C × 1.724. Carcinogen!") },
+    /* Ўғитлар ва қўшимча реагентлар (Ekomun 3.4) */
+    { id: "kno3", g: "soil", st: "m", k: "s", f: "KNO₃", col: "#ffffff", haz: ["ox"], n: t3("Калий нитрат (калийли селитра)", "Нитрат калия (калийная селитра)", "Potassium nitrate (saltpetre)"), c: { K: 9.89, NO3: 9.89 }, d: t3("Азот-калийли ўғит: 1 г = 9,89 ммоль. Ортиқчаси ер ости сувларига нитрат бўлиб ўтади.", "Азотно-калийное удобрение: 1 г = 9,89 ммоль. Избыток уходит в грунтовые воды нитратом.", "A nitrogen-potassium fertiliser: 1 g = 9.89 mmol. The excess leaches into groundwater as nitrate.") },
+    { id: "nh4cl", g: "soil", st: "m", k: "s", f: "NH₄Cl", col: "#ffffff", haz: ["irr"], n: t3("Аммоний хлорид (новшадил)", "Хлорид аммония (нашатырь)", "Ammonium chloride (sal ammoniac)"), c: { NH: 18.7, Cl: 18.7 }, d: t3("1 г = 18,7 ммоль. Эритмаси кучсиз кислотали (NH₄⁺ гидролизи); ишқор билан аммиак ҳиди.", "1 г = 18,7 ммоль. Раствор слабокислый (гидролиз NH₄⁺); со щёлочью — запах аммиака.", "1 g = 18.7 mmol. Its solution is slightly acidic (NH₄⁺ hydrolysis); with alkali it smells of ammonia.") },
+    { id: "cano3", g: "soil", st: "m", k: "s", f: "Ca(NO₃)₂", col: "#ffffff", haz: ["ox", "irr"], n: t3("Кальций нитрат (кальцийли селитра)", "Нитрат кальция (кальциевая селитра)", "Calcium nitrate"), c: { Ca: 6.09, NO3: 12.19 }, d: t3("Ўғит: 1 г = 6,09 ммоль. Сувни қаттиқлаштиради (Ca²⁺) ва нитрат беради.", "Удобрение: 1 г = 6,09 ммоль. Добавляет жёсткость (Ca²⁺) и нитрат.", "Fertiliser: 1 g = 6.09 mmol. Adds hardness (Ca²⁺) and nitrate.") },
+    { id: "mgso4", g: "base", st: "m", k: "s", f: "MgSO₄", col: "#ffffff", n: t3("Магний сульфат (аччиқ туз)", "Сульфат магния (английская соль)", "Magnesium sulfate (Epsom salt)"), c: { Mg: 8.31, SO4: 8.31 }, d: t3("1 г = 8,31 ммоль. Сувга доимий қаттиқлик беради (Mg²⁺).", "1 г = 8,31 ммоль. Придаёт воде постоянную жёсткость (Mg²⁺).", "1 g = 8.31 mmol. Gives water permanent hardness (Mg²⁺).") },
+    { id: "na2so4", g: "base", st: "m", k: "s", f: "Na₂SO₄", col: "#ffffff", n: t3("Натрий сульфат (глаубер тузи)", "Сульфат натрия (глауберова соль)", "Sodium sulfate (Glauber's salt)"), c: { Na: 14.08, SO4: 7.04 }, d: t3("1 г = 7,04 ммоль. Орол бўйи шўрхоклари таркибида кўп.", "1 г = 7,04 ммоль. Много в солончаках Приаралья.", "1 g = 7.04 mmol. Abundant in the Aral-region salt flats.") },
+    { id: "mgcl2", g: "lab", st: "m", k: "l", f: "MgCl₂ 0,1M", col: "#f8fafc", n: t3("Магний хлорид 0,1 М", "Хлорид магния 0,1 М", "Magnesium chloride 0.1 M"), c: { Mg: 0.1, Cl: 0.2 }, d: t3("Ишқор билан оқ Mg(OH)₂ чўкмаси (pH > 10).", "Со щёлочью — белый осадок Mg(OH)₂ (pH > 10).", "With alkali gives white Mg(OH)₂ (pH > 10).") },
+    { id: "ki", g: "lab", st: "m", k: "l", f: "KI 0,1M", col: "#f8fafc", n: t3("Калий йодид 0,1 М", "Иодид калия 0,1 М", "Potassium iodide 0.1 M"), c: { K: 0.1, I: 0.1 }, d: t3("Йодид иони: оксидловчилар уни йодгача оксидлайди (крахмал билан кўк).", "Иодид-ион: окислители окисляют его до иода (с крахмалом синий).", "Iodide ion: oxidants turn it into iodine (blue with starch).") },
+    { id: "koh", g: "lab", st: "u", k: "l", f: "KOH 0,1M", col: "#f8fafc", haz: ["cor"], n: t3("Калий гидроксид 0,1 М", "Гидроксид калия 0,1 М", "Potassium hydroxide 0.1 M"), c: { K: 0.1 }, d: t3("Кучли ишқор. Ҳаводаги CO₂ ни ютади — оғзини ёпиб сақланг.", "Сильная щёлочь. Поглощает CO₂ из воздуха — хранить закрытой.", "A strong alkali. Absorbs CO₂ from air — keep it closed.") },
+    { id: "nh3aq", g: "lab", st: "u", k: "l", f: "NH₃·H₂O 1M", col: "#f8fafc", haz: ["cor", "env"], hood: true, n: t3("Аммиак эритмаси 1 М", "Раствор аммиака 1 М", "Ammonia solution 1 M"), c: { NH: 1 }, d: t3("Кучсиз асос (pKa 9,25). Мис тузи билан тўқ кўк аммиакат. Тортиш шкафида!", "Слабое основание (pKa 9,25). С солью меди — ярко-синий аммиакат. Под тягой!", "A weak base (pKa 9.25). Gives a deep-blue ammine with copper salts. Use the fume hood!") },
+    { id: "h3po4", g: "lab", st: "u", k: "l", f: "H₃PO₄ 0,1M", col: "#f8fafc", haz: ["cor"], n: t3("Фосфат кислота 0,1 М", "Фосфорная кислота 0,1 М", "Phosphoric acid 0.1 M"), c: { P: 0.1 }, d: t3("Ўрта кучли уч негизли кислота (pKa 2,15; 7,20; 12,35). Ўғитлар ва ичимликлар саноатида.", "Трёхосновная кислота средней силы (pKa 2,15; 7,20; 12,35). Удобрения, напитки.", "A medium-strength triprotic acid (pKa 2.15, 7.20, 12.35). Fertilisers and soft drinks.") },
+    { id: "na3po4", g: "lab", st: "u", k: "l", f: "Na₃PO₄ 0,1M", col: "#f8fafc", haz: ["irr"], n: t3("Натрий фосфат 0,1 М", "Фосфат натрия 0,1 М", "Sodium phosphate 0.1 M"), c: { Na: 0.3, P: 0.1 }, d: t3("Кучли ишқорий эритма (PO₄³⁻ гидролизи). Кир ювиш воситаларидаги фосфатлар — кўллар эвтрофикацияси сабаби.", "Сильнощелочной раствор (гидролиз PO₄³⁻). Фосфаты из моющих средств — причина эвтрофикации озёр.", "A strongly alkaline solution (PO₄³⁻ hydrolysis). Detergent phosphates drive lake eutrophication.") },
+    { id: "alum", g: "wat", st: "m", k: "l", f: "Al₂(SO₄)₃ 0,05M", col: "#f8fafc", haz: ["irr"], n: t3("Алюминий сульфат 0,05 М (коагулянт)", "Сульфат алюминия 0,05 М (коагулянт)", "Aluminium sulfate 0.05 M (coagulant)"), c: { Al: 0.1, SO4: 0.15 }, d: t3("Сув тозалаш иншоотларида коагулянт: Al(OH)₃ парчалари лойқа заррачаларни ўзига ёпиштириб чўктиради.", "Коагулянт на водоочистных станциях: хлопья Al(OH)₃ захватывают муть и оседают.", "A coagulant in water-treatment plants: Al(OH)₃ flocs trap the cloudiness and settle.") },
     /* Буферлар ва стандартлар */
     { id: "buf4", g: "std", st: "m", k: "l", f: "pH 4,00", col: "#fecaca", n: t3("Буфер pH 4,0", "Буфер pH 4,0", "Buffer pH 4.0"), c: { Ac: 0.1, Na: 0.0154 }, d: t3("pH-метрни калибрлаш учун (ацетат модели). Электродни ҳар буфердан кейин дистилланган сув билан чайинг.", "Для калибровки pH-метра (ацетатная модель). Ополаскивайте электрод дистиллятом после каждого буфера.", "For pH meter calibration (acetate model). Rinse the electrode with distilled water between buffers.") },
     { id: "buf7", g: "std", st: "m", k: "l", f: "pH 7,00", col: "#bbf7d0", n: t3("Буфер pH 7,0", "Буфер pH 7,0", "Buffer pH 7.0"), c: { P: 0.05, Na: 0.0694 }, d: t3("Фосфатли буфер — калибрлашнинг биринчи нуқтаси (ноль нуқта).", "Фосфатный буфер — первая точка калибровки (нулевая точка).", "Phosphate buffer — the first (zero) calibration point.") },
@@ -1022,32 +1035,44 @@
     const M = (color, o = {}) => new T.MeshStandardMaterial(Object.assign({ color, roughness: 0.8 }, o));
     const box = (w, h, d, m, x, y, z) => { const b = new T.Mesh(new T.BoxGeometry(w, h, d), m); b.position.set(x, y, z); sc.add(b); return b; };
     sc.background = new T.Color(document.documentElement.dataset.theme === "dark" ? "#1e293b" : "#e2e8f0");
-    /* Хона: пол, деворлар, дераза */
-    box(9, 0.05, 6, M(0xb08968), 0, -0.025, 0.5);
-    box(9, 3.6, 0.05, M(0xe7efe9), 0, 1.8, -1.6);
-    box(0.05, 3.6, 6, M(0xdbe7df), -4.5, 1.8, 0.5);
+    /* Хона: пол, деворлар, дераза. Кенгайтирилган хона (11 × 8 м); деворлар фақат ичкаридан кўринади —
+       камера ҳар томондан айланса ҳам ичкари очиқ қолади */
+    const supports = [], drags = [], eqObjs = [];
+    const sup = (m) => { m.userData.support = true; supports.push(m); return m; };
+    const wall = (w, h, x, y, z, ry, col) => { const m = new T.Mesh(new T.PlaneGeometry(w, h), M(col)); m.position.set(x, y, z); m.rotation.y = ry; m.userData.noPick = true; sc.add(m); return m; };
+    sup(box(10.8, 0.05, 8.2, M(0xb08968), 0.9, -0.025, 2.5));
+    wall(10.8, 3.6, 0.9, 1.8, -1.6, 0, 0xe7efe9);
+    wall(8.2, 3.6, -4.5, 1.8, 2.5, Math.PI / 2, 0xdbe7df);
+    wall(8.2, 3.6, 6.3, 1.8, 2.5, -Math.PI / 2, 0xe2ece5);
     const win = box(1.6, 1.1, 0.02, new T.MeshBasicMaterial({ color: 0xbae6fd }), -3.4, 2.15, -1.57);
     box(1.7, 0.06, 0.06, M(0xffffff), -3.4, 1.58, -1.55); box(0.05, 1.1, 0.04, M(0xffffff), -3.4, 2.15, -1.55);
-    void win;
+    const win2 = box(1.6, 1.1, 0.02, new T.MeshBasicMaterial({ color: 0xbae6fd }), 4.3, 2.15, -1.57);
+    box(1.7, 0.06, 0.06, M(0xffffff), 4.3, 1.58, -1.55); box(0.05, 1.1, 0.04, M(0xffffff), 4.3, 2.15, -1.55);
+    void win; void win2;
     /* Плитка (кафель) йўли девор бўйлаб */
-    for (let i = -4; i <= 4; i++) box(0.98, 0.5, 0.01, M(i % 2 ? 0xffffff : 0xf1f5f9), i, 1.2, -1.56);
-    /* Лаборатория столи */
-    box(4.6, 0.08, 1.3, M(0x1f2937, { roughness: 0.5 }), 0, 0.9, -0.1);
+    for (let i = -4; i <= 6; i++) box(0.98, 0.5, 0.01, M(i % 2 ? 0xffffff : 0xf1f5f9), i, 1.2, -1.56);
+    /* Лаборатория столи (марказ) */
+    sup(box(4.6, 0.08, 1.3, M(0x1f2937, { roughness: 0.5 }), 0, 0.9, -0.1));
     box(4.5, 0.86, 1.2, M(0xf8fafc), 0, 0.43, -0.12);
     [-1.5, 0, 1.5].forEach((x) => box(1.38, 0.7, 0.01, M(0xe2e8f0), x, 0.45, 0.49));
+    /* Ўнг томонда асбоблар столи, чапда тупроқ ва ҳаво таҳлили столи */
+    sup(box(1.15, 0.08, 3.3, M(0x1f2937, { roughness: 0.5 }), 3.55, 0.9, 1.55));
+    box(1.05, 0.86, 3.2, M(0xf1f5f9), 3.55, 0.43, 1.55);
+    sup(box(1.05, 0.08, 2.6, M(0x3f3f46, { roughness: 0.6 }), -3.9, 0.9, 2.5));
+    box(0.95, 0.86, 2.5, M(0xe7e5e4), -3.9, 0.43, 2.5);
     /* Раковина ва жўмрак */
     box(0.6, 0.02, 0.45, M(0x94a3b8, { metalness: 0.6, roughness: 0.3 }), -1.75, 0.945, -0.2);
     const tap = new T.Mesh(new T.TorusGeometry(0.12, 0.02, 8, 16, Math.PI), M(0x94a3b8, { metalness: 0.7, roughness: 0.3 })); tap.position.set(-1.75, 1.05, -0.45); sc.add(tap);
-    /* Жавонлар */
-    const PER = 17, shelfY = [1.45, 1.9, 2.35, 2.8, 3.25].slice(0, Math.ceil(R.length / PER));
-    shelfY.forEach((y) => box(4.7, 0.04, 0.32, M(0x8b5e34), 0.12, y - 0.02, -1.42));
+    /* Жавонлар (5 қатор) */
+    const PER = Math.ceil(R.length / 5), shelfY = [1.45, 1.9, 2.35, 2.8, 3.25].slice(0, Math.ceil(R.length / PER));
+    shelfY.forEach((y) => sup(box(4.7, 0.04, 0.32, M(0x8b5e34), 0.12, y - 0.02, -1.42)));
     /* Шишалар */
     const bottles = [];
     const isU = uni();
     R.forEach((r, i) => {
       const row = Math.floor(i / PER), col = i % PER;
-      const x = -2.0 + col * 0.265, y = shelfY[row], z = -1.42;
-      const g = new T.Group(); g.position.set(x, y, z); g.scale.setScalar(0.82);
+      const x = -2.0 + col * (4.45 / PER), y = shelfY[row], z = -1.42;
+      const g = new T.Group(); g.position.set(x, y, z); g.scale.setScalar(Math.min(0.82, 0.82 * 17 / PER));
       const locked = r.st === "u" && !isU;
       const glass = new T.Mesh(r.k === "s" ? new T.CylinderGeometry(0.09, 0.09, 0.2, 16) : new T.CylinderGeometry(0.08, 0.1, 0.24, 16), new T.MeshStandardMaterial({ color: r.k === "s" ? 0xffffff : 0xdbeafe, transparent: true, opacity: 0.45, roughness: 0.1 }));
       glass.position.y = r.k === "s" ? 0.1 : 0.12; g.add(glass);
@@ -1058,9 +1083,9 @@
       /* Ёрлиқ: оқ қоғоз; номи фақат танланган шиша устида кўринади (зич жавонда матнлар устма-уст тушмасин) */
       const plate = new T.Mesh(new T.PlaneGeometry(0.1, 0.07), new T.MeshBasicMaterial({ color: locked ? 0xfca5a5 : 0xffffff })); plate.position.set(0, r.k === "s" ? 0.08 : 0.1, (r.k === "s" ? 0.091 : 0.088)); g.add(plate);
       if (locked) { const lk = lib.textSprite("🔒", "#0f172a", 0.1); lk.position.set(0, 0.36, 0.04); g.add(lk); }
-      g.userData = { rid: r.id, locked };
+      g.userData = { rid: r.id, locked, drag: "b:" + r.id };
       g.traverse((o) => { o.userData.rid = r.id; });
-      sc.add(g); bottles.push(g);
+      sc.add(g); bottles.push(g); drags.push(g);
     });
     /* Идиш, суюқлик, чўкма, кўпик */
     const vesG = new T.Group(); vesG.position.set(0.2, 0.94, 0.15); sc.add(vesG);
@@ -1096,8 +1121,7 @@
     };
     rebuildVessel();
     /* Иситгич (спиртовка) ва аланга */
-    const burner = new T.Mesh(new T.CylinderGeometry(0.12, 0.15, 0.1, 20), M(0x475569, { metalness: 0.5 })); burner.position.set(0.2, 0.0, 0.15); vesG.parent.add(burner);
-    burner.position.y = 0.0; burner.visible = false;
+    const burner = new T.Mesh(new T.CylinderGeometry(0.12, 0.15, 0.1, 20), M(0x475569, { metalness: 0.5 })); burner.position.set(0, 0.0, 0); vesG.add(burner); burner.visible = false;
     const flame = new T.Mesh(new T.ConeGeometry(0.07, 0.22, 16), new T.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.8 }));
     flame.position.set(0, -0.1, 0); vesG.add(flame); flame.visible = false;
     const stand = new T.Mesh(new T.TorusGeometry(0.29, 0.012, 6, 32), M(0x334155, { metalness: 0.6 })); stand.rotation.x = Math.PI / 2; stand.position.y = 0.0; vesG.add(stand);
@@ -1110,15 +1134,13 @@
     /* Термометр ва pH-метр */
     const thermo = new T.Mesh(new T.CylinderGeometry(0.008, 0.008, 0.7, 8), M(0xf1f5f9, { transparent: true, opacity: 0.8 })); thermo.position.set(0.12, 0.42, 0.05); thermo.rotation.z = -0.25; vesG.add(thermo);
     const merc = new T.Mesh(new T.CylinderGeometry(0.006, 0.006, 1, 8), M(0xdc2626)); vesG.add(merc);
-    const meter = box(0.34, 0.22, 0.14, M(0x0f766e), 0.95, 1.05, 0.1);
-    const scr = box(0.26, 0.12, 0.01, new T.MeshBasicMaterial({ color: 0x052e2b }), 0.95, 1.07, 0.175);
-    void scr;
     let phSpr = null, tSpr = null, phTxt = "";
     const meterText = () => {
       const t = EQ && (S.V > 0) ? "pH " + fmt(EQ.pH, 1) : "pH —";
       if (t === phTxt) return; phTxt = t;
-      if (phSpr) { sc.remove(phSpr); phSpr.material.map.dispose(); phSpr.material.dispose(); }
-      phSpr = lib.textSprite(t, "#34d399", 0.13); phSpr.position.set(0.95, 1.32, 0.2); sc.add(phSpr);
+      if (phSpr) { if (phSpr.parent) phSpr.parent.remove(phSpr); phSpr.material.map.dispose(); phSpr.material.dispose(); }
+      const pg = eqObjs.find((g) => g.userData.eq === "phm");
+      phSpr = lib.textSprite(t, "#34d399", 0.13); phSpr.position.set(0, 0.4, 0.1); (pg || sc).add(phSpr);
     };
     let tTxt = "";
     const tempText = () => {
@@ -1127,36 +1149,169 @@
       if (tSpr) { vesG.remove(tSpr); tSpr.material.map.dispose(); tSpr.material.dispose(); }
       tSpr = lib.textSprite(t, "#b91c1c", 0.08); tSpr.position.set(0.26, 0.82, 0.08); vesG.add(tSpr);
     };
-    void meter;
-    /* Хавфсизлик буюмлари: ўт ўчиргич, кўз ювгич, биринчи ёрдам, чиқинди идишлари */
-    const ext = new T.Mesh(new T.CylinderGeometry(0.11, 0.11, 0.5, 16), M(0xdc2626, { roughness: 0.4 })); ext.position.set(3.2, 0.25, -1.3); sc.add(ext);
-    [["🧯", 3.2, 0.8, -1.3], ["👁️💧", 2.6, 1.55, -1.55], ["⛑️", 3.4, 1.55, -1.55], ["🥼", -4.1, 1.7, -0.6], ["🥽", -4.1, 1.35, -0.3], ["🧤", -4.1, 1.05, 0]].forEach(([e, x, y, z]) => { const s = lib.textSprite(e, "#fff", 0.32); s.position.set(x, y, z); sc.add(s); });
-    const binY = box(0.45, 0.6, 0.45, M(0xfacc15), 2.75, 0.3, 0.7);
-    const binS = lib.textSprite("☣️", "#fff", 0.3); binS.position.set(2.75, 0.8, 0.7); sc.add(binS);
-    /* Асбоб-ускуналар: музлатгич, тортиш шкафи, спектрофотометр, тарози, микроскоп, дистиллятор, автоклав */
-    const metal = M(0x94a3b8, { metalness: 0.6, roughness: 0.35 }), white = M(0xf8fafc, { roughness: 0.5 }), dark = M(0x1e293b, { roughness: 0.4 });
-    box(0.8, 1.9, 0.7, white, 3.95, 0.95, -1.15); box(0.04, 0.5, 0.04, metal, 3.6, 1.2, -0.79); box(0.78, 0.01, 0.01, M(0xcbd5e1), 3.95, 1.3, -0.8);
-    const hoodB = box(1.5, 1.4, 0.7, M(0xe2e8f0), -3.6, 1.6, -1.2); void hoodB;
-    box(1.4, 0.9, 0.02, new T.MeshStandardMaterial({ color: 0xbae6fd, transparent: true, opacity: 0.35, roughness: 0.05 }), -3.6, 1.55, -0.84);
-    box(1.5, 0.08, 0.72, dark, -3.6, 0.9, -1.2); box(1.5, 0.86, 0.7, M(0xcbd5e1), -3.6, 0.43, -1.2);
-    box(0.55, 0.22, 0.4, M(0x334155), 1.65, 1.05, -0.35); box(0.2, 0.1, 0.01, new T.MeshBasicMaterial({ color: 0x22d3ee }), 1.55, 1.1, -0.145);
-    box(0.36, 0.06, 0.36, white, -0.95, 0.97, -0.4); box(0.3, 0.22, 0.3, new T.MeshStandardMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.4 }), -0.95, 1.11, -0.4);
-    box(0.12, 0.04, 0.2, dark, 1.0, 0.96, -0.45); box(0.04, 0.32, 0.04, dark, 1.0, 1.12, -0.52); box(0.06, 0.16, 0.06, dark, 1.0, 1.25, -0.42);
-    const ac = new T.Mesh(new T.CylinderGeometry(0.28, 0.28, 0.55, 20), metal); ac.position.set(-4.0, 0.28, 0.6); sc.add(ac);
-    box(0.3, 0.45, 0.18, white, -2.6, 2.4, -1.5);
-    [["🧊", 3.95, 2.05, -1.1], ["🌬️", -3.6, 2.45, -1.0], ["🔬", 1.0, 1.5, -0.45], ["⚖️", -0.95, 1.38, -0.4], ["📈", 1.65, 1.35, -0.35], ["♨️", -4.0, 0.75, 0.6], ["💧", -2.6, 2.8, -1.45]].forEach(([e, x, y, z]) => { const sp = lib.textSprite(e, "#fff", 0.26); sp.position.set(x, y, z); sc.add(sp); });
-    void binY;
+    /* Хавфсизлик буюмлари ва асбоб-ускуналар: ҳар бири алоҳида гуруҳ — ушлаб суриш мумкин, босилса номи ва амали чиқади */
+    const metal = M(0x94a3b8, { metalness: 0.6, roughness: 0.35 }), white = M(0xf8fafc, { roughness: 0.5 }), dark = M(0x1e293b, { roughness: 0.4 }), teal = M(0x0f766e, { roughness: 0.5 }), glassMat = new T.MeshStandardMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.4, roughness: 0.05 });
+    const gb = (g, w, h, d, m, x, y, z) => { const b = new T.Mesh(new T.BoxGeometry(w, h, d), m); b.position.set(x, y, z); g.add(b); return b; };
+    const gc = (g, rt, rb, h, m, x, y, z, seg = 20) => { const c = new T.Mesh(new T.CylinderGeometry(rt, rb, h, seg), m); c.position.set(x, y, z); g.add(c); return c; };
+    const scr = (c) => new T.MeshBasicMaterial({ color: c });
+    const EQG = (id, x, y, z, build, ry = 0) => {
+      const g = new T.Group(); g.position.set(x, y, z); g.rotation.y = ry; build(g);
+      g.userData = { eq: id, drag: "e:" + id };
+      g.traverse((o) => { o.userData.eq = id; });
+      sc.add(g); eqObjs.push(g); drags.push(g); return g;
+    };
+    /* Пол ва девор ёнида */
+    EQG("ext", 6.0, 0, -1.25, (g) => { gc(g, 0.11, 0.11, 0.5, M(0xdc2626, { roughness: 0.4 }), 0, 0.25, 0); gc(g, 0.03, 0.03, 0.08, dark, 0, 0.54, 0); gb(g, 0.16, 0.03, 0.03, dark, 0.06, 0.58, 0); });
+    EQG("bin", 2.6, 0, 0.75, (g) => { gb(g, 0.45, 0.6, 0.45, M(0xfacc15), 0, 0.3, 0); gb(g, 0.47, 0.04, 0.47, M(0xeab308), 0, 0.62, 0); const s = lib.textSprite("☣️", "#fff", 0.26); s.position.set(0, 0.85, 0); g.add(s); });
+    EQG("fridge", 4.85, 0, -1.15, (g) => { gb(g, 0.8, 1.9, 0.7, white, 0, 0.95, 0); gb(g, 0.04, 0.5, 0.04, metal, -0.35, 1.2, 0.36); gb(g, 0.78, 0.01, 0.01, M(0xcbd5e1), 0, 1.3, 0.355); const s = lib.textSprite("🧊", "#fff", 0.24); s.position.set(0, 2.05, 0.1); g.add(s); });
+    EQG("auto", -4.0, 0, 0.6, (g) => { gc(g, 0.28, 0.28, 0.55, metal, 0, 0.28, 0); gc(g, 0.3, 0.3, 0.06, dark, 0, 0.58, 0); gb(g, 0.12, 0.08, 0.02, scr(0x22c55e), 0, 0.35, 0.28); });
+    EQG("shower", 6.1, 0, 3.9, (g) => { gc(g, 0.03, 0.03, 2.3, metal, 0, 1.15, 0); gc(g, 0.2, 0.06, 0.08, M(0x16a34a), 0, 2.3, 0.15); gb(g, 0.3, 0.02, 0.3, M(0x22c55e), 0, 0.01, 0); });
+    EQG("eyew", 6.1, 0.94, 3.0, (g) => { gc(g, 0.03, 0.03, 0.4, metal, 0, 0.2, 0); gc(g, 0.12, 0.06, 0.06, M(0x16a34a), 0, 0.42, 0); }, -Math.PI / 2);
+    EQG("kit", 3.3, 1.45, -1.52, (g) => { gb(g, 0.42, 0.32, 0.12, white, 0, 0.16, 0); gb(g, 0.06, 0.2, 0.01, M(0xdc2626), 0, 0.16, 0.065); gb(g, 0.2, 0.06, 0.01, M(0xdc2626), 0, 0.16, 0.065); });
+    EQG("spill", 5.6, 0, 3.6, (g) => { gc(g, 0.18, 0.15, 0.36, M(0xf97316), 0, 0.18, 0); gc(g, 0.19, 0.19, 0.03, dark, 0, 0.37, 0); });
+    /* Марказий стол */
+    EQG("bal", -0.95, 0.94, -0.4, (g) => { gb(g, 0.36, 0.06, 0.36, white, 0, 0.03, 0); const gl = gb(g, 0.3, 0.22, 0.3, glassMat, 0, 0.17, 0); void gl; gb(g, 0.16, 0.04, 0.01, scr(0x0f172a), 0, 0.03, 0.185); gc(g, 0.07, 0.07, 0.01, metal, 0, 0.065, 0); });
+    EQG("spec", 1.65, 0.94, -0.35, (g) => { gb(g, 0.55, 0.22, 0.4, M(0x334155), 0, 0.11, 0); gb(g, 0.2, 0.1, 0.01, scr(0x22d3ee), -0.1, 0.16, 0.205); gb(g, 0.1, 0.04, 0.1, dark, 0.15, 0.23, 0); });
+    /* Ўнг асбоблар столи */
+    EQG("micro", 3.5, 0.94, 0.35, (g) => {
+      gb(g, 0.26, 0.04, 0.34, dark, 0, 0.02, 0);
+      gb(g, 0.06, 0.42, 0.08, dark, 0, 0.23, -0.12);
+      gb(g, 0.2, 0.02, 0.2, M(0x334155), 0, 0.2, 0.02);
+      gb(g, 0.08, 0.004, 0.05, glassMat, 0, 0.212, 0.02);
+      const tube = gc(g, 0.035, 0.035, 0.24, dark, 0, 0.4, -0.02); tube.rotation.x = 0.35;
+      const eye = gc(g, 0.025, 0.03, 0.08, M(0x0f172a), 0, 0.53, -0.08); eye.rotation.x = 0.35;
+      gc(g, 0.02, 0.012, 0.06, metal, 0.02, 0.27, 0.03); gc(g, 0.02, 0.012, 0.06, metal, -0.02, 0.27, 0.0);
+      gc(g, 0.04, 0.04, 0.03, M(0xfef08a, { emissive: 0xfde047, emissiveIntensity: 0.6 }), 0, 0.06, 0.02);
+    }, -Math.PI / 2);
+    EQG("turb", 3.5, 0.94, 0.85, (g) => { gb(g, 0.3, 0.16, 0.24, white, 0, 0.08, 0); gc(g, 0.03, 0.03, 0.12, glassMat, 0.08, 0.2, 0); gb(g, 0.12, 0.06, 0.01, scr(0x0e7490), -0.05, 0.1, 0.125); }, -Math.PI / 2);
+    EQG("cond", 3.35, 0.94, 1.3, (g) => { gb(g, 0.16, 0.06, 0.24, M(0x1d4ed8), 0, 0.03, 0); gb(g, 0.1, 0.005, 0.08, scr(0xbae6fd), 0, 0.063, 0.04); gc(g, 0.012, 0.012, 0.28, dark, 0.12, 0.14, 0); });
+    EQG("oxy", 3.75, 0.94, 1.3, (g) => { gb(g, 0.16, 0.06, 0.24, M(0x0369a1), 0, 0.03, 0); gb(g, 0.1, 0.005, 0.08, scr(0xa5f3fc), 0, 0.063, 0.04); gc(g, 0.02, 0.02, 0.22, M(0x0f172a), -0.12, 0.11, 0); });
+    EQG("mstir", 3.5, 0.94, 1.8, (g) => { gb(g, 0.3, 0.07, 0.3, white, 0, 0.035, 0); gc(g, 0.1, 0.1, 0.005, M(0xcbd5e1), 0, 0.072, 0); gc(g, 0.09, 0.09, 0.16, glassMat, 0, 0.155, 0); gb(g, 0.06, 0.012, 0.012, M(0xf8fafc), 0, 0.085, 0); gc(g, 0.025, 0.025, 0.03, M(0x334155), 0.1, 0.035, 0.155); }, -Math.PI / 2);
+    EQG("plate", 3.5, 0.94, 2.25, (g) => { gb(g, 0.32, 0.07, 0.32, M(0x52525b), 0, 0.035, 0); gc(g, 0.12, 0.12, 0.006, M(0x7f1d1d, { emissive: 0x7f1d1d, emissiveIntensity: 0.4 }), 0, 0.073, 0); });
+    EQG("cent", 3.5, 0.94, 2.75, (g) => { gc(g, 0.17, 0.19, 0.22, M(0xe2e8f0), 0, 0.11, 0); gc(g, 0.16, 0.16, 0.03, M(0x64748b), 0, 0.235, 0); gb(g, 0.1, 0.05, 0.01, scr(0x16a34a), 0, 0.12, 0.185); }, -Math.PI / 2);
+    EQG("burette", 3.85, 0.94, 3.05, (g) => { gb(g, 0.22, 0.02, 0.16, dark, 0, 0.01, 0); gc(g, 0.01, 0.01, 0.8, metal, -0.06, 0.4, 0); gb(g, 0.12, 0.02, 0.02, metal, 0, 0.62, 0); gc(g, 0.012, 0.012, 0.5, glassMat, 0.05, 0.55, 0); gc(g, 0.004, 0.004, 0.06, glassMat, 0.05, 0.27, 0); });
+    EQG("phm", 0.95, 0.94, 0.1, (g) => { gb(g, 0.34, 0.22, 0.14, teal, 0, 0.11, 0); gb(g, 0.26, 0.12, 0.01, scr(0x052e2b), 0, 0.13, 0.075); gc(g, 0.01, 0.01, 0.3, dark, -0.2, 0.2, 0.02); });
+    /* Чап стол: тупроқ ва ҳаво */
+    EQG("sieve", -3.9, 0.94, 1.5, (g) => { [0, 1, 2, 3].forEach((i) => gc(g, 0.15, 0.15, 0.06, i % 2 ? metal : M(0xcbd5e1, { metalness: 0.5 }), 0, 0.03 + i * 0.065, 0)); });
+    EQG("mortar", -3.9, 0.94, 1.9, (g) => { gc(g, 0.12, 0.08, 0.09, white, 0, 0.045, 0); const p = gc(g, 0.02, 0.03, 0.18, white, 0.03, 0.15, 0); p.rotation.z = 0.5; });
+    EQG("shake", -3.9, 0.94, 2.3, (g) => { gb(g, 0.34, 0.08, 0.3, M(0x475569), 0, 0.04, 0); gb(g, 0.3, 0.01, 0.26, M(0x94a3b8), 0, 0.085, 0); gc(g, 0.04, 0.04, 0.14, glassMat, -0.07, 0.16, 0); gc(g, 0.04, 0.04, 0.14, glassMat, 0.07, 0.16, 0); }, Math.PI / 2);
+    EQG("muffle", -3.9, 0.94, 2.8, (g) => { gb(g, 0.42, 0.4, 0.4, M(0x57534e), 0, 0.2, 0); gb(g, 0.2, 0.16, 0.01, M(0xf97316, { emissive: 0xea580c, emissiveIntensity: 0.6 }), 0, 0.22, 0.205); }, Math.PI / 2);
+    EQG("pm", -3.95, 0.94, 3.25, (g) => { gb(g, 0.12, 0.2, 0.06, M(0x0f172a), 0, 0.1, 0); gb(g, 0.09, 0.07, 0.005, scr(0xfbbf24), 0, 0.14, 0.033); }, Math.PI / 2);
+    EQG("gas", -3.8, 0.94, 3.55, (g) => { gb(g, 0.14, 0.1, 0.12, M(0x166534), 0, 0.05, 0); gb(g, 0.1, 0.05, 0.005, scr(0x86efac), 0, 0.06, 0.063); }, Math.PI / 2);
+    EQG("oven", -3.95, 0, 4.4, (g) => { gb(g, 0.7, 0.75, 0.6, M(0xd6d3d1), 0, 0.375, 0); gb(g, 0.5, 0.5, 0.01, M(0x78716c), 0, 0.4, 0.305); gb(g, 0.12, 0.06, 0.01, scr(0xef4444), 0.2, 0.68, 0.305); }, Math.PI / 2);
+    EQG("asp", -2.9, 0, 3.3, (g) => { gb(g, 0.3, 0.2, 0.2, M(0x2563eb), 0, 0.1, 0); gc(g, 0.012, 0.012, 1.0, dark, 0.1, 0.6, 0); gc(g, 0.05, 0.05, 0.08, M(0x334155), 0.1, 1.12, 0); });
+    EQG("auger", -2.85, 0, 4.1, (g) => { const s = gc(g, 0.02, 0.02, 1.2, metal, 0, 0.62, 0); s.rotation.z = 0.12; gb(g, 0.4, 0.04, 0.04, dark, -0.07, 1.22, 0); });
+    EQG("filt", -3.5, 0.94, 3.55, (g) => { gc(g, 0.05, 0.05, 0.08, M(0x94a3b8, { metalness: 0.5 }), 0, 0.04, 0); gc(g, 0.045, 0.045, 0.004, M(0xf5f5f4), 0, 0.083, 0); });
+    EQG("desic", -3.45, 0.94, 1.5, (g) => { gc(g, 0.16, 0.14, 0.2, glassMat, 0, 0.1, 0); gc(g, 0.17, 0.17, 0.04, glassMat, 0, 0.22, 0); gc(g, 0.13, 0.13, 0.03, M(0x60a5fa), 0, 0.03, 0); });
+    /* Сув намуна олиш (полда, ўнгда) */
+    EQG("bat", 5.1, 0, 2.6, (g) => { gc(g, 0.07, 0.07, 0.5, M(0x60a5fa, { transparent: true, opacity: 0.7 }), 0, 0.3, 0); gc(g, 0.005, 0.005, 0.6, dark, 0, 0.8, 0); });
+    EQG("secchi", 5.1, 0, 3.3, (g) => { const d = gc(g, 0.15, 0.15, 0.01, white, 0, 0.02, 0, 32); void d; gb(g, 0.15, 0.012, 0.15, dark, 0.075, 0.03, 0.075); gb(g, 0.15, 0.012, 0.15, dark, -0.075, 0.03, -0.075); gc(g, 0.004, 0.004, 0.5, M(0xfacc15), 0, 0.27, 0); });
+    EQG("aer", 3.1, 0.94, 2.25, (g) => { gb(g, 0.16, 0.1, 0.1, M(0x0ea5e9), 0, 0.05, 0); gc(g, 0.005, 0.005, 0.25, M(0x93c5fd), 0.09, 0.12, 0); });
+    EQG("bod", 3.1, 0.94, 2.75, (g) => { gb(g, 0.36, 0.5, 0.34, white, 0, 0.25, 0); gb(g, 0.28, 0.36, 0.01, glassMat, 0, 0.26, 0.175); gb(g, 0.1, 0.04, 0.01, scr(0x16a34a), 0.09, 0.47, 0.175); }, Math.PI / 2);
+    EQG("aas", 2.25, 0.94, -0.45, (g) => { gb(g, 0.5, 0.28, 0.32, M(0xe2e8f0), 0, 0.14, 0); gc(g, 0.04, 0.04, 0.1, M(0x334155), 0.15, 0.33, 0); gb(g, 0.16, 0.08, 0.01, scr(0x7c3aed), -0.1, 0.18, 0.165); });
+    EQG("kfk", -0.45, 0.94, -0.45, (g) => { gb(g, 0.3, 0.14, 0.24, M(0x64748b), 0, 0.07, 0); gb(g, 0.12, 0.05, 0.01, scr(0x22c55e), 0, 0.09, 0.125); });
+    EQG("therm", -1.25, 0.94, 0.3, (g) => { gb(g, 0.06, 0.03, 0.12, M(0xf59e0b), 0, 0.015, 0); gc(g, 0.006, 0.006, 0.22, metal, 0, 0.03, -0.12).rotation.x = Math.PI / 2; });
+    /* Деворда: тортиш шкафи ва дистиллятор (ўрнатилган, сурилмайди) */
+    const hoodG = new T.Group(); hoodG.userData.eq = "hood"; sc.add(hoodG);
+    gb(hoodG, 1.5, 1.4, 0.7, M(0xe2e8f0), -3.6, 1.6, -1.2);
+    gb(hoodG, 1.4, 0.9, 0.02, new T.MeshStandardMaterial({ color: 0xbae6fd, transparent: true, opacity: 0.35, roughness: 0.05 }), -3.6, 1.55, -0.84);
+    hoodG.add(sup(new T.Mesh(new T.BoxGeometry(1.5, 0.08, 0.72), dark))); hoodG.children[2].position.set(-3.6, 0.9, -1.2);
+    gb(hoodG, 1.5, 0.86, 0.7, M(0xcbd5e1), -3.6, 0.43, -1.2);
+    hoodG.traverse((o) => { o.userData.eq = "hood"; });
+    const distG = new T.Group(); gb(distG, 0.3, 0.45, 0.18, white, -2.6, 2.4, -1.5); distG.traverse((o) => { o.userData.eq = "dist"; }); sc.add(distG);
+    eqObjs.push(hoodG, distG);
+    const wallLbl = [["👁️💧", 6.2, 1.75, 3.0], ["⛑️", 3.3, 1.95, -1.5], ["🥼", -4.35, 1.7, -0.6], ["🥽", -4.35, 1.35, -0.3], ["🧤", -4.35, 1.05, 0], ["🌬️", -3.6, 2.45, -1.0], ["💧", -2.6, 2.8, -1.45]];
+    wallLbl.forEach(([e, x, y, z]) => { const s = lib.textSprite(e, "#fff", 0.26); s.position.set(x, y, z); sc.add(s); });
+    /* Реакция колбаси ва «реакция столи» шишалари (vendor/eko-labxona-elem.js бошқаради) */
+    const rxG = new T.Group(); rxG.position.set(-0.45, 0.94, 0.22); rxG.userData = { drag: "rx", rx: true }; sc.add(rxG); drags.push(rxG);
+    const rxPts = []; for (let i = 0; i <= 20; i++) { const y = 0.44 * i / 20; rxPts.push(new T.Vector2(y < 0.28 ? 0.17 - y * 0.42 : 0.052, y)); }
+    const rxGlass = new T.Mesh(new T.LatheGeometry(rxPts, 32), glassM); rxG.add(rxGlass);
+    const rxLiqM = new T.MeshStandardMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.55, roughness: 0.2 });
+    const rxLiq = new T.Mesh(new T.CylinderGeometry(0.12, 0.16, 0.12, 32), rxLiqM); rxLiq.position.y = 0.065; rxLiq.visible = false; rxG.add(rxLiq);
+    const rxPptM = M(0xffffff);
+    const rxPpt = new T.Mesh(new T.CylinderGeometry(0.15, 0.16, 0.025, 24), rxPptM); rxPpt.position.y = 0.016; rxPpt.visible = false; rxG.add(rxPpt);
+    const rxBubM = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
+    const rxBub = Array.from({ length: 30 }, () => { const b = new T.Mesh(new T.SphereGeometry(0.01 + Math.random() * 0.008, 6, 5), rxBubM); b.visible = false; b.userData = { y: Math.random(), a: Math.random() * 6.28, r: Math.random() }; rxG.add(b); return b; });
+    const rxGasM = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4, depthWrite: false });
+    const rxGas = Array.from({ length: 12 }, (_, i) => { const b = new T.Mesh(new T.SphereGeometry(0.05, 8, 6), rxGasM); b.visible = false; b.userData = { t: i / 12 }; rxG.add(b); return b; });
+    const rxFlame = new T.Mesh(new T.ConeGeometry(0.06, 0.24, 16), new T.MeshBasicMaterial({ color: 0xf97316, transparent: true, opacity: 0.85 })); rxFlame.position.y = 0.58; rxFlame.visible = false; rxG.add(rxFlame);
+    const rxBurner = new T.Mesh(new T.CylinderGeometry(0.08, 0.1, 0.07, 16), M(0x475569, { metalness: 0.5 })); rxBurner.position.set(0, -0.01, 0); rxBurner.visible = false; rxG.add(rxBurner);
+    let rxA = null, rxLbl = null;
+    const benchG = [];
+    const benchHome = (i) => new T.Vector3(-1.45 + i * 0.27, 0.94, 0.33);
+    const disposeObj = (o) => o.traverse((x) => { if (x.geometry) x.geometry.dispose(); if (x.material) { if (x.material.map) x.material.map.dispose(); if (x.material !== glassM) x.material.dispose(); } });
+    const rxApi = {
+      /* list: [{id, f, col, st}] — стол устидаги шишалар */
+      bench(list) {
+        benchG.splice(0).forEach((g) => { sc.remove(g); disposeObj(g); const k = drags.indexOf(g); if (k >= 0) drags.splice(k, 1); });
+        list.forEach((it, i) => {
+          const g = new T.Group(); const p = benchHome(i); g.position.copy(p);
+          const solid = it.st === "s", gas = it.st === "g";
+          const gl = new T.Mesh(new T.CylinderGeometry(0.075, 0.085, 0.22, 16), new T.MeshStandardMaterial({ color: gas ? 0xf1f5f9 : 0xdbeafe, transparent: true, opacity: 0.4, roughness: 0.1 })); gl.position.y = 0.11; g.add(gl);
+          const fill = new T.Mesh(new T.CylinderGeometry(0.068, 0.078, solid ? 0.08 : 0.15, 16), M(hex(/^#[0-9a-f]{6}$/i.test(it.col) ? it.col : "#e5e7eb"), { transparent: gas, opacity: gas ? 0.35 : 1, roughness: 0.4 })); fill.position.y = solid ? 0.045 : 0.08; g.add(fill);
+          const cap = new T.Mesh(new T.CylinderGeometry(0.045, 0.045, 0.05, 12), M(0x7c3aed)); cap.position.y = 0.245; g.add(cap);
+          const lb = lib.textSprite(it.f, "#0f172a", 0.1); lb.position.set(0, 0.36, 0); g.add(lb);
+          g.userData = { drag: "x:" + it.id, bench: it.id };
+          g.traverse((o) => { o.userData.bench = it.id; });
+          sc.add(g); benchG.push(g); drags.push(g);
+        });
+      },
+      /* vis: {col, ppt, pptCol, gas, gasCol, flame, heat, smoke, metal} */
+      react(vis) {
+        rxA = Object.assign({ t: 0 }, vis || {});
+        rxLiq.visible = !rxA.dry; rxPpt.visible = false;
+        rxLiqM.color.set(rxA.col0 || "#e0f2fe");
+        if (rxLbl) { rxG.remove(rxLbl); rxLbl.material.map.dispose(); rxLbl.material.dispose(); rxLbl = null; }
+        if (rxA.label) { rxLbl = lib.textSprite(rxA.label, "#7c2d12", 0.09); rxLbl.position.set(0, 0.72, 0); rxG.add(rxLbl); }
+        rxGasM.color.set(rxA.gasCol || "#ffffff");
+        rxPptM.color.set(rxA.pptCol || "#ffffff");
+      },
+      clear() { rxA = null; rxLiq.visible = rxPpt.visible = rxFlame.visible = rxBurner.visible = false; rxBub.forEach((b) => { b.visible = false; }); rxGas.forEach((b) => { b.visible = false; }); if (rxLbl) { rxG.remove(rxLbl); rxLbl.material.map.dispose(); rxLbl.material.dispose(); rxLbl = null; } },
+      get flaskPos() { return rxG.position; }
+    };
+    v.updaters.push((dt) => {
+      if (!rxA) return;
+      rxA.t += dt;
+      const t = rxA.t, k = clamp(t / 1.6, 0, 1);
+      if (!rxA.dry) {
+        const c0 = new T.Color(rxA.col0 || "#e0f2fe"), c1 = new T.Color(rxA.col || rxA.col0 || "#e0f2fe");
+        rxLiqM.color.copy(c0.lerp(c1, k)); rxLiqM.opacity = rxA.op != null ? rxA.op : 0.55;
+      }
+      rxBurner.visible = !!rxA.heat;
+      rxFlame.visible = !!rxA.flame && t < 6;
+      if (rxFlame.visible) { rxFlame.scale.set(1, 0.8 + Math.sin(t * 22) * 0.2, 1); rxFlame.material.color.set(rxA.flameCol || "#f97316"); }
+      if (rxA.ppt) { rxPpt.visible = t > 0.4; const h = clamp((t - 0.4) / 2.5, 0.05, 1) * 0.035; rxPpt.scale.y = h / 0.025; rxPpt.position.y = h / 2 + 0.004; }
+      const bub = rxA.gas ? clamp(1 - (t - 3) / 4, 0, 1) : 0;
+      rxBub.forEach((b, i) => { const u = b.userData; b.visible = !rxA.dry && i < bub * rxBub.length; if (!b.visible) return; u.y += dt * (0.6 + u.r * 0.6); if (u.y > 1) { u.y = 0; u.a = Math.random() * 6.28; } b.position.set(Math.cos(u.a) * 0.11 * u.r, 0.01 + u.y * 0.12, Math.sin(u.a) * 0.11 * u.r); });
+      const gasVis = (rxA.gasCol || rxA.smoke) && t < 9;
+      rxGas.forEach((s) => { s.visible = !!gasVis; if (!s.visible) return; const u = s.userData; u.t += dt * 0.35; if (u.t > 1) u.t = 0; s.position.set(Math.sin(u.t * 8 + s.id) * 0.05, 0.42 + u.t * 0.7, Math.cos(u.t * 6) * 0.05); s.scale.setScalar(0.6 + u.t * 1.6); s.material.opacity = (rxA.smoke ? 0.5 : 0.4) * (1 - u.t); });
+      if (rxA.smoke) rxGasM.color.set(rxA.smokeCol || "#f8fafc");
+    });
     /* Қуйиш анимацияси */
     let pour = null;
     const pourM = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 });
     const stream = new T.Mesh(new T.CylinderGeometry(0.012, 0.012, 1, 8), pourM); stream.visible = false; sc.add(stream);
+    /* Номлар (тег): танланган шиша ёки асбоб устида */
     let tagSpr = null, tagId = "";
+    const dropTag = () => { if (tagSpr) { if (tagSpr.parent) tagSpr.parent.remove(tagSpr); tagSpr.material.map.dispose(); tagSpr.material.dispose(); tagSpr = null; } };
     const showTag = (id) => {
-      if (id === tagId) return; tagId = id;
-      if (tagSpr) { sc.remove(tagSpr); tagSpr.material.map.dispose(); tagSpr.material.dispose(); tagSpr = null; }
+      if (id === tagId) return; tagId = id; dropTag();
       const g = bottles.find((b) => b.userData.rid === id); if (!g) return;
-      tagSpr = lib.textSprite(RID[id].f, "#0f172a", 0.14); tagSpr.position.set(g.position.x, g.position.y + 0.42, g.position.z + 0.1); sc.add(tagSpr);
+      tagSpr = lib.textSprite(RID[id].f, "#0f172a", 0.14 / g.scale.x); tagSpr.position.set(0, 0.5 / g.scale.x, 0.1); g.add(tagSpr);
     };
+    const showEqTag = (g) => {
+      const id = g.userData.eq; tagId = "e:" + id; dropTag();
+      const e = EQID[id]; if (!e) return;
+      const bb = new T.Box3().setFromObject(g);
+      tagSpr = lib.textSprite(L(e.n).replace(/\s*\(.*\)$/, ""), "#0f172a", 0.12); tagSpr.position.set(0, bb.max.y - g.position.y + 0.18, 0); g.add(tagSpr);
+    };
+    vesG.userData.drag = "ves"; drags.push(vesG);
+    /* Жойлашув: localStorage да сақланади (ҳар ким ўз хонасини безайди) */
+    const POSK = "ekotalim:lx-pos";
+    const posSave = () => { const o = {}; drags.forEach((g) => { const k = g.userData.drag; if (k && !g.userData.bench && g.userData.home && g.position.distanceTo(g.userData.home) > 0.01) o[k] = [g.position.x, g.position.y, g.position.z].map((n) => Math.round(n * 1000) / 1000); }); putJ(POSK, o); };
+    drags.forEach((g) => { g.userData.home = g.position.clone(); });
+    const saved = getJ(POSK, {});
+    drags.forEach((g) => { const p = saved[g.userData.drag]; if (p && p.length === 3 && p.every(isFinite)) g.position.set(p[0], p[1], p[2]); });
     R3 = {
       showTag,
       startPour(id) {
@@ -1164,8 +1319,109 @@
         pour = { g, t: 0, home: g.position.clone(), rot: g.rotation.z };
         pourM.color.set(RID[id].col); stream.visible = false;
       },
-      vesselChanged: rebuildVessel
+      vesselChanged: rebuildVessel,
+      rx: rxApi,
+      resetLayout() { drags.forEach((g) => { if (g.userData.home) g.position.copy(g.userData.home); }); putJ(POSK, {}); },
+      count: () => ({ bottles: bottles.length, equipment: eqObjs.length, movable: drags.length })
     };
+    /* ---------- Бошқарув: айлантириш, суриш (pan), яқинлаштириш (pinch) ва буюмларни ушлаб суриш ----------
+       Сичқонча: чап тугма — айлантириш ёки буюмни суриш, ўнг тугма / Shift — хонада юриш, ғилдирак — яқинлаштириш.
+       Сенсор: бир бармоқ — айлантириш ёки буюмни суриш, икки бармоқ — яқинлаштириш ва суриш. */
+    const host = v.host, cvs = v.canvas, ray = new T.Raycaster(), ndc = new T.Vector2();
+    const P = new Map();
+    let mode = null, dragG = null, dragOff = new T.Vector3(), moved = 0, last = null, pinch0 = null, downAt = null;
+    const setNdc = (e) => { const r = cvs.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(ndc, v.camera); };
+    const rootOf = (o) => { while (o && !(o.userData && o.userData.drag)) o = o.parent; return o; };
+    const pickDrag = (e) => { setNdc(e); const hits = ray.intersectObjects(drags, true).filter((h) => h.object.visible && !h.object.isSprite); return hits.length ? rootOf(hits[0].object) : null; };
+    const surfAt = (e, g) => {
+      setNdc(e);
+      const hits = ray.intersectObjects(supports, false).filter((h) => h.face && h.face.normal.y > 0.5);
+      if (hits.length) return hits[0].point;
+      const pl = new T.Plane(new T.Vector3(0, 1, 0), -g.position.y), pt = new T.Vector3();
+      return ray.ray.intersectPlane(pl, pt) ? pt : null;
+    };
+    const clampRoom = (p) => { p.x = clamp(p.x, -4.3, 6.1); p.z = clamp(p.z, -1.45, 6.4); return p; };
+    const pan = (dx, dy) => {
+      const k = v.d * 0.0016, th = v.th;
+      const rx = Math.cos(th), rz = -Math.sin(th), fx = -Math.sin(th), fz = -Math.cos(th);
+      v.target.x = clamp(v.target.x - dx * k * rx + dy * k * fx, -4, 6);
+      v.target.z = clamp(v.target.z - dx * k * rz + dy * k * fz, -1.4, 6);
+      v.fly = null; v.place();
+    };
+    const stop = (e) => { e.stopPropagation(); };
+    host.addEventListener("pointerdown", (e) => {
+      if (e.target !== cvs) return;
+      stop(e); e.preventDefault();
+      try { cvs.setPointerCapture(e.pointerId); } catch (x) { /* ignore */ }
+      P.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      v.fly = null; v.auto = false; v.moved = 0;
+      if (P.size === 2) {
+        if (dragG) { dragG.position.y -= 0.06; dragG = null; }
+        const [a, b] = [...P.values()]; pinch0 = { d: Math.hypot(a.x - b.x, a.y - b.y), vd: v.d, cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2 }; mode = "pinch"; return;
+      }
+      moved = 0; last = { x: e.clientX, y: e.clientY }; downAt = e;
+      const g = e.button === 0 && !e.shiftKey ? pickDrag(e) : null;
+      if (g) {
+        mode = "drag"; dragG = g;
+        const p = surfAt(e, g); dragOff.set(p ? g.position.x - p.x : 0, 0, p ? g.position.z - p.z : 0);
+      } else mode = e.button === 2 || e.shiftKey ? "pan" : "orbit";
+    }, true);
+    host.addEventListener("pointermove", (e) => {
+      if (!P.has(e.pointerId)) return;
+      stop(e);
+      P.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (mode === "pinch" && P.size >= 2) {
+        const [a, b] = [...P.values()], d = Math.hypot(a.x - b.x, a.y - b.y), cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+        v.d = clamp(pinch0.vd * pinch0.d / Math.max(20, d), v.minD, v.maxD);
+        pan(cx - pinch0.cx, cy - pinch0.cy); pinch0.cx = cx; pinch0.cy = cy;
+        return;
+      }
+      const dx = e.clientX - last.x, dy = e.clientY - last.y; last = { x: e.clientX, y: e.clientY };
+      moved += Math.abs(dx) + Math.abs(dy);
+      if (mode === "drag" && dragG) {
+        if (moved < 6) return;
+        if (!dragG.userData.lift) { dragG.userData.lift = true; if (dragG.userData.eq) showEqTag(dragG); }
+        const p = surfAt(e, dragG); if (!p) return;
+        const q = clampRoom(new T.Vector3(p.x + dragOff.x, p.y, p.z + dragOff.z));
+        dragG.position.set(q.x, p.y + 0.06, q.z);
+        return;
+      }
+      if (mode === "orbit") { v.th -= dx * 0.008; v.ph = clamp(v.ph - dy * 0.006, 0.2, 1.5); v.place(); }
+      if (mode === "pan") pan(dx, dy);
+    }, true);
+    const up = (e) => {
+      if (!P.has(e.pointerId)) return;
+      stop(e);
+      P.delete(e.pointerId);
+      if (mode === "pinch") { if (P.size === 0) mode = null; else { const [a] = [...P.values()]; last = { x: a.x, y: a.y }; mode = "orbit"; moved = 99; } return; }
+      const g = dragG; dragG = null;
+      if (g && g.userData.lift) {
+        g.userData.lift = false; g.position.y -= 0.06;
+        const near = (o, r) => o && Math.hypot(g.position.x - o.x, g.position.z - o.z) < r;
+        if (g.userData.rid && near(vesG.position, 0.5) && !g.userData.locked) { const id = g.userData.rid; g.position.copy(g.userData.home); selectR(id); add(id, curAmt(RID[id])); }
+        else if (g.userData.bench && near(rxG.position, 0.4)) { g.position.copy(benchHome(benchG.indexOf(g))); window.dispatchEvent(new CustomEvent("eko:lx-mix")); }
+        if (g.userData.rid && near(rxG.position, 0.4)) toast(L(t3("Бу жавон шишаси асосий идиш учун. Реакция колбасига «Менделеев жадвали ва реакциялар» бўлимидан модда қўшинг.", "Эта склянка для основного сосуда. В колбу для реакций добавляйте вещества из раздела «Таблица Менделеева и реакции».", "This shelf bottle is for the main vessel. Add substances to the reaction flask from the 'Periodic table & reactions' section.")));
+        if (g === vesG) { /* идиш билан иситгич бирга юради */ }
+        posSave();
+        mode = null; return;
+      }
+      mode = null;
+      if (moved < 6 && downAt && e.type === "pointerup") {
+        /* Босиш: шиша — идишга қуйиш; асбоб — номи ва амали; колба — аралаштириш */
+        if (g && g.userData.rid) { if (v.onTap) v.onTap(downAt); return; }
+        if (g && g.userData.bench) { window.dispatchEvent(new CustomEvent("eko:lx-pick", { detail: { id: g.userData.bench } })); return; }
+        if (g && g.userData.rx) { window.dispatchEvent(new CustomEvent("eko:lx-mix")); return; }
+        if (g && g.userData.eq) { showEqTag(g); pickEq(g.userData.eq); return; }
+        if (g === vesG) { pickEq(null); return; }
+        setNdc(downAt);
+        const hit = ray.intersectObjects(eqObjs, true)[0];
+        if (hit) { let o = hit.object; while (o && !o.userData.eq) o = o.parent; if (o) { pickEq(o.userData.eq); return; } }
+        pickEq(null);
+      }
+    };
+    host.addEventListener("pointerup", up, true);
+    host.addEventListener("pointercancel", up, true);
+    cvs.addEventListener("contextmenu", (e) => e.preventDefault());
     /* Шишани босиш — идишга қуйиш */
     v.onTap = (e) => {
       const hit = v.pick(e, bottles); if (!hit) return;
@@ -1412,6 +1668,26 @@
     w.querySelectorAll("[data-eqrun]").forEach((b) => b.addEventListener("click", () => { const a = b.dataset.eqrun; if (EQID[a] && !EQID[a].act) eqAct(a); else tool(a, ["gas", "pm"].includes(a) ? airSite : undefined); if (["fridge", "hood", "mstir", "heat", "cal"].includes(a)) bindEq(); }));
   }
   const paintEq = () => bindEq();
+  /* 3D хонада босилган асбоб: кичик карта (номи, вазифаси, «Ишлатиш» — натижа шу картада) */
+  function pickEq(id) {
+    const box = ROOT.querySelector("[data-pick]"); if (!box) return;
+    const e = EQID[id];
+    if (!e) { box.hidden = true; box.innerHTML = ""; return; }
+    const lk = e.st === "u" && !uni();
+    eqSel = id; eqCat = e.cat; bindEq();
+    box.hidden = false;
+    box.innerHTML = `<div class="lx-pickh"><span class="lx-eqi" aria-hidden="true"><i class="fa-solid ${e.ic}"></i></span><b>${H(e.n)}</b><button type="button" class="lx-pickx" data-pa="x" aria-label="${H(t3("Ёпиш", "Закрыть", "Close"))}">✕</button></div><p class="small">${H(e.d)}</p><div class="lx-pickb">${lk ? `<span class="small lx-bad">${H(TX.lockEq)}</span>` : `<button type="button" class="btn btn-sm" data-pa="run"><i class="fa-solid ${e.ic}" aria-hidden="true"></i> ${H(e.act ? TX.run : TX.learnt)}</button>`}<button type="button" class="btn btn-ghost btn-sm" data-pa="info"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> ${H(t3("Батафсил", "Подробнее", "Details"))}</button></div><div class="lx-pickr" data-pr></div>`;
+    box.querySelector('[data-pa="x"]').addEventListener("click", () => { box.hidden = true; });
+    box.querySelector('[data-pa="info"]').addEventListener("click", () => { const q = ROOT.querySelector("#lxEq"); if (q) q.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); });
+    const run = box.querySelector('[data-pa="run"]');
+    if (run) run.addEventListener("click", () => {
+      const a = e.act, mb = ROOT.querySelector("[data-meter]"), before = mb ? mb.innerHTML : "";
+      if (!a) eqAct(id); else if (EQID[a] && !EQID[a].act) eqAct(a); else tool(a, ["gas", "pm"].includes(a) ? airSite : undefined);
+      if (["fridge", "hood", "mstir", "heat", "cal"].includes(a)) bindEq();
+      const pr = box.querySelector("[data-pr]");
+      if (pr && mb && mb.innerHTML !== before) pr.innerHTML = mb.innerHTML;
+    });
+  }
   function shell() {
     const isU = uni();
     ROOT.innerHTML = `<span class="pill">${H(TX.pill)}</span>
@@ -1425,7 +1701,10 @@
             <button type="button" class="l3-tb" data-vt="in" title="+" aria-label="+"><i class="fa-solid fa-plus"></i></button>
             <button type="button" class="l3-tb" data-vt="out" title="−" aria-label="−"><i class="fa-solid fa-minus"></i></button>
             <button type="button" class="l3-tb" data-vt="home" title="${H(t3("Аввалги ҳолат", "Сброс вида", "Reset view"))}" aria-label="${H(t3("Аввалги ҳолат", "Сброс вида", "Reset view"))}"><i class="fa-solid fa-house"></i></button>
+            <button type="button" class="l3-tb" data-vt="full" aria-pressed="false" title="${H(t3("Катта экран", "Во весь экран", "Full screen"))}" aria-label="${H(t3("Катта экран", "Во весь экран", "Full screen"))}"><i class="fa-solid fa-expand"></i></button>
+            <button type="button" class="l3-tb" data-vt="lay" title="${H(t3("Буюмларни жойига қайтариш", "Вернуть предметы на места", "Put everything back"))}" aria-label="${H(t3("Буюмларни жойига қайтариш", "Вернуть предметы на места", "Put everything back"))}"><i class="fa-solid fa-rotate-left"></i></button>
           </div>
+          <div class="lx-pick" data-pick hidden aria-live="polite"></div>
           <p class="small muted l3-hint">${H(TX.hint)}</p>
         </div>
         <div class="lab-ctl lx-panel">
@@ -1446,17 +1725,25 @@
           ${isU ? `<details class="lx-specd"><summary><b>${H(t3("Эритма таркиби (мувозанат)", "Состав раствора (равновесие)", "Solution composition (equilibrium)"))}</b></summary><div data-spec></div></details>` : ""}
         </div>
       </div>
-      <div class="lx-shelfbox">
+      <nav class="lx-nav" aria-label="${H(TX.title)}">
+        <button type="button" class="chip" data-go="lxShelf"><i class="fa-solid fa-flask-vial" aria-hidden="true"></i> ${H(TX.shelf)}</button>
+        <button type="button" class="chip" data-go="lxElem"><i class="fa-solid fa-table-cells" aria-hidden="true"></i> ${H(t3("Менделеев жадвали ва реакциялар", "Таблица Менделеева и реакции", "Periodic table & reactions"))}</button>
+        <button type="button" class="chip" data-go="lxEq"><i class="fa-solid fa-microscope" aria-hidden="true"></i> ${H(TX.eqT)}</button>
+        <button type="button" class="chip" data-go="lxTahlil"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i> ${H(t3("Таҳлил жараёнлари", "Методики анализа", "Analysis procedures"))}</button>
+      </nav>
+      <div class="lx-shelfbox" id="lxShelf">
         <h3><i class="fa-solid fa-flask-vial" aria-hidden="true"></i> ${H(TX.shelf)}</h3>
         <div data-shelf>${shelfHtml()}</div>
         <div class="lx-info" data-info>${infoHtml()}</div>
       </div>
+      <div class="lx-elembox" id="lxElem" data-lx-elem></div>
       <div class="lx-eqbox" id="lxEq">
         <h3><i class="fa-solid fa-microscope" aria-hidden="true"></i> ${H(TX.eqT)} <small class="muted">(${EQUIP.length})</small></h3>
         <p class="small muted">${H(TX.eqHint)}</p>
         <div data-eqwrap>${eqHtml()}</div>
         <div class="lx-meter" data-meter aria-live="polite" hidden></div>
       </div>
+      <div class="lx-tahbox" id="lxTahlil" data-lx-tahlil></div>
       <div class="ps-grid lx-grid">
         <div class="ps-box"><h3>${H(TX.mis)}</h3><div data-mis></div></div>
         <div class="ps-box"><h3>${H(TX.disc)}</h3><div data-disc></div></div>
@@ -1469,7 +1756,8 @@
       </div>
       <p class="small muted">${H(TX.src)}<br>${H(TX.model)}</p>`;
     bindPpe();
-    ROOT.querySelectorAll("[data-vt]").forEach((b) => b.addEventListener("click", () => { if (!view) return; const t = b.dataset.vt; if (t === "in") view.zoom(0.85); if (t === "out") view.zoom(1.18); if (t === "home") view.resetView(); }));
+    ROOT.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { const q = document.getElementById(b.dataset.go); if (q) q.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }));
+    ROOT.querySelectorAll("[data-vt]").forEach((b) => b.addEventListener("click", () => { if (!view) return; const t = b.dataset.vt; if (t === "in") view.zoom(0.85); if (t === "out") view.zoom(1.18); if (t === "home") { view.target.set(...view.home.tg); view.resetView(); } if (t === "full") toggleFull(b); if (t === "lay" && R3) { R3.resetLayout(); toast(L(t3("Барча буюмлар жойига қайтди.", "Все предметы на местах.", "Everything is back in place."))); } }));
     ROOT.querySelectorAll("[data-ves]").forEach((b) => b.addEventListener("click", () => {
       if (b.dataset.ves === S.ves) return;
       if (S.V > VES[b.dataset.ves].max) { toast(L(TX.full)); return; }
@@ -1502,7 +1790,9 @@
   async function mount() {
     const my = ++mountId;
     if (view) { view.dispose(); view = null; R3 = null; }
+    document.documentElement.classList.remove("l3-noscroll");
     shell();
+    window.dispatchEvent(new CustomEvent("eko:lx-shell"));
     const host = ROOT.querySelector("[data-view]");
     const L3 = window.EkoLab3D && window.EkoLab3D.lib;
     try {
@@ -1511,10 +1801,13 @@
       if (my !== mountId) return;
       if (glFail) throw new Error("webgl");
       const narrow = (host.clientWidth || innerWidth) < 600;
-      view = L3.View(host, { bg: "#e2e8f0", d: narrow ? 4.4 : 3.3, th: 0.25, ph: narrow ? 1.3 : 1.2, target: narrow ? [0.05, 1.3, -0.45] : [0.1, 1.25, -0.3], minD: 1.2, maxD: 8, auto: false });
+      const tg = narrow ? [0.3, 1.15, 0.2] : [0.5, 1.05, 0.4];
+      view = L3.View(host, { bg: "#e2e8f0", d: narrow ? 6.2 : 5.2, th: 0.32, ph: narrow ? 1.2 : 1.14, target: tg, minD: 0.8, maxD: 14, auto: false });
+      view.home.tg = tg;
       view.canvas.setAttribute("aria-label", L(TX.title));
       const lp = host.querySelector(".l3-load"); if (lp) lp.remove();
       build3d(view, { T, textSprite: L3.textSprite });
+      window.dispatchEvent(new CustomEvent("eko:lx-3d"));
       sync();
     } catch (e) {
       if (my !== mountId) return;
@@ -1527,15 +1820,32 @@
     }
   }
   let fallbackTimer = 0;
+  /* Катта экран (CSS орқали — WebView ва iOS да ҳам ишлайди) */
+  function toggleFull(btn) {
+    const vb = ROOT.querySelector(".lx-row .l3-viewbox"); if (!vb) return;
+    const on = !vb.classList.contains("l3-full");
+    vb.classList.toggle("l3-full", on);
+    document.documentElement.classList.toggle("l3-noscroll", on);
+    btn.setAttribute("aria-pressed", String(on));
+    btn.querySelector("i").className = "fa-solid " + (on ? "fa-compress" : "fa-expand");
+    if (on) document.addEventListener("keydown", escFull); else document.removeEventListener("keydown", escFull);
+    if (view) setTimeout(() => view.resize(), 30);
+  }
+  function escFull(e) { if (e.key === "Escape") { const b = ROOT.querySelector('[data-vt="full"]'); if (b && b.getAttribute("aria-pressed") === "true") toggleFull(b); } }
   function visible() { return SEC.classList.contains("page-on") && !document.hidden; }
-  function sync() { if (!view) return; if (visible()) { view.resize(); view.start(); } else view.stop(); }
+  function sync() {
+    if (!visible()) { const b = ROOT.querySelector('[data-vt="full"][aria-pressed="true"]'); if (b) toggleFull(b); }
+    if (!view) return; if (visible()) { view.resize(); view.start(); } else view.stop();
+  }
   function onShow() { if (!visible()) { sync(); return; } if (!built) { built = true; recompute(); mount(); } else sync(); }
   new MutationObserver(onShow).observe(SEC, { attributes: true, attributeFilter: ["class"] });
   document.addEventListener("visibilitychange", onShow);
   window.addEventListener("eko:lang", () => { if (built) mount(); });
   window.addEventListener("eko:stage", () => { if (built) mount(); });
   /* Синов ва ўқитувчи намойиши учун */
-  window.EkoLabXona = { get state() { return S; }, get eq() { return EQ; }, add: (id, a) => add(id, a), tool: (t) => tool(t), tick: (dt) => tick(dt), reset: (v) => resetVessel(v), ppe: (on) => { ppe = { coat: on, gog: on, glo: on }; putJ(PKEY, ppe); if (built) mount(); }, reagents: R.map((r) => r.id), equipment: EQUIP.map((e) => e.id), eq2: (id, arg) => eqAct(id, arg), hood: (on) => { hood = !!on; }, get meter() { const b = ROOT.querySelector("[data-meter]"); return b ? b.textContent : ""; }, recipes: RECIPES.map((r) => r.id), get view() { return view; } };
+  window.EkoLabXona = { get state() { return S; }, get eq() { return EQ; }, add: (id, a) => add(id, a), tool: (t) => tool(t), tick: (dt) => tick(dt), reset: (v) => resetVessel(v), ppe: (on) => { ppe = { coat: on, gog: on, glo: on }; putJ(PKEY, ppe); if (built) mount(); }, reagents: R.map((r) => r.id), equipment: EQUIP.map((e) => e.id), eq2: (id, arg) => eqAct(id, arg), hood: (on) => { hood = !!on; }, get meter() { const b = ROOT.querySelector("[data-meter]"); return b ? b.textContent : ""; }, recipes: RECIPES.map((r) => r.id), get view() { return view; },
+    get rx() { return R3 && R3.rx; }, get layout() { return R3 ? R3.count() : null; }, get meterHtml() { const b = ROOT.querySelector("[data-meter]"); return b && !b.hidden ? b.innerHTML : ""; },
+    ppeOk: () => ppeOk(), isUni: () => uni(), pick: (id) => pickEq(id), air: (id) => { if (AIR.some((a) => a.id === id)) airSite = id; }, airList: AIR, tool2: (t, arg) => tool(t, arg), name: (id) => (RID[id] ? L(RID[id].n) : EQID[id] ? L(EQID[id].n) : id) };
   recompute();
   onShow();
 })();
