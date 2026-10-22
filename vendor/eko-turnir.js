@@ -32,7 +32,7 @@
   const toast = (o) => { const a = App(); if (a && a.toast) a.toast(typeof o === "string" ? o : L(o)); };
   const addXp = (n, why) => { const a = App(); if (a && a.addXp) a.addXp(n, L(why)); };
   const hasServer = () => /^https?:$/.test(location.protocol) && location.hostname !== "appassets.androidplatform.net";
-  const site = () => (hasServer() ? location.origin : ((window.EKO_VERSION && EKO_VERSION.site) || "https://1-sk5m.onrender.com"));
+  const site = () => (hasServer() ? location.origin : ((window.EKO_VERSION && EKO_VERSION.site) || "https://ekomun.onrender.com"));
   const vid = () => { try { const v = localStorage.getItem("ekotalim:vid") || ""; return /^[a-z0-9]{12,32}$/.test(v) ? v : ""; } catch (e) { return ""; } };
   const stage = () => (root.classList.contains("stage-maktab") ? "maktab" : "uni");
   const courseStage = (c) => c.stage || (c.audience === "bola" ? "maktab" : "uni");
