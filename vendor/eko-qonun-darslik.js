@@ -224,7 +224,7 @@
   }
 
   /* ---------- Қидирув ---------- */
-  const norm = (s) => String(s || "").toLowerCase().replace(/[ʻʼ'`’‘]/g, "");
+  const norm = (s) => (EL() && EL().fold ? EL().fold(String(s || "")) : String(s || "")).toLowerCase().replace(/[ʻʼ'`’‘]/g, "");
   function hits() {
     const needle = norm(q.trim());
     if (needle.length < 2) return [];

@@ -1573,6 +1573,24 @@ html.l3-noscroll, html.l3-noscroll body { overflow: hidden; }
 .qn-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .qn-src { font-size: .85rem; overflow-wrap: anywhere; }
 .qn-opts { display: grid; gap: 8px; margin: 10px 0; }
+/* 🔤 Янги ўзбек лотин алифбоси (vendor/eko-alifbo.js) */
+.alf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; margin-top: 10px; }
+.alf-l { border: 1px solid var(--line); border-radius: 12px; padding: 8px 6px; text-align: center; display: grid; gap: 2px; background: var(--card); }
+.alf-l b { font-size: 1.25rem; }
+.alf-l small { font-size: .72rem; color: var(--muted); }
+.alf-l.new { background: var(--primary-soft); border-color: var(--primary); }
+.alf-l.new b { color: var(--primary); }
+.alf-tw { overflow-x: auto; }
+.alf-t { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.alf-t th, .alf-t td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+.alf-t th { font-size: .8rem; color: var(--muted); font-weight: 650; }
+.alf-in { width: 100%; box-sizing: border-box; margin-top: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; resize: vertical; }
+.alf-out { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 10px; margin-top: 10px; }
+.alf-out > div { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: grid; gap: 6px; align-content: start; }
+.alf-out output { white-space: pre-wrap; overflow-wrap: anywhere; min-height: 1.6em; font-size: 1.02rem; }
+.alf-out .btn { justify-self: start; }
+.alf-set .btn.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+.alf-quiz { padding-left: 20px; }
 .qn-opts .sg-opt { text-align: left; font-size: .95rem; font-weight: 550; padding: 11px 14px; border-bottom-width: 3px; }
 .qn-fb { margin: 8px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--primary-soft); color: var(--text); line-height: 1.55; }
 .qn-fb.bad { background: #fee2e2; color: #7f1d1d; }
@@ -2087,7 +2105,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
       <div class="g-bar" id="gBar" aria-hidden="true"></div>
       <div class="g-top">
         <button type="button" class="g-back" id="gBack" aria-label="Орқага" hidden><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button>
-        <div class="reg-langs" data-notr><button type="button" data-setlang="cyr">Ўз</button><button type="button" data-setlang="lat">Oʻz</button><button type="button" data-setlang="ru">Ру</button><button type="button" data-setlang="en">En</button></div>
+        <div class="reg-langs" data-notr><button type="button" data-setlang="cyr">Ўз</button><button type="button" data-setlang="lat">Oʻz</button><button type="button" data-setlang="yl" title="Yangi alifbo (ÖRQ-1184)">Öz</button><button type="button" data-setlang="ru">Ру</button><button type="button" data-setlang="en">En</button></div>
       </div>
       <div class="g-brand"><span class="reg-logo" aria-hidden="true">🌱</span><b>Экомун</b></div>
       <h1 id="regTitle">Экомунга хуш келибсиз!</h1>
@@ -2271,6 +2289,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <div class="lang-menu" id="langMenu" hidden>
           <button type="button" data-setlang="cyr">Ўзбекча (кирилл)</button>
           <button type="button" data-setlang="lat">Oʻzbekcha (lotin)</button>
+          <button type="button" data-setlang="yl" title="ÖRQ-1184, 21.10.2026">Özbekça (yangi lotin, 2026)</button>
           <button type="button" data-setlang="ru">Русский</button>
           <button type="button" data-setlang="en">English</button>
         </div>
@@ -3155,7 +3174,12 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
   <script>
 /* Экомун — кирилл ↔ лотин алифбоси.
    Контент кириллда ёзилади; лотин режимида саҳифадаги матн расмий ўзбек лотин
-   алифбоси қоидалари бўйича автоматик ўгирилади. */
+   алифбоси қоидалари бўйича автоматик ўгирилади.
+   Икки лотин варианти бор (тил менюсида алоҳида танланади):
+   «lat» — амалдаги алифбо (1995): oʻ, gʻ, sh, ch, ʼ;
+   «yl»  — янги алифбо (ЎРҚ-1184, 21.10.2026; эълондан 6 ой кейин кучга киради):
+           28 ҳарф + тутуқ белгиси — ö, ğ, ş, ç, ʼ. Бошқа модуллар учун EkoLang.lang
+           иккаласида ҳам "lat" бўлиб қолади, фарқ фақат EkoLang.tr натижасида. */
 const EkoLang = (() => {
   "use strict";
 
@@ -3165,6 +3189,9 @@ const EkoLang = (() => {
     х: "x", ч: "ch", ш: "sh", щ: "sh", ы: "i", э: "e", ё: "yo", ю: "yu", я: "ya",
     ў: "oʻ", қ: "q", ғ: "gʻ", ҳ: "h", ь: ""
   };
+  // Янги алифбо (ЎРҚ-1184): ҳарф бирикмалари ўрнига битта ҳарф
+  const NEW = { ў: "ö", ғ: "ğ", ш: "ş", щ: "ş", ч: "ç" };
+  let yangi = false;
   const VOWELS = "аеёиоуэюяў";
   const isCyr = (c) => !!c && /[Ѐ-ӿ]/.test(c);
   const isLetter = (c) => !!c && /[\p{L}]/u.test(c);
@@ -3185,6 +3212,11 @@ const EkoLang = (() => {
         r = isLetter(prev) && VOWELS.includes(pl) ? "ts" : "s";
       } else if (lo === "ъ") {
         r = next && "еёюя".includes(next.toLowerCase()) ? "" : "ʼ";
+      } else if (lo === "ҳ" && pl === "с" && !yangi) {
+        // Исҳоқ → Isʼhoq: с+ҳ «sh» (ш) билан адашмаслиги учун тутуқ белгиси қўйилади
+        r = "ʼh";
+      } else if (yangi && lo in NEW) {
+        r = NEW[lo];
       } else if (lo in BASE) {
         r = BASE[lo];
       } else {
@@ -3194,7 +3226,7 @@ const EkoLang = (() => {
       if (r && isUpper(ch)) {
         // ЯНГИ → YANGI, Янги → Yangi
         const caps = (isCyr(next) && isUpper(next)) || (isCyr(prev) && isUpper(prev) && !isLetter(next));
-        r = caps ? r.toUpperCase() : r[0].toUpperCase() + r.slice(1);
+        r = caps ? r.toUpperCase() : r[0] === "ʼ" ? r : r[0].toUpperCase() + r.slice(1);
       }
       out += r;
     }
@@ -3204,9 +3236,10 @@ const EkoLang = (() => {
   const KEY = "ekotalim:lang";
   const ATTRS = ["placeholder", "title", "aria-label"];
   const orig = new WeakMap();
-  const LANGS = ["cyr", "lat", "ru", "en"];
+  const LANGS = ["cyr", "lat", "yl", "ru", "en"];
   const HTML_LANG = { cyr: "uz-Cyrl", lat: "uz-Latn", ru: "ru", en: "en" };
-  const BTN = { cyr: "Ўз", lat: "Oʻz", ru: "Ру", en: "En" };
+  const BTN = { cyr: "Ўз", lat: "Oʻz", yl: "Öz", ru: "Ру", en: "En" };
+  const code = () => (lang === "lat" && yangi ? "yl" : lang);
   let lang = "cyr";
   let origTitle = document.title;
 
@@ -3330,14 +3363,16 @@ const EkoLang = (() => {
         return;
       }
     }
+    yangi = l === "yl";
+    if (yangi) l = "lat";
     lang = l;
     document.documentElement.lang = HTML_LANG[lang];
     document.title = lang === "cyr" ? origTitle : conv(origTitle);
     apply(document.body);
     const btn = document.getElementById("langBtn");
-    if (btn) btn.innerHTML = '<i class="fa-solid fa-globe" aria-hidden="true"></i> ' + BTN[lang];
-    document.querySelectorAll("[data-setlang]").forEach((b) => b.classList.toggle("on", b.dataset.setlang === lang));
-    if (persist) { try { localStorage.setItem(KEY, lang); } catch (e) { /* ignore */ } }
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-globe" aria-hidden="true"></i> ' + BTN[code()];
+    document.querySelectorAll("[data-setlang]").forEach((b) => b.classList.toggle("on", b.dataset.setlang === code()));
+    if (persist) { try { localStorage.setItem(KEY, code()); } catch (e) { /* ignore */ } }
     // Алифбога боғлиқ қисмлар (масалан, кроссворд катаклари) қайта чизилиши учун
     window.dispatchEvent(new CustomEvent("eko:lang", { detail: lang }));
   }
@@ -3366,11 +3401,21 @@ const EkoLang = (() => {
   });
 
   /* Қидирув учун: матн ва сўров қайси алифбода бўлса ҳам солиштириш */
-  const norm = (s) => s.toLowerCase().replace(/[ʻʼ'`’‘]/g, "'");
+  /* Янги алифбо ҳарфларини амалдаги ёзувга келтириш (қидирув ва жавоб текшириш учун):
+     «şahar» ва «shahar», «ö» ва «oʻ» бир хил ҳисобланади */
+  const FOLD = { ö: "oʻ", ğ: "gʻ", ş: "sh", ç: "ch", Ö: "Oʻ", Ğ: "Gʻ", Ş: "Sh", Ç: "Ch" };
+  const fold = (s) => String(s ?? "").replace(/[öğşçÖĞŞÇ]/g, (c) => FOLD[c]);
+  const norm = (s) => fold(s.toLowerCase()).replace(/[ʻʼ'`’‘]/g, "'");
   const matches = (hay, q) => norm(hay).includes(norm(q)) || norm(tr(hay)).includes(norm(tr(q))) ||
     ((lang === "ru" || lang === "en") && norm(trans(hay)).includes(norm(q)));
 
-  return { tr, t: (s) => (lang === "cyr" ? s : conv(s)), set, get lang() { return lang; }, get htmlLang() { return HTML_LANG[lang]; }, matches };
+  return {
+    tr, t: (s) => (lang === "cyr" ? s : conv(s)), set, fold, matches,
+    // Ҳар доим керакли алифбода ўгириш (масалан, эски/янги ёзув жадвали учун)
+    trAs: (s, y) => { const o = yangi; yangi = !!y; try { return tr(s); } finally { yangi = o; } },
+    get lang() { return lang; }, get code() { return code(); }, get yangi() { return lang === "lat" && yangi; },
+    get htmlLang() { return HTML_LANG[lang]; }
+  };
 })();
 </script>
   <script>
@@ -4777,6 +4822,13 @@ const COURSES = [
 /* Янгиликлар: янгисини рўйхат бошига қўшинг. Сана формати: ЙЙЙЙ-ОО-КК */
 const NEWS = [
   {
+    date: "2026-10-22",
+    cat: "ozbekiston",
+    title: "Ўзбек лотин алифбоси 28 ҳарф ва 1 тутуқ белгисидан иборат бўлади (ЎРҚ-1184)",
+    text: "21.10.2026 да «Лотин ёзувига асосланган ўзбек алифбосини жорий этиш тўғрисида»ги Қонунга ўзгартириш киритиш ҳақидаги ЎРҚ-1184-сон Қонун қабул қилинди. Алифбо 26 ҳарф ва 3 ҳарф бирикмаси ўрнига 28 ҳарф ва 1 тутуқ белгисидан иборат бўлади: Oʻ → Ö, Gʻ → Ğ, Sh → Ş, Ch → Ç. Эски шаклдаги ҳарфлар билан расмийлаштирилган ҳужжатлар ва пуллар амал қилишда давом этади. Қонун расмий эълон қилинган кундан 6 ой ўтгач кучга киради. Платформада: «Экологик ҳуқуқ» → «Янги алифбо» бўлимида жадвал ва конвертер; тил менюсида «Özbekça (yangi lotin, 2026)» ёзувини ҳозирдан ёқиш мумкин.",
+    img: "🔤"
+  },
+  {
     date: "2026-10-15",
     cat: "platforma",
     title: "Янги курслар: «Литосферани чиқиндилардан ҳимоя қилиш» ва «Ер қалқони»", stage: "uni",
@@ -5745,15 +5797,18 @@ const CROSSWORDS = [
 ];
 
 /* Кроссворд ясовчи: сўзларни ҳар бир алифбода алоҳида жойлайди.
-   Лотин ёзувида sh, ch, oʻ, gʻ — битта катак (ўзбек алифбосидаги каби). */
+   Лотин ёзувида sh, ch, oʻ, gʻ — битта катак (ўзбек алифбосидаги каби).
+   Янги алифбода (ЎРҚ-1184) ş, ç, ö, ğ ўзи битта ҳарф; тутуқ белгиси катак эгалламайди. */
 const EkoCross = (() => {
   "use strict";
   const lat = () => typeof EkoLang !== "undefined" && EkoLang.lang === "lat";
   const APOS = /[ʻʼ'`’‘]/g;
+  const yangi = () => typeof EkoLang !== "undefined" && EkoLang.yangi;
 
   function tokens(word, latin = lat()) {
     const w = String(word).toLowerCase();
     if (!latin) return [...w].filter((c) => /\p{L}/u.test(c));
+    if (yangi()) return (EkoLang.tr(w).toLowerCase().replace(APOS, "").match(/\p{L}/gu) || []);
     const s = EkoLang.tr(w).toLowerCase().replace(APOS, "ʻ");
     return (s.match(/oʻ|gʻ|sh|ch|\p{L}/gu) || []);
   }
@@ -5853,17 +5908,21 @@ const EkoCross = (() => {
   function build(words, seed) {
     const latin = lat();
     const base = words.map(([a, q], i) => ({ i, a, q, t: tokens(a, latin) })).filter((w) => w.t.length > 1);
-    const best = layout(base, rng(seed + (latin ? ":lat" : ":cyr")));
+    const best = layout(base, rng(seed + (latin ? (yangi() ? ":yl" : ":lat") : ":cyr")));
     const { placed, r0, c0, h, w } = best;
     placed.forEach((p) => { p.r -= r0; p.c -= c0; });
     // Рақамлаш: юқоридан пастга, чапдан ўнгга
     const starts = [...new Set(placed.map((p) => p.r * 1000 + p.c))].sort((a, b) => a - b);
     placed.forEach((p) => { p.n = starts.indexOf(p.r * 1000 + p.c) + 1; });
     placed.sort((a, b) => a.n - b.n);
-    return { rows: h, cols: w, words: placed, latin };
+    return { rows: h, cols: w, words: placed, latin, yangi: latin && yangi() };
   }
 
-  const norm = (v) => String(v || "").toLowerCase().replace(APOS, "ʻ").trim();
+  const NEWL = { sh: "ş", ch: "ç", "oʻ": "ö", "gʻ": "ğ" };
+  const norm = (v) => {
+    const s = String(v || "").toLowerCase().replace(APOS, "ʻ").trim();
+    return yangi() ? s.replace(/sh|ch|oʻ|gʻ/g, (m) => NEWL[m]).replace(/ʻ/g, "") : s;
+  };
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   /* Кроссвордни контейнерга чизади. opts: { id, words, onSolve, compact } */
@@ -5905,7 +5964,7 @@ const EkoCross = (() => {
             <button type="button" class="btn btn-ghost btn-sm" data-x="show">👁 Жавоблар</button>
             <button type="button" class="btn btn-ghost btn-sm" data-x="clear">↺ Тозалаш</button>
           </div>
-          <p class="xw-msg small muted" aria-live="polite">${L.latin ? "Лотинда sh, ch, oʻ, gʻ битта катакка ёзилади." : "Катакни босинг ва ёзинг. Савол рақамини босиб, сўзни танланг."}</p>
+          <p class="xw-msg small muted" aria-live="polite">${L.yangi ? "Янги алифбода ş, ç, ö, ğ — битта ҳарф (sh, ch, oʻ, gʻ деб терсангиз ҳам бўлади)." : L.latin ? "Лотинда sh, ch, oʻ, gʻ битта катакка ёзилади." : "Катакни босинг ва ёзинг. Савол рақамини босиб, сўзни танланг."}</p>
         </div>`;
       solved = false; revealed = false;
     }
@@ -5954,7 +6013,7 @@ const EkoCross = (() => {
       // Лотин: «s»+«h», «o»+«ʻ» каби икки белгини битта катакда бирлаштириш
       if (v.length >= 2) {
         const pair = v.slice(0, 2);
-        if (COMBINE[pair[0]] === pair[1]) { inp.value = cap(pair); const n = step(k, dir); if (n) focus(n); return; }
+        if (COMBINE[pair[0]] === pair[1]) { inp.value = cap(L.yangi ? NEWL[pair] : pair); const n = step(k, dir); if (n) focus(n); return; }
         inp.value = cap(v[0]);
         const n = step(k, dir);
         if (n) { focus(n); accept(inputOf(n), v.slice(1)); }
@@ -40373,7 +40432,7 @@ COURSES.push({
     "Сатояма ташаббуси (Satoyama Initiative) ни Япония Атроф-муҳит вазирлиги ва UNU-IAS биргаликда илгари сурган. 2010 йил 29–30 январда Парижда ўтган халқаро экспертлар учрашувида Париж декларацияси қабул қилинди. Ташаббус уч йўналишли ёндашувга таянади: турли экотизим хизматларини таъминлаш бўйича билимларни жамлаш; анъанавий экологик билимни замонавий фан билан бирлаштириш; анъанавий жамоа ер эгалигини ҳурмат қилувчи янги биргаликдаги бошқарув шаклларини излаш.",
     "2010 йил октябрда Япониянинг Нагоя шаҳрида Биологик хилма-хиллик тўғрисидаги конвенция (CBD) томонларининг 10-конференцияси (COP10) бўлиб ўтди. 19 октябрда Сатояма ташаббуси бўйича халқаро ҳамкорлик (IPSI) 51 та асосчи ташкилот билан тузилди, ҳозир аъзолар сони бундан олти баробардан ортиқ. COP10 нинг X/32 қарори ташаббусни инсон таъсиридаги табиий муҳитни тушуниш ва қўллаб-қувватлаш учун «фойдали восита» деб тан олди. Шу конференцияда 2011–2020 йилларга мўлжалланган 20 та Айчи мақсади ҳам қабул қилинди.",
     "Афсуски, 2020 йил 21 сентябрда эълон қилинган «Глобал биохилма-хиллик истиқболи» нинг 5-нашри (GBO-5) 20 та Айчи мақсадидан бирортаси ҳам тўлиқ бажарилмаганини, фақат 6 таси қисман бажарилганини кўрсатди. Шунинг учун 2022 йил 19 декабрда Монреалда Кунминг-Монреаль глобал биохилма-хиллик доираси (Kunming-Montreal Global Biodiversity Framework) қабул қилинди: унда 2030 йилгача 4 та мақсад ва 23 та вазифа бор, жумладан қуруқлик ва денгизнинг камида 30 % ини муҳофаза қилиш ва бузилган экотизимларнинг 30 % ини тиклаш.",
-    "Шоли далалари мавсумий сун'ий сулоқ жой вазифасини бажаради: сувда бақалар, ниначилар, сув қўнғизлари ва қушлар яшайди, ариқлар балиқларни дарёлар билан боғлайди. Сатояма ғояси шуни кўрсатадики, биохилма-хилликни сақлаш учун одамни табиатдан ажратиш шарт эмас — тўғри деҳқончилик ўзи табиатни бойитиши мумкин. Ўзбекистон учун бу Фарғона водийси ва Хоразмдаги шолизорлар, қадимий ариқ-зовур тизими ва боғ-роғлар ландшафтини экологик мерос сифатида баҳолашга ундайди."
+    "Шоли далалари мавсумий сунъий сулоқ жой вазифасини бажаради: сувда бақалар, ниначилар, сув қўнғизлари ва қушлар яшайди, ариқлар балиқларни дарёлар билан боғлайди. Сатояма ғояси шуни кўрсатадики, биохилма-хилликни сақлаш учун одамни табиатдан ажратиш шарт эмас — тўғри деҳқончилик ўзи табиатни бойитиши мумкин. Ўзбекистон учун бу Фарғона водийси ва Хоразмдаги шолизорлар, қадимий ариқ-зовур тизими ва боғ-роғлар ландшафтини экологик мерос сифатида баҳолашга ундайди."
    ],
    "simple": [
     "Сатояма — дала, ўрмон ва ариқлардан иборат япон қишлоқ ландшафти.",
@@ -53687,7 +53746,7 @@ window.ekoFetch = async function (url, opts, onSlow) {
   $("#profileBtn").addEventListener("click", openProfile);
   let account = null;
   window.addEventListener("eko:user", (e) => { account = e.detail && e.detail.user; });
-  const LANGS = [["cyr", "Ўзбекча (кирилл)"], ["lat", "Oʻzbekcha (lotin)"], ["ru", "Русский"], ["en", "English"]];
+  const LANGS = [["cyr", "Ўзбекча (кирилл)"], ["lat", "Oʻzbekcha (lotin)"], ["yl", "Özbekça (yangi lotin, 2026)"], ["ru", "Русский"], ["en", "English"]];
   function openProfile() {
     if (!profile) return openGate(false);
     const a = age(), st = stage();
@@ -53696,7 +53755,7 @@ window.ekoFetch = async function (url, opts, onSlow) {
         <div><h2 style="margin:0">${esc(profile.name)}</h2><span class="stage-badge">${st === "maktab" ? "🎒 Мактаб" : "🎓 Университет"}</span>
         <div class="small muted">${a} ёш${st === "maktab" ? ` · ${groupOf(a).icon} ${groupOf(a).name}` : ""} · ${App.state.xp} XP</div></div></div>
       ${window.EkoPro && EkoPro.profileHtml ? EkoPro.profileHtml() : ""}
-      <div class="prof-sec"><h3>🌐 Тил</h3><div class="lang-list" data-notr>${LANGS.map(([k, n]) => `<button type="button" data-setlang="${k}" class="${EkoLang.lang === k ? "on" : ""}">${n}</button>`).join("")}</div></div>
+      <div class="prof-sec"><h3>🌐 Тил</h3><div class="lang-list" data-notr>${LANGS.map(([k, n]) => `<button type="button" data-setlang="${k}" class="${EkoLang.code === k ? "on" : ""}">${n}</button>`).join("")}</div></div>
       <div class="prof-sec"><h3>☁️ Онлайн ҳисоб</h3>${account
         ? `<p class="small">${esc(account.email)}</p><button class="btn btn-ghost btn-sm" id="profAcc" type="button">Ҳисоб созламалари (чиқиш, ўчириш)</button>`
         : online
@@ -54690,6 +54749,7 @@ window.ekoFetch = async function (url, opts, onSlow) {
   <script src="/vendor/eko-qonun-darslik-data.js" defer></script>
   <script src="/vendor/eko-qonun-darslik.js" defer></script>
   <script src="/vendor/eko-qonun-amaliy.js" defer></script>
+  <script src="/vendor/eko-alifbo.js" defer></script>
   <script src="/vendor/eko-qonun.js" defer></script>
   <script src="/vendor/eko-bola-huquq-data.js" defer></script>
   <script src="/vendor/eko-bola-huquq.js" defer></script>

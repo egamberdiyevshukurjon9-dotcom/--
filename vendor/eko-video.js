@@ -88,7 +88,7 @@
     checked: t3("Ҳавола текширилган", "Ссылка проверена", "Link checked"),
     progress: t3("Видео дарслар ўзлаштирилиши", "Прогресс видеоуроков", "Video lesson progress"),
     next: t3("Кейинги видео →", "Следующее видео →", "Next video →"),
-    fb: t3("Видео ишламаяптими ёки хато бормi? Фикр-мулоҳаза юборинг", "Видео не работает или есть ошибка? Напишите отзыв", "Video not working or found a mistake? Send feedback"),
+    fb: t3("Видео ишламаяптими ёки хато борми? Фикр-мулоҳаза юборинг", "Видео не работает или есть ошибка? Напишите отзыв", "Video not working or found a mistake? Send feedback"),
     pdf: t3("Конспектни PDF қилиш", "Конспект в PDF", "Notes as PDF"),
     topicDone: t3("Йўналиш тугади! +10 XP", "Направление завершено! +10 XP", "Topic complete! +10 XP")
   };

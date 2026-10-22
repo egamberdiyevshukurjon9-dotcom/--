@@ -59,6 +59,7 @@
     progress: t3("Ўзлаштириш", "Прогресс", "Progress"),
     tabs: [
       ["yol", "fa-route", t3("Йўл харитаси", "Маршрут", "Roadmap")],
+      ["alifbo", "fa-bullhorn", t3("🆕 Янги алифбо", "🆕 Новый алфавит", "🆕 New alphabet")],
       ["darslik", "fa-book-open", t3("Дарслик", "Учебник", "Textbook")],
       ["amaliy", "fa-person-chalkboard", t3("Амалий дарслар", "Практические уроки", "Hands-on lessons")],
       ["kons", "fa-landmark", t3("Конституция", "Конституция", "Constitution")],
@@ -118,7 +119,12 @@
   function roadView() {
     const n = ROAD.filter((r) => st.done[r.k]).length;
     const pct = Math.round((n / ROAD.length) * 100);
-    return `<div class="qn-card">
+    return `<div class="qn-card qn-box pdf-skip">
+        <h3>🆕 ${H(t3("Қонунчилик янгилиги: ЎРҚ-1184 (21.10.2026)", "Новости законодательства: ЗРУ-1184 (21.10.2026)", "Legislation news: ZRU-1184 (21.10.2026)"))}</h3>
+        <p>${H(t3("Ўзбек лотин алифбоси 28 ҳарф ва 1 тутуқ белгисидан иборат бўлади: Oʻ → Ö, Gʻ → Ğ, Sh → Ş, Ch → Ç. Қонун расмий эълондан 6 ой ўтгач кучга киради.", "Узбекский латинский алфавит будет состоять из 28 букв и 1 знака тутук: Oʻ → Ö, Gʻ → Ğ, Sh → Ş, Ch → Ç. Закон вступит в силу через 6 месяцев после опубликования.", "The Uzbek Latin alphabet will have 28 letters and 1 tutuq sign: Oʻ → Ö, Gʻ → Ğ, Sh → Ş, Ch → Ç. The law takes effect 6 months after publication."))}</p>
+        <div class="qn-acts"><button class="btn btn-primary btn-sm" data-go="alifbo">${H(t3("Батафсил ва конвертер →", "Подробнее и конвертер →", "Details and converter →"))}</button></div>
+      </div>
+      <div class="qn-card">
         <h3>🧭 ${H(t3("Ўқиш йўли: «тескари синф» (Flipped Classroom)", "Маршрут: «перевёрнутый класс» (Flipped Classroom)", "Learning path: Flipped Classroom"))}</h3>
         <p class="muted">${H(t3("Назарияни уйда ўқийсиз, аудиторияда эса уни амалда ишлатасиз. Ҳар бир қадам учун «уйда» ва «аудиторияда» топшириғи бор. Ўқитувчи шу режани дарс жадвали сифатида ишлатиши мумкин.",
           "Теорию читаете дома, а в аудитории применяете её на практике. Для каждого шага есть задание «дома» и «в аудитории». Преподаватель может использовать этот план как расписание занятий.",
@@ -585,7 +591,7 @@
 
   /* ---------- Чизиш ---------- */
   let tab = "yol";
-  const VIEWS = { yol: roadView, darslik: () => (window.EkoDarslik ? EkoDarslik.html() : `<p class="muted">…</p>`), amaliy: () => (window.EkoAmaliy ? EkoAmaliy.html() : `<p class="muted">…</p>`), kons: consView, lib: libView, sud: sudView, keys: keysView, debat: debatView, detektiv: detView, sim: simView, xorij: xorijView, test: testView };
+  const VIEWS = { yol: roadView, alifbo: () => (window.EkoAlifbo ? EkoAlifbo.html() : `<p class="muted">…</p>`), darslik: () => (window.EkoDarslik ? EkoDarslik.html() : `<p class="muted">…</p>`), amaliy: () => (window.EkoAmaliy ? EkoAmaliy.html() : `<p class="muted">…</p>`), kons: consView, lib: libView, sud: sudView, keys: keysView, debat: debatView, detektiv: detView, sim: simView, xorij: xorijView, test: testView };
   function render() {
     const name = (TX.tabs.find((x) => x[0] === tab) || TX.tabs[0])[2];
     ROOT.innerHTML = `
@@ -708,6 +714,7 @@
   ROOT.addEventListener("click", seen);
 
   render();
+  if (window.EkoAlifbo) EkoAlifbo.onChange(() => { if (tab === "alifbo") rerender(true); });
   window.addEventListener("eko:lang", render);
   window.EkoQonun = { open: (k) => { tab = k || "yol"; render(); } };
 })();

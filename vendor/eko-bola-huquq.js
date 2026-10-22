@@ -305,7 +305,7 @@
 
   /* ========== 7. Сирли дарё (квест-хона) ========== */
   let eI = 0, eLeft = 600, eT = null, eHint = {}, eMsg = null, eOn = false;
-  const norm = (s) => tr(String(s || "")).toLowerCase().replace(/[\s.,'ʻʼ’`-]/g, "").replace(/ё/g, "е");
+  const norm = (s) => (EL() && EL().fold ? EL().fold(tr(String(s || ""))) : tr(String(s || ""))).toLowerCase().replace(/[\s.,'ʻʼ’`-]/g, "").replace(/ё/g, "е");
   const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
   function stopTimer() { if (eT) clearInterval(eT); eT = null; }
   function qochishView() {
