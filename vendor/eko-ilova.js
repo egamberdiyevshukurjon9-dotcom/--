@@ -5,7 +5,7 @@
 (() => {
   "use strict";
   /* site — ўқитувчи ва таклиф ҳаволалари учун очиқ сайт манзили (Android иловада ўз манзили йўқ) */
-  const APP = { version: "3.0", date: "2026-10-17", site: "https://1-sk5m.onrender.com" };
+  const APP = { version: "3.0", date: "2026-10-17", site: "https://ekomun.onrender.com" };
   window.EKO_VERSION = APP;
 
   const EL = () => (typeof EkoLang !== "undefined" ? EkoLang : null);
