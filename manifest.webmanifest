@@ -8,14 +8,16 @@
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
+  "launch_handler": { "client_mode": ["navigate-existing", "auto"] },
   "background_color": "#f7faf7",
   "theme_color": "#047857",
   "categories": ["education", "lifestyle"],
   "shortcuts": [
     { "name": "3D лаборатория", "short_name": "3D лаб", "url": "/?source=shortcut#lab3d", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "Курслар", "short_name": "Курслар", "url": "/?source=shortcut#kurslar", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Ҳаво сифати", "short_name": "Ҳаво", "url": "/?source=shortcut#havo", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
+    { "name": "Ҳаво сифати", "short_name": "Ҳаво", "url": "/?source=shortcut#havo", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "QR код билан кириш", "short_name": "QR кириш", "url": "/?source=shortcut&qrlogin=1", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
   ],
   "icons": [
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

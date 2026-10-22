@@ -2120,6 +2120,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
             </div>
             <button type="button" class="btn btn-primary g-wide" data-go="name">Ҳисоб яратиш</button>
             <button type="button" class="btn btn-ghost g-wide" data-go="id" data-online hidden>Менда ҳисоб бор — кириш</button>
+            <button type="button" class="btn btn-ghost g-wide g-qr" data-qr-open="login" data-online hidden><i class="fa-solid fa-qrcode" aria-hidden="true"></i> QR код билан кириш</button>
             <p class="reg-note">Дарслар ва ўйинлар учун фақат исм ва туғилган сана керак. Онлайн ҳисоб ихтиёрий (13 ёшдан).</p>
           </div>
 
@@ -2128,6 +2129,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
             <p class="g-err" id="gIdErr" data-err="gId" role="alert"></p>
             <p class="g-help">Масалан: <b data-notr>name@mail.uz</b> ёки <b data-notr>+998 90 123 45 67</b></p>
             <div class="g-foot"><button type="button" class="g-link" data-go="name">Ҳисоб яратиш</button><button type="submit" class="btn btn-primary">Кейинги</button></div>
+            <button type="button" class="btn btn-ghost g-wide g-qr" data-qr-open="login"><i class="fa-solid fa-qrcode" aria-hidden="true"></i> QR код билан кириш</button>
           </div>
 
           <div class="g-step" data-step="pw" hidden>
@@ -3132,6 +3134,13 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
       <div class="account-actions">
         <button class="btn btn-ghost" id="logoutBtn">Ҳисобдан чиқиш</button>
       </div>
+      <details class="acc-sec" id="qrBox">
+        <summary><i class="fa-solid fa-qrcode" aria-hidden="true"></i> QR код орқали кириш</summary>
+        <div class="auth-form">
+          <p class="auth-note">Бошқа телефон, планшет ёки компьютерда парол термасдан кириш: кириш QR'ини кўрсатинг ёки компьютердаги QR'ни шу қурилма билан сканер қилиб тасдиқланг.</p>
+          <div class="g-row2"><button type="button" class="btn btn-primary btn-sm" data-qr-open="link"><i class="fa-solid fa-qrcode" aria-hidden="true"></i> Кириш QR'ини кўрсатиш</button><button type="button" class="btn btn-ghost btn-sm" data-qr-open="ascan"><i class="fa-solid fa-camera" aria-hidden="true"></i> QR'ни сканер қилиш</button></div>
+        </div>
+      </details>
       <details class="acc-sec" id="pwChange">
         <summary><i class="fa-solid fa-key" aria-hidden="true"></i> Паролни ўзгартириш</summary>
         <form class="auth-form" id="pwForm" novalidate>
@@ -53738,7 +53747,13 @@ window.ekoFetch = async function (url, opts, onSlow) {
     }
   });
   /* Бошқа модуллар («Кириш» тугмаси, профил) учун */
-  window.EkoGate = { open: (m) => openGate(false, m === "signin" ? (online ? "id" : "start") : m === "register" ? "start" : undefined), get online() { return online; } };
+  window.EkoGate = { open: (m) => openGate(false, m === "signin" ? (online ? "id" : "start") : m === "register" ? "start" : undefined), get online() { return online; },
+    /* QR код орқали кирилганда (vendor/eko-qr-kirish.js): профил ҳисобдан тузилади, туғилган сана бўлмаса — сўралади */
+    signedIn(user) {
+      if (!user) return;
+      if (user.by && user.bm) return finishLogin(user, user.by, user.bm);
+      openGate(false, "lbirth"); G.user = user; G.id = user.email; G.first = String(user.name || "").split(" ")[0]; setChip();
+    } };
 
   /* ---------- Профил тугмаси (юқорида) ва профил ойнаси ---------- */
   const pModal = $("#profileModal");
@@ -53757,7 +53772,7 @@ window.ekoFetch = async function (url, opts, onSlow) {
       ${window.EkoPro && EkoPro.profileHtml ? EkoPro.profileHtml() : ""}
       <div class="prof-sec"><h3>🌐 Тил</h3><div class="lang-list" data-notr>${LANGS.map(([k, n]) => `<button type="button" data-setlang="${k}" class="${EkoLang.code === k ? "on" : ""}">${n}</button>`).join("")}</div></div>
       <div class="prof-sec"><h3>☁️ Онлайн ҳисоб</h3>${account
-        ? `<p class="small">${esc(account.email)}</p><button class="btn btn-ghost btn-sm" id="profAcc" type="button">Ҳисоб созламалари (чиқиш, ўчириш)</button>`
+        ? `<p class="small">${esc(account.email)}</p><div class="g-row2"><button class="btn btn-ghost btn-sm" id="profAcc" type="button">Ҳисоб созламалари (чиқиш, ўчириш)</button><button class="btn btn-ghost btn-sm" type="button" data-qr-open="link"><i class="fa-solid fa-qrcode" aria-hidden="true"></i> QR код орқали кириш</button></div>`
         : online
           ? `<p class="small muted">${a >= 13 ? "Ҳисоб очсангиз, бошқа телефондан кириб давом эттирасиз." : "Онлайн ҳисоб 13 ёшдан очилади. Профилингиз шу қурилмада сақланмоқда."}</p>${a >= 13 ? `<button class="btn btn-ghost btn-sm" id="profLogin" type="button">Кириш ёки ҳисоб очиш</button>` : ""}`
           : `<p class="small muted">Интернетга уланган платформада мавжуд. Профилингиз шу қурилмада сақланмоқда.</p>`}</div>
@@ -54763,5 +54778,6 @@ window.ekoFetch = async function (url, opts, onSlow) {
   <script src="/vendor/eko-ustoz.js" defer></script>
   <script src="/vendor/eko-turnir.js" defer></script>
   <script src="/vendor/eko-pro.js" defer></script>
+  <script src="/vendor/eko-qr-kirish.js" defer></script>
 </body>
 </html>
