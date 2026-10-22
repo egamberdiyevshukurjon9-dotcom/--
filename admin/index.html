@@ -38,7 +38,7 @@
       <nav class="tabs" id="tabs">
         <button data-tab="dash" class="on">📊 <span>Умумий ҳолат</span></button>
         <button data-tab="online">🟢 <span>Ҳозир онлайн</span> <i class="badge" id="bOnline">0</i></button>
-        <button data-tab="people">👥 <span>Фойдаланувчилар</span></button>
+        <button data-tab="people">👥 <span>Фойдаланувчилар</span> <i class="badge warn" id="bReset" hidden>0</i></button>
         <button data-tab="journal">🕓 <span>Кирди-чиқди</span></button>
         <button data-tab="stats">📈 <span>Статистик таҳлил</span></button>
         <button data-tab="analiz">🧭 <span>Таҳлил ва ҳисобот</span></button>
@@ -103,7 +103,9 @@
           <select id="pKind"><option value="">Ҳаммаси</option><option value="acc">Ҳисоби борлар</option><option value="guest">Меҳмонлар (қурилма)</option><option value="blocked">Блокланганлар</option></select>
           <a class="btn ghost sm" id="expUsers" href="#">⬇ CSV</a>
         </div>
-        <div class="card"><h2>Рўйхатдан ўтган ҳисоблар</h2><div class="table" id="tUsers"></div></div>
+        <div class="kpis" id="accKpis"></div>
+        <div class="card" id="resetCard"><h2>🔑 Паролни тиклаш сўровлари</h2><p class="small muted">Фойдаланувчи «Паролни унутдим → Кодим йўқ» ни босса, сўров шу ерга тушади. Шахсини текширинг (масалан, Telegram орқали), «Код бериш» ни босинг ва кодни унга юборинг: у 24 соат амал қилади ва бир марта ишлатилади.</p><div class="table" id="tResets"></div></div>
+        <div class="card"><h2>Рўйхатдан ўтган ҳисоблар</h2><p class="small muted">📧 почта · 📱 телефон · 🛟 тиклаш коди бор · ⚠️ кетма-кет хато парол · 🔌 очиқ сессиялар</p><div class="table" id="tUsers"></div></div>
         <div class="card"><h2>Танланган даврдаги барча ташрифчилар</h2><p class="small muted">Меҳмонлар исми сақланмайди (болалар махфийлиги учун) — улар қурилма коди билан кўрсатилади.</p><div class="table" id="tPeople"></div></div>
       </section>
 
@@ -115,6 +117,7 @@
             <option value="in">Кирди (кириш, рўйхатдан ўтиш, қайтиш)</option>
             <option value="out">Чиқди (чиқиш, вақт тугади)</option>
             <option value="bad">Хато ва блок</option>
+            <option value="pw">Парол: ўзгартириш ва тиклаш</option>
           </select>
           <a class="btn ghost sm" id="expEvents" href="#">⬇ Ҳисоблар журнали CSV</a>
           <a class="btn ghost sm" id="expVisits" href="#">⬇ Ташрифлар CSV</a>
@@ -352,6 +355,19 @@
       <label id="cReasonRow">Сабаб (журналга ёзилади)<input id="cReason" maxlength="200"></label>
       <div class="row"><button class="btn ghost" value="no">Бекор қилиш</button><button class="btn danger" value="yes" id="cOk">Тасдиқлаш</button></div>
     </form>
+  </dialog>
+  <!-- Тиклаш коди (админ беради) -->
+  <dialog id="codeDlg">
+    <div class="dlg-head"><h2>🔑 Бир марталик тиклаш коди</h2><button class="btn ghost sm" id="kdClose" aria-label="Ёпиш">✕</button></div>
+    <p id="kdWho" class="small"></p>
+    <div class="code-big" id="kdCode"></div>
+    <p class="small muted" id="kdExp"></p>
+    <ol class="small">
+      <li>Кодни фақат ҳисоб эгасига юборинг (шахсини текширинг).</li>
+      <li>У платформада: «Кириш» → почта/телефон → «Паролни унутдингизми?» → кодни ва янги паролни киритади.</li>
+      <li>Код бир марта ишлатилади. Янги код берилса, олдингиси бекор бўлади.</li>
+    </ol>
+    <div class="row"><button class="btn" id="kdCopy">📋 Нусхалаш</button><button class="btn ghost" id="kdCopyMsg">✉️ Хабар матнини нусхалаш</button></div>
   </dialog>
   <div class="toast" id="toast" role="status" hidden></div>
 </body>

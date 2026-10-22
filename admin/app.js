@@ -34,9 +34,11 @@
     register: ["ok", "Рўйхатдан ўтди"], login: ["ok", "Кирди"], return: ["info", "Қайтиб келди"], logout: ["", "Чиқди"],
     timeout: ["", "Чиқди (вақт тугади)"], login_failed: ["bad", "Хато парол"], login_blocked: ["bad", "Блокланган кирмоқчи бўлди"],
     blocked: ["bad", "Блокланди"], unblocked: ["ok", "Блокдан чиқарилди"], deleted: ["warn", "Ҳисобини ўчирди"], deleted_admin: ["warn", "Админ ўчирди"], ai: ["info", "Эко-кўз"],
-    pro: ["ok", "PRO обуна"], agent: ["info", "AI агент"]
+    pro: ["ok", "PRO обуна"], agent: ["info", "AI агент"],
+    pw_changed: ["info", "Паролни ўзгартирди"], pw_reset: ["warn", "Паролни тиклади"], reset_req: ["warn", "Тиклаш сўради"], reset_code: ["info", "Админ тиклаш коди берди"],
+    reset_failed: ["bad", "Хато тиклаш коди"], rc_new: ["info", "Янги тиклаш коди олди"], logout_admin: ["warn", "Админ сессияларни ёпди"], restored: ["info", "Ҳисоб калитдан тикланди"]
   };
-  const JGROUPS = { in: ["register", "login", "return"], out: ["logout", "timeout"], bad: ["login_failed", "login_blocked", "blocked", "deleted_admin"] };
+  const JGROUPS = { in: ["register", "login", "return", "restored"], out: ["logout", "timeout", "logout_admin"], bad: ["login_failed", "login_blocked", "blocked", "deleted_admin", "reset_failed"], pw: ["pw_changed", "pw_reset", "reset_req", "reset_code", "reset_failed", "rc_new"] };
 
   const fmt = (t) => (t ? new Date(t).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—");
   const dur = (s) => { s = Math.round(s || 0); if (s < 60) return s + " с"; const m = Math.round(s / 60); if (m < 60) return m + " дақ"; return Math.floor(m / 60) + " соат " + (m % 60) + " дақ"; };
@@ -143,7 +145,9 @@
     }
     return `<button class="link" data-person-vid="${esc(p.vid)}"><div class="who"><b>Меҳмон <span class="mono">${esc(short(p.vid))}</span></b><small>ҳисобсиз</small></div></button>`;
   }
-  const actBtns = (kind, id, blocked, label) => `<div class="acts">
+  /* Ҳисоб учун қўшимча: паролни тиклаш коди ва барча сессияларни ёпиш */
+  const accBtns = (id, label) => `<button class="btn sm" data-rcode="${esc(id)}" data-label="${esc(label)}" title="Паролни тиклаш учун бир марталик код">🔑 Код</button><button class="btn sm" data-kick="${esc(id)}" data-label="${esc(label)}" title="Барча қурилмалардан чиқариш">⏏</button>`;
+  const actBtns = (kind, id, blocked, label) => `<div class="acts">${kind === "user" ? accBtns(id, label) : ""}
     ${blocked ? `<button class="btn sm" data-unblock="${kind}" data-id="${esc(id)}">↺ Блокдан чиқариш</button>` : `<button class="btn sm" data-block="${kind}" data-id="${esc(id)}" data-label="${esc(label)}">⛔ Блоклаш</button>`}
     <button class="btn sm" data-del="${kind}" data-id="${esc(id)}" data-label="${esc(label)}" title="Платформадан ўчириш">🗑️</button></div>`;
   const pathHtml = (path) => `<div class="path">${(path || []).slice(-8).map(secName).map(esc).join(" → ")}</div>`;
@@ -166,8 +170,18 @@
     const q = $("#pSearch").value.trim().toLowerCase(), kind = $("#pKind").value;
     const users = overview.users.filter((u) => (!q || `${u.name} ${u.email}`.toLowerCase().includes(q)) && (kind !== "guest") && (kind !== "blocked" || u.blocked));
     const yr = new Date().getFullYear();
-    $("#tUsers").innerHTML = table(["", "Фойдаланувчи", "Ёш", "Рўйхатдан ўтган", "Охирги кириш", "#Киришлар", "Ҳолат", "Амал"],
-      users.map((u) => `<tr><td><span class="dot ${u.online ? "" : "off"}"></span></td><td>${personCell({ userId: u.id, name: u.name, email: u.email })}</td><td>${u.by ? yr - u.by : "—"}</td><td>${fmt(u.createdAt)}</td><td>${fmt(u.lastLogin)}</td><td class="num">${u.loginCount}</td>
+    const st = overview.stats;
+    kpis($("#accKpis"), [[nf(st.users), "ҳисоб"], [nf(overview.users.filter((u) => u.kind === "phone").length), "📱 телефон билан"], [nf(st.registersToday), "бугун рўйхатдан ўтди"], [nf(st.loginsToday), "бугун кирди"], [nf(st.failedToday), "бугун хато парол", st.failedToday > 0], [nf(st.resetReqs || 0), "тиклаш сўрови", (st.resetReqs || 0) > 0], [nf(st.resetsToday || 0), "бугун парол тикланди"]]);
+    const rr = (overview.resetReqs || []).filter((r) => !q || `${r.name} ${r.email} ${r.contact}`.toLowerCase().includes(q));
+    $("#tResets").innerHTML = table(["Вақт", "Фойдаланувчи", "Боғланиш", "Ҳудуд · қурилма · IP", "Ҳолат", "Амал"],
+      rr.map((r) => `<tr class="${r.status === "new" ? "" : "muted"}"><td>${fmt(r.at)}${r.n > 1 ? `<br><small class="muted">${r.n} марта</small>` : ""}</td><td>${personCell({ userId: r.userId, name: r.name, email: r.email })}</td><td>${esc(r.contact || "—")}</td><td>${whereHtml(r)}</td>
+        <td>${r.status === "new" ? `<span class="tag warn">Янги</span>` : r.status === "coded" ? `<span class="tag info">Код берилди ${fmt(r.codedAt)}</span>` : `<span class="tag ok">Ҳал бўлди</span>`}</td>
+        <td><div class="acts"><button class="btn sm" data-rcode="${esc(r.userId)}" data-label="${esc(r.name + " · " + r.email)}">🔑 Код бериш</button>${r.status !== "done" ? `<button class="btn sm ghost" data-rr="${esc(r.id)}" data-act="done">✓ Ҳал бўлди</button>` : ""}<button class="btn sm ghost" data-rr="${esc(r.id)}" data-act="delete" title="Ўчириш">🗑️</button></div></td></tr>`),
+      "Тиклаш сўровлари йўқ.");
+    $("#resetCard").hidden = !(overview.resetReqs || []).length;
+    const accInfo = (u) => `${u.kind === "phone" ? "📱" : "📧"}${u.rc ? " 🛟" : ""}${u.failCount >= 3 ? ` <span class="tag bad" title="Охирги: ${esc(fmt(u.lastFail))}">⚠️ ${u.failCount}</span>` : ""}${u.sessions ? ` <span class="muted small">🔌${u.sessions}</span>` : ""}${u.resetCode ? `<br><small class="muted">🔑 код ${fmt(u.resetCode)} гача</small>` : ""}${u.pwAt ? `<br><small class="muted">парол: ${fmt(u.pwAt)}</small>` : ""}`;
+    $("#tUsers").innerHTML = table(["", "Фойдаланувчи", "Кириш", "Ёш", "Рўйхатдан ўтган", "Охирги кириш", "#Киришлар", "Ҳолат", "Амал"],
+      users.map((u) => `<tr><td><span class="dot ${u.online ? "" : "off"}"></span></td><td>${personCell({ userId: u.id, name: u.name, email: u.email })}</td><td>${accInfo(u)}</td><td>${u.by ? yr - u.by : "—"}</td><td>${fmt(u.createdAt)}</td><td>${fmt(u.lastLogin)}</td><td class="num">${u.loginCount}</td>
         <td>${u.blocked ? `<span class="tag bad" title="${esc(u.blocked.reason || "")}">Блокланган</span>` : `<span class="tag ok">Фаол</span>`}</td><td>${actBtns("user", u.id, !!u.blocked, u.name + " · " + u.email)}</td></tr>`),
       "Ҳисоб топилмади.");
     const people = stats.people.filter((p) => {
@@ -543,6 +557,23 @@
         await api("/api/admin/block", { kind, id: b.dataset.id, reason: ok.reason, on: true });
         toast("Блокланди"); return reloadAll();
       }
+      if (b.dataset.rcode) {
+        const ok = await confirmBox(`🔑 Тиклаш коди: ${b.dataset.label || ""}`, "Бир марталик код яратилади (24 соат амал қилади). Уни фақат ҳисоб эгасига беринг — шахсини текширинг. Олдинги админ коди бекор бўлади.", false);
+        if (!ok) return;
+        const d = await api("/api/admin/reset-code", { id: b.dataset.rcode });
+        showCode(d); return reloadAll();
+      }
+      if (b.dataset.kick) {
+        const ok = await confirmBox(`⏏ Барча қурилмалардан чиқариш: ${b.dataset.label || ""}`, "Бу ҳисобнинг барча очиқ сессиялари ёпилади (ҳисоб ўғирланганда фойдали). Ҳисоб блокланмайди — у қайта парол билан кира олади.", false);
+        if (!ok) return;
+        await api("/api/admin/logout-user", { id: b.dataset.kick });
+        toast("Сессиялар ёпилди"); return reloadAll();
+      }
+      if (b.dataset.rr) {
+        if (b.dataset.act === "delete" && !(await confirmBox("Сўровни ўчириш", "Бу тиклаш сўрови рўйхатдан ўчирилади.", false))) return;
+        await api("/api/admin/reset-req", { id: b.dataset.rr, action: b.dataset.act });
+        return reloadAll();
+      }
       if (b.dataset.unblock) {
         await api("/api/admin/block", { kind: b.dataset.unblock, id: b.dataset.id, on: false });
         toast("Блокдан чиқарилди"); return reloadAll();
@@ -563,10 +594,25 @@
     } catch (err) { if (err.message !== "auth") toast(err.message); }
   });
 
+  /* ---------- Тиклаш коди ойнаси ---------- */
+  let lastCode = null;
+  function showCode(d) {
+    lastCode = d;
+    $("#kdWho").textContent = `${d.name} · ${d.email}`;
+    $("#kdCode").textContent = d.code;
+    $("#kdExp").textContent = "Амал қилади: " + fmt(d.exp) + " гача";
+    $("#codeDlg").showModal();
+  }
+  const copy = (t) => (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Нусхаланди"), () => toast(t));
+  $("#kdClose").addEventListener("click", () => $("#codeDlg").close());
+  $("#kdCopy").addEventListener("click", () => lastCode && copy(lastCode.code));
+  $("#kdCopyMsg").addEventListener("click", () => lastCode && copy(`Экомун: паролни тиклаш коди — ${lastCode.code}\nПлатформада «Кириш» → ${lastCode.email} → «Паролни унутдингизми?» ни босинг, кодни ва янги паролни киритинг. Код ${fmt(lastCode.exp)} гача амал қилади. Уни ҳеч кимга берманг.`));
+
   /* ---------- Юклаш ---------- */
   async function loadOverview() {
     overview = await api("/api/admin/overview");
     $("#bOnline").textContent = overview.guests.length;
+    const nr = overview.stats.resetReqs || 0; $("#bReset").hidden = !nr; $("#bReset").textContent = nr;
     $("#updated").textContent = "Янгиланди: " + new Date(overview.now).toLocaleTimeString("ru-RU");
   }
   async function loadStats() {

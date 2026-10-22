@@ -322,6 +322,12 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.1; margin: 16px 0; lett
 .account-head b { display: block; font-size: 1.15rem; }
 .account-actions { display: grid; gap: 10px; }
 .danger-zone { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 12px; }
+.acc-sec { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 12px; }
+.acc-sec summary { cursor: pointer; font-weight: 600; display: flex; gap: 8px; align-items: center; min-height: 32px; }
+.acc-sec summary i { color: var(--primary); }
+.acc-sec .g-check { display: flex; gap: 8px; align-items: center; font-weight: 500; }
+.acc-sec .g-code { font: 700 1.3rem/1.2 ui-monospace, Menlo, monospace; letter-spacing: .1em; text-align: center; padding: 12px; border-radius: 12px; border: 2px dashed var(--primary); background: var(--primary-soft); user-select: all; }
+.acc-sec .g-code[hidden] { display: none; }
 .danger-zone summary { cursor: pointer; color: var(--muted); font-size: .9rem; }
 .btn-danger { background: #dc2626; color: #fff; }
 
@@ -1109,6 +1115,76 @@ html.no-profile body { overflow: hidden; }
 .reg-langs { display: flex; justify-content: flex-end; gap: 6px; margin: -6px 0 4px; }
 .reg-langs button { font: 600 .82rem var(--eko-font, system-ui); padding: 5px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; }
 .reg-langs button.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+/* ===== Кириш ва рўйхатдан ўтиш: Google услубида (ҳар қадамда битта савол, сузувчи ёрлиқлар) ===== */
+.g-card { width: min(450px, 100%); padding: 28px 28px 24px; border-radius: 28px; overflow: hidden; }
+.g-bar { position: absolute; left: 0; right: 0; top: 0; height: 4px; overflow: hidden; opacity: 0; transition: opacity .2s; }
+.g-bar.on { opacity: 1; }
+.g-bar::before { content: ""; position: absolute; top: 0; bottom: 0; left: -40%; width: 40%; background: var(--primary); border-radius: 4px; animation: gBar 1.1s ease-in-out infinite; }
+@keyframes gBar { to { left: 100%; } }
+.g-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 34px; margin: -8px 0 2px; }
+.g-top .reg-langs { margin: 0 0 0 auto; }
+.g-back { width: 38px; height: 38px; border-radius: 50%; border: 0; background: none; color: var(--text); cursor: pointer; font-size: 1.05rem; flex: none; }
+.g-back:hover, .g-back:focus-visible { background: var(--primary-soft); }
+.g-brand { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; }
+.g-brand .reg-logo { font-size: 1.9rem; }
+.g-card h1 { font-size: 1.6rem; font-weight: 600; margin: 12px 0 4px; line-height: 1.2; overflow-wrap: anywhere; }
+.g-sub { margin: 0; color: var(--muted); font-size: .98rem; min-height: 1.2em; }
+.g-sub:empty { display: none; }
+.g-chip { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; margin-top: 12px; padding: 4px 12px 4px 4px; border: 1px solid var(--line); border-radius: 99px; background: var(--card); color: var(--text); font: 600 .9rem var(--eko-font, system-ui); cursor: pointer; }
+.g-chip:hover { background: var(--primary-soft); }
+.g-chip[hidden] { display: none; }
+.g-chip #gChipTxt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.g-chip i { font-size: .7rem; color: var(--muted); }
+.g-av { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--on-primary, #fff); font-size: .8rem; font-weight: 700; flex: none; }
+.reg-card .g-card form, .g-card form { display: block; margin-top: 18px; }
+#gSet { border: 0; margin: 0; padding: 0; min-width: 0; }
+.g-step { display: grid; gap: 12px; animation: gIn .22s ease-out; }
+.g-step[hidden] { display: none; }
+@keyframes gIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+.g-field { position: relative; display: block; }
+.reg-card .g-field input, .reg-card .g-field select { width: 100%; height: 56px; padding: 22px 14px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--text); font-size: 1rem; outline: none; transition: border-color .15s, box-shadow .15s; }
+.reg-card .g-field select { padding-top: 22px; }
+.g-field label { position: absolute; left: 12px; top: 17px; padding: 0 4px; font-weight: 500; font-size: 1rem; color: var(--muted); pointer-events: none; transition: all .15s; background: transparent; max-width: calc(100% - 24px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-field input:focus + label, .g-field input:not(:placeholder-shown) + label, .g-sel label { top: 6px; font-size: .74rem; color: var(--muted); }
+.reg-card .g-field input:focus, .reg-card .g-field select:focus { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.g-field input:focus + label, .g-field select:focus + label { color: var(--primary); }
+.reg-card .g-field.bad input, .reg-card .g-field.bad select { border-color: #d93025; box-shadow: inset 0 0 0 1px #d93025; }
+.g-field.bad label { color: #d93025; }
+.g-err { display: flex; gap: 6px; align-items: flex-start; margin: -4px 0 0; color: #d93025; font-size: .86rem; line-height: 1.35; }
+.g-err:empty { display: none; }
+.g-err::before { content: "⚠"; font-weight: 700; }
+:root[data-theme="dark"] .g-err, :root[data-theme="dark"] .g-field.bad label { color: #f28b82; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .g-err, :root:not([data-theme="light"]) .g-field.bad label { color: #f28b82; } }
+.g-help { margin: 0; color: var(--muted); font-size: .84rem; line-height: 1.45; }
+.g-ok { margin: 0; color: var(--primary); font-weight: 600; }
+.reg-card .g-check { display: flex; gap: 10px; align-items: center; font-weight: 500; font-size: .92rem; cursor: pointer; min-height: 32px; }
+.reg-card .g-check input { width: 18px; height: 18px; padding: 0; accent-color: var(--primary); }
+.g-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+.g-foot .btn { border-radius: 99px; min-width: 104px; min-height: 42px; }
+.g-link { font: 600 .92rem var(--eko-font, system-ui); border: 0; background: none; color: var(--primary); padding: 10px 8px; margin-left: -8px; border-radius: 8px; cursor: pointer; text-align: left; }
+.g-link:hover, .g-link:focus-visible { background: var(--primary-soft); }
+.g-link[hidden] { display: none; }
+.g-wide { width: 100%; min-height: 46px; border-radius: 99px; }
+.g-wide[hidden] { display: none; }
+.g-opt { display: flex; gap: 14px; align-items: flex-start; width: 100%; text-align: left; padding: 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.g-opt:hover, .g-opt:focus-visible { border-color: var(--primary); background: var(--primary-soft); }
+.g-opt i { font-size: 1.3rem; color: var(--primary); margin-top: 2px; width: 24px; text-align: center; }
+.g-opt span { display: grid; gap: 2px; } .g-opt small { color: var(--muted); }
+.g-meter { display: flex; align-items: center; gap: 10px; font-size: .82rem; color: var(--muted); }
+.g-meter i { flex: 1; height: 5px; border-radius: 9px; background: var(--line); position: relative; overflow: hidden; }
+.g-meter i::after { content: ""; position: absolute; inset: 0; width: var(--w, 0%); background: var(--c, #d93025); border-radius: 9px; transition: width .2s; }
+.g-meter span:empty { display: none; }
+.g-code { font: 700 1.5rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; text-align: center; padding: 16px; border-radius: 14px; border: 2px dashed var(--primary); background: var(--primary-soft); color: var(--text); user-select: all; overflow-wrap: anywhere; }
+.g-row2 { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.g-card .modal-close { top: 10px; right: 10px; }
+.g-card.has-close .g-top .reg-langs { margin-right: 40px; }
+@media (max-width: 480px) {
+  .reg-gate { padding: 0; place-items: stretch; }
+  .g-card { width: 100%; min-height: 100%; border-radius: 0; border: 0; padding: 22px 18px 28px; box-shadow: none; }
+  .g-card h1 { font-size: 1.4rem; }
+  .g-foot .btn { flex: 1 0 auto; }
+}
+@media (prefers-reduced-motion: reduce) { .g-step { animation: none; } .g-bar::before { animation-duration: 3s; } }
 .xw-uz-note { display: none; margin: 0 0 8px; color: var(--muted); }
 .xw-uz-note span { display: none; }
 html[lang="ru"] .xw-uz-note, html[lang="en"] .xw-uz-note { display: block; }
@@ -1275,6 +1351,16 @@ html[lang="ru"] .xw-uz-note .ru, html[lang="en"] .xw-uz-note .en { display: inli
 .l3-canvas:focus-visible { box-shadow: inset 0 0 0 3px var(--primary); }
 .l3-load { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 18px; text-align: center; color: #cbd5e1; }
 .l3-tools { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; }
+/* 3D: ном ёрлиғи (hover / теккизиш) ва «🏷 Номлар» режимидаги доимий ёрлиқлар */
+.l3-tip { position: absolute; left: 0; top: 0; z-index: 6; max-width: min(280px, calc(100% - 12px)); padding: 7px 11px; border-radius: 10px; background: rgba(15, 23, 42, .92); color: #fff; font-size: .84rem; line-height: 1.3; pointer-events: none; box-shadow: 0 6px 18px rgba(0, 0, 0, .28); will-change: transform; }
+.l3-tip[hidden] { display: none; }
+.l3-tip b { display: block; font-weight: 700; overflow-wrap: anywhere; }
+.l3-tip small { display: block; opacity: .85; font-size: .78rem; margin-top: 2px; overflow-wrap: anywhere; }
+.l3-tip em { display: block; font-style: normal; font-size: .74rem; margin-top: 4px; color: #6ee7b7; }
+.l3-pins { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+.l3-pin { position: absolute; left: 0; top: 0; width: max-content; max-width: 170px; padding: 2px 7px; border-radius: 7px; background: rgba(255, 255, 255, .92); color: #0f172a; font-size: .68rem; font-weight: 700; line-height: 1.2; text-align: center; white-space: normal; overflow-wrap: anywhere; box-shadow: 0 1px 4px rgba(0, 0, 0, .25); border: 1px solid rgba(15, 23, 42, .12); }
+.l3-pin::after { content: ""; position: absolute; left: 50%; bottom: -4px; width: 7px; height: 7px; margin-left: -4px; background: inherit; transform: rotate(45deg); border-right: 1px solid rgba(15, 23, 42, .12); border-bottom: 1px solid rgba(15, 23, 42, .12); }
+@media (max-width: 600px) { .l3-pin { font-size: .6rem; max-width: 120px; padding: 1px 5px; } }
 .l3-tb { width: 40px; height: 40px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, .28); background: rgba(15, 23, 42, .55); color: #fff; cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .l3-tb:hover { background: rgba(15, 23, 42, .8); }
 .l3-tb.on { background: var(--primary); color: var(--on-primary); border-color: transparent; }
@@ -1995,51 +2081,138 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
   <link rel="stylesheet" href="/vendor/eko-global.css">
 </head>
 <body>
-  <!-- Рўйхатдан ўтиш: ҳар бир фойдаланувчи илова ичига кириш учун профил очади -->
+  <!-- Рўйхатдан ўтиш ва кириш: Google услубида, босқичма-босқич (битта форма, ҳар қадамда битта савол) -->
   <div class="reg-gate" id="regGate" role="dialog" aria-modal="true" aria-labelledby="regTitle" hidden>
-    <div class="reg-card">
-      <div class="reg-langs" data-notr><button type="button" data-setlang="cyr">Ўз</button><button type="button" data-setlang="lat">Oʻz</button><button type="button" data-setlang="ru">Ру</button><button type="button" data-setlang="en">En</button></div>
-      <div class="reg-logo" aria-hidden="true">🌱</div>
+    <div class="reg-card g-card">
+      <div class="g-bar" id="gBar" aria-hidden="true"></div>
+      <div class="g-top">
+        <button type="button" class="g-back" id="gBack" aria-label="Орқага" hidden><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button>
+        <div class="reg-langs" data-notr><button type="button" data-setlang="cyr">Ўз</button><button type="button" data-setlang="lat">Oʻz</button><button type="button" data-setlang="ru">Ру</button><button type="button" data-setlang="en">En</button></div>
+      </div>
+      <div class="g-brand"><span class="reg-logo" aria-hidden="true">🌱</span><b>Экомун</b></div>
       <h1 id="regTitle">Экомунга хуш келибсиз!</h1>
-      <p class="muted" style="margin:0">Илова ичига кириш учун рўйхатдан ўтинг. Ёшингизга қараб мос босқич очилади.</p>
-      <div class="reg-stages" aria-hidden="true">
-        <div class="reg-stage" data-st="maktab"><b>🎒 Мактаб</b>5–15 ёш · ўйин асосида</div>
-        <div class="reg-stage" data-st="uni"><b>🎓 Университет</b>16–60 ёш · илмий далиллар асосида</div>
-      </div>
-      <div class="reg-tabs" role="tablist" id="regTabs" hidden>
-        <button type="button" class="on" data-rt="reg" role="tab" aria-selected="true">1. Рўйхатдан ўтиш</button>
-        <button type="button" data-rt="login" role="tab" aria-selected="false">Ҳисобим бор — кириш</button>
-      </div>
-      <form id="regForm" novalidate>
-        <label>Исмингиз (ёки тахаллус)
-          <input name="name" maxlength="40" autocomplete="nickname" required placeholder="Масалан: Азиза">
-        </label>
-        <div class="reg-row">
-          <label>Туғилган йил<select name="by" required><option value="">Йил</option></select></label>
-          <label>Туғилган ой<select name="bm" required><option value="">Ой</option></select></label>
-        </div>
-        <p class="reg-preview" id="regPreview" aria-live="polite"></p>
-        <div class="reg-online" id="regOnline" hidden>
-          <label class="reg-check"><input type="checkbox" name="online"> Онлайн ҳисоб ҳам очилсин — бошқа телефондан кириб, давом эттириш учун (13 ёшдан)</label>
-          <div id="regOnlineFields" hidden>
-            <label>Почта ёки телефон рақам<input name="email" type="text" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="254" autocomplete="username" placeholder="name@mail.uz / +998 90 123 45 67"></label>
-            <label>Парол (камида 6 белги)<input name="password" type="password" autocomplete="new-password" minlength="6"></label>
+      <p class="g-sub" id="gSub">Ёшингизга қараб мос босқич очилади: мактаб ёки университет.</p>
+      <button type="button" class="g-chip" id="gChip" hidden title="Бошқа ҳисоб"><span class="g-av" id="gAv" aria-hidden="true">👤</span><span id="gChipTxt"></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+      <form id="gForm" novalidate>
+        <fieldset id="gSet">
+          <div class="g-step" data-step="start">
+            <div class="reg-stages" aria-hidden="true">
+              <div class="reg-stage" data-st="maktab"><b>🎒 Мактаб</b>5–15 ёш · ўйин асосида</div>
+              <div class="reg-stage" data-st="uni"><b>🎓 Университет</b>16–60 ёш · илмий далиллар асосида</div>
+            </div>
+            <button type="button" class="btn btn-primary g-wide" data-go="name">Ҳисоб яратиш</button>
+            <button type="button" class="btn btn-ghost g-wide" data-go="id" data-online hidden>Менда ҳисоб бор — кириш</button>
+            <p class="reg-note">Дарслар ва ўйинлар учун фақат исм ва туғилган сана керак. Онлайн ҳисоб ихтиёрий (13 ёшдан).</p>
           </div>
-        </div>
-        <p class="reg-error" id="regError" role="alert"></p>
-        <button class="btn btn-primary" type="submit">Рўйхатдан ўтиш ва бошлаш →</button>
-        <p class="reg-note" id="regNote">Профил (исм, туғилган йил ва ой) шу қурилмада сақланади. Онлайн ҳисоб ихтиёрий.</p>
-      </form>
-      <form id="loginForm" novalidate hidden>
-        <label>Почта ёки телефон рақам<input name="email" type="text" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="254" autocomplete="username" placeholder="name@mail.uz / +998 90 123 45 67" required></label>
-        <label>Парол<input name="password" type="password" autocomplete="current-password" required></label>
-        <div class="reg-row" id="loginBirth" hidden>
-          <label>Туғилган йил<select name="by"><option value="">Йил</option></select></label>
-          <label>Туғилган ой<select name="bm"><option value="">Ой</option></select></label>
-        </div>
-        <p class="reg-error" id="loginError" role="alert"></p>
-        <button class="btn btn-primary" type="submit">Кириш →</button>
-        <p class="reg-note">Онлайн ҳисобингизга кирсангиз, исмингиз ва босқичингиз (мактаб ёки университет) ўзи тикланади.</p>
+
+          <div class="g-step" data-step="id" hidden>
+            <div class="g-field"><input id="gId" type="text" inputmode="email" autocapitalize="off" autocomplete="username" spellcheck="false" maxlength="254" placeholder=" " aria-describedby="gIdErr"><label for="gId">Почта ёки телефон рақам</label></div>
+            <p class="g-err" id="gIdErr" data-err="gId" role="alert"></p>
+            <p class="g-help">Масалан: <b data-notr>name@mail.uz</b> ёки <b data-notr>+998 90 123 45 67</b></p>
+            <div class="g-foot"><button type="button" class="g-link" data-go="name">Ҳисоб яратиш</button><button type="submit" class="btn btn-primary">Кейинги</button></div>
+          </div>
+
+          <div class="g-step" data-step="pw" hidden>
+            <div class="g-field"><input id="gPw" type="password" autocomplete="current-password" maxlength="200" placeholder=" " aria-describedby="gPwErr"><label for="gPw">Паролингизни киритинг</label></div>
+            <p class="g-err" id="gPwErr" data-err="gPw" role="alert"></p>
+            <label class="g-check"><input type="checkbox" data-show="gPw"> Паролни кўрсатиш</label>
+            <label class="g-check"><input type="checkbox" id="gRemember" checked> Мени шу қурилмада эслаб қол</label>
+            <div class="g-foot"><button type="button" class="g-link" data-go="fcode">Паролни унутдингизми?</button><button type="submit" class="btn btn-primary">Кейинги</button></div>
+          </div>
+
+          <div class="g-step" data-step="lbirth" hidden>
+            <div class="reg-row">
+              <div class="g-field g-sel"><select id="gLy" aria-describedby="gLErr"><option value="">Йил</option></select><label for="gLy">Туғилган йил</label></div>
+              <div class="g-field g-sel"><select id="gLm"><option value="">Ой</option></select><label for="gLm">Туғилган ой</label></div>
+            </div>
+            <p class="g-err" id="gLErr" data-err="gLy" role="alert"></p>
+            <div class="g-foot"><span></span><button type="submit" class="btn btn-primary">Кейинги</button></div>
+          </div>
+
+          <div class="g-step" data-step="name" hidden>
+            <div class="g-field"><input id="gName" type="text" maxlength="40" autocomplete="name" placeholder=" " aria-describedby="gNameErr"><label for="gName">Исмингиз (ёки тахаллус)</label></div>
+            <p class="g-err" id="gNameErr" data-err="gName" role="alert"></p>
+            <div class="g-foot"><button type="button" class="g-link" data-go="id" data-online hidden>Ҳисобим бор — кириш</button><button type="submit" class="btn btn-primary">Кейинги</button></div>
+          </div>
+
+          <div class="g-step" data-step="birth" hidden>
+            <div class="reg-row">
+              <div class="g-field g-sel"><select id="gBy" aria-describedby="gByErr"><option value="">Йил</option></select><label for="gBy">Туғилган йил</label></div>
+              <div class="g-field g-sel"><select id="gBm"><option value="">Ой</option></select><label for="gBm">Туғилган ой</label></div>
+            </div>
+            <p class="g-err" id="gByErr" data-err="gBy" role="alert"></p>
+            <p class="reg-preview" id="regPreview" aria-live="polite"></p>
+            <p class="g-help">Туғилган санангиз фақат ёшга мос босқични танлаш учун керак.</p>
+            <div class="g-foot"><span></span><button type="submit" class="btn btn-primary">Кейинги</button></div>
+          </div>
+
+          <div class="g-step" data-step="how" hidden>
+            <button type="submit" class="g-opt"><i class="fa-solid fa-cloud" aria-hidden="true"></i><span><b>Почта ёки телефон билан ҳисоб очиш</b><small>Бошқа телефон ёки компьютердан кириб давом эттирасиз, сертификат ва PRO сақланади</small></span></button>
+            <button type="button" class="g-opt" data-local><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i><span><b>Ҳозирча ҳисобсиз — фақат шу қурилмада</b><small>Кейин профилдан ҳар доим ҳисоб очишингиз мумкин</small></span></button>
+          </div>
+
+          <div class="g-step" data-step="rid" hidden>
+            <div class="g-field"><input id="gRid" type="text" inputmode="email" autocapitalize="off" autocomplete="username" spellcheck="false" maxlength="254" placeholder=" " aria-describedby="gRidErr"><label for="gRid">Почта ёки телефон рақам</label></div>
+            <p class="g-err" id="gRidErr" data-err="gRid" role="alert"></p>
+            <p class="g-help">Ҳисобингизга шу орқали кирасиз. Масалан: <b data-notr>name@mail.uz</b> ёки <b data-notr>+998 90 123 45 67</b></p>
+            <div class="g-foot"><button type="button" class="g-link" data-go="id" data-online hidden>Ҳисобим бор — кириш</button><button type="submit" class="btn btn-primary">Кейинги</button></div>
+          </div>
+
+          <div class="g-step" data-step="rpw" hidden>
+            <div class="g-field"><input id="gNp" type="password" autocomplete="new-password" maxlength="200" placeholder=" " aria-describedby="gNpErr"><label for="gNp">Парол</label></div>
+            <div class="g-field"><input id="gNp2" type="password" autocomplete="new-password" maxlength="200" placeholder=" "><label for="gNp2">Паролни тасдиқланг</label></div>
+            <div class="g-meter" id="gMeter" aria-live="polite"><i></i><span></span></div>
+            <p class="g-err" id="gNpErr" data-err="gNp" role="alert"></p>
+            <label class="g-check"><input type="checkbox" data-show="gNp,gNp2"> Паролни кўрсатиш</label>
+            <p class="g-help">Камида 6 белги. Ҳарф, рақам ва белгиларни аралаштиринг.</p>
+            <p class="auth-note">«Кейинги» ни босиб, <a href="/privacy" target="_blank" rel="noopener">махфийлик сиёсати</a>га розилик билдирасиз.</p>
+            <div class="g-foot"><span></span><button type="submit" class="btn btn-primary">Кейинги</button></div>
+          </div>
+
+          <div class="g-step" data-step="code" hidden>
+            <div class="g-code" id="gCode" data-notr></div>
+            <div class="g-row2"><button type="button" class="btn btn-ghost btn-sm" id="gCopy"><i class="fa-solid fa-copy" aria-hidden="true"></i> Нусхалаш</button><button type="button" class="btn btn-ghost btn-sm" id="gSave"><i class="fa-solid fa-download" aria-hidden="true"></i> Файлга сақлаш</button></div>
+            <p class="g-help">Кодни ёзиб қўйинг ёки скриншот олинг. У фақат бир марта кўрсатилади. Профил → «Ҳисоб созламалари» да янгисини олиш мумкин.</p>
+            <div class="g-foot"><span></span><button type="submit" class="btn btn-primary">Сақладим, давом этиш</button></div>
+          </div>
+
+          <div class="g-step" data-step="fcode" hidden>
+            <div class="g-field"><input id="gRc" type="text" autocapitalize="characters" autocomplete="one-time-code" spellcheck="false" maxlength="20" placeholder=" " aria-describedby="gRcErr"><label for="gRc">Тиклаш коди (XXXXX-XXXXX)</label></div>
+            <p class="g-err" id="gRcErr" data-err="gRc" role="alert"></p>
+            <div class="g-field"><input id="gFp" type="password" autocomplete="new-password" maxlength="200" placeholder=" " aria-describedby="gFpErr"><label for="gFp">Янги парол</label></div>
+            <div class="g-field"><input id="gFp2" type="password" autocomplete="new-password" maxlength="200" placeholder=" "><label for="gFp2">Янги паролни тасдиқланг</label></div>
+            <p class="g-err" id="gFpErr" data-err="gFp" role="alert"></p>
+            <label class="g-check"><input type="checkbox" data-show="gFp,gFp2"> Паролни кўрсатиш</label>
+            <p class="g-help">Код — рўйхатдан ўтганда берилган тиклаш коди ёки админ юборган бир марталик код.</p>
+            <div class="g-foot"><button type="button" class="g-link" data-go="freq">Кодим йўқ</button><button type="submit" class="btn btn-primary">Паролни янгилаш</button></div>
+          </div>
+
+          <div class="g-step" data-step="freq" hidden>
+            <div data-freq="ask">
+              <p class="g-help" style="margin-top:0">Сўровингиз админга боради. Админ ҳисобингиз сизники эканини текшириб, бир марталик код беради (24 соат амал қилади).</p>
+              <div class="g-field"><input id="gCt" type="text" maxlength="120" autocomplete="tel" placeholder=" "><label for="gCt">Сиз билан боғланиш (Telegram ёки телефон)</label></div>
+              <p class="g-err" data-err="gCt" role="alert"></p>
+              <div class="g-foot"><button type="button" class="g-link" data-go="fcode">Кодим бор</button><button type="submit" class="btn btn-primary">Сўров юбориш</button></div>
+            </div>
+            <div data-freq="sent" hidden>
+              <p class="g-ok"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Сўров юборилди. Код олгач, «Кодни киритиш» ни босинг.</p>
+              <div class="g-foot"><span></span><button type="button" class="btn btn-primary" data-go="fcode">Кодни киритиш</button></div>
+            </div>
+          </div>
+
+          <div class="g-step" data-step="edit" hidden>
+            <div class="g-field"><input id="gEn" type="text" maxlength="40" autocomplete="name" placeholder=" " aria-describedby="gEnErr"><label for="gEn">Исмингиз (ёки тахаллус)</label></div>
+            <p class="g-err" id="gEnErr" data-err="gEn" role="alert"></p>
+            <div class="reg-row">
+              <div class="g-field g-sel"><select id="gEy"><option value="">Йил</option></select><label for="gEy">Туғилган йил</label></div>
+              <div class="g-field g-sel"><select id="gEm"><option value="">Ой</option></select><label for="gEm">Туғилган ой</label></div>
+            </div>
+            <p class="g-err" data-err="gEy" role="alert"></p>
+            <p class="reg-preview" id="gEPrev" aria-live="polite"></p>
+            <div class="g-foot"><span></span><button type="submit" class="btn btn-primary">Сақлаш</button></div>
+          </div>
+        </fieldset>
+        <p class="g-help g-slow" id="gSlow" aria-live="polite"></p>
       </form>
     </div>
   </div>
@@ -2940,6 +3113,29 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
       <div class="account-actions">
         <button class="btn btn-ghost" id="logoutBtn">Ҳисобдан чиқиш</button>
       </div>
+      <details class="acc-sec" id="pwChange">
+        <summary><i class="fa-solid fa-key" aria-hidden="true"></i> Паролни ўзгартириш</summary>
+        <form class="auth-form" id="pwForm" novalidate>
+          <input type="text" name="username" autocomplete="username" hidden>
+          <label>Жорий парол<input name="old" type="password" autocomplete="current-password" maxlength="200" required></label>
+          <label>Янги парол (камида 6 белги)<input name="password" type="password" autocomplete="new-password" maxlength="200" required></label>
+          <label>Янги паролни тасдиқланг<input name="password2" type="password" autocomplete="new-password" maxlength="200" required></label>
+          <label class="g-check"><input type="checkbox" data-pwshow> Паролни кўрсатиш</label>
+          <p class="auth-error" id="pwError" role="alert"></p>
+          <button class="btn btn-primary" type="submit">Паролни сақлаш</button>
+          <p class="auth-note">Бошқа қурилмалардаги кириш ёпилади — у ерда янги парол билан кирасиз.</p>
+        </form>
+      </details>
+      <details class="acc-sec" id="rcBox">
+        <summary><i class="fa-solid fa-life-ring" aria-hidden="true"></i> Тиклаш коди</summary>
+        <form class="auth-form" id="rcForm" novalidate>
+          <p class="auth-note">Паролни унутсангиз, тиклаш коди билан янги парол қўясиз. Янги код олинса, эскиси бекор бўлади.</p>
+          <label>Тасдиқлаш учун паролингиз<input name="password" type="password" autocomplete="current-password" maxlength="200" required></label>
+          <p class="auth-error" id="rcError" role="alert"></p>
+          <div class="g-code" id="rcCode" data-notr hidden></div>
+          <button class="btn btn-ghost" type="submit">Янги тиклаш коди олиш</button>
+        </form>
+      </details>
       <details class="danger-zone">
         <summary>Ҳисобни ўчириш</summary>
         <form class="auth-form" id="deleteForm" novalidate>
@@ -51885,7 +52081,11 @@ window.ekoFetch = async function (url, opts, onSlow) {
   const ageOf = (y, m) => { const d = new Date(); return d.getFullYear() - y - (d.getMonth() + 1 <= m ? 1 : 0); };
   const account = $("#accountModal"), delForm = $("#deleteForm");
   btn.addEventListener("click", () => {
+    /* Кириш ва рўйхатдан ўтиш — Google услубидаги босқичма-босқич ойнада (EkoGate) */
+    if (!user && window.EkoGate) { window.EkoGate.open("signin"); return; }
     if (!user) { setMode("login"); modal.showModal(); form.email.focus(); return; }
+    $("#pwForm").reset(); $("#pwError").textContent = ""; $("#rcForm").reset(); $("#rcError").textContent = ""; $("#rcCode").hidden = true;
+    $("#pwChange").open = false; $("#rcBox").open = false;
     $("#accountName").textContent = user.name;
     $("#accountEmail").textContent = user.email;
     delForm.reset(); $("#deleteError").textContent = "";
@@ -51911,6 +52111,31 @@ window.ekoFetch = async function (url, opts, onSlow) {
     }
   });
   $("#accountClose").addEventListener("click", () => account.close());
+  /* Паролни ўзгартириш ва янги тиклаш коди */
+  const pwForm = $("#pwForm"), rcForm = $("#rcForm");
+  pwForm.querySelector("[data-pwshow]").addEventListener("change", (e) => pwForm.querySelectorAll("input[type=password], input[data-pw]").forEach((i) => { i.dataset.pw = "1"; i.type = e.target.checked ? "text" : "password"; }));
+  pwForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const er = $("#pwError"), b = pwForm.querySelector("button[type=submit]");
+    er.textContent = "";
+    if (!pwForm.old.value) { er.textContent = T("Жорий паролни киритинг"); pwForm.old.focus(); return; }
+    if (pwForm.password.value.length < 6) { er.textContent = T("Янги парол камида 6 белгидан иборат бўлсин"); pwForm.password.focus(); return; }
+    if (pwForm.password.value !== pwForm.password2.value) { er.textContent = T("Пароллар мос келмади. Қайта уриниб кўринг"); pwForm.password2.focus(); return; }
+    b.disabled = true;
+    try { await call("/api/password/change", { old: pwForm.old.value, password: pwForm.password.value }); pwForm.reset(); $("#pwChange").open = false; notify("✅ Парол ўзгартирилди"); }
+    catch (err) { er.textContent = T(err.message); }
+    finally { b.disabled = false; }
+  });
+  rcForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const er = $("#rcError"), b = rcForm.querySelector("button[type=submit]");
+    er.textContent = "";
+    if (!rcForm.password.value) { er.textContent = T("Паролни киритинг"); rcForm.password.focus(); return; }
+    b.disabled = true;
+    try { const d = await call("/api/password/recovery-code", { password: rcForm.password.value }); rcForm.password.value = ""; const c = $("#rcCode"); c.textContent = d.recoveryCode; c.hidden = false; notify("Янги тиклаш коди — уни ёзиб қўйинг"); }
+    catch (err) { er.textContent = T(err.message); }
+    finally { b.disabled = false; }
+  });
   $("#authClose").addEventListener("click", () => modal.close());
   modal.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
 
@@ -53146,68 +53371,159 @@ window.ekoFetch = async function (url, opts, onSlow) {
     } else if (profile.stage !== st) { profile.stage = st; saveProfile(); }
   }
 
-  /* ---------- Рўйхатдан ўтиш ойнаси ----------
-     Тартиб: 1) рўйхатдан ўтиш (профил: исм, туғилган йил ва ой; 13 ёшдан хоҳласа онлайн ҳисоб ҳам) ёки
-     2) «Ҳисобим бор — кириш» (онлайн ҳисоб; профил ва босқич ўзи тикланади). Сервер йўқ бўлса (APK) — фақат 1). */
-  const gate = $("#regGate"), form = $("#regForm"), lform = $("#loginForm"), prev = $("#regPreview"), err = $("#regError");
-  let online = false;
-  const fillBirth = (f) => {
-    const y = new Date().getFullYear();
-    for (let i = y - AGE_MIN; i >= y - AGE_MAX - 1; i--) f.by.add(new Option(String(i), String(i)));
-    MONTHS.forEach((m, i) => f.bm.add(new Option(m, String(i + 1))));
+  /* ---------- Рўйхатдан ўтиш ва кириш (Google услубида) ----------
+     Ҳар қадамда битта савол, «Кейинги» тугмаси, хато ҳар бир майдон остида:
+     • Кириш: почта/телефон → (ҳисоб борлиги текширилади) → парол («Паролни кўрсатиш», «Мени эслаб қол») →
+       керак бўлса туғилган сана (эски ҳисоблар учун бир марта).
+     • Ҳисоб яратиш: исм → туғилган сана (босқич кўрсатилади) → 13 ёшдан: «қандай кирасиз?» → почта/телефон →
+       парол ва тасдиғи (кучлилик кўрсаткичи) → тиклаш коди (бир марта кўрсатилади).
+       13 ёшгача ёки сервер йўқ (APK) — профил фақат шу қурилмада.
+     • Паролни унутдим: тиклаш коди ёки админ берган код + янги парол; код йўқ бўлса — админга сўров. */
+  const gate = $("#regGate"), gf = $("#gForm"), prev = $("#regPreview");
+  let online = false, step = "start";
+  const G = { id: "", first: "", mode: "", by: 0, bm: 0, name: "", user: null, after: "", rcode: "" };
+  const STEPS = {
+    start: ["Экомунга хуш келибсиз!", "Ёшингизга қараб мос босқич очилади: мактаб ёки университет."],
+    id: ["Кириш", "Экомун ҳисобингиздан фойдаланинг"],
+    pw: ["Хуш келибсиз", ""],
+    lbirth: ["Туғилган санангиз", "Мос босқични очиш учун бир марта сўралади"],
+    name: ["Ҳисоб яратиш", "Исмингизни киритинг"],
+    birth: ["Асосий маълумотлар", "Туғилган йил ва ойингизни танланг"],
+    how: ["Қандай давом этасиз?", "Онлайн ҳисоб билан бошқа телефон ёки компьютердан ҳам давом эттирасиз"],
+    rid: ["Почта ёки телефон", "Ҳисобингизга шу орқали кирасиз"],
+    rpw: ["Ишончли парол яратинг", "Ҳарф, рақам ва белгилардан иборат парол тузинг"],
+    code: ["Тиклаш кодингизни сақланг", "Паролни унутсангиз, шу код билан янги парол қўясиз"],
+    fcode: ["Ҳисобни тиклаш", "Тиклаш кодини киритинг ва янги парол қўйинг"],
+    freq: ["Админдан код сўраш", ""],
+    edit: ["Профилни ўзгартириш", "Исм ва туғилган санангиз"]
   };
-  fillBirth(form); fillBirth(lform);
+  /* Орқага тугмаси қаерга қайтаради */
+  const BACK = { id: "start", pw: "id", name: "start", birth: "name", how: "birth", rid: "how", rpw: "rid", fcode: "pw", freq: "fcode" };
+  const fillBirth = (ys, ms) => {
+    const y = new Date().getFullYear();
+    for (let i = y - AGE_MIN; i >= y - AGE_MAX - 1; i--) ys.add(new Option(String(i), String(i)));
+    MONTHS.forEach((m, i) => ms.add(new Option(m, String(i + 1))));
+  };
+  fillBirth($("#gBy"), $("#gBm")); fillBirth($("#gLy"), $("#gLm")); fillBirth($("#gEy"), $("#gEm"));
   async function api(path, body, onSlow) {
     const res = await window.ekoFetch(path, { method: body ? "POST" : "GET", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: body ? JSON.stringify(body) : undefined }, onSlow);
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || "Хатолик юз берди");
+    if (!res.ok) { const e = new Error(data.error || "Хатолик юз берди"); e.field = data.field; e.status = res.status; throw e; }
     return data;
   }
+  /* Почта ёки телефон (сервердаги loginId билан бир хил қоида) */
+  const idOk = (v) => {
+    v = String(v || "").trim();
+    if (v.includes("@")) return /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/.test(v);
+    if (!/^[+\d\s()\-.]{7,24}$/.test(v)) return false;
+    const d = v.replace(/\D/g, "");
+    return d.length === 9 || (d.length === 12 && d.startsWith("998")) || (v.startsWith("+") && d.length >= 8 && d.length <= 15);
+  };
+  const ID_BAD = "Почта ёки телефон рақамни тўғри киритинг. Масалан: name@mail.uz ёки +998 90 123 45 67";
+  function clearErr() { $$("[data-err]", gate).forEach((p) => (p.textContent = "")); $$(".g-field.bad", gate).forEach((f) => f.classList.remove("bad")); }
+  function err(id, msg) {
+    const p = $(`[data-err="${id}"]`, gate), el = $("#" + id);
+    if (p) p.textContent = T(msg);
+    if (el) { el.closest(".g-field").classList.add("bad"); el.setAttribute("aria-invalid", "true"); try { el.focus(); } catch (e) { /* ignore */ } }
+    return false;
+  }
+  $$("input, select", gf).forEach((el) => el.addEventListener("input", () => { const f = el.closest(".g-field"); if (f && f.classList.contains("bad")) { f.classList.remove("bad"); el.removeAttribute("aria-invalid"); const p = $(`[data-err="${el.id}"]`, gate); if (p) p.textContent = ""; } }));
+  let busy = false;
+  function load(on) { busy = on; if (!on) $("#gSlow").textContent = ""; $("#gBar").classList.toggle("on", on); $("#gSet").disabled = on; gate.setAttribute("aria-busy", String(on)); }
+  /* Сервер секин уйғонса (бепул хостинг), хабар жорий қадамнинг ости(да) кўрсатилади */
+  const slowMsg = (m) => { $("#gSlow").textContent = T(m); };
+  function setChip() {
+    const show = ["pw", "lbirth", "fcode", "freq"].includes(step) && G.id;
+    $("#gChip").hidden = !show;
+    if (show) { $("#gChipTxt").textContent = G.id; $("#gAv").textContent = (G.first || G.id).trim().charAt(0).toUpperCase() || "👤"; }
+  }
+  function go(s) {
+    if (busy) return;
+    if (!STEPS[s]) s = "start";
+    step = s; clearErr();
+    $$(".g-step", gate).forEach((d) => (d.hidden = d.dataset.step !== s));
+    const [t, sub] = STEPS[s];
+    $("#regTitle").textContent = s === "pw" && G.first ? T("Хуш келибсиз, " + G.first + "!") : T(t);
+    $("#gSub").textContent = s === "freq" ? "" : T(sub);
+    const back = BACK[s] && !(s === "name" && G.mode === "addacc") && !(s === "rid" && G.mode === "addacc") ? BACK[s] : "";
+    $("#gBack").hidden = !back; $("#gBack").dataset.to = back;
+    $$("[data-online]", gate).forEach((b) => (b.hidden = !online));
+    setChip();
+    if (s === "birth") preview();
+    if (s === "freq") { $("[data-freq=ask]", gate).hidden = false; $("[data-freq=sent]", gate).hidden = true; }
+    if (s === "rpw") meter();
+    const first = $(`.g-step[data-step="${s}"] input:not([type=checkbox]), .g-step[data-step="${s}"] select, .g-step[data-step="${s}"] .g-opt`, gate);
+    setTimeout(() => { if (first && !gate.hidden) try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, 60);
+  }
+  $("#gBack").addEventListener("click", () => go($("#gBack").dataset.to || "start"));
+  $("#gChip").addEventListener("click", () => { $("#gPw").value = ""; go("id"); });
+  gate.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-go]");
+    if (b && gate.contains(b)) {
+      e.preventDefault();
+      const to = b.dataset.go;
+      /* «Ҳисоб яратиш»: профил бор бўлса, исм ва сана сўралмайди — тўғридан-тўғри онлайн ҳисобга */
+      if (to === "name" && profile && !gate.dataset.edit) { G.mode = "addacc"; G.name = profile.name; G.by = profile.by; G.bm = profile.bm; if (ageOf(G.by, G.bm) < 13) { App.toast(T("Онлайн ҳисоб 13 ёшдан очилади. Профилингиз шу қурилмада сақланмоқда.")); return; } return go("rid"); }
+      if (to === "id") { const v = $("#gRid").value.trim(); if (step === "rid" && v && !$("#gId").value) $("#gId").value = v; }
+      return go(to);
+    }
+    const sh = e.target.closest("[data-show]");
+    if (sh) sh.dataset.show.split(",").forEach((id) => { const el = $("#" + id); el.type = sh.checked ? "text" : "password"; });
+    if (e.target.closest("[data-local]")) finishLocal();
+  });
   function preview() {
-    const by = +form.by.value, bm = +form.bm.value;
+    const by = +$("#gBy").value, bm = +$("#gBm").value;
     $$(".reg-stage", gate).forEach((x) => x.classList.remove("on"));
-    err.textContent = "";
-    $("#regOnline").hidden = true;
     if (!by || !bm) { prev.textContent = ""; return null; }
     const a = ageOf(by, bm);
-    if (a < AGE_MIN || a > AGE_MAX) { prev.textContent = ""; err.textContent = T(`Илова ${AGE_MIN} ёшдан ${AGE_MAX} ёшгача бўлган фойдаланувчилар учун.`); return null; }
+    if (a < AGE_MIN || a > AGE_MAX) { prev.textContent = ""; return null; }
     const st = stageOf(a);
-    $(`.reg-stage[data-st="${st}"]`, gate).classList.add("on");
     prev.textContent = T(st === "maktab"
       ? `Ёшингиз: ${a} · 🎒 Мактаб босқичи (${groupOf(a).name}). ${UNI_AGE} ёшда университет босқичига ўтасиз.`
       : `Ёшингиз: ${a} · 🎓 Университет босқичи`);
-    /* Онлайн ҳисоб — фақат сервер бор бўлса ва 13 ёшдан (болалардан почта сўралмайди) */
-    $("#regOnline").hidden = !(online && !gate.dataset.edit && a >= 13);
     return a;
   }
-  form.addEventListener("change", preview);
-  form.online.addEventListener("change", () => { $("#regOnlineFields").hidden = !form.online.checked; });
-  function setTab(t) {
-    $$("#regTabs button").forEach((b) => { const on = b.dataset.rt === t; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
-    form.hidden = t !== "reg"; lform.hidden = t !== "login";
-    (t === "reg" ? form.name : lform.email).focus();
+  ["#gBy", "#gBm"].forEach((s) => $(s).addEventListener("change", preview));
+  const ePrev = () => { const by = +$("#gEy").value, bm = +$("#gEm").value, p = $("#gEPrev"); if (!by || !bm) { p.textContent = ""; return; } const a = ageOf(by, bm); p.textContent = a < AGE_MIN || a > AGE_MAX ? "" : T(`Ёшингиз: ${a} · ${stageOf(a) === "maktab" ? "🎒 Мактаб" : "🎓 Университет"}`); };
+  ["#gEy", "#gEm"].forEach((s) => $(s).addEventListener("change", ePrev));
+  /* Парол кучлилиги: узунлик, ҳарф+рақам, катта ҳарф ёки белги */
+  function strength(p) {
+    if (!p) return 0;
+    let s = p.length >= 6 ? 1 : 0;
+    if (p.length >= 10) s++;
+    if (/[a-zа-яёўқғҳ]/i.test(p) && /\d/.test(p)) s++;
+    if (/[^\wа-яёўқғҳ]/i.test(p) || (/[A-ZА-ЯЁЎҚҒҲ]/.test(p) && /[a-zа-яёўқғҳ]/.test(p))) s++;
+    if (/^(\d)\1+$|^(123456|1234567|12345678|123456789|qwerty|password|parol|111111|000000)/i.test(p)) s = Math.min(s, 1);
+    return Math.min(s, 4);
   }
-  $("#regTabs").addEventListener("click", (e) => { const b = e.target.closest("[data-rt]"); if (b) setTab(b.dataset.rt); });
-  function openGate(edit) {
-    form.reset(); lform.reset();
-    $("#regOnlineFields").hidden = true; $("#loginBirth").hidden = true; $("#loginError").textContent = "";
+  function meter() {
+    const p = $("#gNp").value, s = strength(p), m = $("#gMeter");
+    m.querySelector("i").style.setProperty("--w", p ? [15, 30, 60, 80, 100][s] + "%" : "0%");
+    m.querySelector("i").style.setProperty("--c", ["#d93025", "#d93025", "#f29900", "#1e8e3e", "#1e8e3e"][s]);
+    m.querySelector("span").textContent = p ? T(["Жуда қисқа", "Заиф парол", "Ўртача парол", "Кучли парол", "Жуда кучли парол"][s]) : "";
+  }
+  $("#gNp").addEventListener("input", meter);
+
+  function openGate(edit, start) {
+    gf.reset(); clearErr(); load(false);
+    G.id = ""; G.first = ""; G.mode = ""; G.user = null; G.after = ""; G.rcode = "";
+    $$("[data-show]", gate).forEach((c) => c.dataset.show.split(",").forEach((id) => ($("#" + id).type = "password")));
+    $("#gRemember").checked = true;
     gate.dataset.edit = edit ? "1" : "";
-    if (edit && profile) { form.name.value = profile.name; form.by.value = String(profile.by); form.bm.value = String(profile.bm); }
-    $("#regTitle").textContent = T(edit ? "Профилни ўзгартириш" : "Экомунга хуш келибсиз!");
-    form.querySelector("button[type=submit]").textContent = T(edit ? "Сақлаш" : "Рўйхатдан ўтиш ва бошлаш →");
-    $("#regTabs").hidden = !online || !!edit;
-    form.hidden = false; lform.hidden = true;
-    $$("#regTabs button").forEach((b) => b.classList.toggle("on", b.dataset.rt === "reg"));
-    preview();
+    if (edit && profile) { $("#gEn").value = profile.name; $("#gEy").value = String(profile.by); $("#gEm").value = String(profile.bm); ePrev(); }
     gate.hidden = false;
     root.classList.add("no-profile");
     const old = $("#regCancel"); if (old) old.remove();
-    if (edit) {
-      gate.querySelector(".reg-card").insertAdjacentHTML("afterbegin", `<button class="modal-close" id="regCancel" type="button" aria-label="Ёпиш">✕</button>`);
-      $("#regCancel").addEventListener("click", () => { $("#regCancel").remove(); gate.hidden = true; applyStage(); });
+    const card = gate.querySelector(".reg-card");
+    card.classList.toggle("has-close", !!profile);
+    if (profile) {
+      card.insertAdjacentHTML("afterbegin", `<button class="modal-close" id="regCancel" type="button" aria-label="${esc(T("Ёпиш"))}">✕</button>`);
+      $("#regCancel").addEventListener("click", closeGate);
     }
-    setTimeout(() => form.name.focus(), 50);
+    go(edit ? "edit" : start || "start");
   }
+  function closeGate() { const c = $("#regCancel"); if (c) c.remove(); gate.hidden = true; applyStage(); }
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !gate.hidden && profile && !busy) closeGate(); });
   function enter(isNew, viaAccount) {
     gate.hidden = true;
     const c = $("#regCancel"); if (c) c.remove();
@@ -53219,48 +53535,151 @@ window.ekoFetch = async function (url, opts, onSlow) {
     if (viaAccount) { location.hash = st === "maktab" ? "#sayohat" : "#ilmiy"; location.reload(); return; }
     if (isNew) window.EkoNav.go(st === "maktab" ? "sayohat" : "ilmiy");
   }
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = form.name.value.trim().replace(/\s+/g, " ");
-    if (name.length < 2) { err.textContent = T("Исмингизни киритинг (камида 2 ҳарф)"); form.name.focus(); return; }
-    if (!form.by.value || !form.bm.value) { err.textContent = T("Туғилган йил ва ойингизни танланг"); return; }
-    const a = preview();
-    if (a === null) return;
-    const edit = !!gate.dataset.edit && profile;
-    const by = +form.by.value, bm = +form.bm.value;
-    let viaAccount = false;
-    if (!edit && !$("#regOnline").hidden && form.online.checked) {
-      /* Серверга юбормасдан олдин оддий хатолар шу ерда кўрсатилади (сервер уйғонишини кутиб ўтирмаслик учун) */
-      if (!form.email.value.trim()) { err.textContent = T("Почта ёки телефон рақамингизни киритинг"); form.email.focus(); return; }
-      if (form.password.value.length < 6) { err.textContent = T("Парол камида 6 белгидан иборат бўлсин"); form.password.focus(); return; }
-      const btn = form.querySelector("button[type=submit]"); btn.disabled = true;
-      try { await api("/api/register", { name, email: form.email.value.trim(), password: form.password.value, birthYear: by, birthMonth: bm }, (m) => { err.textContent = T(m); }); err.textContent = ""; viaAccount = true; }
-      catch (ex) { err.textContent = T(ex.message); btn.disabled = false; return; }
-      btn.disabled = false;
-    }
-    profile = Object.assign(profile || { created: new Date().toISOString().slice(0, 10) }, { name: name.slice(0, 40), by, bm });
-    if (!edit) profile.stage = stageOf(a);
+  function finishLocal() {
+    profile = Object.assign(profile || { created: new Date().toISOString().slice(0, 10) }, { name: G.name.slice(0, 40), by: G.by, bm: G.bm });
+    profile.stage = stageOf(ageOf(G.by, G.bm));
     saveProfile();
-    enter(!edit, viaAccount);
+    enter(true, false);
+  }
+  function finishLogin(user, by, bm) {
+    profile = { name: user.name, by, bm, stage: stageOf(ageOf(by, bm)), created: (profile && profile.created) || new Date().toISOString().slice(0, 10), account: user.email };
+    saveProfile();
+    enter(true, true);
+  }
+  function showCode(code) { G.rcode = code; $("#gCode").textContent = code; go("code"); }
+  $("#gCopy").addEventListener("click", () => {
+    const done = () => App.toast(T("📋 Код нусхаланди"));
+    if (navigator.clipboard) navigator.clipboard.writeText(G.rcode).then(done, done); else done();
   });
-  lform.addEventListener("submit", async (e) => {
+  $("#gSave").addEventListener("click", () => {
+    const txt = `Ekomun — ${T("тиклаш коди")}\n${G.id}\n${G.rcode}\n${new Date().toLocaleString()}\n`;
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([txt], { type: "text/plain;charset=utf-8" }));
+    a.download = "ekomun-tiklash-kodi.txt"; document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  });
+
+  gf.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const le = $("#loginError"); le.textContent = "";
-    const btn = lform.querySelector("button[type=submit]"); btn.disabled = true;
-    try {
-      const { user } = await api("/api/login", { email: lform.email.value.trim(), password: lform.password.value }, (m) => { le.textContent = T(m); });
-      le.textContent = "";
-      let by = user.by, bm = user.bm;
-      /* Эски ҳисобларда туғилган сана йўқ — бир марта сўралади */
-      if (!by || !bm) {
-        if (!lform.by.value || !lform.bm.value) { $("#loginBirth").hidden = false; le.textContent = T("Босқични аниқлаш учун туғилган йил ва ойингизни танланг"); btn.disabled = false; return; }
-        by = +lform.by.value; bm = +lform.bm.value;
-      }
-      profile = { name: user.name, by, bm, stage: stageOf(ageOf(by, bm)), created: new Date().toISOString().slice(0, 10), account: user.email };
+    if (busy) return;
+    clearErr();
+    const run = async (fn) => { load(true); try { await fn(); } catch (ex) { load(false); handle(ex); return; } load(false); };
+    const handle = (ex) => {
+      const map = { id: { email: "gId" }, pw: { password: "gPw", email: "gId" }, rid: { email: "gRid" }, rpw: { password: "gNp", email: "gRid" }, fcode: { code: "gRc", password: "gFp" }, freq: { email: "gCt" } }[step] || {};
+      const target = map[ex.field] || { id: "gId", pw: "gPw", rid: "gRid", rpw: "gNp", fcode: "gRc", freq: "gCt" }[step];
+      if (step === "pw" && ex.field === "email") { go("id"); return err("gId", ex.message); }
+      if (target) err(target, ex.message); else App.toast(T(ex.message));
+    };
+    if (step === "id") {
+      const v = $("#gId").value.trim();
+      if (!v) return err("gId", "Почта ёки телефон рақамни киритинг");
+      if (!idOk(v)) return err("gId", ID_BAD);
+      return run(async () => {
+        const d = await api("/api/auth/lookup", { email: v }, slowMsg);
+        if (!d.exists) { load(false); return err("gId", "Экомун ҳисоби топилмади. Текшириб кўринг ёки «Ҳисоб яратиш» ни босинг"); }
+        if (d.blocked) { load(false); return err("gId", "Бу ҳисоб блокланган. Админ билан боғланинг"); }
+        G.id = d.id; G.first = d.name; load(false); go("pw");
+      });
+    }
+    if (step === "pw") {
+      const pw = $("#gPw").value;
+      if (!pw) return err("gPw", "Паролни киритинг");
+      return run(async () => {
+        const { user } = await api("/api/login", { email: G.id, password: pw, remember: $("#gRemember").checked }, slowMsg);
+        load(false);
+        G.user = user;
+        if (!user.by || !user.bm) return go("lbirth");
+        finishLogin(user, user.by, user.bm);
+      });
+    }
+    if (step === "lbirth") {
+      const by = +$("#gLy").value, bm = +$("#gLm").value;
+      if (!by || !bm) return err("gLy", "Туғилган йил ва ойингизни танланг");
+      return finishLogin(G.user, by, bm);
+    }
+    if (step === "name") {
+      const name = $("#gName").value.trim().replace(/\s+/g, " ");
+      if (!name) return err("gName", "Исмингизни киритинг");
+      if (name.length < 2) return err("gName", "Исм камида 2 ҳарфдан иборат бўлсин");
+      G.name = name; return go("birth");
+    }
+    if (step === "birth") {
+      const by = +$("#gBy").value, bm = +$("#gBm").value;
+      if (!by || !bm) return err("gBy", "Туғилган йил ва ойингизни танланг");
+      const a = ageOf(by, bm);
+      if (a < AGE_MIN || a > AGE_MAX) return err("gBy", `Илова ${AGE_MIN} ёшдан ${AGE_MAX} ёшгача бўлган фойдаланувчилар учун.`);
+      G.by = by; G.bm = bm;
+      /* Онлайн ҳисоб — фақат сервер бор бўлса ва 13 ёшдан (болалардан почта сўралмайди) */
+      if (online && a >= 13) return go("how");
+      return finishLocal();
+    }
+    if (step === "how") return go("rid");
+    if (step === "rid") {
+      const v = $("#gRid").value.trim();
+      if (!v) return err("gRid", "Почта ёки телефон рақамни киритинг");
+      if (!idOk(v)) return err("gRid", ID_BAD);
+      return run(async () => {
+        const d = await api("/api/auth/lookup", { email: v }, slowMsg);
+        load(false);
+        if (d.exists) return err("gRid", "Бу почта ёки рақам билан ҳисоб аллақачон бор. Бошқасини киритинг ёки «Кириш» ни танланг");
+        G.id = d.id; go("rpw");
+      });
+    }
+    if (step === "rpw") {
+      const p = $("#gNp").value, p2 = $("#gNp2").value;
+      if (!p) return err("gNp", "Парол ўйлаб топинг");
+      if (p.length < 6) return err("gNp", "Парол камида 6 белгидан иборат бўлсин");
+      if (p !== p2) { $("#gNp2").value = ""; return err("gNp", "Пароллар мос келмади. Қайта уриниб кўринг"); }
+      return run(async () => {
+        const d = await api("/api/register", { name: G.name, email: G.id, password: p, birthYear: G.by, birthMonth: G.bm, remember: true }, slowMsg);
+        load(false);
+        const isNew = !profile;
+        profile = Object.assign(profile || { created: new Date().toISOString().slice(0, 10) }, { name: G.name.slice(0, 40), by: G.by, bm: G.bm, account: d.user.email });
+        if (isNew) profile.stage = stageOf(ageOf(G.by, G.bm));
+        saveProfile();
+        G.after = "reg";
+        if (d.recoveryCode) showCode(d.recoveryCode); else enter(true, true);
+      });
+    }
+    if (step === "code") {
+      if (G.after === "login" && G.user) { if (!G.user.by || !G.user.bm) return go("lbirth"); return finishLogin(G.user, G.user.by, G.user.bm); }
+      return enter(true, true);
+    }
+    if (step === "fcode") {
+      const c = $("#gRc").value.trim(), p = $("#gFp").value, p2 = $("#gFp2").value;
+      if (!c) return err("gRc", "Тиклаш кодини киритинг");
+      if (c.replace(/[^a-z0-9]/gi, "").length < 8) return err("gRc", "Код тўлиқ эмас: у 8 ёки 10 та ҳарф ва рақамдан иборат");
+      if (p.length < 6) return err("gFp", "Янги парол камида 6 белгидан иборат бўлсин");
+      if (p !== p2) return err("gFp", "Пароллар мос келмади. Қайта уриниб кўринг");
+      return run(async () => {
+        const d = await api("/api/password/reset", { email: G.id, code: c, password: p, remember: true }, slowMsg);
+        load(false);
+        G.user = d.user; G.after = "login";
+        App.toast(T("✅ Парол янгиланди"));
+        if (d.recoveryCode) showCode(d.recoveryCode); else if (!d.user.by || !d.user.bm) go("lbirth"); else finishLogin(d.user, d.user.by, d.user.bm);
+      });
+    }
+    if (step === "freq") {
+      return run(async () => {
+        await api("/api/password/forgot", { email: G.id, contact: $("#gCt").value.trim() }, slowMsg);
+        load(false);
+        $("[data-freq=ask]", gate).hidden = true; $("[data-freq=sent]", gate).hidden = false;
+      });
+    }
+    if (step === "edit") {
+      const name = $("#gEn").value.trim().replace(/\s+/g, " ");
+      if (name.length < 2) return err("gEn", "Исмингизни киритинг (камида 2 ҳарф)");
+      const by = +$("#gEy").value, bm = +$("#gEm").value;
+      if (!by || !bm) return err("gEy", "Туғилган йил ва ойингизни танланг");
+      const a = ageOf(by, bm);
+      if (a < AGE_MIN || a > AGE_MAX) return err("gEy", `Илова ${AGE_MIN} ёшдан ${AGE_MAX} ёшгача бўлган фойдаланувчилар учун.`);
+      profile = Object.assign(profile, { name: name.slice(0, 40), by, bm });
       saveProfile();
-      enter(true, true);
-    } catch (ex) { le.textContent = T(ex.message); btn.disabled = false; }
+      return enter(false, false);
+    }
   });
+  /* Бошқа модуллар («Кириш» тугмаси, профил) учун */
+  window.EkoGate = { open: (m) => openGate(false, m === "signin" ? (online ? "id" : "start") : m === "register" ? "start" : undefined), get online() { return online; } };
 
   /* ---------- Профил тугмаси (юқорида) ва профил ойнаси ---------- */
   const pModal = $("#profileModal");
@@ -53285,7 +53704,7 @@ window.ekoFetch = async function (url, opts, onSlow) {
           : `<p class="small muted">Интернетга уланган платформада мавжуд. Профилингиз шу қурилмада сақланмоқда.</p>`}</div>
       <div class="prof-sec"><button class="btn btn-primary btn-sm" id="profEdit2" type="button">✏️ Профилни ўзгартириш</button></div>`;
     const acc = $("#profAcc"); if (acc) acc.addEventListener("click", () => { pModal.close(); $("#authBtn").click(); });
-    const lg = $("#profLogin"); if (lg) lg.addEventListener("click", () => { pModal.close(); $("#authBtn").click(); });
+    const lg = $("#profLogin"); if (lg) lg.addEventListener("click", () => { pModal.close(); openGate(false, "start"); });
     $("#profEdit2").addEventListener("click", () => { pModal.close(); openGate(true); });
     $("#profileBody").querySelectorAll(".prof-pro a[href^='#']").forEach((x) => x.addEventListener("click", () => pModal.close()));
     if (!pModal.open) pModal.showModal();
@@ -53294,7 +53713,7 @@ window.ekoFetch = async function (url, opts, onSlow) {
   if (location.protocol.startsWith("http")) {
     api("/api/me").then((d) => {
       online = true; account = d.user || account;
-      if (!gate.hidden) { $("#regTabs").hidden = !!gate.dataset.edit; preview(); }
+      if (!gate.hidden) $$("[data-online]", gate).forEach((b) => (b.hidden = false));
       /* Ҳисобга кирилган, лекин профил йўқ (масалан, кеш тозаланган) — ҳисобдан тиклаймиз */
       if (!profile && account && account.by && account.bm) {
         profile = { name: account.name, by: account.by, bm: account.bm, stage: stageOf(ageOf(account.by, account.bm)), created: new Date().toISOString().slice(0, 10), account: account.email };

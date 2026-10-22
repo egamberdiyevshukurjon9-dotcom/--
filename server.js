@@ -85,7 +85,7 @@ if (!ADMIN_PASSWORD) {
 
 /* ---------- Маълумотлар омбори (JSON файл) ---------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
-let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {}, turnir: {}, refs: {}, refClaimed: {}, news: [] };
+let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {}, turnir: {}, refs: {}, refClaimed: {}, news: [], resetReqs: [] };
 try {
   db = Object.assign(db, JSON.parse(fs.readFileSync(DB_FILE, "utf8")));
 } catch (e) {
@@ -179,7 +179,9 @@ function parseCookies(req) {
 }
 function cookie(name, value, maxAgeMs, req) {
   const secure = req.headers["x-forwarded-proto"] === "https" || req.socket.encrypted ? "; Secure" : "";
-  return `${name}=${encodeURIComponent(value)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.floor(maxAgeMs / 1000)}${secure}`;
+  /* maxAgeMs === null — браузер ёпилгунча амал қиладиган cookie («Мени эслаб қол» белгиланмаганда) */
+  const age = maxAgeMs === null ? "" : `; Max-Age=${Math.floor(maxAgeMs / 1000)}`;
+  return `${name}=${encodeURIComponent(value)}; Path=/; HttpOnly; SameSite=Lax${age}${secure}`;
 }
 /* Бир жавобда бир нечта cookie (сессия ва ҳисоб калити) — setHeader олдингисини ўчириб юбормасин */
 function addCookie(res, c) {
@@ -381,14 +383,38 @@ function currentUser(req) {
   if (!user || user.blocked) return null;
   return { token, session: s, user };
 }
-function startSession(user, req, res) {
+function startSession(user, req, res, remember = true) {
   const token = newToken();
   db.sessions[token] = { userId: user.id, createdAt: now(), lastSeen: now(), ip: clientIp(req), device: devOf(req), online: true };
   user.lastLogin = now();
   user.loginCount = (user.loginCount || 0) + 1;
   logEvent("login", user, req);
-  addCookie(res, cookie("eko_session", token, SESSION_MS, req));
-  setPass(user, req, res);
+  addCookie(res, cookie("eko_session", token, remember ? SESSION_MS : null, req));
+  /* «Мени эслаб қол» белгиланмаса — бегона қурилмада ҳисоб калити қолмайди */
+  if (remember) setPass(user, req, res); else addCookie(res, cookie(PASS_COOKIE, "", 0, req));
+  return token;
+}
+/* Фойдаланувчининг барча сессияларини ёпиш (парол алмашганда); keep — шу қурилма сессияси қолади */
+function endSessions(user, keep) {
+  for (const [token, s] of Object.entries(db.sessions)) if (s.userId === user.id && token !== keep) delete db.sessions[token];
+}
+
+/* ---------- Паролни тиклаш кодлари ----------
+   Тиклаш коди (Google'нинг захира кодлари каби): рўйхатдан ўтганда бир марта кўрсатилади, серверда
+   фақат хэши сақланади, ишлатилгач янгиси берилади. Админ коди — админ фойдаланувчига беради, 24 соат амал қилади. */
+const RC_ALPHA = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const newCode = (n = 10) => { const b = crypto.randomBytes(n); let o = ""; for (let i = 0; i < n; i++) o += RC_ALPHA[b[i] % 32]; return o.slice(0, n / 2) + "-" + o.slice(n / 2); };
+const normCode = (c) => String(c || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 16);
+const codeHash = (c) => crypto.createHash("sha256").update("ekomun-rc|" + normCode(c)).digest("hex");
+const codeEq = (a, b) => { const x = Buffer.from(String(a || ""), "hex"), y = Buffer.from(String(b || ""), "hex"); return x.length === 32 && y.length === 32 && crypto.timingSafeEqual(x, y); };
+function giveRecoveryCode(user) { const c = newCode(10); user.rc = codeHash(c); user.rcAt = now(); return c; }
+const RESET_MS = 24 * 60 * 60 * 1000;
+/* Ҳисобни текшириш ва тиклаш сўровлари учун чеклов: бир IP дан 15 дақиқада 60 та */
+const lookups = new Map();
+function tooManyLookups(ip) {
+  const r = lookups.get(ip);
+  if (!r || now() - r.first > 15 * 60 * 1000) { lookups.set(ip, { first: now(), count: 1 }); return false; }
+  return ++r.count > 60;
 }
 /* by/bm — туғилган йил ва ой: илова босқични (мактаб / университет) аниқлаши учун */
 const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, adult: !!u.adult, approved: u.approved || 0, by: u.by || 0, bm: u.bm || 0, pro: proMod.publicPro(u) });
@@ -411,7 +437,7 @@ const PASS_KEY = (() => {
   return k;
 })();
 function makePass(u) {
-  const data = { v: 1, id: u.id, n: u.name, e: u.email, k: u.kind || "", p: u.password, a: !!u.adult, by: u.by || 0, bm: u.bm || 0, c: u.createdAt || now(), ap: u.approved || 0, pro: u.pro || null, t: now() };
+  const data = { v: 1, id: u.id, n: u.name, e: u.email, k: u.kind || "", p: u.password, a: !!u.adult, by: u.by || 0, bm: u.bm || 0, c: u.createdAt || now(), ap: u.approved || 0, pro: u.pro || null, rc: u.rc || "", t: now() };
   const iv = crypto.randomBytes(12), c = crypto.createCipheriv("aes-256-gcm", PASS_KEY, iv);
   const ct = Buffer.concat([c.update(JSON.stringify(data), "utf8"), c.final()]);
   return Buffer.concat([iv, c.getAuthTag(), ct]).toString("base64url");
@@ -442,8 +468,12 @@ function restoreFromPass(req, res) {
     user = { id: v.id, name: v.n, email: v.e, kind: v.k || (v.e.includes("@") ? "email" : "phone"), password: v.p, adult: !!v.a, by: v.by, bm: v.bm, createdAt: v.c, lastLogin: null, loginCount: 0, restored: now() };
     if (v.ap) user.approved = v.ap;
     if (v.pro && v.pro.until) user.pro = v.pro;
+    if (v.rc) user.rc = v.rc;
     db.users.push(user);
     logEvent("restored", user, req);
+  } else if (user.password !== v.p) {
+    /* Парол алмаштирилган (ёки тикланган) — эски қурилмадаги калит энди ҳисобни очмайди */
+    addCookie(res, cookie(PASS_COOKIE, "", 0, req)); return;
   }
   if (user.blocked) return;
   startSession(user, req, res);
@@ -564,6 +594,7 @@ function purgeUser(user) {
   db.classes = db.classes.filter((c) => c.teacherId !== id);
   db.visits = db.visits.filter((v) => v.userId !== id);
   db.certs = db.certs.filter((c) => c.userId !== id);
+  db.resetReqs = db.resetReqs.filter((r) => r.userId !== id);
   /* Фикр-мулоҳаза матни қолади (жамоа учун), лекин муаллифи билан алоқаси узилади */
   for (const f of db.feedback) if (f.userId === id) { f.userId = null; f.name = ""; f.email = ""; f.contact = ""; }
   for (const list of Object.values(db.turnir)) for (const e of list) if (e.userId === id) e.userId = null;
@@ -1223,6 +1254,7 @@ async function api(req, res, pathname) {
     if (name.length < 2) return send(res, 400, { error: "Исмингизни киритинг" });
     if (!lid) return send(res, 400, { error: "Электрон почта ёки телефон рақам нотўғри. Масалан: name@mail.uz ёки +998 90 123 45 67" });
     if (password.length < 6) return send(res, 400, { error: "Парол камида 6 белгидан иборат бўлсин" });
+    if (password.length > 200) return send(res, 400, { error: "Парол жуда узун (200 белгигача)" });
     /* Ёш текшируви: 13 ёшгача болалардан онлайн ҳисоб очилмайди (уларнинг профили фақат қурилмада). */
     const birthYear = Math.floor(Number(body.birthYear) || 0);
     const birthMonth = Math.floor(Number(body.birthMonth) || 0);
@@ -1238,10 +1270,11 @@ async function api(req, res, pathname) {
     /* Хэшлаш вақтида шу почта билан бошқа сўров рўйхатдан ўтган бўлиши мумкин */
     if (db.users.some((u) => u.email === email)) return send(res, 409, { error: lid.kind === "phone" ? "Бу рақам билан аллақачон рўйхатдан ўтилган" : "Бу почта билан аллақачон рўйхатдан ўтилган" });
     const user = { id: newId(), name, email, kind: lid.kind, password: hashed, adult, by: birthYear, bm: birthMonth, createdAt: now(), lastLogin: null, loginCount: 0 };
+    const recoveryCode = giveRecoveryCode(user);
     db.users.push(user);
     logEvent("register", user, req);
-    startSession(user, req, res);
-    return send(res, 201, { user: publicUser(user) });
+    startSession(user, req, res, body.remember !== false);
+    return send(res, 201, { user: publicUser(user), recoveryCode });
   }
 
   if (pathname === "/api/login" && method === "POST") {
@@ -1250,19 +1283,27 @@ async function api(req, res, pathname) {
     const lid = loginId(body.email || body.phone);
     const email = lid ? lid.id : String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
+    if (!password) return send(res, 400, { error: "Паролни киритинг", field: "password" });
     const user = db.users.find((u) => u.email === email);
     const ok = await checkPassword(password, user ? user.password : undefined);
-    if (!user || !ok) {
+    if (!user) {
       noteFailure(ip);
       logEvent("login_failed", null, req, { email: email.slice(0, 254) });
-      return send(res, 401, { error: "Почта (телефон) ёки парол нотўғри" });
+      return send(res, 404, { error: "Бу почта ёки телефон билан Экомун ҳисоби топилмади", field: "email" });
+    }
+    if (!ok) {
+      noteFailure(ip);
+      user.failCount = (user.failCount || 0) + 1; user.lastFail = now();
+      logEvent("login_failed", user, req);
+      return send(res, 401, { error: "Парол нотўғри. Қайта уриниб кўринг ёки «Паролни унутдингизми?» ни босинг", field: "password" });
     }
     if (user.blocked) {
       logEvent("login_blocked", user, req);
       return send(res, 403, { error: BLOCK_MSG, blocked: true });
     }
-    startSession(user, req, res);
-    return send(res, 200, { user: publicUser(user) });
+    user.failCount = 0;
+    startSession(user, req, res, body.remember !== false);
+    return send(res, 200, { user: publicUser(user), hasRecovery: !!user.rc });
   }
 
   if (pathname === "/api/logout" && method === "POST") {
@@ -1274,6 +1315,95 @@ async function api(req, res, pathname) {
     addCookie(res, cookie("eko_session", "", 0, req));
     addCookie(res, cookie(PASS_COOKIE, "", 0, req));
     return send(res, 200, { ok: true });
+  }
+
+  /* Google услубида кириш, 1-қадам: почта/телефон бўйича ҳисоб борлигини текшириш */
+  if (pathname === "/api/auth/lookup" && method === "POST") {
+    if (tooManyLookups(ip)) return send(res, 429, { error: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг" });
+    const body = await readBody(req);
+    const lid = loginId(body.email || body.phone);
+    if (!lid) return send(res, 400, { error: "Почта ёки телефон рақамни тўғри киритинг. Масалан: name@mail.uz ёки +998 90 123 45 67", field: "email" });
+    const user = db.users.find((u) => u.email === lid.id);
+    /* Фақат исмнинг биринчи сўзи қайтарилади (Google ҳам «Хуш келибсиз, Азиза» деб кўрсатади) */
+    return send(res, 200, { exists: !!user, id: lid.id, kind: lid.kind, name: user ? String(user.name).split(" ")[0] : "", blocked: !!(user && user.blocked) });
+  }
+
+  /* Паролни ўзгартириш (ҳисобга кирган ҳолда). Бошқа қурилмалардаги сессиялар ёпилади. */
+  if (pathname === "/api/password/change" && method === "POST") {
+    const cur = currentUser(req);
+    if (!cur) return send(res, 401, { error: "Аввал ҳисобга киринг" });
+    if (tooManyFailures(ip)) return send(res, 429, { error: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг" });
+    const body = await readBody(req);
+    const np = String(body.password || "");
+    if (!(await checkPassword(String(body.old || ""), cur.user.password))) { noteFailure(ip); return send(res, 401, { error: "Жорий парол нотўғри", field: "old" }); }
+    if (np.length < 6) return send(res, 400, { error: "Янги парол камида 6 белгидан иборат бўлсин", field: "password" });
+    if (np.length > 200) return send(res, 400, { error: "Парол жуда узун (200 белгигача)", field: "password" });
+    cur.user.password = await hashPassword(np);
+    cur.user.pwAt = now();
+    endSessions(cur.user, cur.token);
+    logEvent("pw_changed", cur.user, req);
+    setPass(cur.user, req, res);
+    return send(res, 200, { ok: true });
+  }
+
+  /* Янги тиклаш коди (эскиси бекор бўлади) — парол сўралади */
+  if (pathname === "/api/password/recovery-code" && method === "POST") {
+    const cur = currentUser(req);
+    if (!cur) return send(res, 401, { error: "Аввал ҳисобга киринг" });
+    if (tooManyFailures(ip)) return send(res, 429, { error: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг" });
+    const body = await readBody(req);
+    if (!(await checkPassword(String(body.password || ""), cur.user.password))) { noteFailure(ip); return send(res, 401, { error: "Парол нотўғри", field: "password" }); }
+    const recoveryCode = giveRecoveryCode(cur.user);
+    logEvent("rc_new", cur.user, req);
+    return send(res, 200, { recoveryCode });
+  }
+
+  /* «Паролни унутдим»: тиклаш кодингиз бўлмаса — админга сўров. Почта/SMS юборилмайди: код админ орқали берилади. */
+  if (pathname === "/api/password/forgot" && method === "POST") {
+    if (tooManyLookups(ip)) return send(res, 429, { error: "Жуда кўп уриниш. Бироздан сўнг қайта уриниб кўринг" });
+    const body = await readBody(req);
+    const lid = loginId(body.email || body.phone);
+    if (!lid) return send(res, 400, { error: "Почта ёки телефон рақамни тўғри киритинг", field: "email" });
+    const user = db.users.find((u) => u.email === lid.id);
+    if (!user) return send(res, 404, { error: "Бу почта ёки телефон билан Экомун ҳисоби топилмади", field: "email" });
+    const contact = String(body.contact || "").trim().slice(0, 120);
+    const open = db.resetReqs.find((r) => r.userId === user.id && r.status === "new");
+    if (open) { open.at = now(); open.n = (open.n || 1) + 1; if (contact) open.contact = contact; open.ip = ip; open.device = devOf(req); }
+    else db.resetReqs.push({ id: newId(), userId: user.id, at: now(), status: "new", contact, ip, device: devOf(req), n: 1 });
+    if (db.resetReqs.length > 500) db.resetReqs.splice(0, db.resetReqs.length - 500);
+    logEvent("reset_req", user, req);
+    return send(res, 200, { ok: true });
+  }
+
+  /* Паролни тиклаш: тиклаш коди ёки админ берган код + янги парол */
+  if (pathname === "/api/password/reset" && method === "POST") {
+    if (tooManyFailures(ip)) return send(res, 429, { error: "Жуда кўп уриниш. 15 дақиқадан сўнг қайта уриниб кўринг" });
+    const body = await readBody(req);
+    const lid = loginId(body.email || body.phone);
+    const user = lid && db.users.find((u) => u.email === lid.id);
+    if (!user) return send(res, 404, { error: "Бу почта ёки телефон билан Экомун ҳисоби топилмади", field: "email" });
+    const np = String(body.password || "");
+    if (np.length < 6) return send(res, 400, { error: "Янги парол камида 6 белгидан иборат бўлсин", field: "password" });
+    if (np.length > 200) return send(res, 400, { error: "Парол жуда узун (200 белгигача)", field: "password" });
+    const h = codeHash(body.code);
+    const byRc = codeEq(h, user.rc);
+    const byAdmin = !byRc && user.resetCode && user.resetCode.exp > now() && codeEq(h, user.resetCode.h);
+    if (!normCode(body.code) || (!byRc && !byAdmin)) {
+      noteFailure(ip);
+      logEvent("reset_failed", user, req);
+      return send(res, 401, { error: "Код нотўғри ёки муддати ўтган. Кодни текшириб қайта киритинг", field: "code" });
+    }
+    if (user.blocked) return send(res, 403, { error: BLOCK_MSG, blocked: true });
+    user.password = await hashPassword(np);
+    user.pwAt = now(); user.failCount = 0;
+    delete user.resetCode;
+    /* Ишлатилган тиклаш коди бекор — янгиси берилади (Google захира кодлари каби) */
+    const recoveryCode = giveRecoveryCode(user);
+    endSessions(user);
+    for (const r of db.resetReqs) if (r.userId === user.id && r.status === "new") { r.status = "done"; r.doneAt = now(); }
+    logEvent("pw_reset", user, req, { via: byRc ? "code" : "admin" });
+    startSession(user, req, res, body.remember !== false);
+    return send(res, 200, { user: publicUser(user), recoveryCode });
   }
 
   /* Ҳисобни бутунлай ўчириш (Google Play талаби) */
@@ -1806,6 +1936,9 @@ async function api(req, res, pathname) {
     const users = db.users
       .map((u) => ({ id: u.id, name: u.name, email: u.email, createdAt: u.createdAt, lastLogin: u.lastLogin, loginCount: u.loginCount || 0,
         adult: !!u.adult, by: u.by || 0, blocked: u.blocked || null, approved: u.approved || 0, pro: proMod.proActive(u) ? u.pro.until : 0,
+        kind: u.kind || (String(u.email).includes("@") ? "email" : "phone"), rc: !!u.rc, failCount: u.failCount || 0, lastFail: u.lastFail || 0, pwAt: u.pwAt || 0,
+        resetCode: u.resetCode && u.resetCode.exp > t ? u.resetCode.exp : 0,
+        sessions: Object.values(db.sessions).filter((s) => s.userId === u.id).length,
         online: online.some((o) => o.email === u.email) }))
       .sort((a, b) => (b.lastLogin || b.createdAt) - (a.lastLogin || a.createdAt));
     const today = db.events.filter((e) => e.at >= startOfDay.getTime());
@@ -1819,6 +1952,8 @@ async function api(req, res, pathname) {
         logoutsToday: today.filter((e) => e.type === "logout" || e.type === "timeout").length,
         registersToday: today.filter((e) => e.type === "register").length,
         failedToday: today.filter((e) => e.type === "login_failed").length,
+        resetsToday: today.filter((e) => e.type === "pw_reset").length,
+        resetReqs: db.resetReqs.filter((r) => r.status === "new").length,
         aiToday: today.filter((e) => e.type === "ai").length,
         pendingReports: db.reports.filter((r) => r.status === "pending").length,
         newFeedback: db.feedback.filter((f) => !f.read && !f.archived).length
@@ -1826,6 +1961,7 @@ async function api(req, res, pathname) {
       online,
       guests: db.visits.filter((v) => !v.ended && t - v.last <= ONLINE_MS).sort((a, b) => b.last - a.last).map(visitView),
       users,
+      resetReqs: db.resetReqs.slice().sort((a, b) => b.at - a.at).slice(0, 200).map((r) => { const u = db.users.find((x) => x.id === r.userId); return { ...r, name: u ? u.name : "—", email: u ? u.email : "", place: placeOf(r.ip) }; }),
       events: db.events.slice(-600).sort((a, b) => b.at - a.at).slice(0, 500).map(withPlace)
     });
   }
@@ -1989,6 +2125,41 @@ async function api(req, res, pathname) {
   }
 
   /* Блоклаш / блокдан чиқариш: ҳисоб (user), қурилма (vid) ёки IP манзил (ip) */
+  /* Паролни тиклаш: админ фойдаланувчига бир марталик код беради (24 соат) */
+  if (pathname === "/api/admin/reset-code" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const body = await readBody(req);
+    const user = db.users.find((u) => u.id === String(body.id || ""));
+    if (!user) return send(res, 404, { error: "Ҳисоб топилмади" });
+    const code = newCode(8);
+    user.resetCode = { h: codeHash(code), exp: now() + RESET_MS, at: now() };
+    for (const r of db.resetReqs) if (r.userId === user.id && r.status === "new") { r.status = "coded"; r.codedAt = now(); }
+    logEvent("reset_code", user, req);
+    adminLog(req, true, "Тиклаш коди: " + user.email);
+    return send(res, 200, { code, exp: user.resetCode.exp, email: user.email, name: user.name });
+  }
+  if (pathname === "/api/admin/reset-req" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const body = await readBody(req);
+    const r = db.resetReqs.find((x) => x.id === String(body.id || ""));
+    if (!r) return send(res, 404, { error: "Сўров топилмади" });
+    if (body.action === "delete") db.resetReqs = db.resetReqs.filter((x) => x !== r);
+    else { r.status = "done"; r.doneAt = now(); }
+    save();
+    return send(res, 200, { ok: true });
+  }
+  /* Фойдаланувчининг барча қурилмалардаги сессияларини ёпиш (ҳисоб ўғирланганда) */
+  if (pathname === "/api/admin/logout-user" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    const body = await readBody(req);
+    const user = db.users.find((u) => u.id === String(body.id || ""));
+    if (!user) return send(res, 404, { error: "Ҳисоб топилмади" });
+    endSessions(user);
+    logEvent("logout_admin", user, req);
+    adminLog(req, true, "Сессиялар ёпилди: " + user.email);
+    return send(res, 200, { ok: true });
+  }
+
   if (pathname === "/api/admin/block" && method === "POST") {
     if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
     const body = await readBody(req);

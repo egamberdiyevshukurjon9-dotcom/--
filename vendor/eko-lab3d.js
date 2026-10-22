@@ -197,6 +197,7 @@
       sun.position.set(5, 8, 6);
       this.scene.add(sun);
       this.bindInput();
+      this.bindLabels();
       this.ro = new ResizeObserver(() => this.resize());
       this.ro.observe(host);
       /* Саҳна экрандан чиқиб кетса (пастга айлантирилганда) кадр чизилмайди — жараёнлар эса давом этади */
@@ -231,8 +232,9 @@
       });
       const up = (e) => { pts.delete(e.pointerId); };
       c.addEventListener("pointerup", (e) => {
-        if (dragId === e.pointerId) { dragId = null; if (this.drag.end) this.drag.end(e); if (this.moved < 6 && this.onTap) this.onTap(e); return; }
-        up(e); if (this.moved < 6) { if (this.tool && this.tool(e)) return; if (this.onTap) this.onTap(e); } });
+        /* Узоқ босилган бўлса (телефонда ном кўрсатилди) — амал бажарилмайди */
+        if (dragId === e.pointerId) { dragId = null; if (this.drag.end) this.drag.end(e); if (this.moved < 6 && this.onTap && !this.lpDone) this.onTap(e); return; }
+        up(e); if (this.moved < 6 && !this.lpDone) { if (this.tool && this.tool(e)) return; if (this.onTap) this.onTap(e); } });
       c.addEventListener("pointercancel", (e) => { if (dragId === e.pointerId) { dragId = null; if (this.drag && this.drag.end) this.drag.end(e); } up(e); });
       c.addEventListener("wheel", (e) => { e.preventDefault(); this.zoom(e.deltaY > 0 ? 1.1 : 0.9); }, { passive: false });
       c.addEventListener("keydown", (e) => {
@@ -243,6 +245,117 @@
       });
     }
     syncAuto() { if (this.autoBtn) this.autoBtn.classList.toggle("on", this.auto); }
+    /* ---------- Номлар: курсор устига борганда (сичқонча) ёки теккизганда (телефон, планшет) ёрлиқ ----------
+       Объект (ёки унинг ота-гуруҳи) userData.label га эга бўлса — сатр, {t, s} ёки шуларни қайтарувчи функция —
+       унинг номи қалқиб чиқувчи ёрлиқда кўрсатилади. Телефонда: босиб ушлаб турилса (0,4 с) фақат номи
+       кўринади, амал бажарилмайди; қисқа теккизилса — амал ҳам бажарилади, ном ҳам 2,5 с кўриниб туради.
+       userData.pin — «🏷 Номлар» режимида доимий ёрлиқ (setPins). */
+    bindLabels() {
+      const c = this.canvas, host = this.host;
+      const tip = (this.tip = document.createElement("div"));
+      tip.className = "l3-tip"; tip.hidden = true; tip.setAttribute("aria-live", "polite");
+      host.appendChild(tip);
+      let raf = 0, lastE = null, hideT = 0, lpT = 0, down = null;
+      const hover = () => {
+        raf = 0; const e = lastE; if (!e) return;
+        const h = this.labelAt(e);
+        if (h) { this.showTip(h, e); c.style.cursor = "pointer"; } else { this.hideTip(); c.style.cursor = ""; }
+      };
+      c.addEventListener("pointermove", (e) => {
+        if (e.pointerType !== "mouse") { if (down && Math.abs(e.clientX - down.x) + Math.abs(e.clientY - down.y) > 10) { clearTimeout(lpT); down = null; } return; }
+        if (e.buttons) { this.hideTip(); return; }
+        lastE = e; if (!raf) raf = requestAnimationFrame(hover);
+      });
+      c.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") { lastE = null; this.hideTip(); c.style.cursor = ""; } });
+      c.addEventListener("pointerdown", (e) => {
+        this.lpDone = false;
+        if (e.pointerType === "mouse") { this.hideTip(); return; }
+        down = { x: e.clientX, y: e.clientY }; clearTimeout(lpT); clearTimeout(hideT);
+        const pe = { clientX: e.clientX, clientY: e.clientY };
+        lpT = setTimeout(() => { if (!down) return; const h = this.labelAt(pe); if (h) { this.lpDone = true; this.showTip(h, pe, true); if (navigator.vibrate) try { navigator.vibrate(12); } catch (er) { /* ignore */ } } }, 420);
+      }, true);
+      const tapShow = (e) => {
+        clearTimeout(lpT);
+        if (e.pointerType === "mouse" || !down) { down = null; return; }
+        down = null;
+        if (!this.lpDone && (this.moved || 0) < 6) { const h = this.labelAt(e); if (h) this.showTip(h, e, true); }
+        clearTimeout(hideT); hideT = setTimeout(() => this.hideTip(), 2600);
+      };
+      c.addEventListener("pointerup", tapShow, true);
+      c.addEventListener("pointercancel", () => { clearTimeout(lpT); down = null; }, true);
+      c.addEventListener("contextmenu", (e) => { if (e.pointerType !== "mouse" || this.lpDone) e.preventDefault(); });
+    }
+    labelOf(o) {
+      while (o) {
+        if (!o.visible) return null;
+        const l = o.userData && o.userData.label;
+        if (l) { const v = typeof l === "function" ? l(o) : l; return v ? (typeof v === "string" ? { t: v } : v) : null; }
+        o = o.parent;
+      }
+      return null;
+    }
+    labelAt(e) {
+      const T = THREE, r = this.canvas.getBoundingClientRect();
+      this.ray = this.ray || new T.Raycaster();
+      this.ray.setFromCamera(new T.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), this.camera);
+      const hits = this.ray.intersectObjects(this.scene.children, true);
+      for (const h of hits) {
+        const o = h.object;
+        if (o.isPoints || o.isLine || (o.userData && o.userData.noLabel)) continue;
+        if (o.isSprite && !(o.userData && o.userData.label)) continue;
+        const l = this.labelOf(o);
+        if (l) return l;
+        /* Ёрлиқсиз девор, пол ва ҳ.к. орқасидагилар кўринмайди — биринчи ёпиқ объектда тўхтаймиз */
+        if (o.material && !o.material.transparent) return null;
+      }
+      return null;
+    }
+    showTip(l, e, touch) {
+      const tip = this.tip, r = this.host.getBoundingClientRect();
+      const key = l.t + "|" + (l.s || "") + "|" + (l.h || "");
+      if (tip.dataset.k !== key) {
+        tip.dataset.k = key;
+        const esc2 = (x) => String(x).replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+        tip.innerHTML = `<b>${esc2(l.t)}</b>${l.s ? `<small>${esc2(l.s)}</small>` : ""}${l.h ? `<em>${esc2(l.h)}</em>` : ""}`;
+      }
+      tip.hidden = false;
+      const w = tip.offsetWidth, h = tip.offsetHeight;
+      let x = e.clientX - r.left + 14, y = e.clientY - r.top + 16;
+      /* Телефонда бармоқ ёрлиқни ёпмаслиги учун — нуқтадан юқорида */
+      if (touch) { x = e.clientX - r.left - w / 2; y = e.clientY - r.top - h - 28; if (y < 6) y = e.clientY - r.top + 30; }
+      if (x + w > r.width - 6) x = e.clientX - r.left - w - 14;
+      x = clamp(x, 6, Math.max(6, r.width - w - 6)); y = clamp(y, 6, Math.max(6, r.height - h - 6));
+      tip.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+    }
+    hideTip() { if (this.tip && !this.tip.hidden) { this.tip.hidden = true; } }
+    /* «🏷 Номлар»: userData.pin белгиланган объектлар устида доимий ёрлиқлар (ҳар кадрда жойи янгиланади) */
+    setPins(on) {
+      if (this.pinBox) { this.pinBox.remove(); this.pinBox = null; this.pins = null; }
+      if (!on) { if (!this.running) this.render(); return; }
+      const box = (this.pinBox = document.createElement("div"));
+      box.className = "l3-pins"; box.setAttribute("aria-hidden", "true");
+      this.pins = [];
+      this.scene.traverse((o) => { if (o.userData && o.userData.pin && o.userData.label) { const el = document.createElement("span"); el.className = "l3-pin"; box.appendChild(el); this.pins.push({ o, el, txt: "" }); } });
+      this.host.appendChild(box);
+      this.render();
+    }
+    placePins() {
+      if (!this.pins) return;
+      const T = THREE, v = this.pv || (this.pv = new T.Vector3()), w = this.host.clientWidth, h = this.host.clientHeight;
+      this.camera.updateMatrixWorld();
+      for (const p of this.pins) {
+        const l = this.labelOf(p.o);
+        let vis = !!l && p.o.parent;
+        if (vis) {
+          p.o.getWorldPosition(v); v.y += p.o.userData.pinY || 0; v.project(this.camera);
+          vis = v.z < 1 && v.x > -1.05 && v.x < 1.05 && v.y > -1.05 && v.y < 1.05;
+        }
+        if (!vis) { if (p.el.style.display !== "none") p.el.style.display = "none"; continue; }
+        if (p.txt !== l.t) { p.txt = l.t; p.el.textContent = l.t; }
+        p.el.style.display = "";
+        p.el.style.transform = `translate(${Math.round((v.x + 1) / 2 * w)}px, ${Math.round((1 - v.y) / 2 * h)}px) translate(-50%, -100%)`;
+      }
+    }
     /* Экрандаги нуқта остидаги биринчи 3D объект (ўлчов асбоби ва зонд учун) */
     pick(e, objs) {
       const T = THREE, r = this.canvas.getBoundingClientRect();
@@ -282,6 +395,7 @@
     }
     render() {
       const r = this.renderer;
+      if (this.pins) this.placePins();
       if (!this.stereo || (r.xr && r.xr.isPresenting)) { r.render(this.scene, this.camera); return; }
       /* Стерео (картон VR кўзойнак): экран иккига бўлинади, ҳар кўзга алоҳида камера */
       const T = THREE, size = r.getSize(this.v2 || (this.v2 = new T.Vector2())), w = size.x / 2, h = size.y;
@@ -371,10 +485,20 @@
       this.renderer.dispose();
       if (this.renderer.forceContextLoss) this.renderer.forceContextLoss();
       this.canvas.remove();
+      if (this.tip) this.tip.remove();
+      if (this.pinBox) this.pinBox.remove();
     }
   }
 
   /* ---------- Саҳна ёрдамчилари ---------- */
+  /* Объект номи: курсор устига борганда ёки теккизганда кўринади; pin — «🏷 Номлар» режимида доимий */
+  function nameIt(o, uz, ru, en, pin) {
+    if (!o) return o;
+    const n = { uz, ru, en };
+    o.userData.label = () => ({ t: L(n) });
+    if (pin) o.userData.pin = true;
+    return o;
+  }
   function textSprite(text, color = "#ffffff", size = 0.32) {
     const T = THREE, c = document.createElement("canvas"), g = c.getContext("2d");
     const font = "700 56px Onest, system-ui, sans-serif";
@@ -483,8 +607,10 @@
         stage() === "uni" ? { id: "ecs", t: t3("S = 4,5 °C да 560 ppm учун ΔT ни кўринг (юқори сезгирлик)", "Посмотрите ΔT при 560 ppm и S = 4,5 °C (высокая чувствительность)", "Check ΔT at 560 ppm with S = 4.5 °C (high sensitivity)"), ok: () => S.ecs >= 4.5 && S.C === 560 } : null
       ];
       const earth = new T.Mesh(new T.SphereGeometry(1, 64, 48), new T.MeshStandardMaterial({ map: earthTexture(), roughness: 0.9, emissive: new T.Color(0xff3300), emissiveIntensity: 0 }));
+      nameIt(earth, "Ер", "Земля", "Earth", 1);
       v.scene.add(earth);
       const atm = new T.Mesh(new T.SphereGeometry(1.18, 48, 32), new T.MeshStandardMaterial({ color: 0x7dd3fc, transparent: true, opacity: 0.12, depthWrite: false, side: T.DoubleSide }));
+      nameIt(atm, "Атмосфера (иссиқхона газлари)", "Атмосфера (парниковые газы)", "Atmosphere (greenhouse gases)");
       v.scene.add(atm);
       const sunM = new T.Mesh(new T.SphereGeometry(0.35, 24, 16), new T.MeshBasicMaterial({ color: 0xffd34d }));
       sunM.position.set(4.2, 0.6, 0); v.scene.add(sunM);
@@ -732,6 +858,7 @@
       const g = new T.Group(); g.position.set(-LX / 2, 0, -WZ / 2); v.scene.add(g);
       const box = new T.BoxGeometry(LX, HY, WZ);
       const water = new T.Mesh(box, new T.MeshStandardMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.22, depthWrite: false }));
+      nameIt(water, "Тиндиргич (сув ҳавзаси)", "Отстойник (вода)", "Settling tank (water)", 1);
       water.position.set(LX / 2, HY / 2, WZ / 2); g.add(water);
       const edges = new T.LineSegments(new T.EdgesGeometry(box), new T.LineBasicMaterial({ color: 0x1e3a8a }));
       edges.position.copy(water.position); g.add(edges);
@@ -739,6 +866,7 @@
       floor.position.set(LX / 2, -0.02, WZ / 2); g.add(floor);
       const pipeM = new T.MeshStandardMaterial({ color: 0x64748b, metalness: 0.4, roughness: 0.4 });
       const pin = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.8, 16), pipeM); pin.rotation.z = Math.PI / 2; pin.position.set(-0.4, HY * 0.75, WZ / 2); g.add(pin);
+      nameIt(pin, "Кириш қувури", "Входная труба", "Inlet pipe", 1);
       const pout = pin.clone(); pout.position.set(LX + 0.4, HY * 0.9, WZ / 2); g.add(pout);
       const lIn = textSprite("→ " + L({ uz: "кириш", ru: "вход", en: "inlet" }), "#1e3a8a", 0.26); lIn.position.set(-0.4, HY + 0.3, WZ / 2); g.add(lIn);
       const lOut = textSprite(L({ uz: "чиқиш", ru: "выход", en: "outlet" }) + " →", "#1e3a8a", 0.26); lOut.position.set(LX + 0.4, HY + 0.3, WZ / 2); g.add(lOut);
@@ -747,6 +875,7 @@
       g.add(im);
       const P = Array.from({ length: N }, () => ({ x: 0, y: 0, z: 0, st: 0 }));
       const sludge = new T.Mesh(new T.BoxGeometry(LX, 1, WZ), new T.MeshStandardMaterial({ color: 0x92400e, roughness: 1 }));
+      nameIt(sludge, "Чўкма (лой)", "Осадок (ил)", "Sludge");
       sludge.position.set(LX / 2, 0, WZ / 2); g.add(sludge);
       let rem = 0, esc_ = 0, mud = 0;
       const dEff = () => (S.coag && S.d < 20 ? S.d * 20 : S.d);
@@ -863,8 +992,10 @@
       const dirs = [[{ uz: "Ж", ru: "Ю", en: "S" }, 0, 5.4], [{ uz: "Ш", ru: "С", en: "N" }, 0, -5.4], [{ uz: "Шқ", ru: "В", en: "E" }, 5.4, 0], [{ uz: "Ғ", ru: "З", en: "W" }, -5.4, 0]];
       dirs.forEach(([t, x, z]) => { const s = textSprite(L(t), "#14532d", 0.45); s.position.set(x, 0.3, z); v.scene.add(s); });
       const stand = new T.Mesh(new T.CylinderGeometry(0.06, 0.08, 0.8, 12), new T.MeshStandardMaterial({ color: 0x475569 }));
+      nameIt(stand, "Панел устуни", "Стойка панели", "Panel stand");
       stand.position.y = 0.4; v.scene.add(stand);
       const panel = new T.Group(); panel.position.y = 0.85; v.scene.add(panel);
+      nameIt(panel, "Қуёш панели", "Солнечная панель", "Solar panel", 1);
       const cells = document.createElement("canvas"); cells.width = 256; cells.height = 160;
       const cg = cells.getContext("2d"); cg.fillStyle = "#1e3a8a"; cg.fillRect(0, 0, 256, 160); cg.strokeStyle = "#93c5fd"; cg.lineWidth = 2;
       for (let x = 0; x <= 256; x += 32) { cg.beginPath(); cg.moveTo(x, 0); cg.lineTo(x, 160); cg.stroke(); }
@@ -874,6 +1005,7 @@
       const slab = new T.Mesh(new T.BoxGeometry(1.7, 0.05, 1.0), pm); panel.add(slab);
       const nArrow = new T.ArrowHelper(new T.Vector3(0, 1, 0), new T.Vector3(0, 0.03, 0), 0.9, 0x16a34a, 0.18, 0.1); panel.add(nArrow);
       const sun = new T.Mesh(new T.SphereGeometry(0.28, 24, 16), new T.MeshBasicMaterial({ color: 0xfacc15 })); v.scene.add(sun);
+      nameIt(sun, "Қуёш", "Солнце", "Sun", 1);
       const sunL = new T.DirectionalLight(0xfff3c4, 1.4); v.scene.add(sunL);
       const ray = new T.Line(new T.BufferGeometry(), new T.LineDashedMaterial({ color: 0xf59e0b, dashSize: 0.2, gapSize: 0.12 })); v.scene.add(ray);
       const path = new T.Line(new T.BufferGeometry(), new T.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.6 })); v.scene.add(path);
@@ -959,11 +1091,14 @@
         { id: "full", t: t3("Оролни ўрмонга айлантиринг (100+ дарахт)", "Превратите остров в лес (100+ деревьев)", "Turn the island into a forest (100+ trees)"), ok: () => S.n >= 100 }
       ];
       const island = new T.Mesh(new T.CylinderGeometry(5, 5.4, 0.5, 48), new T.MeshStandardMaterial({ color: 0x65a30d, roughness: 1 }));
+      nameIt(island, "Орол", "Остров", "Island");
       island.position.y = -0.25; v.scene.add(island);
       const factory = new T.Group(); factory.position.set(-2.8, 0, -2.2); v.scene.add(factory);
+      nameIt(factory, "Завод (CO₂ манбаи)", "Завод (источник CO₂)", "Factory (CO₂ source)", 1);
       const fb = new T.Mesh(new T.BoxGeometry(1.4, 0.8, 0.9), new T.MeshStandardMaterial({ color: 0x94a3b8 })); fb.position.y = 0.4; factory.add(fb);
       const ch = new T.Mesh(new T.CylinderGeometry(0.12, 0.15, 1.3, 12), new T.MeshStandardMaterial({ color: 0x64748b })); ch.position.set(0.4, 1.3, 0); factory.add(ch);
       const house = new T.Mesh(new T.BoxGeometry(0.8, 0.6, 0.8), new T.MeshStandardMaterial({ color: 0xfcd34d })); house.position.set(-1.4, 0.3, -2.8); v.scene.add(house);
+      nameIt(house, "Уй", "Дом", "House");
       const roof = new T.Mesh(new T.ConeGeometry(0.65, 0.45, 4), new T.MeshStandardMaterial({ color: 0xb91c1c })); roof.position.set(-1.4, 0.82, -2.8); roof.rotation.y = Math.PI / 4; v.scene.add(roof);
       const smokeM = new T.MeshStandardMaterial({ color: 0x6b7280, transparent: true, opacity: 0.55, depthWrite: false });
       const smoke = Array.from({ length: 14 }, (_, i) => { const m = new T.Mesh(new T.SphereGeometry(0.22, 12, 8), smokeM); m.userData.t = i / 14; v.scene.add(m); return m; });
@@ -973,6 +1108,7 @@
       trunks.count = crowns.count = 0; v.scene.add(trunks, crowns);
       const trees = [], mtx = new T.Matrix4(), q = new T.Quaternion(), one = new T.Vector3(1, 1, 1);
       const big = new T.Group(); big.position.set(2.4, 0, 1.2); v.scene.add(big);
+      nameIt(big, "Катта дарахт (CO₂ ютади)", "Большое дерево (поглощает CO₂)", "Big tree (absorbs CO₂)", 1);
       const bT = new T.Mesh(new T.CylinderGeometry(1, 1.15, 1, 16), new T.MeshStandardMaterial({ color: 0x7c2d12 })); big.add(bT);
       const bC = new T.Mesh(new T.SphereGeometry(1, 20, 14), new T.MeshStandardMaterial({ color: 0x166534, roughness: 0.9 })); big.add(bC);
       const sizeBig = () => { const r = S.D / 100 / 2 * 2.2, h = S.Hh / 10; bT.scale.set(r, h * 0.55, r); bT.position.y = h * 0.275; bC.scale.set(h * 0.32 + r, h * 0.4, h * 0.32 + r); bC.position.y = h * 0.55 + h * 0.3; };
@@ -1070,6 +1206,7 @@
       const g = new T.Group(); g.position.set(-LX / 2, 0, -WZ / 2); v.scene.add(g);
       const box = new T.BoxGeometry(LX, HY, WZ);
       const liquid = new T.Mesh(box, new T.MeshStandardMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.2, depthWrite: false }));
+      nameIt(liquid, "Суюқлик (зичлиги ρ)", "Жидкость (плотность ρ)", "Liquid (density ρ)", 1);
       liquid.position.set(LX / 2, HY / 2, WZ / 2); g.add(liquid);
       const edges = new T.LineSegments(new T.EdgesGeometry(box), new T.LineBasicMaterial({ color: 0x1e3a8a }));
       edges.position.copy(liquid.position); g.add(edges);
@@ -1193,6 +1330,7 @@
       if (v.camera && v.camera.aspect < 1.2) { v.home.d = v.d = 12.5 * 1.3 / Math.max(0.6, v.camera.aspect); v.place(); }
       const XS = [-5, -3, -1, 1, 3, 5], BY = 0.42, END = 6.2;
       const belt = new T.Mesh(new T.BoxGeometry(END + 6.6, 0.06, 0.62), new T.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 }));
+      nameIt(belt, "Конвейер тасмаси", "Конвейерная лента", "Conveyor belt");
       belt.position.set((END - 6.6) / 2, BY - 0.04, 0); v.scene.add(belt);
       for (let x = -6.2; x <= END; x += 1.1) { const leg = new T.Mesh(new T.BoxGeometry(0.06, BY - 0.07, 0.06), new T.MeshStandardMaterial({ color: 0x64748b })); leg.position.set(x, (BY - 0.07) / 2, 0.26); v.scene.add(leg); const l2 = leg.clone(); l2.position.z = -0.26; v.scene.add(l2); }
       const floor = new T.Mesh(new T.PlaneGeometry(16, 5), new T.MeshStandardMaterial({ color: 0xcbd5e1 }));
@@ -1200,7 +1338,7 @@
       /* Машиналар: танага қараб шакл, ўчирилса кулранг ва ярим шаффоф */
       const bodies = [], spin = [];
       ST.forEach(([id, ic, nm, c], i) => {
-        const gr = new T.Group(); gr.position.x = XS[i]; v.scene.add(gr);
+        const gr = new T.Group(); gr.position.x = XS[i]; v.scene.add(gr); gr.userData.label = () => ({ t: L(nm) });
         const mat = new T.MeshStandardMaterial({ color: c, roughness: 0.5, metalness: 0.15, transparent: true, opacity: 0.92 });
         let body;
         if (id === "wash") { body = new T.Mesh(new T.BoxGeometry(1.2, 0.75, 1.0), mat); body.position.y = 0.42; }
@@ -1212,13 +1350,16 @@
         if (id === "cent") spin.push([body, "y", 5, i]);
         if (id === "extr") {
           const hop = new T.Mesh(new T.CylinderGeometry(0.34, 0.1, 0.5, 20, 1, true), new T.MeshStandardMaterial({ color: 0xa78bfa, side: T.DoubleSide })); hop.position.set(-0.4, 1.05, 0); gr.add(hop);
+          nameIt(hop, "Бункер", "Бункер", "Hopper");
           for (let k = 0; k < 4; k++) { const rg = new T.Mesh(new T.TorusGeometry(0.27, 0.025, 8, 24), new T.MeshStandardMaterial({ color: 0x4c1d95 })); rg.rotation.y = Math.PI / 2; rg.position.set(-0.45 + k * 0.3, 0.62, 0); gr.add(rg); }
           const die = new T.Mesh(new T.CylinderGeometry(0.3, 0.3, 0.08, 24), new T.MeshStandardMaterial({ color: 0x1f2937, metalness: 0.6 })); die.rotation.z = Math.PI / 2; die.position.set(0.68, 0.62, 0); gr.add(die); spin.push([die, "x", 4, i]);
+          nameIt(die, "Фильера (экструдер)", "Фильера (экструдер)", "Extruder die");
         }
         if (id === "sort") { const bin = new T.Mesh(new T.BoxGeometry(0.7, 0.4, 0.5), new T.MeshStandardMaterial({ color: 0x15803d })); bin.position.set(0, 0.2, -0.85); gr.add(bin); }
         const lb = textSprite(`${i + 1}. ${L(nm)}`, "#0f172a", 0.3); lb.position.set(0, i % 2 ? 2.05 : 1.6, 0); gr.add(lb);
       });
       const pile = new T.Mesh(new T.CircleGeometry(0.6, 32), new T.MeshStandardMaterial({ color: 0x94a3b8 })); pile.rotation.x = -Math.PI / 2; pile.position.set(END + 0.35, 0.005, 0); pile.visible = false; v.scene.add(pile);
+      nameIt(pile, "Гранулалар", "Гранулы", "Pellets", 1);
       /* Буюмлар: 0 — идиш, 1 — бўлак (флекс), 2 — гранула */
       const N = 90, IT = Array.from({ length: N }, () => ({})), flake = new T.InstancedMesh(new T.BoxGeometry(1, 1, 1), new T.MeshStandardMaterial({ roughness: 0.6 }), N);
       const PN = 160, pel = new T.InstancedMesh(new T.SphereGeometry(0.045, 8, 6), new T.MeshStandardMaterial({ roughness: 0.4 }), PN);
@@ -1379,13 +1520,16 @@
       };
       /* Завод ва мўри */
       const fac = new T.Mesh(new T.BoxGeometry(0.9, 0.5, 0.7), new T.MeshStandardMaterial({ color: 0x94a3b8 })); fac.position.set(SCX - 0.35, 0.25, 0); v.scene.add(fac);
+      nameIt(fac, "Завод", "Завод", "Factory", 1);
       const stackM = new T.MeshStandardMaterial({ color: 0xb91c1c });
       const stack = new T.Mesh(new T.CylinderGeometry(0.07, 0.1, 1, 14), stackM); v.scene.add(stack);
+      nameIt(stack, "Мўри (тутун трубаси)", "Дымовая труба", "Smokestack", 1);
       const stackH = () => clamp(S.H / 40, 0.4, 4.5);
       const setStack = () => { const h = stackH(); stack.scale.y = h; stack.position.set(SCX, h / 2, 0); };
       /* Қишлоқ уйлари (1 км да) */
       const houseM = new T.MeshStandardMaterial({ color: 0xfde68a }), roofM = new T.MeshStandardMaterial({ color: 0xb45309 });
       const village = new T.Group(); v.scene.add(village);
+      nameIt(village, "Қишлоқ (ПДК текширилади)", "Деревня (проверка ПДК)", "Village (limit check)", 1);
       [[0, -0.35], [0.3, 0.25], [-0.3, 0.3], [0.05, 0.75]].forEach(([dx, dz]) => {
         const hs = new T.Mesh(new T.BoxGeometry(0.22, 0.18, 0.22), houseM); hs.position.set(dx, 0.09, dz); village.add(hs);
         const rf = new T.Mesh(new T.ConeGeometry(0.19, 0.14, 4), roofM); rf.position.set(dx, 0.25, dz); rf.rotation.y = Math.PI / 4; village.add(rf);
@@ -1505,6 +1649,7 @@
       const cols = new Float32Array(geo.attributes.position.count * 3);
       geo.setAttribute("color", new T.BufferAttribute(cols, 3));
       const river = new T.Mesh(geo, new T.MeshStandardMaterial({ vertexColors: true, roughness: 0.4, metalness: 0.05 }));
+      nameIt(river, "Дарё", "Река", "River", 1);
       river.rotation.x = -Math.PI / 2; river.position.set(X0 + (LEN * KM) / 2 - 4 * KM, 0.01, 0); v.scene.add(river);
       const bankM = new T.MeshStandardMaterial({ color: 0x65a30d, roughness: 1 });
       [-1.6, 1.6].forEach((z) => { const b = new T.Mesh(new T.BoxGeometry(LEN * KM, 0.12, 1.6), bankM); b.position.set(river.position.x, 0.02, z); v.scene.add(b); });
@@ -1521,8 +1666,11 @@
       };
       /* Завод ва оқова қувури */
       const fac = new T.Mesh(new T.BoxGeometry(0.7, 0.5, 0.5), new T.MeshStandardMaterial({ color: 0x94a3b8 })); fac.position.set(toS(0), 0.27, -1.3); v.scene.add(fac);
+      nameIt(fac, "Завод (оқова сув)", "Завод (сточные воды)", "Factory (wastewater)", 1);
       const pipe = new T.Mesh(new T.CylinderGeometry(0.05, 0.05, 0.6, 10), new T.MeshStandardMaterial({ color: 0x475569 })); pipe.rotation.x = Math.PI / 2; pipe.position.set(toS(0), 0.08, -0.85); v.scene.add(pipe);
+      nameIt(pipe, "Оқова сув қувури", "Сбросная труба", "Discharge pipe");
       const plume = new T.Mesh(new T.CircleGeometry(0.35, 24), new T.MeshBasicMaterial({ color: 0x78350f, transparent: true, opacity: 0.45 })); plume.rotation.x = -Math.PI / 2; plume.position.set(toS(0) + 0.2, 0.03, -0.55); v.scene.add(plume);
+      nameIt(plume, "Ифлосланиш доғи", "Пятно загрязнения", "Pollution plume");
       /* Створлар (кузатув кесимлари) */
       const postM = new T.MeshStandardMaterial({ color: 0xf59e0b });
       const posts = S.posts.map(() => { const g = new T.Group(); const pole = new T.Mesh(new T.BoxGeometry(0.05, 0.04, 3.2), postM); pole.position.y = 0.08; g.add(pole); const lb = textSprite("•", "#7c2d12", 0.32); lb.position.set(0, 0.55, -1.75); g.add(lb); v.scene.add(g); g.userData.lb = lb; return g; });
@@ -1618,6 +1766,7 @@
       ];
       const levels = TROPH.map(([e, n, d, c], i) => {
         const g = new T.Group(); v.scene.add(g);
+        nameIt(g, "Экологик пирамида", "Экологическая пирамида", "Ecological pyramid", 1);
         const m = new T.Mesh(new T.CylinderGeometry(1, 1, 0.5, 4, 1), new T.MeshStandardMaterial({ color: c, roughness: 0.7, transparent: true, opacity: 0.95 }));
         m.rotation.y = Math.PI / 4; g.add(m);
         const lb = textSprite(e, "#ffffff", 0.5); g.add(lb);
@@ -1747,8 +1896,10 @@
       ground.rotation.x = -Math.PI / 2; v.scene.add(ground);
       const white = mat(0xf8fafc, { roughness: 0.4 });
       const tower = new T.Mesh(new T.CylinderGeometry(0.06, 0.13, 1, 18), white); v.scene.add(tower);
+      nameIt(tower, "Шамол турбинаси минораси", "Башня ветротурбины", "Wind turbine tower", 1);
       const nac = new T.Mesh(new T.BoxGeometry(0.5, 0.2, 0.22), white); v.scene.add(nac);
       const rotor = new T.Group(); v.scene.add(rotor);
+      nameIt(rotor, "Ротор (парраклар)", "Ротор (лопасти)", "Rotor (blades)");
       const hub = new T.Mesh(new T.SphereGeometry(0.11, 16, 12), white); rotor.add(hub);
       const blades = [0, 1, 2].map((i) => {
         const pv = new T.Group(); pv.rotation.x = (i * 2 * Math.PI) / 3; rotor.add(pv);
@@ -1763,6 +1914,7 @@
         const g = new T.Group(), x = 3 + (i % 4) * 1.05, z = -1.6 + Math.floor(i / 4) * 1.9 + (i % 2) * 0.25;
         g.position.set(x, 0, z); v.scene.add(g);
         const body = new T.Mesh(new T.BoxGeometry(0.6, 0.45, 0.55), mat(0xfde68a)); body.position.y = 0.225; g.add(body);
+        nameIt(body, "Уй (электр истеъмолчиси)", "Дом (потребитель)", "House (consumer)");
         const roof = new T.Mesh(new T.ConeGeometry(0.48, 0.32, 4), mat(0xb91c1c)); roof.rotation.y = Math.PI / 4; roof.position.y = 0.61; g.add(roof);
         const wm = new T.MeshStandardMaterial({ color: winOff, emissive: 0xfacc15, emissiveIntensity: 0 });
         const win = new T.Mesh(new T.PlaneGeometry(0.2, 0.16), wm); win.position.set(-0.301, 0.25, 0); win.rotation.y = -Math.PI / 2; g.add(win);
@@ -1891,11 +2043,14 @@
       ui.unit = () => 0.1;
       /* Саҳна: стол, стакан, сув, элодея, лампа ва нур */
       const table = new T.Mesh(new T.BoxGeometry(9, 0.2, 5), mat(0x7c5a3a)); table.position.y = -0.1; v.scene.add(table);
+      nameIt(table, "Стол", "Стол", "Table");
       const glass = new T.Mesh(new T.CylinderGeometry(1, 1, 2.4, 40, 1, true), new T.MeshStandardMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.18, side: T.DoubleSide, roughness: 0.1, depthWrite: false }));
+      nameIt(glass, "Сувли идиш (сув ўсимлиги)", "Сосуд с водой (водное растение)", "Water vessel (pondweed)", 1);
       glass.position.y = 1.2; v.scene.add(glass);
       const water = new T.Mesh(new T.CylinderGeometry(0.97, 0.97, 2.05, 40), new T.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.22, depthWrite: false }));
       water.position.y = 1.03; v.scene.add(water);
       const sand = new T.Mesh(new T.CylinderGeometry(0.96, 0.96, 0.18, 32), mat(0xd6b98c)); sand.position.y = 0.09; v.scene.add(sand);
+      nameIt(sand, "Қум", "Песок", "Sand");
       const leafM = mat(0x16a34a), stemM = mat(0x15803d);
       const spots = [];
       [[-0.25, 0.1, 0.1], [0.2, -0.2, -0.15], [0.05, 0.3, 0.15]].forEach(([x, z, lean]) => {
@@ -1913,6 +2068,7 @@
         }
       });
       const lamp = new T.Group(); v.scene.add(lamp);
+      nameIt(lamp, "Лампа (ёруғлик манбаи)", "Лампа (источник света)", "Lamp (light source)", 1);
       const shade = new T.Mesh(new T.ConeGeometry(0.42, 0.5, 24, 1, true), mat(0x334155, { side: T.DoubleSide, metalness: 0.4 })); shade.rotation.z = Math.PI / 2; lamp.add(shade);
       const bulbM = new T.MeshBasicMaterial({ color: 0xffffff }); const bulb = new T.Mesh(new T.SphereGeometry(0.16, 16, 12), bulbM); bulb.position.x = -0.08; lamp.add(bulb);
       const pole = new T.Mesh(new T.CylinderGeometry(0.04, 0.04, 1.3, 10), mat(0x475569)); pole.position.set(0.25, -0.65, 0); lamp.add(pole);
@@ -2038,7 +2194,8 @@
       const ground = new T.Mesh(new T.BoxGeometry(12, 0.1, 9), mat(0x84cc16, { roughness: 1 })); ground.position.y = -0.05; ground.userData.ground = 1; v.scene.add(ground);
       const LX = 4, LZ = 3, HY = 1.2, th = 0.12, parts = [];
       const wallM = () => mat(0xe7d7c1);
-      const mk = (geo, m, el, pos, n) => { const x = new T.Mesh(geo, m); x.position.set(...pos); x.userData.el = el; x.userData.n = n; g.add(x); parts.push(x); return x; };
+      const EL_N = { w: { uz: "Девор (иссиқлик изоляцияси)", ru: "Стена (теплоизоляция)", en: "Wall (insulation)" }, r: { uz: "Том", ru: "Крыша", en: "Roof" }, f: { uz: "Пол", ru: "Пол", en: "Floor" }, wi: { uz: "Дераза", ru: "Окно", en: "Window" } };
+      const mk = (geo, m, el, pos, n) => { const x = new T.Mesh(geo, m); x.position.set(...pos); x.userData.el = el; x.userData.n = n; if (EL_N[el]) x.userData.label = () => ({ t: L(EL_N[el]), h: L({ uz: "Босинг — изоляцияни танлаш", ru: "Нажмите — выбрать утепление", en: "Tap to choose insulation" }) }); g.add(x); parts.push(x); return x; };
       const walls = [
         mk(new T.BoxGeometry(LX, HY, th), wallM(), "w", [0, HY / 2, LZ / 2], [0, 0, 1]),
         mk(new T.BoxGeometry(LX, HY, th), wallM(), "w", [0, HY / 2, -LZ / 2], [0, 0, -1]),
@@ -2054,7 +2211,9 @@
         w.rotation.y = ry; wins.push(w);
       });
       const door = new T.Mesh(new T.BoxGeometry(0.45, 0.8, 0.03), mat(0x7c2d12)); door.position.set(-LX / 2 - 0.07, 0.4, -0.6); door.rotation.y = Math.PI / 2; g.add(door);
+      nameIt(door, "Эшик", "Дверь", "Door");
       const chim = new T.Mesh(new T.BoxGeometry(0.25, 0.6, 0.25), mat(0x7f1d1d)); chim.position.set(1.1, HY + 0.7, -0.5); g.add(chim);
+      nameIt(chim, "Мўри", "Дымоход", "Chimney");
       /* Иссиқлик «тўлқинлари»: ҳар бир элементдан Q улушига мос */
       const NP = 140, pm = new T.MeshBasicMaterial({ color: 0xf97316, transparent: true, opacity: 0.75 });
       const ps = Array.from({ length: NP }, () => { const m = new T.Mesh(new T.SphereGeometry(0.035, 6, 5), pm); m.userData = { life: 0, noPick: true }; m.visible = false; v.scene.add(m); return m; });
@@ -2181,18 +2340,23 @@
       /* Саҳна: кесилган тупроқ блоки */
       const W = 8, Dz = 4;
       const top = new T.Mesh(new T.BoxGeometry(W, 0.06, Dz), mat(0x65a30d, { roughness: 1 })); top.position.y = -0.03; top.userData.surf = 1; v.scene.add(top);
+      nameIt(top, "Ер юзаси", "Поверхность земли", "Ground surface");
       const vad = new T.Mesh(new T.BoxGeometry(W, 0.6, Dz), mat(0xd6b98c, { transparent: true, opacity: 0.55 })); vad.position.y = -0.36; v.scene.add(vad);
+      nameIt(vad, "Аэрация зонаси (тупроқ)", "Зона аэрации (почва)", "Unsaturated zone (soil)");
       const aqM = mat(0xfcd34d, { transparent: true, opacity: 0.42, depthWrite: false });
       const aq = new T.Mesh(new T.BoxGeometry(W, 1.8, Dz), aqM); aq.position.y = -1.56; v.scene.add(aq);
+      nameIt(aq, "Сувли қатлам (ер ости суви)", "Водоносный горизонт", "Aquifer (groundwater)", 1);
       const base = new T.Mesh(new T.BoxGeometry(W, 0.3, Dz), mat(0x57534e)); base.position.y = -2.61; v.scene.add(base);
       const wt = new T.Mesh(new T.PlaneGeometry(W, Dz), new T.MeshBasicMaterial({ color: 0x0284c7, transparent: true, opacity: 0.35, side: T.DoubleSide, depthWrite: false })); wt.rotation.x = -Math.PI / 2; wt.position.y = -0.66; wt.userData.noPick = true; v.scene.add(wt);
       const fill = new T.Mesh(new T.BoxGeometry(1.4, 0.35, 1.6), mat(0x44403c)); fill.position.set(XS, 0.17, 0); v.scene.add(fill);
       for (let k = 0; k < 14; k++) { const b = new T.Mesh(new T.BoxGeometry(0.16, 0.12, 0.16), mat([0xef4444, 0x3b82f6, 0xeab308, 0xa3a3a3][k % 4])); b.position.set(XS - 0.55 + Math.random() * 1.1, 0.38, -0.65 + Math.random() * 1.3); b.rotation.y = Math.random() * 3; v.scene.add(b); }
       const liner = new T.Mesh(new T.BoxGeometry(1.6, 0.04, 1.8), mat(0x111827)); liner.position.set(XS, -0.02, 0); v.scene.add(liner);
+      nameIt(liner, "Ҳимоя экрани (геомембрана)", "Защитный экран (геомембрана)", "Protective liner (geomembrane)");
       const plM = new T.MeshStandardMaterial({ color: 0xdc2626, transparent: true, opacity: 0.5, depthWrite: false });
       const plume = new T.Mesh(new T.SphereGeometry(1, 32, 16), plM); plume.userData.noPick = true; v.scene.add(plume);
       const arrows = Array.from({ length: 10 }, (_, k) => { const a = new T.Mesh(new T.ConeGeometry(0.07, 0.22, 10), mat(0x0369a1)); a.rotation.z = -Math.PI / 2; a.position.set(-3.6 + (k % 5) * 1.7, -1.1 - Math.floor(k / 5) * 0.8, Dz / 2 + 0.01); a.userData.noPick = true; v.scene.add(a); return a; });
       const well = new T.Group(); v.scene.add(well);
+      nameIt(well, "Қудуқ", "Колодец", "Well", 1);
       const casing = new T.Mesh(new T.CylinderGeometry(0.09, 0.09, 2.5, 16), mat(0x475569, { metalness: 0.5 })); casing.position.y = -1.05; well.add(casing);
       const head = new T.Mesh(new T.CylinderGeometry(0.2, 0.2, 0.3, 16), mat(0x94a3b8)); head.position.y = 0.15; well.add(head);
       let icon = null;
@@ -2302,12 +2466,16 @@
       const glass = new T.MeshStandardMaterial({ color: 0xcbd5e1, transparent: true, opacity: 0.22, side: T.DoubleSide, depthWrite: false, metalness: 0.3, roughness: 0.2 });
       const body = new T.Mesh(new T.CylinderGeometry(0.6, 0.6, 2.4, 40, 1, true), glass); body.position.y = 3.6; v.scene.add(body);
       const cone = new T.Mesh(new T.CylinderGeometry(0.6, 0.15, 2.4, 40, 1, true), glass); cone.position.y = 1.2; v.scene.add(cone);
+      nameIt(cone, "Циклон конуси", "Конус циклона", "Cyclone cone", 1);
       const edge = new T.LineBasicMaterial({ color: 0x94a3b8 });
       [body, cone].forEach((m) => { const e = new T.LineSegments(new T.EdgesGeometry(m.geometry, 30), edge); e.position.copy(m.position); v.scene.add(e); });
       const inlet = new T.Mesh(new T.BoxGeometry(1.4, 0.6, 0.3), glass); inlet.position.set(-0.7, 4.5, 0.45); v.scene.add(inlet);
+      nameIt(inlet, "Чангли ҳаво кириши", "Вход запылённого воздуха", "Dusty air inlet", 1);
       const tube = new T.Mesh(new T.CylinderGeometry(0.3, 0.3, 1.8, 28, 1, true), new T.MeshStandardMaterial({ color: 0x64748b, metalness: 0.6, roughness: 0.3, side: T.DoubleSide })); tube.position.y = 4.7; v.scene.add(tube);
       const hop = new T.Mesh(new T.BoxGeometry(0.7, 0.6, 0.7), mat(0x475569, { transparent: true, opacity: 0.6 })); hop.position.y = -0.3; v.scene.add(hop);
+      nameIt(hop, "Чанг бункери", "Бункер пыли", "Dust hopper", 1);
       const pile = new T.Mesh(new T.CylinderGeometry(0.3, 0.33, 1, 20), mat(0x92400e)); pile.position.y = -0.6; v.scene.add(pile);
+      nameIt(pile, "Ушланган чанг", "Уловленная пыль", "Collected dust");
       const lin = textSprite("→ " + L(t3("чангли ҳаво", "пыльный воздух", "dusty air")), "#e2e8f0", 0.26); lin.position.set(-1.4, 5.1, 0.45); v.scene.add(lin);
       const lout = textSprite("↑ " + L(t3("тоза ҳаво", "чистый воздух", "clean air")), "#86efac", 0.26); lout.position.set(0, 5.9, 0); v.scene.add(lout);
       const N = 180, im = new T.InstancedMesh(new T.SphereGeometry(1, 6, 5), new T.MeshBasicMaterial({ color: 0xffffff }), N); im.userData.noPick = true; v.scene.add(im);
@@ -2427,9 +2595,11 @@
       const pc = new Float32Array(pg.attributes.position.count * 3); pg.setAttribute("color", new T.BufferAttribute(pc, 3));
       const pileM = new T.MeshStandardMaterial({ vertexColors: true, roughness: 1 });
       const pile = new T.Mesh(pg, pileM); pile.userData.pile = 1; v.scene.add(pile);
+      nameIt(pile, "Компост уюми", "Компостная куча", "Compost pile", 1);
       const crumbs = Array.from({ length: 50 }, () => { const m = new T.Mesh(new T.BoxGeometry(0.08, 0.03, 0.06), mat(0x16a34a)); m.userData.noPick = true; v.scene.add(m); return m; });
       const tg = new T.Group(); tg.position.set(1.6, 0, 0.6); v.scene.add(tg);
       const tglass = new T.Mesh(new T.CylinderGeometry(0.07, 0.07, 1.6, 16), new T.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 })); tglass.position.y = 0.95; tg.add(tglass);
+      nameIt(tglass, "Термометр", "Термометр", "Thermometer", 1);
       const bulb = new T.Mesh(new T.SphereGeometry(0.12, 16, 12), mat(0xdc2626)); bulb.position.y = 0.12; tg.add(bulb);
       const col = new T.Mesh(new T.CylinderGeometry(0.04, 0.04, 1, 12), mat(0xdc2626)); tg.add(col);
       let tl = null;
@@ -2622,6 +2792,7 @@
       const ground = new T.Mesh(new T.PlaneGeometry(16, 16), mat(0x94a3b8)); ground.rotation.x = -Math.PI / 2; v.scene.add(ground);
       const road = new T.Mesh(new T.PlaneGeometry(16, 1.1), mat(0x334155)); road.rotation.x = -Math.PI / 2; road.position.set(0, 0.01, 1.6); v.scene.add(road);
       const park = new T.Mesh(new T.CircleGeometry(1.4, 24), mat(0x65a30d)); park.rotation.x = -Math.PI / 2; park.position.set(-4.5, 0.02, -3.5); v.scene.add(park);
+      nameIt(park, "Боғ", "Парк", "Park");
       let sd = 7; const rnd = () => { sd = (sd * 16807) % 2147483647; return sd / 2147483647; };
       const bcol = [0xe2e8f0, 0xcbd5e1, 0xfde68a, 0xbae6fd, 0xfecaca];
       for (let i = 0; i < 26; i++) {
@@ -2633,8 +2804,11 @@
       for (let i = 0; i < 7; i++) { const tr = new T.Mesh(new T.SphereGeometry(0.32, 10, 8), mat(0x16a34a)); const a = (i / 7) * Math.PI * 2; tr.position.set(-4.5 + Math.cos(a) * 0.8, 0.45, -3.5 + Math.sin(a) * 0.8); v.scene.add(tr); }
       /* Завод ва мўри */
       const fac = new T.Mesh(new T.BoxGeometry(2, 1, 1.4), mat(0x78716c)); fac.position.set(5.4, 0.5, -3.6); v.scene.add(fac);
+      nameIt(fac, "Завод", "Завод", "Factory", 1);
       const stack = new T.Mesh(new T.CylinderGeometry(0.16, 0.22, 2.6, 14), mat(0xa8a29e)); stack.position.set(6, 1.8, -3.6); v.scene.add(stack);
+      nameIt(stack, "Мўри", "Дымовая труба", "Smokestack", 1);
       const filt = new T.Mesh(new T.BoxGeometry(0.5, 0.5, 0.5), mat(0x0ea5e9, { metalness: 0.3 })); filt.position.set(4.9, 1.25, -3.6); v.scene.add(filt);
+      nameIt(filt, "Тутун фильтри", "Фильтр дымовых газов", "Stack filter");
       /* Машиналар */
       const cars = [], ccol = [0xef4444, 0x3b82f6, 0xf59e0b, 0xffffff, 0x10b981, 0x111827];
       for (let i = 0; i < 24; i++) { const c = new T.Mesh(new T.BoxGeometry(0.42, 0.2, 0.22), mat(ccol[i % 6], { roughness: 0.3, metalness: 0.4 })); c.userData = { x: -8 + Math.random() * 16, lane: i % 2, sp: 1.2 + Math.random() * 0.8 }; c.position.y = 0.12; v.scene.add(c); cars.push(c); }
@@ -2766,6 +2940,7 @@
       for (let i = 0; i < 6; i++) {
         const x = -8.5 + (i % 3) * 2.2, z = -4 + Math.floor(i / 3) * 2.4;
         const tw = new T.Mesh(new T.CylinderGeometry(0.06, 0.12, 3.2, 10), wmat); tw.position.set(x, 1.6, z); v.scene.add(tw);
+        nameIt(tw, "Шамол генератори", "Ветрогенератор", "Wind turbine");
         const nac = new T.Mesh(new T.BoxGeometry(0.22, 0.2, 0.42), wmat); nac.position.set(x, 3.25, z); v.scene.add(nac);
         const rot = new T.Group(); rot.position.set(x, 3.25, z + 0.24);
         for (let b = 0; b < 3; b++) { const bl = new T.Mesh(new T.BoxGeometry(0.09, 1.3, 0.03), wmat); bl.position.y = 0.65; const arm = new T.Group(); arm.add(bl); arm.rotation.z = (b * Math.PI * 2) / 3; rot.add(arm); }
@@ -2773,17 +2948,19 @@
       }
       /* Қуёш панеллари */
       const panels = [], pmat = mat(0x1e3a8a, { roughness: 0.25, metalness: 0.5, emissive: 0x0b1d4d });
-      for (let i = 0; i < 30; i++) { const p = new T.Mesh(new T.BoxGeometry(0.9, 0.04, 0.55), pmat); p.position.set(1.2 + (i % 6) * 1.05, 0.35, -5 + Math.floor(i / 6) * 0.8); p.rotation.x = -0.5; v.scene.add(p); panels.push(p); }
+      for (let i = 0; i < 30; i++) { const p = new T.Mesh(new T.BoxGeometry(0.9, 0.04, 0.55), pmat); nameIt(p, "Қуёш панели", "Солнечная панель", "Solar panel", i === 0); p.position.set(1.2 + (i % 6) * 1.05, 0.35, -5 + Math.floor(i / 6) * 0.8); p.rotation.x = -0.5; v.scene.add(p); panels.push(p); }
       /* Шаҳарча: ойналари ёнадиган уйлар */
       const wins = [];
       for (let i = 0; i < 10; i++) {
         const x = -3 + (i % 5) * 1.4, z = 3 + Math.floor(i / 5) * 1.6, h = 0.8 + (i % 3) * 0.5;
         const hb = new T.Mesh(new T.BoxGeometry(1, h, 1), mat(0xfef3c7)); hb.position.set(x, h / 2, z); v.scene.add(hb);
+        nameIt(hb, "Уй", "Дом", "House");
         const roof = new T.Mesh(new T.ConeGeometry(0.8, 0.5, 4), mat(0xb91c1c)); roof.position.set(x, h + 0.25, z); roof.rotation.y = Math.PI / 4; v.scene.add(roof);
         const wm = new T.MeshStandardMaterial({ color: 0x1f2937, emissive: 0xfacc15, emissiveIntensity: 0 }), wn = new T.Mesh(new T.PlaneGeometry(0.5, 0.3), wm); wn.position.set(x, h * 0.55, z + 0.51); v.scene.add(wn); wins.push(wm);
       }
       /* Аккумулятор (тўлиш даражаси) */
       const batBox = new T.Mesh(new T.BoxGeometry(1.2, 2, 0.8), new T.MeshStandardMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.3, depthWrite: false })); batBox.position.set(5.5, 1, 3.5); v.scene.add(batBox);
+      nameIt(batBox, "Аккумулятор (энергия захираси)", "Аккумулятор (накопитель)", "Battery storage", 1);
       const batFill = new T.Mesh(new T.BoxGeometry(1.1, 1, 0.7), mat(0x22c55e, { emissive: 0x14532d })); batFill.position.set(5.5, 0.5, 3.5); v.scene.add(batFill);
       /* Газ станцияси ва тутун */
       const gp = new T.Mesh(new T.BoxGeometry(1.6, 1, 1.2), mat(0x64748b)); gp.position.set(8.5, 0.5, 1); v.scene.add(gp);
@@ -2792,6 +2969,7 @@
       const PF = Array.from({ length: NP }, (_, i) => ({ a: (i / NP) * 3 }));
       /* Қуёш, электр «оқими» (ЛЭП бўйлаб ёруғ нуқталар) */
       const sun = new T.Mesh(new T.SphereGeometry(0.6, 20, 14), new T.MeshBasicMaterial({ color: 0xfde047 })); v.scene.add(sun);
+      nameIt(sun, "Қуёш", "Солнце", "Sun", 1);
       const NF = 36, flow = new T.InstancedMesh(new T.SphereGeometry(0.07, 6, 5), new T.MeshBasicMaterial({ color: 0xfacc15 }), NF); flow.userData.noPick = true; v.scene.add(flow);
       const path = [new T.Vector3(-7, 1.2, -3), new T.Vector3(3, 1.2, -3.5), new T.Vector3(0, 1.2, 3)];
       const clock = liveLabel(v, [0, 6.2, 0], "#0f172a", 0.5);
@@ -2887,13 +3065,19 @@
       const intake = () => (top() * 1000 * (S.eat / 1000) * 7) / S.bw; // µg/kg·ҳафта
       ui.unit = () => 10;
       const sea = new T.Mesh(new T.BoxGeometry(14, 3, 8), new T.MeshStandardMaterial({ color: 0x0284c7, transparent: true, opacity: 0.35, depthWrite: false, roughness: 0.1 })); sea.position.set(0, -0.5, 0); sea.userData.noPick = true; v.scene.add(sea);
+      nameIt(sea, "Минамата кўрфази", "Залив Минамата", "Minamata Bay", 1);
       const surf = new T.Mesh(new T.PlaneGeometry(14, 8, 40, 20), new T.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.5, side: T.DoubleSide, roughness: 0.1, metalness: 0.2 })); surf.rotation.x = -Math.PI / 2; surf.position.y = 1; surf.userData.noPick = true; v.scene.add(surf);
       const bed = new T.Mesh(new T.PlaneGeometry(14, 8), mat(0x78716c)); bed.rotation.x = -Math.PI / 2; bed.position.y = -2; v.scene.add(bed);
+      nameIt(bed, "Денгиз туби (симобли чўкинди)", "Дно (ртутные отложения)", "Seabed (mercury sediment)");
       const shore = new T.Mesh(new T.BoxGeometry(4, 1.6, 8), mat(0x65a30d)); shore.position.set(-9, 0.2, 0); v.scene.add(shore);
       const fac = new T.Mesh(new T.BoxGeometry(2, 1.2, 1.6), mat(0x57534e)); fac.position.set(-9, 1.6, -1.5); v.scene.add(fac);
+      nameIt(fac, "Chisso заводи", "Завод Chisso", "Chisso factory", 1);
       const chim = new T.Mesh(new T.CylinderGeometry(0.15, 0.2, 1.6, 12), mat(0xa8a29e)); chim.position.set(-8.5, 2.9, -1.5); v.scene.add(chim);
+      nameIt(chim, "Мўри", "Дымовая труба", "Chimney");
       const pipe = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 3, 10), mat(0x44403c)); pipe.rotation.z = Math.PI / 2; pipe.position.set(-6.5, 0.4, -1.5); v.scene.add(pipe);
+      nameIt(pipe, "Оқова қувури (метилсимоб)", "Сбросная труба (метилртуть)", "Discharge pipe (methylmercury)", 1);
       const boat = new T.Group(); const hull = new T.Mesh(new T.BoxGeometry(1.2, 0.3, 0.5), mat(0xb45309)); boat.add(hull); const man = new T.Mesh(new T.CapsuleGeometry(0.1, 0.25, 4, 8), mat(0xfde68a)); man.position.y = 0.35; boat.add(man); boat.position.set(3, 1.15, 2.5); v.scene.add(boat);
+      nameIt(boat, "Балиқчи қайиғи", "Лодка рыбака", "Fishing boat", 1);
       /* Симоб заррачалари (оқова сувдан тарқалади) */
       const NH = 160, hgm = new T.InstancedMesh(new T.SphereGeometry(0.05, 6, 5), new T.MeshBasicMaterial({ color: 0xf87171 }), NH); hgm.userData.noPick = true; v.scene.add(hgm);
       const HP = Array.from({ length: NH }, () => ({ a: Math.random() * 6, x: 0, y: 0, z: 0, dx: Math.random() - 0.3, dz: Math.random() - 0.5, dy: -Math.random() * 0.4 }));
@@ -3008,6 +3192,7 @@
       }
       /* Эстакада */
       const hwG = new T.Group();
+      nameIt(hwG, "Эстакада (автомагистрал)", "Эстакада (автомагистраль)", "Elevated highway", 1);
       const deck = new T.Mesh(new T.BoxGeometry(18, 0.3, 2.2), mat(0x71717a)); deck.position.y = 1.6; hwG.add(deck);
       for (let i = 0; i < 8; i++) { const c = new T.Mesh(new T.CylinderGeometry(0.15, 0.15, 1.6, 10), mat(0x52525b)); c.position.set(-8 + i * 2.3, 0.8, 0); hwG.add(c); }
       const hcars = []; for (let i = 0; i < 14; i++) { const c = new T.Mesh(new T.BoxGeometry(0.5, 0.22, 0.26), mat([0xef4444, 0x3b82f6, 0xfacc15, 0xffffff][i % 4], { metalness: 0.4, roughness: 0.3 })); c.userData = { x: -9 + Math.random() * 18, l: i % 2 }; hwG.add(c); hcars.push(c); }
@@ -3015,6 +3200,7 @@
       /* Ариқ ва дарахтлар */
       const strG = new T.Group();
       const water = new T.Mesh(new T.PlaneGeometry(18, 1.6, 60, 6), new T.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.1, metalness: 0.2, transparent: true, opacity: 0.9 })); water.rotation.x = -Math.PI / 2; water.position.y = 0.04; strG.add(water);
+      nameIt(water, "Чхонгечхон сойи", "Ручей Чхонгечхон", "Cheonggyecheon stream", 1);
       const bank = (z) => { const b = new T.Mesh(new T.BoxGeometry(18, 0.12, 0.8), mat(0x84cc16)); b.position.set(0, 0.06, z); strG.add(b); };
       bank(1.2); bank(-1.2);
       const trees = [];
@@ -3159,9 +3345,11 @@
       ];
       /* Стакан, суюқлик, H₃O⁺ (қизил) ва OH⁻ (кўк) заррачалар */
       const glass = new T.Mesh(new T.CylinderGeometry(0.9, 0.85, 2, 40, 1, true), new T.MeshStandardMaterial({ color: 0xf0f9ff, transparent: true, opacity: 0.25, side: T.DoubleSide, roughness: 0.05 })); glass.position.y = 1; v.scene.add(glass);
+      nameIt(glass, "Стакан", "Стакан", "Beaker", 1);
       const base = new T.Mesh(new T.CylinderGeometry(1.4, 1.4, 0.08, 40), mat(0x94a3b8)); base.position.y = -0.04; v.scene.add(base);
       const liqM = new T.MeshStandardMaterial({ color: 0x22c55e, transparent: true, opacity: 0.55, roughness: 0.2 });
       const liq = new T.Mesh(new T.CylinderGeometry(0.86, 0.83, 1, 40), liqM); v.scene.add(liq);
+      nameIt(liq, "Эритма", "Раствор", "Solution");
       const hM = mat(0xef4444, { roughness: 0.3 }), oM = mat(0x2563eb, { roughness: 0.3 });
       const NP = 60, ions = Array.from({ length: NP }, (_, i) => { const m = new T.Mesh(new T.SphereGeometry(0.06, 10, 8), i % 2 ? hM : oM); m.userData = { a: Math.random() * 6.28, r: Math.random() * 0.75, y: Math.random(), s: 0.2 + Math.random() * 0.5 }; v.scene.add(m); return m; });
       const lbl = liveLabel(v, [0, 2.35, 0], "#0f172a", 0.36);
@@ -3225,8 +3413,8 @@
       const ground = new T.Mesh(new T.CircleGeometry(5, 48), mat(0x84cc16)); ground.rotation.x = -Math.PI / 2; v.scene.add(ground);
       for (let i = 0; i < 18; i++) { const a = i / 18 * 6.28, r = 4 + Math.random() * 0.6; const tr = new T.Mesh(new T.ConeGeometry(0.35, 1.1, 8), mat(0x15803d)); tr.position.set(Math.cos(a) * r, 0.55, Math.sin(a) * r); v.scene.add(tr); }
       const rabM = mat(0xf8fafc), foxM = mat(0xea580c);
-      const mkR = () => { const g = new T.Group(); const b = new T.Mesh(new T.SphereGeometry(0.12, 10, 8), rabM); b.scale.set(1.2, 0.9, 1); g.add(b); const e1 = new T.Mesh(new T.CylinderGeometry(0.02, 0.025, 0.16, 6), rabM); e1.position.set(0.08, 0.15, 0.03); g.add(e1); const e2 = e1.clone(); e2.position.z = -0.03; g.add(e2); return g; };
-      const mkF = () => { const g = new T.Group(); const b = new T.Mesh(new T.ConeGeometry(0.14, 0.42, 10), foxM); b.rotation.z = Math.PI / 2; g.add(b); const tl = new T.Mesh(new T.ConeGeometry(0.06, 0.25, 8), mat(0xffffff)); tl.rotation.z = -Math.PI / 2; tl.position.x = -0.3; g.add(tl); const hd = new T.Mesh(new T.SphereGeometry(0.09, 10, 8), foxM); hd.position.set(0.24, 0.06, 0); g.add(hd); [-0.04, 0.04].forEach((z) => { const ear = new T.Mesh(new T.ConeGeometry(0.03, 0.08, 6), foxM); ear.position.set(0.24, 0.16, z); g.add(ear); }); const ns = new T.Mesh(new T.SphereGeometry(0.02, 6, 5), mat(0x111827)); ns.position.set(0.33, 0.05, 0); g.add(ns); return g; };
+      const mkR = () => { const g = new T.Group(); nameIt(g, "Қуён (ўлжа)", "Кролик (жертва)", "Rabbit (prey)"); const b = new T.Mesh(new T.SphereGeometry(0.12, 10, 8), rabM); b.scale.set(1.2, 0.9, 1); g.add(b); const e1 = new T.Mesh(new T.CylinderGeometry(0.02, 0.025, 0.16, 6), rabM); e1.position.set(0.08, 0.15, 0.03); g.add(e1); const e2 = e1.clone(); e2.position.z = -0.03; g.add(e2); return g; };
+      const mkF = () => { const g = new T.Group(); nameIt(g, "Тулки (йиртқич)", "Лиса (хищник)", "Fox (predator)"); const b = new T.Mesh(new T.ConeGeometry(0.14, 0.42, 10), foxM); b.rotation.z = Math.PI / 2; g.add(b); const tl = new T.Mesh(new T.ConeGeometry(0.06, 0.25, 8), mat(0xffffff)); tl.rotation.z = -Math.PI / 2; tl.position.x = -0.3; g.add(tl); const hd = new T.Mesh(new T.SphereGeometry(0.09, 10, 8), foxM); hd.position.set(0.24, 0.06, 0); g.add(hd); [-0.04, 0.04].forEach((z) => { const ear = new T.Mesh(new T.ConeGeometry(0.03, 0.08, 6), foxM); ear.position.set(0.24, 0.16, z); g.add(ear); }); const ns = new T.Mesh(new T.SphereGeometry(0.02, 6, 5), mat(0x111827)); ns.position.set(0.33, 0.05, 0); g.add(ns); return g; };
       const MAXR = 120, MAXF = 50;
       const rabs = Array.from({ length: MAXR }, () => { const m = mkR(); m.userData = { a: Math.random() * 6.28, r: Math.random() * 3.6, p: Math.random() * 6 }; v.scene.add(m); return m; });
       const foxes = Array.from({ length: MAXF }, () => { const m = mkF(); m.userData = { a: Math.random() * 6.28, r: Math.random() * 3.4, p: Math.random() * 6 }; v.scene.add(m); return m; });
@@ -3289,7 +3477,10 @@
     ["life", "🌿", t3("Тирик табиат", "Живая природа", "Living nature"), ["daraxt", "piramida", "fotosintez", "yirtqich"]],
     ["world", "🌐", t3("Халқаро тажриба: АҚШ, Германия, Япония, Корея", "Международный опыт: США, Германия, Япония, Корея", "International: USA, Germany, Japan, Korea"), ["aqi", "energiya", "minamata", "chhonggye"]]
   ];
+  /* «🏷 Номлар» режими (барча тажрибаларда эслаб қолинади) */
+  const namesOn = () => { try { return localStorage.getItem("ekotalim:l3names") === "1"; } catch (e) { return false; } };
   const TX2 = {
+    names: t3("Объектлар номини кўрсатиш (курсор ёки бармоқни олиб боринг — номи чиқади)", "Показать названия объектов (наведите курсор или палец — появится название)", "Show object names (hover or touch to see a name)"),
     prog: t3("Бажарилган тажрибалар", "Выполнено опытов", "Experiments completed"),
     goalsN: t3("мақсад", "целей", "goals"),
     news: t3("Янги", "Новое", "New"),
@@ -3368,6 +3559,7 @@
               <button type="button" class="l3-tb" data-tool="out" title="${H(TX.zout)}" aria-label="${H(TX.zout)}"><i class="fa-solid fa-minus"></i></button>
               <button type="button" class="l3-tb" data-tool="home" title="${H(TX.reset)}" aria-label="${H(TX.reset)}"><i class="fa-solid fa-house"></i></button>
               <button type="button" class="l3-tb" data-tool="measure" title="${H(TX2.measure)}" aria-label="${H(TX2.measure)}" aria-pressed="false"><i class="fa-solid fa-ruler"></i></button>
+              <button type="button" class="l3-tb${namesOn() ? " on" : ""}" data-tool="names" title="${H(TX2.names)}" aria-label="${H(TX2.names)}" aria-pressed="${namesOn()}"><i class="fa-solid fa-tags"></i></button>
               <button type="button" class="l3-tb" data-tool="snap" title="${H(TX2.snap)}" aria-label="${H(TX2.snap)}"><i class="fa-solid fa-camera"></i></button>
               <button type="button" class="l3-tb" data-tool="full" title="${H(TX2.full)}" aria-label="${H(TX2.full)}" aria-pressed="false"><i class="fa-solid fa-expand"></i></button>
               <button type="button" class="l3-tb" data-tool="stereo" title="${H(TX2.stereo)}" aria-label="${H(TX2.stereo)}" aria-pressed="false"><i class="fa-solid fa-glasses"></i></button>
@@ -3606,6 +3798,7 @@
     if (view) {
       exp.build.call(exp, view, ui);
       const tools = ROOT.querySelector(".l3-tools");
+      if (namesOn()) view.setPins(true);
       view.autoBtn = tools.querySelector('[data-tool="auto"]');
       view.syncAuto();
       const meas = setupMeasure(exp, ui);
@@ -3619,6 +3812,7 @@
         if (t === "out") view.zoom(1.18);
         if (t === "home") view.resetView();
         if (t === "measure") meas.toggle(b);
+        if (t === "names") { const on = !namesOn(); try { localStorage.setItem("ekotalim:l3names", on ? "1" : "0"); } catch (er) { /* ignore */ } b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); view.setPins(on); }
         if (t === "snap") { try { const d = view.snapshot(); fetch(d).then((r) => r.blob()).then((bl) => download(bl, "Ekomun-3D-" + exp.id + ".png")); once("l3s_" + exp.id, 1, TX.why); } catch (err) { /* ignore */ } }
         if (t === "full") toggleFull(b);
         if (t === "stereo") {
