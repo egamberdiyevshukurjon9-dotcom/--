@@ -151,7 +151,12 @@ dialog::backdrop { background: rgba(2,6,23,.55); }
 .dlg-head h2 { margin: 0; }
 #pBody { padding: 16px 20px; }
 .confirm { padding: 22px; display: grid; gap: 12px; width: min(440px, calc(100vw - 32px)); }
-#confirm { width: auto; }
+#confirm { width: fit-content; max-width: calc(100vw - 32px); }
+#codeDlg { width: min(480px, calc(100vw - 32px)); }
+#codeDlg > p, #codeDlg > ol, #codeDlg > .row, #codeDlg > .code-big { margin-left: 20px; margin-right: 20px; }
+#codeDlg > .row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.code-big { font: 700 30px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 4px; text-align: center; padding: 16px; border-radius: 14px; border: 2px dashed var(--c1, #10b981); background: var(--soft); user-select: all; overflow-wrap: anywhere; }
+#resetCard[hidden] { display: none; }
 .confirm label { display: grid; gap: 4px; font-size: 13px; }
 .confirm .row { display: flex; justify-content: flex-end; gap: 8px; }
 .confirm h2 { margin: 0; }

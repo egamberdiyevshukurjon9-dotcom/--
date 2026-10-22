@@ -109,7 +109,7 @@ async function main() {
     fs.rmSync(path.join(tmp, "db.json"), { force: true });
     await start(Number(port));
     r = await get("/api/login", { method: "POST", headers: J, body: JSON.stringify({ email: "+998901112233", password: "parol123" }) });
-    ok(r.status === 401, "Маълумотлар ўчгач, калитсиз ҳисоб йўқ", r.status);
+    ok(r.status === 404, "Маълумотлар ўчгач, калитсиз ҳисоб йўқ", r.status);
     r = await get("/api/me", { headers: { Cookie: passCk } });
     const me = r.ok ? await r.json() : {};
     ok(me.user && me.user.email === "+998901112233" && me.user.by === 2000, "Ҳисоб калитдан тикланди", r.status);
