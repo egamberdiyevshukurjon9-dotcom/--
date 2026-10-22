@@ -8,7 +8,7 @@
   "notes": "• 🎒 Босқичлар тўлиқ ажратилди: мактаб ўқувчиси фақат мактаб блокларини, университет фойдаланувчиси фақат университет блокларини кўради\n• 🤖 Ҳар бир босқичда шахсий AI агент: мактабда «Эко-устоз», университетда илмий маслаҳатчи\n• ✨ Янги нишонлар, янгиликлар ва ўйин маркази босқичга мослашди"
  },
  "content": {
-  "version": "4f1e645c56eb5c34",
+  "version": "8b24c134a83cea8c",
   "minApk": 3,
   "base": "https://raw.githubusercontent.com/egamberdiyevshukurjon9-dotcom/--/main/",
   "files": {
@@ -27,7 +27,7 @@
    "vendor/eko-dunyo3d.js": "50f45b6f9d959d5fa1f578c150ad8572780e1548f680ef5b1acf516a05e5ba18",
    "vendor/eko-fikr.js": "5a5644e5c14fe05fb7b6e1d66914ad26e7ce608f08853f20b438b199eae3160a",
    "vendor/eko-global.css": "d252a5d24e05d0bf401bf3daafea46e2691d5d80b8769c78b2e38c0a97b89ffd",
-   "vendor/eko-ilova.js": "6986553a5aafdd3011128f63658fe0f254e9d3f54131085e5227eb625bb95f51",
+   "vendor/eko-ilova.js": "7ded99a572e5569b1a532f68265bc7e7c337e0c9d3bb71d9b4d1d5949e31a0d8",
    "vendor/eko-lab3d.js": "b5daed14e5320a1e0b60b7841f31f55a663df77b745f15d987a699c13e6e5adb",
    "vendor/eko-labxona-davriy.js": "eedec8741f346f2c6b18c369a316399c43e069b8705755b214be63e94a7458d7",
    "vendor/eko-labxona-kimyo.js": "ef055ee0c90e464fa85c2e2d642c2b0d030b18aeb2ca14d59e67b8a357ffd34c",
@@ -49,9 +49,9 @@
    "vendor/eko-sayyora.js": "50dae487b9216b77c29183777dc18c00c7d9c6020dee5a046678fc6884709af9",
    "vendor/eko-scopus.js": "d0e811bdb68d951605c66765f48b230d112cdb05c98f8038a3f04c4a1c642f17",
    "vendor/eko-stat.js": "8ebcee73e5bae31dc1ca1327bfd9b0c39f4255d9366a6381c3eb84e2a06bdec8",
-   "vendor/eko-turnir.js": "e7dcd60f49d48906cb4ef436aa2e97210b8b7485f603f5d4dede7c701d0525f4",
+   "vendor/eko-turnir.js": "f0f6e31380fdf74778f0c89917efe9f4b9187aafea236f35153e3519dc1fc60b",
    "vendor/eko-ui.css": "1edb5867089694e2471ff99bb0a65bba161dfc78898f8b4009fb6cb88e4370ce",
-   "vendor/eko-ustoz.js": "51261e890411b4f24c4961518639ec4f5f563d45e0b8ba95a3d25776a3cda86e",
+   "vendor/eko-ustoz.js": "a50debc75d12475f56b7fb29f3a2dab9c120f3347347449ba07d4f0dbeda1ffc",
    "vendor/eko-video-data.js": "f606568275bdf287c4a581334127d627baaac0d4550fc4e385b9b815b28f8461",
    "vendor/eko-video.js": "3a89a2a744a31e72601539cafdd6435cded831784a270d12178493ffd58eb496",
    "vendor/eko-yol.js": "fc288e8626f9ae33a84e5e817142f15f211d138bb3d3f8bc2887575c038a405d",
