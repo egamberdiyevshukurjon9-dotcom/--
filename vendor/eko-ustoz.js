@@ -5,7 +5,9 @@
      қурилмада сақлайди ва ҳавола орқали улашади. Дарс ҳаволанинг ўзида (сиқилган ҳолда)
      туради — сервер ва ҳисоб керак эмас.
    • ISO 14001:2015 (+Amd 1:2024 иқлим ўзгариши) тайёрлик текшируви — корхоналар учун.
-   Ҳавола: ?ekt=<код>#ustoz (тест), ?ekd=<код>#ustoz (дарс).
+   • 📄 PDF → ўйинли дарс: биринчи таб, vendor/eko-dars.js (window.EkoDars) чизади.
+   Ҳавола: ?ekt=<код>#ustoz (тест), ?ekd=<код>#ustoz (дарс). Мактаб босқичида (бўлим яширин) улашилган
+   дарс/тест алоҳида ойнада очилади.
    Ҳолат: localStorage «ekotalim:ustoz». */
 (() => {
   "use strict";
@@ -38,18 +40,18 @@
   const courseStage = (c) => c.stage || (c.audience === "bola" ? "maktab" : "uni");
 
   const KEY = "ekotalim:ustoz";
-  let st = { tab: "test", lessons: [], draft: null, iso: {}, gen: { cids: [], n: 10, v: 2, title: "" } };
+  let st = { tab: "dars", lessons: [], draft: null, iso: {}, gen: { cids: [], n: 10, v: 2, title: "" } };
   try { st = Object.assign(st, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { /* ignore */ }
   st.gen = Object.assign({ cids: [], n: 10, v: 2, title: "" }, st.gen);
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) { /* ignore */ } };
 
   const TX = {
-    pill: t3("👩‍🏫 Ўқитувчи устахонаси · тест, дарс, ISO 14001", "👩‍🏫 Мастерская учителя · тесты, уроки, ISO 14001", "👩‍🏫 Teacher workshop · tests, lessons, ISO 14001"),
+    pill: t3("👩‍🏫 Ўқитувчи устахонаси · PDF дан ўйинли дарс, тест, ISO 14001", "👩‍🏫 Мастерская учителя · игровой урок из PDF, тесты, ISO 14001", "👩‍🏫 Teacher workshop · game lessons from PDF, tests, ISO 14001"),
     title: t3("Ўқитувчи устахонаси", "Мастерская учителя", "Teacher workshop"),
-    lead: t3("Платформадаги минглаб саволлардан бир дақиқада вариантли тест тузинг, ўз дарсингизни яратиб ўқувчиларга ҳавола ёки QR орқали юборинг. Синф натижалари учун «Мактаб» бўлимидан фойдаланинг.",
-      "Соберите вариантный тест из тысяч вопросов платформы за минуту, создайте свой урок и отправьте ученикам по ссылке или QR. Для результатов класса используйте раздел «Школа».",
-      "Build a multi-version test from the platform's question bank in a minute, create your own lesson and send it to students by link or QR. Use the School section for class results."),
-    tabs: { test: t3("📝 Тест генератори", "📝 Генератор тестов", "📝 Test generator"), build: t3("✍️ Дарс яратиш", "✍️ Конструктор уроков", "✍️ Lesson builder"), iso: t3("🏭 ISO 14001", "🏭 ISO 14001", "🏭 ISO 14001") },
+    lead: t3("Ўз дарслигингиз ёки лаборатория машғулотингиздан ўйинли дарс тузинг, платформадаги минглаб саволлардан вариантли тест йиғинг ва ўқувчиларга код, ҳавола ёки QR орқали юборинг.",
+      "Создайте игровой урок из своего учебника или лабораторной работы, соберите вариантный тест из тысяч вопросов платформы и отправьте ученикам код, ссылку или QR.",
+      "Turn your own textbook or lab session into a game lesson, build multi-version tests from the platform's question bank and send students a code, link or QR."),
+    tabs: { dars: (window.EkoDars && EkoDars.tab) || t3("📄 PDF → ўйинли дарс", "📄 PDF → игровой урок", "📄 PDF → game lesson"), test: t3("📝 Тест генератори", "📝 Генератор тестов", "📝 Test generator"), build: t3("✍️ Дарс яратиш", "✍️ Конструктор уроков", "✍️ Lesson builder"), iso: t3("🏭 ISO 14001", "🏭 ISO 14001", "🏭 ISO 14001") },
     pick: t3("1. Курсларни танланг", "1. Выберите курсы", "1. Choose courses"),
     qs: t3("савол", "вопр.", "questions"),
     n: t3("Саволлар сони", "Число вопросов", "Number of questions"),
@@ -313,7 +315,7 @@
       if (pick && +pick.value === c) { ok++; fs.classList.add("ok"); } else fs.classList.add("bad");
     });
     const pct = sets.length ? Math.round((ok / sets.length) * 100) : 0;
-    const name = (ROOT.querySelector("[data-sname]") || {}).value || "";
+    const name = ((form.parentElement && form.parentElement.querySelector("[data-sname]")) || {}).value || "";
     form.querySelector(".us-score").innerHTML = `<b>${H(TX.score)}: ${ok} / ${sets.length} (${pct} %)</b>${name ? ` · ${esc(name.slice(0, 60))}` : ""} · ${new Date().toLocaleString(lang() === "en" ? "en-GB" : "ru-RU")}`;
     if (form.dataset.quiz === "t") xpOnce("us_took_" + (sharedSpec ? sharedSpec.s : 0), Math.max(2, Math.round(pct / 10)), TX.sharedT);
     return pct;
@@ -388,7 +390,28 @@
       }
       if (!sharedLesson && !sharedSpec) sharedErr = true;
     } catch (e) { sharedErr = true; }
+    /* Мактаб ўқувчисида «Ўқитувчи устахонаси» бўлими яширин — улашилган дарс/тест алоҳида ойнада очилади */
+    if (window.EkoProfile && !EkoProfile.allowed(SEC)) { openDlg(); return; }
     if (location.hash !== "#ustoz" && window.EkoNav) EkoNav.go("ustoz");
+    render();
+  }
+  let dlg = null;
+  function openDlg() {
+    if (!dlg) {
+      dlg = document.createElement("dialog");
+      dlg.className = "modal us-dlg"; dlg.dataset.notr = "";
+      dlg.innerHTML = `<div class="modal-inner" data-usdlg></div>`;
+      document.body.appendChild(dlg);
+      bind(dlg.querySelector("[data-usdlg]"));
+      dlg.addEventListener("close", () => { if (sharedLesson || sharedSpec || sharedErr) closeShared(); });
+    }
+    dlg.querySelector("[data-usdlg]").innerHTML = sharedHtml();
+    if (!dlg.open) dlg.showModal();
+  }
+  function closeShared() {
+    sharedLesson = sharedSpec = null; sharedErr = false;
+    try { const u = new URL(location.href); u.searchParams.delete("ekd"); u.searchParams.delete("ekt"); history.replaceState(null, "", u.pathname + u.search + u.hash); } catch (err) { /* ignore */ }
+    if (dlg && dlg.open) dlg.close();
     render();
   }
   function sharedHtml() {
@@ -413,7 +436,8 @@
       ${sh ? sharedHtml() : `<div class="filters sy-tabs" role="tablist">${Object.entries(TX.tabs).map(([k, v]) => `<button type="button" role="tab" class="chip ${st.tab === k ? "active" : ""}" aria-selected="${st.tab === k}" data-tab="${k}">${H(v)}</button>`).join("")}</div><div data-panel></div>`}`;
     if (sh) return;
     const panel = ROOT.querySelector("[data-panel]");
-    ({ test: renderTest, build: renderBuild, iso: renderIso }[st.tab] || renderTest)(panel);
+    if (st.tab === "dars" && !window.EkoDars) st.tab = "test";
+    ({ dars: (p) => EkoDars.renderTeacher(p), test: renderTest, build: renderBuild, iso: renderIso }[st.tab] || renderTest)(panel);
     if (st.tab === "test" && built) drawQr(builtLink);
   }
   async function linkFor(l) {
@@ -428,7 +452,7 @@
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 20000);
   }
-  ROOT.addEventListener("click", (e) => {
+  function onClick(e) {
     const t = e.target.closest("[data-tab]");
     if (t) { if (st.tab === "build") readForm(); st.tab = t.dataset.tab; save(); render(); const b = ROOT.querySelector(`[data-tab="${st.tab}"]`); if (b) b.focus(); return; }
     if (e.target.closest("[data-gen]")) return void generate();
@@ -456,13 +480,9 @@
       EkoPDF.save(box.firstElementChild, { title: "ISO 14001 — " + L(TX.ready), file: "Ekomun-ISO14001" }).finally(() => box.remove());
       return;
     }
-    if (e.target.closest("[data-closeshared]")) {
-      sharedLesson = sharedSpec = null; sharedErr = false;
-      try { const u = new URL(location.href); u.searchParams.delete("ekd"); u.searchParams.delete("ekt"); history.replaceState(null, "", u.pathname + u.search + u.hash); } catch (err) { /* ignore */ }
-      render();
-    }
-  });
-  ROOT.addEventListener("change", (e) => {
+    if (e.target.closest("[data-closeshared]")) closeShared();
+  }
+  function onChange(e) {
     const gc = e.target.closest("[data-gc]");
     if (gc) { const id = gc.dataset.gc; st.gen.cids = gc.checked ? [...new Set(st.gen.cids.concat(id))] : st.gen.cids.filter((x) => x !== id); save(); const y = window.scrollY; render(); window.scrollTo(0, y); return; }
     if (e.target.closest("[data-gn]")) { st.gen.n = Math.max(3, Math.min(40, +e.target.value || 10)); save(); return; }
@@ -473,12 +493,14 @@
     if (imp && imp.files && imp.files[0]) {
       imp.files[0].text().then((txt) => { let l = null; try { l = clean(JSON.parse(txt)); } catch (err) { l = null; } if (!l) { toast(TX.badLink); return; } l.id = Date.now().toString(36); st.lessons.unshift(l); st.lessons = st.lessons.slice(0, 50); save(); render(); toast(TX.savedOk); });
     }
-  });
-  ROOT.addEventListener("submit", (e) => {
+  }
+  function onSubmit(e) {
     const q = e.target.closest("[data-quiz]");
     if (q) { e.preventDefault(); checkQuiz(q); return; }
     if (e.target.closest("[data-bform]")) { e.preventDefault(); saveDraft(); }
-  });
+  }
+  function bind(el) { el.addEventListener("click", onClick); el.addEventListener("change", onChange); el.addEventListener("submit", onSubmit); }
+  bind(ROOT);
   ROOT.addEventListener("focusout", (e) => { if (e.target.closest && e.target.closest("[data-bform]")) { readForm(); save(); } });
   window.addEventListener("eko:lang", () => { if (st.tab === "build" && !sharedLesson && !sharedSpec) readForm(); render(); });
   render();
