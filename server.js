@@ -383,16 +383,22 @@ function currentUser(req) {
   if (!user || user.blocked) return null;
   return { token, session: s, user };
 }
-function startSession(user, req, res, remember = true) {
+/* via — қандай кирилди (масалан, «QR код»); журналда «Кирди» остида кўрсатилади */
+function startSession(user, req, res, remember = true, via = "") {
   const token = newToken();
-  db.sessions[token] = { userId: user.id, createdAt: now(), lastSeen: now(), ip: clientIp(req), device: devOf(req), online: true };
+  db.sessions[token] = { userId: user.id, createdAt: now(), lastSeen: now(), ip: clientIp(req), device: devOf(req), online: true, ...(via ? { via } : {}) };
   user.lastLogin = now();
   user.loginCount = (user.loginCount || 0) + 1;
-  logEvent("login", user, req);
+  logEvent("login", user, req, via ? { reason: via } : {});
   addCookie(res, cookie("eko_session", token, remember ? SESSION_MS : null, req));
   /* «Мени эслаб қол» белгиланмаса — бегона қурилмада ҳисоб калити қолмайди */
   if (remember) setPass(user, req, res); else addCookie(res, cookie(PASS_COOKIE, "", 0, req));
   return token;
+}
+/* Шу қурилмадаги жорий сессияни ёпиш (бошқа ҳисобга QR орқали кирилганда эскиси қолиб кетмасин) */
+function endSession(req) {
+  const token = parseCookies(req).eko_session;
+  if (token && db.sessions[token]) delete db.sessions[token];
 }
 /* Фойдаланувчининг барча сессияларини ёпиш (парол алмашганда); keep — шу қурилма сессияси қолади */
 function endSessions(user, keep) {
@@ -1033,6 +1039,8 @@ const proMod = require("./pro")({
     refund: () => { aiUsage.total = Math.max(0, aiUsage.total - 1); }
   }
 });
+/* ---------- QR код орқали кириш — qr.js ---------- */
+const qrMod = require("./qr")({ db, send, readBody, currentUser, startSession, endSession, publicUser, logEvent, clientIp, devOf, placeOf, publicOrigin, now, tooManyFailures, noteFailure, BLOCK_MSG });
 /* ---------- Барча фойдаланувчилар таҳлили ва PDF / Word ҳисобот — analytics.js, report.js ---------- */
 const anMod = require("./analytics")({ db, now, placeOf, geoOf, deviceParts, proActive: (u) => proMod.proActive(u), STATS_TZ_MS, AGE_BANDS, EXAM_PASS });
 const anFilters = (q) => ({
@@ -1236,6 +1244,11 @@ async function api(req, res, pathname) {
   if (/^\/api\/(pro|pay|agent)(\/|$)/.test(pathname) || pathname.startsWith("/api/admin/pay")) {
     if (pathname.startsWith("/api/admin/") && !adminAllowed(req)) return send(res, 404, { error: "Топилмади" });
     const r = await proMod.api(req, res, pathname);
+    if (r !== null) return r;
+  }
+
+  if (pathname.startsWith("/api/qr/")) {
+    const r = await qrMod.api(req, res, pathname);
     if (r !== null) return r;
   }
 
@@ -2425,6 +2438,9 @@ const STATIC = {
   "/vendor/pdf/ekopdf-Bold.ttf": { file: "vendor/pdf/ekopdf-Bold.ttf", type: "font/ttf", cache: true },
   /* QR код генератори (Kazuhiko Arase, MIT) — сертификат учун */
   "/vendor/qrcode.js": { file: "vendor/qrcode.js", type: "text/javascript; charset=utf-8", cache: true },
+  /* QR орқали кириш ва камера сканери (jsQR — Apache-2.0; BarcodeDetector бўлмаган браузерлар учун) */
+  "/vendor/eko-qr-kirish.js": { file: "vendor/eko-qr-kirish.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/jsqr/jsQR.min.js": { file: "vendor/jsqr/jsQR.min.js", type: "text/javascript; charset=utf-8", cache: true },
   "/vendor/eko-ui.css": { file: "vendor/eko-ui.css", type: "text/css; charset=utf-8" },
   /* Рус ва инглиз тили луғатлари (асл кирилл матн → таржима) */
   "/vendor/i18n/keys.js": { file: "vendor/i18n/keys.js", type: "text/javascript; charset=utf-8" },
@@ -2477,6 +2493,11 @@ const server = http.createServer(async (req, res) => {
   res.setHeader("Referrer-Policy", "same-origin");
   res.setHeader("X-Frame-Options", "SAMEORIGIN");
   res.setHeader("Permissions-Policy", "camera=(self), microphone=(self), geolocation=(self), payment=(), usb=()");
+  /* OWASP Secure Headers тавсиялари: бошқа сайт ойнаси бизнинг ойнани бошқара олмасин (Payme/Click ойналари очилаверади),
+     плагинлар ва <base> орқали ҳужумлар ёпилади. Скриптлар чекланмайди — платформа ички скриптлардан фойдаланади. */
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
+  res.setHeader("Content-Security-Policy", "object-src 'none'; base-uri 'self'; frame-ancestors 'self'");
   /* HTTPS мажбурий: прокси ортида (Render ва б.) HTTP сўров HTTPS га йўналтирилади, HSTS браузерга эслатилади */
   const proto = req.headers["x-forwarded-proto"];
   if (proto === "http" && process.env.FORCE_HTTPS !== "0" && req.headers.host) {

@@ -36,9 +36,10 @@
     blocked: ["bad", "Блокланди"], unblocked: ["ok", "Блокдан чиқарилди"], deleted: ["warn", "Ҳисобини ўчирди"], deleted_admin: ["warn", "Админ ўчирди"], ai: ["info", "Эко-кўз"],
     pro: ["ok", "PRO обуна"], agent: ["info", "AI агент"],
     pw_changed: ["info", "Паролни ўзгартирди"], pw_reset: ["warn", "Паролни тиклади"], reset_req: ["warn", "Тиклаш сўради"], reset_code: ["info", "Админ тиклаш коди берди"],
-    reset_failed: ["bad", "Хато тиклаш коди"], rc_new: ["info", "Янги тиклаш коди олди"], logout_admin: ["warn", "Админ сессияларни ёпди"], restored: ["info", "Ҳисоб калитдан тикланди"]
+    reset_failed: ["bad", "Хато тиклаш коди"], rc_new: ["info", "Янги тиклаш коди олди"], logout_admin: ["warn", "Админ сессияларни ёпди"], restored: ["info", "Ҳисоб калитдан тикланди"],
+    qr_link: ["info", "Кириш QR'ини яратди"], qr_approve: ["ok", "QR киришни тасдиқлади"], qr_denied: ["warn", "QR киришни рад этди"], qr_failed: ["bad", "Яроқсиз QR"]
   };
-  const JGROUPS = { in: ["register", "login", "return", "restored"], out: ["logout", "timeout", "logout_admin"], bad: ["login_failed", "login_blocked", "blocked", "deleted_admin", "reset_failed"], pw: ["pw_changed", "pw_reset", "reset_req", "reset_code", "reset_failed", "rc_new"] };
+  const JGROUPS = { in: ["register", "login", "return", "restored"], out: ["logout", "timeout", "logout_admin"], bad: ["login_failed", "login_blocked", "blocked", "deleted_admin", "reset_failed"], pw: ["pw_changed", "pw_reset", "reset_req", "reset_code", "reset_failed", "rc_new"], qr: ["qr_link", "qr_approve", "qr_denied", "qr_failed"] };
 
   const fmt = (t) => (t ? new Date(t).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—");
   const dur = (s) => { s = Math.round(s || 0); if (s < 60) return s + " с"; const m = Math.round(s / 60); if (m < 60) return m + " дақ"; return Math.floor(m / 60) + " соат " + (m % 60) + " дақ"; };
