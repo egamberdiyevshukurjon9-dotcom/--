@@ -2023,6 +2023,36 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
 .vd-chk input { width: 18px; height: 18px; accent-color: var(--primary); }
 .vd-topics { margin-bottom: 14px; }
 .vd-n { opacity: .75; font-size: .82em; margin-left: 2px; }
+.oq-banner { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 14px 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); color: inherit; text-decoration: none; box-shadow: var(--shadow); }
+.oq-banner > i:first-child { color: #b91c1c; font-size: 1.3rem; }
+.oq-banner span { flex: 1; }
+.oq-banner:hover, .oq-banner:focus-visible { border-color: #b91c1c; }
+.oq-tabs { margin: 8px 0 14px; flex-wrap: wrap; overflow: visible; }
+.oq-player { position: relative; }
+.oq-player.on iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; background: #000; }
+.oq-player.on iframe.oq-tgframe { aspect-ratio: auto; height: 520px; background: #fff; }
+.oq-tgph { position: absolute; inset: 0; display: grid; place-items: center; font-size: 3rem; color: #fff; background: linear-gradient(135deg, #229ed9, #1d6fa5); z-index: 1; }
+.oq-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 6px; }
+.oq-tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; font-size: .75rem; font-weight: 600; background: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--text); }
+.oq-tag.yt { background: #fee2e2; color: #991b1b; }
+.oq-tag.tg { background: #e0f2fe; color: #075985; }
+.oq-tag.au { background: #ede9fe; color: #5b21b6; }
+.oq-tag.nw { background: #dcfce7; color: #166534; }
+.oq-laws { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.oq-law { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); }
+.oq-law a { color: inherit; text-decoration: none; }
+.oq-law a:hover b, .oq-law a:focus-visible b { text-decoration: underline; }
+.oq-law small { display: block; margin-top: 4px; }
+.oq-law-n { flex: 0 0 auto; min-width: 92px; padding: 4px 8px; border-radius: 10px; background: #0369a1; color: #fff; font-weight: 700; font-size: .8rem; text-align: center; }
+.oq-news { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.oq-nw { padding: 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.oq-nw h3 { font-size: 1rem; margin: 4px 0 6px; }
+.oq-nw p { margin: 0 0 6px; }
+.oq-srcbox { margin-top: 18px; }
+.oq-srcbox summary { cursor: pointer; font-weight: 600; }
+.oq-src { margin: 8px 0 0; padding-left: 18px; }
+@media (max-width: 560px) { .oq-law { flex-direction: column; gap: 6px; } .oq-law-n { min-width: 0; } .oq-player.on iframe.oq-tgframe { height: 460px; } }
+:root[data-theme="dark"] .oq-tag.yt, :root[data-theme="dark"] .oq-tag.tg, :root[data-theme="dark"] .oq-tag.au, :root[data-theme="dark"] .oq-tag.nw { background: color-mix(in srgb, currentColor 18%, transparent); color: var(--text); }
 .vd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 16px; }
 .vd-card { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
 .vd-card.is-done { border-color: color-mix(in srgb, #15803d 55%, var(--line)); }
@@ -2274,6 +2304,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <a href="#maktab">Мактаб</a>
         <a href="#kurslar">Курслар</a>
         <a href="#video">Видео дарслар</a>
+        <a href="#ekooqim">Эко-оқим</a>
         <a href="#maqola" data-stage="uni">Илмий мақолалар</a>
         <a class="nav-x" href="#yangiliklar">Янгиликлар</a>
         <a href="#kutubxona">Кутубхона</a>
@@ -2352,7 +2383,8 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <a class="app" data-cat="learn" href="#sayohat" data-stage="maktab" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-person-hiking"></i></span><b>Эко-саёҳат</b><small>Ўйнаб ўрганамиз</small></a>
           <a class="app" data-cat="learn" href="#kurslar" data-crs="xalqaro" data-stage="uni" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-americas"></i></span><b>Халқаро тажриба</b><small>АҚШ, Германия, Япония, Корея</small></a>
           <a class="app" data-cat="learn" href="#kurslar" data-crs="dunyo" data-stage="maktab" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-earth-asia"></i></span><b>Дунё саёҳати</b><small>4 давлат тажрибаси</small></a>
-          <a class="app" data-cat="learn" href="#video" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>137 видео, конспект ва тест</small><span class="app-new" aria-hidden="true">Янги</span></a>
+          <a class="app" data-cat="learn" href="#video" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-circle-play"></i></span><b>Видео дарслар</b><small>137 видео, конспект ва тест</small></a>
+          <a class="app" data-cat="learn" href="#ekooqim" style="--c:#b91c1c;--c1:#fca5a5"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-tower-broadcast"></i></span><b>Эко-оқим</b><small>Янги видео, қонун ва янгиликлар</small><span class="app-new" aria-hidden="true">Янги</span></a>
           <a class="app" data-cat="learn" href="#kurslar" style="--c:#0f766e;--c1:#5eead4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span><b>Курслар</b><small>Финча усулда дарслар</small></a>
           <a class="app" data-cat="learn" href="#yol" style="--c:#0369a1;--c1:#7dd3fc"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-route"></i></span><b>Шахсий йўл</b><small>Сизга мос кейинги қадам</small></a>
           <a class="app" data-cat="learn" href="#pasport" style="--c:#047857;--c1:#6ee7b7"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-passport"></i></span><b>Кўникмалар паспорти</b><small>SDG, ESD, Open Badges 3.0</small></a>
@@ -2811,6 +2843,12 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
     <!-- VIDEO DARSLAR: ochiq ta'lim videolari asosida dars — vendor/eko-video.js -->
     <section class="section alt" id="video">
       <div class="wrap" id="vdRoot" data-notr></div>
+      <div class="wrap"><a class="oq-banner" href="#ekooqim"><i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i><span><b>Эко-оқим</b> — яна 50 та текширилган видео ва Экология қўмитасининг янги видеолари, қонунлари ва янгиликлари (автоматик янгиланади)</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></div>
+    </section>
+
+    <!-- EKO-OQIM: rasmiy manbalardan yangi video, qonun va yangiliklar (server feeds.js) — vendor/eko-oqim.js -->
+    <section class="section" id="ekooqim">
+      <div class="wrap" id="oqRoot" data-notr></div>
     </section>
 
     <!-- EKOMUN 2.9: GLOBAL KO'NIKMALAR PASPORTI (SDG, UNESCO ESD, Open Badges 3.0) — vendor/eko-pasport.js -->
@@ -54782,6 +54820,8 @@ window.ekoFetch = async function (url, opts, onSlow) {
   <script src="/vendor/eko-mro.js" defer></script>
   <script src="/vendor/eko-video-data.js" defer></script>
   <script src="/vendor/eko-video.js" defer></script>
+  <script src="/vendor/eko-oqim-data.js" defer></script>
+  <script src="/vendor/eko-oqim.js" defer></script>
   <script src="/vendor/eko-fikr.js" defer></script>
   <script src="/vendor/eko-pasport.js" defer></script>
   <script src="/vendor/eko-yol.js" defer></script>

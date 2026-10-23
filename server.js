@@ -26,6 +26,9 @@
      ADMIN_ALLOW_IPS       — админ сайт фақат шу IP манзиллардан очилсин (вергул билан; бўш — ҳамма жойдан)
      STATS_TZ_MINUTES      — статистика кунлари қайси вақт минтақасида (асл қиймат 300 = Тошкент, UTC+5)
      GEO_PROVIDER          — IP бўйича ҳудудни аниқлаш: ipwho (асл қиймат, ipwho.is + ip-api.com) ёки off
+     GITHUB_BACKUP_REPO    — маълумотлар нусхаси ёзиладиган ЁПИҚ GitHub репозиторий (owner/repo). Диск доимий
+     GITHUB_BACKUP_TOKEN     бўлмаса ҳам сервер қайта ишга тушганда маълумотлар шундан тикланади (zaxira.js)
+     FEED_HOURS, FEED_OFF  — янги видео, қонун ва янгиликларни расмий манбалардан автоматик олиш (feeds.js)
      PRO ва тўловлар (Payme, Click, қўлда тасдиқлаш, синов режими, AI агент) — pro.js бошидаги изоҳга қаранг
 
    Ўзгарувчиларни .env файлига ҳам ёзиш мумкин (намуна: .env.example), сервер уни ўзи ўқийди.
@@ -85,16 +88,51 @@ if (!ADMIN_PASSWORD) {
 
 /* ---------- Маълумотлар омбори (JSON файл) ---------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
-let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {}, turnir: {}, refs: {}, refClaimed: {}, news: [], resetReqs: [] };
+let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {}, turnir: {}, refs: {}, refClaimed: {}, news: [], resetReqs: [], adminSess: {}, meta: {} };
+const DB_EMPTY = JSON.stringify(db);
+/* db.json йўқ бўлса — сервер «бўш» бошланди: ё биринчи марта, ё диск доимий эмас (Render'да диск уланмаган) */
+let FRESH_START = false;
 try {
   db = Object.assign(db, JSON.parse(fs.readFileSync(DB_FILE, "utf8")));
 } catch (e) {
   if (e.code !== "ENOENT") throw e;
+  FRESH_START = true;
 }
-const adminSessions = new Map(); // token → муддати
+/* Маълумотлар папкаси доимий дискдами? Render'да диск уланмаса, ҳар деплой ва қайта ишга тушишда
+   db.json (кирди-чиқди журнали, ҳисоблар, статистика) ўчиб кетади — админда огоҳлантириш кўрсатилади. */
+function storageInfo() {
+  const dir = path.resolve(DATA_DIR);
+  let mount = "";
+  try {
+    for (const line of fs.readFileSync("/proc/mounts", "utf8").split("\n")) {
+      const mp = (line.split(" ")[1] || "").replace(/\\040/g, " ");
+      if (mp && mp !== "/" && (dir === mp || dir.startsWith(mp + "/")) && mp.length > mount.length) mount = mp;
+    }
+  } catch (e) { /* Linux эмас */ }
+  const onRender = !!process.env.RENDER;
+  const cloud = onRender || !!process.env.RAILWAY_ENVIRONMENT || !!process.env.FLY_APP_NAME;
+  const persistent = cloud ? !!mount : true;
+  const boots = (db.meta.boots || []).slice(-30);
+  return { dir, mount, dataDirSet: !!process.env.DATA_DIR, onRender, persistent, freshStart: FRESH_START,
+    freshBoots: boots.filter((b) => b.fresh).length, boots: boots.length, createdAt: db.meta.created || 0 };
+}
+db.meta = Object.assign({ created: Date.now(), boots: [] }, db.meta || {});
+db.meta.boots = (db.meta.boots || []).concat({ at: Date.now(), fresh: FRESH_START }).slice(-50);
+if (FRESH_START && (process.env.RENDER || process.env.DATA_DIR)) console.warn(`⚠️  ${DB_FILE} топилмади — маълумотлар бўш бошланди. Render'да Persistent Disk уланганми (DATA_DIR)?`);
+/* Админ сессиялари db да (токен хэши → муддати) сақланади: сервер қайта ишга тушганда админ панел
+   «сақлаш» пайтида тўсатдан чиқариб юбормайди. */
+const adminTokenHash = (t) => crypto.createHash("sha256").update("ekomun-admin|" + String(t)).digest("hex");
+const adminSessions = {
+  get: (t) => db.adminSess[adminTokenHash(t)],
+  set: (t, exp) => { db.adminSess[adminTokenHash(t)] = exp; save(); },
+  delete: (t) => { if (t && db.adminSess[adminTokenHash(t)]) { delete db.adminSess[adminTokenHash(t)]; save(); } },
+  prune: (t) => { let ch = false; for (const [k, exp] of Object.entries(db.adminSess)) if (exp < t) { delete db.adminSess[k]; ch = true; } return ch; }
+};
 
 let saveTimer = null;
+let dbVersion = 0; // ҳар save() да ортади — ташқи захира (zaxira.js) ўзгариш борлигини билади
 function save() {
+  dbVersion++;
   if (saveTimer) return;
   saveTimer = setTimeout(() => {
     saveTimer = null;
@@ -119,7 +157,24 @@ function flush() {
    Сессия калитлари захирага ёзилмайди. */
 const BACKUP_DIR = path.join(DATA_DIR, "backups");
 const BACKUP_KEEP = Math.max(1, Number(process.env.BACKUP_KEEP) || 14);
-const backupData = () => JSON.stringify({ ...db, sessions: {}, savedAt: new Date().toISOString() });
+const backupData = () => JSON.stringify({ ...db, sessions: {}, adminSess: {}, savedAt: new Date().toISOString() });
+/* Захира нусхадан тиклаш: db объекти жойида алмаштирилади (модуллар унга ҳавола сақлайди).
+   Жорий сессиялар ва админ сессиялари сақланиб қолади. */
+function restoreDb(data) {
+  if (!data || typeof data !== "object" || Array.isArray(data) || !Array.isArray(data.users) || !Array.isArray(data.events)) throw new Error("Бу Экомун захира файли эмас");
+  const next = Object.assign(JSON.parse(DB_EMPTY), data);
+  delete next.savedAt;
+  for (const k of ["sessions", "adminSess", "meta"]) next[k] = db[k];
+  /* Модуллар (pro.js, ustoz.js…) db.orders, db.ustoz каби ички объектларга ҳавола сақлайди — улар жойида янгиланади */
+  const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
+  for (const k of Object.keys(db)) if (!(k in next)) { if (Array.isArray(db[k])) db[k].length = 0; else if (isObj(db[k])) for (const kk of Object.keys(db[k])) delete db[k][kk]; }
+  for (const [k, v] of Object.entries(next)) {
+    if (Array.isArray(db[k]) && Array.isArray(v)) { db[k].length = 0; for (const x of v) db[k].push(x); }
+    else if (isObj(db[k]) && isObj(v)) { if (db[k] !== v) { for (const kk of Object.keys(db[k])) delete db[k][kk]; Object.assign(db[k], v); } }
+    else db[k] = v;
+  }
+  save();
+}
 function listBackups() {
   try {
     return fs.readdirSync(BACKUP_DIR).filter((f) => /^db-\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort().reverse()
@@ -139,8 +194,20 @@ setTimeout(dailyBackup, 10 * 1000).unref();
 setInterval(dailyBackup, 60 * 60 * 1000).unref();
 const STARTED = Date.now();
 
-process.on("SIGINT", () => { flush(); process.exit(0); });
-process.on("SIGTERM", () => { flush(); process.exit(0); });
+/* Ташқи захира (ёпиқ GitHub репозиторий) — zaxira.js */
+const zaxMod = require("./zaxira")({ backupData, restoreDb, getVersion: () => dbVersion, now: () => Date.now() });
+
+/* Тўхташдан олдин: дискка ёзиш ва (созланган бўлса) GitHub'га охирги нусха — Render 30 сония кутади */
+let stopping = false;
+function shutdown() {
+  if (stopping) return;
+  stopping = true;
+  try { flush(); } catch (e) { console.error("DB flush failed:", e.message); }
+  if (!zaxMod.enabled) return process.exit(0);
+  Promise.race([zaxMod.push(false), new Promise((r) => setTimeout(r, 15000))]).finally(() => process.exit(0));
+}
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
 
 /* ---------- Ёрдамчилар ---------- */
 const now = () => Date.now();
@@ -503,7 +570,7 @@ function sweep() {
   }
   for (const v of db.visits) if (!v.ended && t - v.last > ONLINE_MS) { v.ended = true; changed = true; }
   if (db.visits.length && t - db.visits[0].start > VISIT_KEEP_MS) { db.visits = db.visits.filter((v) => t - v.start <= VISIT_KEEP_MS); changed = true; }
-  for (const [token, exp] of adminSessions) if (exp < t) adminSessions.delete(token);
+  if (adminSessions.prune(t)) changed = true;
   for (const [ip, r] of visitRate) if (t - r.first > 10 * 60 * 1000) visitRate.delete(ip);
   for (const [ip, r] of errRate) if (t - r.first > 10 * 60 * 1000) errRate.delete(ip);
   for (const [ip, r] of fbRate) if (t - r.first > 60 * 60 * 1000) fbRate.delete(ip);
@@ -1044,6 +1111,8 @@ const proMod = require("./pro")({
 const qrMod = require("./qr")({ db, send, readBody, currentUser, startSession, endSession, publicUser, logEvent, clientIp, devOf, placeOf, publicOrigin, now, tooManyFailures, noteFailure, BLOCK_MSG });
 /* ---------- Ўқитувчи устахонаси: материаллар базаси ва ўйинли дарслар — ustoz.js ---------- */
 const ustMod = require("./ustoz")({ db, save, send, readBody, currentUser, newId, now, logEvent, clientIp, DATA_DIR, getAi: () => ai, AI_MODEL, Anthropic, aiQuota, aiCount, aiRefund, aiLeft });
+/* ---------- Янги видео, қонун ва янгиликлар (расмий манбалардан автоматик) — feeds.js ---------- */
+const feedMod = require("./feeds")({ db, save, send, readBody, isAdmin, now, adminLog });
 /* ---------- Барча фойдаланувчилар таҳлили ва PDF / Word ҳисобот — analytics.js, report.js ---------- */
 const anMod = require("./analytics")({ db, now, placeOf, geoOf, deviceParts, proActive: (u) => proMod.proActive(u), STATS_TZ_MS, AGE_BANDS, EXAM_PASS });
 const anFilters = (q) => ({
@@ -1257,6 +1326,11 @@ async function api(req, res, pathname) {
 
   if (pathname.startsWith("/api/ustoz/")) {
     const r = await ustMod.api(req, res, pathname);
+    if (r !== null) return r;
+  }
+
+  if (pathname === "/api/feed") {
+    const r = await feedMod.api(req, res, pathname);
     if (r !== null) return r;
   }
 
@@ -1911,6 +1985,11 @@ async function api(req, res, pathname) {
   /* Админ API фақат админ сайт очиладиган жойдан (домен, IP) ишлайди — бошқа жойда «йўқ» */
   if (pathname.startsWith("/api/admin/") && !adminAllowed(req)) return send(res, 404, { error: "Топилмади" });
 
+  if (pathname === "/api/admin/feed" || pathname.startsWith("/api/admin/feed/")) {
+    const r = await feedMod.adminApi(req, res, pathname);
+    if (r !== null) return r;
+  }
+
   if (pathname === "/api/admin/config" && method === "GET") {
     return send(res, 200, { totp: !!ADMIN_TOTP_SECRET, ready: !!ADMIN_PASSWORD, authed: isAdmin(req) });
   }
@@ -1966,6 +2045,7 @@ async function api(req, res, pathname) {
     return send(res, 200, {
       now: t,
       onlineMinutes: ONLINE_MS / 60000,
+      storage: storageInfo(), zaxira: zaxMod.status(),
       stats: {
         users: db.users.length,
         online: online.length,
@@ -2306,7 +2386,7 @@ async function api(req, res, pathname) {
       now: now(), started: STARTED, uptime: Math.round(process.uptime()), node: process.version,
       mem: { rss: mem.rss, heap: mem.heapUsed }, dbSize,
       counts: { users: db.users.length, visits: db.visits.length, events: db.events.length, reports: db.reports.length, certs: db.certs.length, errors: db.errors.length, ustoz: ustMod.stats() },
-      backups: listBackups(), backupKeep: BACKUP_KEEP, health: "/api/health",
+      backups: listBackups(), backupKeep: BACKUP_KEEP, health: "/api/health", storage: storageInfo(), zaxira: zaxMod.status(), feed: feedMod.stats(),
       errors: db.errors.slice().sort((a, b) => b.last - a.last).slice(0, 200)
     });
   }
@@ -2315,6 +2395,26 @@ async function api(req, res, pathname) {
     db.errors = [];
     save();
     return send(res, 200, { ok: true });
+  }
+  /* Юклаб олинган захира файлидан (ekomun-zaxira-….json) тиклаш */
+  if (pathname === "/api/admin/restore" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    let data;
+    try { data = await readBody(req, 80 * 1024 * 1024); } catch (e) { return send(res, 400, { error: e.message === "too_large" ? "Файл жуда катта (80 МБ гача)" : "Файл JSON эмас" }); }
+    try { restoreDb(data); } catch (e) { return send(res, 400, { error: e.message }); }
+    flush();
+    adminLog(req, true, `захирадан тикланди (${data.savedAt || "?"})`);
+    zaxMod.push(true);
+    return send(res, 200, { ok: true, savedAt: data.savedAt || "", users: db.users.length, events: db.events.length, visits: db.visits.length });
+  }
+  if (pathname === "/api/admin/zaxira/push" && method === "POST") {
+    if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
+    if (!zaxMod.enabled) return send(res, 409, { error: "GitHub захираси созланмаган (GITHUB_BACKUP_REPO ва GITHUB_BACKUP_TOKEN)" });
+    const ok = await zaxMod.push(true);
+    const st = zaxMod.status();
+    if (!ok) return send(res, 502, { error: st.lastError || "Ёзиб бўлмади" });
+    adminLog(req, true, "GitHub захирасига ёзилди");
+    return send(res, 200, { ok: true, zaxira: st });
   }
   if (pathname === "/api/admin/backup" && method === "GET") {
     if (!isAdmin(req)) return send(res, 401, { error: "Админ сифатида киринг" });
@@ -2435,6 +2535,8 @@ const STATIC = {
   "/vendor/eko-yol.js": { file: "vendor/eko-yol.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-sayyora.js": { file: "vendor/eko-sayyora.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-ustoz.js": { file: "vendor/eko-ustoz.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-oqim-data.js": { file: "vendor/eko-oqim-data.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-oqim.js": { file: "vendor/eko-oqim.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-dars.js": { file: "vendor/eko-dars.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-dars.css": { file: "vendor/eko-dars.css", type: "text/css; charset=utf-8" },
   "/vendor/pdfjs/pdf.min.mjs": { file: "vendor/pdfjs/pdf.min.mjs", type: "text/javascript; charset=utf-8", cache: true },
@@ -2471,6 +2573,7 @@ const ADMIN_FILES = {
   "/app.js": { file: "admin/app.js", type: "text/javascript; charset=utf-8" },
   "/pay.js": { file: "admin/pay.js", type: "text/javascript; charset=utf-8" },
   "/analiz.js": { file: "admin/analiz.js", type: "text/javascript; charset=utf-8" },
+  "/oqim.js": { file: "admin/oqim.js", type: "text/javascript; charset=utf-8" },
   "/app.css": { file: "admin/app.css", type: "text/css; charset=utf-8" },
   "/theme.js": { file: "admin/theme.js", type: "text/javascript; charset=utf-8" },
   "/fonts/onest-cyrillic.woff2": { file: "vendor/fonts/onest-cyrillic-wght-normal.woff2", type: "font/woff2" },
@@ -2568,6 +2671,7 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
-server.listen(PORT, () => {
+/* Сервер бўш бошланган бўлса, аввал GitHub захирасидан тикланади (созланган бўлса), кейин сўровлар қабул қилинади */
+Promise.race([zaxMod.boot(FRESH_START), new Promise((r) => setTimeout(r, 45000))]).finally(() => server.listen(PORT, () => {
   console.log(`🌿 Ekomun: http://localhost:${PORT}  ·  Бошқарув маркази: ${ADMIN_HOST ? "https://" + ADMIN_HOST + "/" : `http://localhost:${PORT}${ADMIN_PATH}/`}`);
-});
+}));
