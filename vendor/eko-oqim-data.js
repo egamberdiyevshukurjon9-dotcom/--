@@ -96,5 +96,45 @@
     { n: t("Қўмита Telegram канали (@ecogovuz)", "Telegram-канал комитета (@ecogovuz)", "Committee Telegram channel (@ecogovuz)"), url: "https://t.me/ecogovuz" },
     { n: t("Қонун ҳужжатлари маълумотлари миллий базаси — lex.uz", "Национальная база законодательства — lex.uz", "National legislation database — lex.uz"), url: "https://lex.uz" }
   ];
-  window.EKO_OQIM = { videos: V, laws: LAWS, sources: SOURCES, checked: "2026-10-23" };
+  /* Тавсия этилган ҳужжатлар: инфографика (расмлар vendor/img/qaror586/, асл слайдлардан сиқилган) */
+  const FEATURED = [
+    {
+      id: "vm586", n: "ВМ-586",
+      t: t("Янги қарор: қайси ташкилот нима учун масъул?", "Новое постановление: какая организация за что отвечает?", "New resolution: which body is responsible for what?"),
+      sub: t("Вазирлар Маҳкамасининг 586-сонли қарори: Тошкент шаҳри ва унга туташ ҳудудларда иссиқхона хўжаликларининг экологик хавфсиз фаолият юритиши ҳақида",
+        "Постановление Кабинета Министров № 586 об экологически безопасной деятельности тепличных хозяйств в городе Ташкенте и прилегающих территориях",
+        "Cabinet of Ministers Resolution No. 586 on environmentally safe operation of greenhouse farms in Tashkent city and adjacent areas"),
+      slides: [
+        { img: "vendor/img/qaror586/1.webp", t: t("Қарор ҳақида", "О постановлении", "About the resolution"),
+          p: [t("Тошкент шаҳри ва унга туташ ҳудудлардаги иссиқхона хўжаликлари экологик хавфсиз ишлаши керак.", "Тепличные хозяйства Ташкента и прилегающих территорий должны работать экологически безопасно.", "Greenhouse farms in and around Tashkent must operate in an environmentally safe way.")] },
+        { img: "vendor/img/qaror586/2.webp", t: t("Экология ва иқлим ўзгариши миллий қўмитаси", "Национальный комитет по экологии и изменению климата", "National Committee for Ecology and Climate Change"),
+          p: [t("Экологик назоратни ташкил этади", "Организует экологический контроль", "Organises environmental control"),
+            t("Ифлослантирувчи моддалар ташламаларини мониторинг қилади", "Ведёт мониторинг выбросов загрязняющих веществ", "Monitors pollutant emissions"),
+            t("Автоматлаштирилган мониторинг тизимларини жорий этади", "Внедряет автоматизированные системы мониторинга", "Introduces automated monitoring systems"),
+            t("Белгиланган меъёрларга риоя этилишини назорат қилади", "Контролирует соблюдение установленных нормативов", "Checks compliance with set standards")] },
+        { img: "vendor/img/qaror586/3.webp", t: t("Иқтисодиёт ва молия вазирлиги", "Министерство экономики и финансов", "Ministry of Economy and Finance"),
+          p: [t("Модернизацияни молиявий қўллаб-қувватлайди", "Финансово поддерживает модернизацию", "Supports modernisation financially"),
+            t("Экологик тоза технологияларга ўтишни рағбатлантиради", "Стимулирует переход на экологически чистые технологии", "Encourages the shift to clean technologies"),
+            t("Иқтисодий механизмларни ишлаб чиқади", "Разрабатывает экономические механизмы", "Develops economic mechanisms")] },
+        { img: "vendor/img/qaror586/4.webp", t: t("Энергетика вазирлиги", "Министерство энергетики", "Ministry of Energy"),
+          p: [t("Энергия таъминоти чора-тадбирларини кўради", "Принимает меры по энергоснабжению", "Takes energy supply measures"),
+            t("Самарали ва экологик тоза технологияларга ўтишга кўмаклашади", "Содействует переходу на эффективные и чистые технологии", "Helps the move to efficient, clean technologies"),
+            t("Энергия самарадорлигини оширади", "Повышает энергоэффективность", "Improves energy efficiency")] },
+        { img: "vendor/img/qaror586/5.webp", t: t("Тошкент шаҳри ва вилояти ҳокимликлари", "Хокимияты города Ташкента и Ташкентской области", "Tashkent city and region administrations"),
+          p: [t("Иссиқхоналар билан ҳамкорлик қилади", "Сотрудничают с тепличными хозяйствами", "Work with greenhouse farms"),
+            t("Чора-тадбирлар ижросини ташкил этади", "Организуют исполнение мер", "Organise implementation of measures"),
+            t("Тошкент агломерациясида экологик вазиятни яхшилайди", "Улучшают экологическую ситуацию в Ташкентской агломерации", "Improve the environment of the Tashkent agglomeration")] },
+        { img: "vendor/img/qaror586/6.webp", t: t("Қишлоқ хўжалиги вазирлиги", "Министерство сельского хозяйства", "Ministry of Agriculture"),
+          p: [t("Иссиқхоналар фаолиятига оид масалаларни ҳал этади", "Решает вопросы деятельности теплиц", "Resolves greenhouse-related issues"),
+            t("Талаблар ва шартларни такомиллаштиради", "Совершенствует требования и условия", "Improves requirements and conditions"),
+            t("Бошқа идоралар билан ҳамкорлик қилади", "Взаимодействует с другими ведомствами", "Cooperates with other agencies")] },
+        { img: "vendor/img/qaror586/7.webp", t: t("Бу аҳоли учун нимани англатади?", "Что это значит для населения?", "What does it mean for residents?"),
+          p: [t("Атмосфера ҳавоси ифлосланишини камайтириш", "Снижение загрязнения атмосферного воздуха", "Less air pollution"),
+            t("Энергия самарадорлигини ошириш", "Рост энергоэффективности", "Better energy efficiency"),
+            t("Атроф-муҳитга таъсир назорати", "Контроль воздействия на окружающую среду", "Control of environmental impact"),
+            t("Натижа: тоза ва қулай яшаш муҳити", "Итог: чистая и комфортная среда для жизни", "Result: a clean, comfortable living environment")] }
+      ]
+    }
+  ];
+  window.EKO_OQIM = { videos: V, laws: LAWS, sources: SOURCES, featured: FEATURED, checked: "2026-10-23" };
 })();

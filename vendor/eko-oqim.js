@@ -60,6 +60,9 @@
       "The “Laws” list from the National Committee for Ecology and Climate Change website. Full texts are on lex.uz (the official source). For in-depth study, see the Environmental law section."),
     toQonun: t3("Экологик ҳуқуқ бўлими", "Раздел «Экологическое право»", "Environmental law section"),
     srcT: t3("Манбалар", "Источники", "Sources"),
+    feat: t3("Инфографика", "Инфографика", "Infographic"),
+    zoom: t3("Катта қилиб кўриш", "Открыть крупно", "View large"),
+    prev: t3("Олдинги", "Предыдущий", "Previous"), next: t3("Кейинги", "Следующий", "Next"), close: t3("Ёпиш", "Закрыть", "Close"),
     count: t3("{n} та", "{n}", "{n}"),
     stg: { m: t3("Мактаб", "Школа", "School"), u: t3("Университет", "Университет", "University") },
     topics: {
@@ -190,7 +193,7 @@
   }
   function lawView() {
     const list = lawList();
-    return `<p class="muted">${H(TX.lawLead)} <a href="#qonun">${H(TX.toQonun)} →</a></p>
+    return `${featView()}<p class="muted">${H(TX.lawLead)} <a href="#qonun">${H(TX.toQonun)} →</a></p>
       <div class="vd-tools"><label class="vd-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" data-q value="${esc(st.q)}" placeholder="${H(TX.search)}" aria-label="${H(TX.search)}"></label></div>
       <ol class="oq-laws">${list.map((l) => `<li class="oq-law">
         <span class="oq-law-n">${esc(l.n || "—")}</span>
@@ -198,12 +201,54 @@
         <small class="muted">${l.d ? fmtDate(l.d) + " · " : ""}lex.uz${l.auto ? ` · <span class="oq-tag au">${H(TX.auto)}</span>` : ""}${l.fresh ? ` <span class="oq-tag nw">${H(TX.fresh)}</span>` : ""}</small></div></li>`).join("")}</ol>`;
   }
 
+  /* ---------- Тавсия этилган ҳужжат (инфографика галереяси) ---------- */
+  function featView() {
+    if (st.q.trim()) return "";
+    return (DATA.featured || []).map((f) => `<section class="oq-feat" aria-label="${H(f.t)}">
+      <p class="oq-tags"><span class="oq-tag nw">${H(TX.fresh)}</span><span class="oq-tag"><i class="fa-solid fa-landmark" aria-hidden="true"></i> ${esc(f.n)}</span><span class="oq-tag"><i class="fa-solid fa-images" aria-hidden="true"></i> ${H(TX.feat)} · ${f.slides.length}</span></p>
+      <h3>${H(f.t)}</h3><p class="muted">${H(f.sub)}</p>
+      <div class="oq-gal">${f.slides.map((s, i) => `<figure class="oq-sl">
+        <button type="button" data-zoom="${esc(f.id)}:${i}" aria-label="${H(TX.zoom)}: ${H(s.t)}"><img src="${esc(s.img)}" alt="" loading="lazy" decoding="async" width="900" height="1125"></button>
+        <figcaption><b>${H(s.t)}</b><ul>${s.p.map((x) => `<li>${H(x)}</li>`).join("")}</ul></figcaption></figure>`).join("")}</div>
+    </section>`).join("");
+  }
+  let zd = null, zf = null, zi = 0;
+  function zdraw(focus) {
+    const s = zf.slides[zi];
+    zd.setAttribute("aria-label", L(s.t));
+    zd.innerHTML = `<img src="${esc(s.img)}" alt="${H(s.t)}">
+      <div class="oq-zbar"><button type="button" data-z="p" aria-label="${H(TX.prev)}"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+      <span>${zi + 1} / ${zf.slides.length} · ${H(s.t)}</span>
+      <button type="button" data-z="n" aria-label="${H(TX.next)}"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+      <button type="button" data-z="x" aria-label="${H(TX.close)}"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>`;
+    const b = zd.querySelector(`[data-z="${focus || "x"}"]`); if (b) b.focus();
+  }
+  function zstep(d) { zi = (zi + d + zf.slides.length) % zf.slides.length; zdraw(d > 0 ? "n" : "p"); }
+  function zoom(fid, i) {
+    zf = (DATA.featured || []).find((f) => f.id === fid);
+    if (!zf || typeof HTMLDialogElement === "undefined") return;
+    zi = i;
+    if (!zd) {
+      zd = document.createElement("dialog");
+      zd.className = "oq-zoom";
+      document.body.appendChild(zd);
+      zd.addEventListener("click", (e) => {
+        const b = e.target.closest("button");
+        if (e.target === zd || (b && b.dataset.z === "x")) { zd.close(); return; }
+        if (b && b.dataset.z) zstep(b.dataset.z === "n" ? 1 : -1);
+      });
+      zd.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") zstep(1); else if (e.key === "ArrowLeft") zstep(-1); });
+    }
+    zdraw();
+    if (!zd.open) zd.showModal();
+  }
+
   /* ---------- Янгиликлар ---------- */
   function newsView() {
     const q = st.q.trim().toLowerCase();
     const list = items("news").filter((x) => !q || (x.title + " " + x.text).toLowerCase().includes(q));
-    if (!items("news").length) return `<p class="muted">${H(TX.noNews)}</p>${srcList()}`;
-    return `<div class="vd-tools"><label class="vd-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" data-q value="${esc(st.q)}" placeholder="${H(TX.search)}" aria-label="${H(TX.search)}"></label></div>
+    if (!items("news").length) return `${featView()}<p class="muted">${H(TX.noNews)}</p>${srcList()}`;
+    return `${featView()}<div class="vd-tools"><label class="vd-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" data-q value="${esc(st.q)}" placeholder="${H(TX.search)}" aria-label="${H(TX.search)}"></label></div>
       <div class="oq-news">${list.map((x) => `<article class="oq-nw">
         <p class="oq-tags">${x.tg ? `<span class="oq-tag tg"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Telegram</span>` : `<span class="oq-tag"><i class="fa-solid fa-landmark" aria-hidden="true"></i> gov.uz</span>`}${x.fresh ? `<span class="oq-tag nw">${H(TX.fresh)}</span>` : ""}<small class="muted">${fmtDate(x.date || x.at)}</small></p>
         <h3 lang="uz">${esc(x.title)}</h3>${x.text ? `<p>${esc(x.text)}</p>` : ""}
@@ -235,7 +280,8 @@
     if (d.tab) { st.tab = d.tab; st.q = ""; saveUi(); render(); return; }
     if (d.lng != null) { st.lng = d.lng; saveUi(); render(); return; }
     if (d.src != null) { st.src = d.src; saveUi(); render(); return; }
-    if (d.play != null) { play(Number(d.play)); }
+    if (d.play != null) { play(Number(d.play)); return; }
+    if (d.zoom) { const [fid, i] = d.zoom.split(":"); zoom(fid, Number(i)); }
   });
   /* Расм юкланмаса (интернет йўқ ёки блокланган) — мавзу белгиси кўринади */
   ROOT.addEventListener("error", (e) => { if (e.target && e.target.tagName === "IMG") e.target.remove(); }, true);
