@@ -37,7 +37,8 @@
     pro: ["ok", "PRO обуна"], agent: ["info", "AI агент"],
     pw_changed: ["info", "Паролни ўзгартирди"], pw_reset: ["warn", "Паролни тиклади"], reset_req: ["warn", "Тиклаш сўради"], reset_code: ["info", "Админ тиклаш коди берди"],
     reset_failed: ["bad", "Хато тиклаш коди"], rc_new: ["info", "Янги тиклаш коди олди"], logout_admin: ["warn", "Админ сессияларни ёпди"], restored: ["info", "Ҳисоб калитдан тикланди"],
-    qr_link: ["info", "Кириш QR'ини яратди"], qr_approve: ["ok", "QR киришни тасдиқлади"], qr_denied: ["warn", "QR киришни рад этди"], qr_failed: ["bad", "Яроқсиз QR"]
+    qr_link: ["info", "Кириш QR'ини яратди"], qr_approve: ["ok", "QR киришни тасдиқлади"], qr_denied: ["warn", "QR киришни рад этди"], qr_failed: ["bad", "Яроқсиз QR"],
+    ustoz_mat: ["info", "Ўқитувчи базасига материал қўшди"], ustoz_game: ["ok", "Ўйинли дарс улашди"]
   };
   const JGROUPS = { in: ["register", "login", "return", "restored"], out: ["logout", "timeout", "logout_admin"], bad: ["login_failed", "login_blocked", "blocked", "deleted_admin", "reset_failed"], pw: ["pw_changed", "pw_reset", "reset_req", "reset_code", "reset_failed", "rc_new"], qr: ["qr_link", "qr_approve", "qr_denied", "qr_failed"] };
 
@@ -318,7 +319,9 @@
     $("#sysInfo").innerHTML = [
       ["Ишлаяпти", dur(s.uptime) + ` (${fmt(s.started)} дан)`], ["Node.js", s.node], ["Хотира", bytes(s.mem.rss)],
       ["Маълумотлар файли", bytes(s.dbSize)], ["Ҳисоблар", nf(c.users)], ["Ташриф ёзувлари", nf(c.visits)], ["Журнал ёзувлари", nf(c.events)],
-      ["Харита хабарлари", nf(c.reports)], ["Сертификатлар", nf(c.certs)], ["Хатолар (турлари)", nf(c.errors)]
+      ["Харита хабарлари", nf(c.reports)], ["Сертификатлар", nf(c.certs)],
+      ...(c.ustoz ? [["Ўқитувчи материаллари", `${nf(c.ustoz.mats)} · ${nf(c.ustoz.teachers)} ўқитувчи`], ["Ўйинли дарслар (код)", `${nf(c.ustoz.games)} · ${nf(c.ustoz.results)} натижа`]] : []),
+      ["Хатолар (турлари)", nf(c.errors)]
     ].map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("");
     $("#tBackups").innerHTML = table(["Файл", "Сана", "#Ҳажм"], s.backups.map((b) => `<tr><td class="mono">${esc(b.file)}</td><td>${fmt(b.at)}</td><td class="num">${bytes(b.size)}</td></tr>`),
       "Ҳали захира нусха йўқ (сервер ишга тушгандан 10 сония кейин биринчиси олинади).");

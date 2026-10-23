@@ -601,6 +601,7 @@ function purgeUser(user) {
   db.visits = db.visits.filter((v) => v.userId !== id);
   db.certs = db.certs.filter((c) => c.userId !== id);
   db.resetReqs = db.resetReqs.filter((r) => r.userId !== id);
+  ustMod.forgetUser(id);
   /* Фикр-мулоҳаза матни қолади (жамоа учун), лекин муаллифи билан алоқаси узилади */
   for (const f of db.feedback) if (f.userId === id) { f.userId = null; f.name = ""; f.email = ""; f.contact = ""; }
   for (const list of Object.values(db.turnir)) for (const e of list) if (e.userId === id) e.userId = null;
@@ -1041,6 +1042,8 @@ const proMod = require("./pro")({
 });
 /* ---------- QR код орқали кириш — qr.js ---------- */
 const qrMod = require("./qr")({ db, send, readBody, currentUser, startSession, endSession, publicUser, logEvent, clientIp, devOf, placeOf, publicOrigin, now, tooManyFailures, noteFailure, BLOCK_MSG });
+/* ---------- Ўқитувчи устахонаси: материаллар базаси ва ўйинли дарслар — ustoz.js ---------- */
+const ustMod = require("./ustoz")({ db, save, send, readBody, currentUser, newId, now, logEvent, clientIp, DATA_DIR, getAi: () => ai, AI_MODEL, Anthropic, aiQuota, aiCount, aiRefund, aiLeft });
 /* ---------- Барча фойдаланувчилар таҳлили ва PDF / Word ҳисобот — analytics.js, report.js ---------- */
 const anMod = require("./analytics")({ db, now, placeOf, geoOf, deviceParts, proActive: (u) => proMod.proActive(u), STATS_TZ_MS, AGE_BANDS, EXAM_PASS });
 const anFilters = (q) => ({
@@ -1249,6 +1252,11 @@ async function api(req, res, pathname) {
 
   if (pathname.startsWith("/api/qr/")) {
     const r = await qrMod.api(req, res, pathname);
+    if (r !== null) return r;
+  }
+
+  if (pathname.startsWith("/api/ustoz/")) {
+    const r = await ustMod.api(req, res, pathname);
     if (r !== null) return r;
   }
 
@@ -2297,7 +2305,7 @@ async function api(req, res, pathname) {
     return send(res, 200, {
       now: now(), started: STARTED, uptime: Math.round(process.uptime()), node: process.version,
       mem: { rss: mem.rss, heap: mem.heapUsed }, dbSize,
-      counts: { users: db.users.length, visits: db.visits.length, events: db.events.length, reports: db.reports.length, certs: db.certs.length, errors: db.errors.length },
+      counts: { users: db.users.length, visits: db.visits.length, events: db.events.length, reports: db.reports.length, certs: db.certs.length, errors: db.errors.length, ustoz: ustMod.stats() },
       backups: listBackups(), backupKeep: BACKUP_KEEP, health: "/api/health",
       errors: db.errors.slice().sort((a, b) => b.last - a.last).slice(0, 200)
     });
@@ -2427,6 +2435,10 @@ const STATIC = {
   "/vendor/eko-yol.js": { file: "vendor/eko-yol.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-sayyora.js": { file: "vendor/eko-sayyora.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-ustoz.js": { file: "vendor/eko-ustoz.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-dars.js": { file: "vendor/eko-dars.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-dars.css": { file: "vendor/eko-dars.css", type: "text/css; charset=utf-8" },
+  "/vendor/pdfjs/pdf.min.mjs": { file: "vendor/pdfjs/pdf.min.mjs", type: "text/javascript; charset=utf-8", cache: true },
+  "/vendor/pdfjs/pdf.worker.min.mjs": { file: "vendor/pdfjs/pdf.worker.min.mjs", type: "text/javascript; charset=utf-8", cache: true },
   "/vendor/eko-turnir.js": { file: "vendor/eko-turnir.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-pro.js": { file: "vendor/eko-pro.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-plus.js": { file: "vendor/eko-plus.js", type: "text/javascript; charset=utf-8" },

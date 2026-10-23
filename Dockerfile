@@ -12,7 +12,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --no-audit --no-fund && npm cache clean --force
 
 # Фақат сайт учун керакли файллар (.dockerignore Android, APK ва ҳужжатларни чиқариб ташлайди)
-COPY server.js pro.js qr.js analytics.js report.js index.html privacy.html tekshir.html sw.js manifest.webmanifest ./
+COPY server.js pro.js qr.js ustoz.js analytics.js report.js index.html privacy.html tekshir.html sw.js manifest.webmanifest ./
 COPY admin ./admin
 COPY fonts ./fonts
 COPY icons ./icons
