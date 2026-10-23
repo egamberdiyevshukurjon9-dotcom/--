@@ -4,7 +4,7 @@ services:
   - type: web
     name: ekomun
     runtime: node
-    plan: free
+    plan: starter # Пулли режим: доимий диск фақат шунда ишлайди (бепулда маълумотлар ҳар деплойда ўчади)
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health
@@ -27,15 +27,15 @@ services:
         sync: false # «Эко-кўз» учун Claude API калити (platform.claude.com). Ҳеч кимга берманг
       - key: ANDROID_SHA256
         sync: false # Google Play иловаси учун: Play Console → App signing даги SHA-256 изи
-    # Бепул (free) режимда сервер қайта ишга тушганда фойдаланувчилар ва журнал ўчиб кетади.
-    # Ҳисоблар браузердаги шифрланган калитдан (eko_pass) ўзи тикланади, лекин статистика, журнал,
-    # хабарлар ва тўловлар тарихи сақланмайди.
-    # Маълумотлар сақланиб қолиши учун пулли режимга ўтиб, қуйидаги қаторларни очинг:
-    #   plan: starter
-    #   disk:
-    #     name: ekomun-data
-    #     mountPath: /var/data
-    #     sizeGB: 1
-    # ва envVars га қўшинг:
-    #   - key: DATA_DIR
-    #     value: /var/data
+      - key: DATA_DIR
+        value: /var/data # Доимий диск: ҳисоблар, «Кирди-чиқди» журнали, статистика деплойдан кейин ҳам сақланади
+      - key: GITHUB_BACKUP_REPO
+        sync: false # Ихтиёрий қўшимча ҳимоя: ЁПИҚ репозиторий (owner/repo) — маълумотлар шифрланиб шу ерга ҳам ёзилади
+      - key: GITHUB_BACKUP_TOKEN
+        sync: false # Fine-grained token: фақат шу репо, Contents: Read and write
+    disk:
+      name: ekomun-data
+      mountPath: /var/data
+      sizeGB: 1
+    # Бепул (free) режимда диск йўқ: plan: free қилинса, DATA_DIR ва disk қаторларини олиб ташланг ва
+    # маълумотлар сақланиши учун GITHUB_BACKUP_REPO + GITHUB_BACKUP_TOKEN беринг (zaxira.js).

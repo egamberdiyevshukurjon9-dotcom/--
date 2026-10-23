@@ -13,6 +13,7 @@
   <script src="app.js" defer></script>
   <script src="pay.js" defer></script>
   <script src="analiz.js" defer></script>
+  <script src="oqim.js" defer></script>
 </head>
 <body>
   <!-- Кириш ойнаси -->
@@ -48,6 +49,7 @@
         <button data-tab="feedback">💬 <span>Фикр-мулоҳазалар</span> <i class="badge" id="bFeedback" hidden>0</i></button>
         <button data-tab="reports">🗺️ <span>Эко-харита</span> <i class="badge" id="bPending" hidden>0</i></button>
         <button data-tab="community">📣 <span>Эълон ва турнир</span></button>
+        <button data-tab="oqim">📡 <span>Эко-оқим</span> <i class="badge" id="bOqim" hidden>0</i></button>
         <button data-tab="pay">💳 <span>Тўловлар ва PRO</span> <i class="badge warn" id="bPay" hidden>0</i></button>
         <button data-tab="system">🛠️ <span>Тизим ва хатолар</span> <i class="badge warn" id="bErr" hidden>0</i></button>
       </nav>
@@ -75,6 +77,7 @@
         </div>
       </header>
 
+      <div class="card storage-warn" id="storageWarn" hidden></div>
       <section data-view="dash">
         <div class="kpis" id="kpis"></div>
         <div class="grid2">
@@ -237,10 +240,13 @@
       </section>
 
       <section data-view="system" hidden>
+        <div class="card"><h2>💾 Маълумотлар қаерда сақланади</h2><div id="sysStorage"></div></div>
         <div class="grid2">
           <div class="card"><h2>Сервер ҳолати</h2><dl class="sys" id="sysInfo"></dl></div>
           <div class="card"><h2>Захира нусхалар</h2><p class="small muted">Ҳар куни автоматик олинади (data/backups), сессия калитларисиз. Render'да диск доимий бўлиши учун Persistent Disk улаш керак.</p>
-            <div class="toolbar"><a class="btn primary sm" id="dlBackup" href="#">⬇ Ҳозирги нусхани юклаб олиш</a></div><div class="table" id="tBackups"></div></div>
+            <div class="toolbar"><a class="btn primary sm" id="dlBackup" href="#">⬇ Ҳозирги нусхани юклаб олиш</a>
+              <label class="btn sm" for="restoreFile">⬆ Захирадан тиклаш</label><input type="file" id="restoreFile" accept=".json,application/json" hidden></div>
+            <div class="table" id="tBackups"></div></div>
         </div>
         <div class="card"><h2>Хатолар журнали</h2><p class="small muted">Фойдаланувчилар бравзеридаги дастур хатолари (шахсий маълумотсиз). Бир хил хато битта қаторда, сони билан.</p>
           <div class="toolbar"><button class="btn sm" id="clearErr" type="button">🧹 Журнални тозалаш</button></div><div class="table" id="tErrors"></div></div>
@@ -304,6 +310,32 @@
           <div class="toolbar"><select id="trWeek" aria-label="Ҳафта"></select></div>
           <p class="small muted">Номақбул лақабни «Яшириш» тугмаси билан рейтингдан олиб ташланг.</p>
           <div class="table" id="trList"></div></div>
+      </section>
+
+      <section data-view="oqim" hidden>
+        <p class="small muted">Сервер расмий манбаларни ҳар бир неча соатда ўзи ўқийди: янги видео, қонун ва янгиликлар платформадаги «Эко-оқим» бўлимида пайдо бўлади. Номақбул ёзувни яширинг, муҳимини юқорига маҳкамланг.</p>
+        <div class="kpis" id="oqKpis"></div>
+        <div class="card"><h2>Манбалар</h2>
+          <div class="toolbar">
+            <button class="btn primary sm" id="oqRun" type="button">🔄 Ҳозир янгилаш</button>
+            <label class="small"><input type="checkbox" id="oqAuto"> Янги ёзувлар дарҳол кўринсин (ўчирилса — админ тасдиқлайди)</label>
+          </div>
+          <div class="table" id="oqSources"></div>
+          <form id="oqAdd" class="toolbar" autocomplete="off">
+            <select name="type" aria-label="Манба тури"><option value="yt">YouTube канал</option><option value="tg">Telegram канал</option><option value="rss">RSS / Atom</option></select>
+            <input name="ref" required maxlength="300" placeholder="@kanal, UC… ёки ҳавола" aria-label="Манба">
+            <input name="name" maxlength="120" placeholder="Номи (ихтиёрий)" aria-label="Номи">
+            <input name="keys" maxlength="300" placeholder="Калит сўзлар: ekolog|iqlim (ихтиёрий)" aria-label="Калит сўзлар">
+            <button class="btn sm" type="submit">➕ Қўшиш</button>
+          </form>
+        </div>
+        <div class="card"><h2>Ёзувлар</h2>
+          <div class="toolbar">
+            <select id="oqKind" aria-label="Тури"><option value="">Ҳаммаси</option><option value="video">Видеолар</option><option value="law">Қонунлар</option><option value="news">Янгиликлар</option></select>
+            <select id="oqState" aria-label="Ҳолат"><option value="">Барча ҳолат</option><option value="new">Тасдиқ кутаётганлар</option><option value="ok">Кўринаётганлар</option><option value="hidden">Яширилганлар</option></select>
+            <input type="search" id="oqSearch" placeholder="Сарлавҳа бўйича қидириш" aria-label="Қидириш">
+          </div>
+          <div class="table" id="oqItems"></div></div>
       </section>
 
       <section data-view="pay" hidden>

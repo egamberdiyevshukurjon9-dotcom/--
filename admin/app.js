@@ -313,7 +313,37 @@
 
   /* ---------- Тизим ва хатолар ---------- */
   const bytes = (n) => (n > 1048576 ? (n / 1048576).toFixed(1) + " МБ" : Math.max(1, Math.round(n / 1024)) + " КБ");
+  /* Маълумотлар доимий дискда эмаслиги — «Кирди-чиқди» ва ҳисоблар деплойдан кейин ўчишининг сабаби */
+  function storageHtml(st, z, full) {
+    if (!st) return "";
+    const zOn = z && z.enabled;
+    const steps = `<ol class="small">
+      <li>Render → сервис → <b>Disks</b> → <b>Add Disk</b>: Mount Path <span class="mono">/var/data</span>, 1 GB (пулли режимда).</li>
+      <li><b>Environment</b> → <span class="mono">DATA_DIR=/var/data</span> → Save (сервер қайта ишга тушади).</li>
+      <li>Ёки (дисксиз): ёпиқ GitHub репозиторий очиб, <span class="mono">GITHUB_BACKUP_REPO</span> ва <span class="mono">GITHUB_BACKUP_TOKEN</span> беринг — маълумотлар ҳар 10 дақиқада у ерга шифрланиб ёзилади ва қайта ишга тушганда ўзи тикланади.</li>
+      <li>Ҳозирги маълумотни йўқотмаслик учун: «Тизим» → «⬇ Ҳозирги нусхани юклаб олиш», диск улангач «⬆ Захирадан тиклаш».</li></ol>`;
+    if (!st.persistent && !zOn) return `<h2>⚠️ Маълумотлар доимий сақланмаяпти</h2>
+      <p>Сервер маълумотлари (<span class="mono">${esc(st.dir)}</span>) доимий дискда эмас: ҳар деплой ёки қайта ишга тушишда ҳисоблар, «Кирди-чиқди» журнали, статистика ва тўловлар ўчиб кетади.
+      ${st.freshBoots > 1 ? `Охирги ${st.boots} та ишга тушишдан <b>${st.freshBoots}</b> тасида маълумот бўш бошланган.` : ""}</p>${steps}`;
+    if (!full) return "";
+    const rows = [
+      ["Папка", `<span class="mono">${esc(st.dir)}</span>`],
+      ["Доимий диск", st.mount ? `<span class="storage-ok">✓ уланган (${esc(st.mount)})</span>` : st.persistent ? `<span class="storage-ok">✓ локал диск</span>` : `<span class="storage-bad">✗ йўқ — деплойда ўчади</span>`],
+      ["Маълумотлар яратилган", st.createdAt ? fmt(st.createdAt) : "—"],
+      ["Охирги ишга тушишлар", `${st.boots} та, шулардан бўш бошланган: ${st.freshBoots}`],
+      ["GitHub захираси", zOn ? `<span class="storage-ok">✓ ${esc(z.repo)}/${esc(z.file)}</span> · ҳар ${z.everyMin} дақ.${z.lastPush ? ` · охирги: ${fmt(z.lastPush)}` : ""}${z.restoredAt ? ` · тикланди: ${fmt(z.restoredAt)}` : ""}${z.lastError ? `<br><span class="storage-bad">Хато: ${esc(z.lastError)}</span>` : ""}` : `<span class="muted">созланмаган</span>`]
+    ];
+    return `<dl class="sys">${rows.map(([a, b]) => `<dt>${esc(a)}</dt><dd>${b}</dd>`).join("")}</dl>
+      ${zOn ? `<div class="toolbar"><button class="btn sm" id="zaxPush" type="button">☁️ GitHub'га ҳозир ёзиш</button></div>` : ""}${!st.persistent && zOn ? steps : ""}`;
+  }
+  function renderStorage() {
+    const st = (system && system.storage) || (overview && overview.storage), z = (system && system.zaxira) || (overview && overview.zaxira);
+    const w = storageHtml(st, z, false);
+    $("#storageWarn").innerHTML = w; $("#storageWarn").hidden = !w;
+    if (system) $("#sysStorage").innerHTML = storageHtml(st, z, true);
+  }
   function renderSystem() {
+    renderStorage();
     if (!system) return;
     const s = system, c = s.counts;
     $("#sysInfo").innerHTML = [
@@ -352,6 +382,24 @@
   });
   paintTheme();
   $("#dlBackup").href = "/api/admin/backup";
+  $("#restoreFile").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!(await confirmBox("Захирадан тиклаш", `«${file.name}» файлидаги маълумотлар ҳозиргиларининг ўрнига ёзилади (ҳисоблар, журнал, статистика). Давом этасизми?`, false))) return;
+    try {
+      const text = await file.text();
+      const r = await fetch("/api/admin/restore", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: text });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || "HTTP " + r.status);
+      toast(`Тикланди: ${d.users} ҳисоб, ${d.events} журнал ёзуви`);
+      await reloadAll();
+    } catch (err) { toast(err.message); }
+  });
+  document.addEventListener("click", async (e) => {
+    if (!e.target.closest("#zaxPush")) return;
+    try { await api("/api/admin/zaxira/push", {}); toast("GitHub'га ёзилди"); await loadSystem(); renderSystem(); } catch (err) { if (err.message !== "auth") toast(err.message); }
+  });
   $("#clearErr").addEventListener("click", async () => {
     if (!(await confirmBox("Хатолар журналини тозалаш", "Барча хато ёзувлари ўчирилади.", false))) return;
     try { await api("/api/admin/errors/clear", {}); await loadSystem(); renderSystem(); toast("Тозаланди"); } catch (err) { if (err.message !== "auth") toast(err.message); }
@@ -628,12 +676,13 @@
   async function loadSecurity() { security = await api("/api/admin/security"); }
   async function loadReports() { reports = (await api("/api/admin/reports")).reports; }
 
-  function renderAll() { renderDash(); renderOnline(); renderPeople(); renderJournal(); renderStats(); renderResults(); renderBlocks(); renderReports(); renderFeedback(); renderGrowth(); renderSystem(); }
+  function renderAll() { renderStorage(); renderDash(); renderOnline(); renderPeople(); renderJournal(); renderStats(); renderResults(); renderBlocks(); renderReports(); renderFeedback(); renderGrowth(); renderSystem(); }
   async function reloadAll() {
     try {
       await Promise.all([loadOverview(), loadStats(), loadSecurity(), loadReports(), loadFeedback(), loadGrowth(), loadSystem(), loadResults()]);
       renderAll();
       if (window.EkoPay) EkoPay.load();
+      if (window.EkoOqimAdmin) EkoOqimAdmin.load();
       if (tab === "analiz" && window.EkoAnaliz) EkoAnaliz.load();
       if (tab === "journal") { await loadRecent(); renderJournal(); }
     } catch (e) { if (e.message !== "auth") toast(e.message); }
@@ -646,7 +695,7 @@
     }, 15000);
   }
 
-  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", analiz: "Фойдаланувчилар таҳлили ва ҳисобот", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар", community: "Эълонлар ва турнир", pay: "Тўловлар ва PRO" };
+  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", analiz: "Фойдаланувчилар таҳлили ва ҳисобот", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар", community: "Эълонлар ва турнир", pay: "Тўловлар ва PRO", oqim: "Эко-оқим: янги видео, қонун ва янгиликлар" };
   $("#tabs").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tab]");
     if (!b) return;
@@ -664,6 +713,7 @@
     if (tab === "community") { try { await loadCommunity(); renderCommunity(); } catch (err) { /* ignore */ } }
     if (tab === "pay" && window.EkoPay) EkoPay.load();
     if (tab === "analiz" && window.EkoAnaliz) EkoAnaliz.load();
+    if (tab === "oqim" && window.EkoOqimAdmin) EkoOqimAdmin.load();
   });
   $("#newsForm").addEventListener("submit", async (e) => {
     e.preventDefault();
