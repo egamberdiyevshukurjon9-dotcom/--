@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tools/smoke-test.js && node tools/pay-test.js && node tools/qr-test.js && node tools/ustoz-test.js && node tools/feed-test.js && node tools/zaxira-test.js",
+    "test": "node tools/smoke-test.js && node tools/pay-test.js && node tools/qr-test.js && node tools/ustoz-test.js && node tools/feed-test.js && node tools/zaxira-test.js && node tools/startap-test.js",
+    "test:devices": "node tools/device-test.js",
     "totp": "node tools/admin-totp.js"
   },
   "engines": {

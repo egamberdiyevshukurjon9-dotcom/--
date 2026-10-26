@@ -695,7 +695,7 @@
     }, 15000);
   }
 
-  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", analiz: "Фойдаланувчилар таҳлили ва ҳисобот", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар", community: "Эълонлар ва турнир", pay: "Тўловлар ва PRO", oqim: "Эко-оқим: янги видео, қонун ва янгиликлар" };
+  const TITLES = { dash: "Умумий ҳолат", online: "Ҳозир онлайн", people: "Фойдаланувчилар", journal: "Кирди-чиқди журнали", stats: "Статистик таҳлил", analiz: "Фойдаланувчилар таҳлили ва ҳисобот", results: "Ўқувчилар натижалари", growth: "Ўсиш ва ўқиш", system: "Тизим ва хатолар", blocks: "Блок ва хавфсизлик", reports: "Эко-харита модерацияси", feedback: "Фикр-мулоҳазалар", community: "Эълонлар ва турнир", pay: "Тўловлар ва PRO", oqim: "Эко-оқим: янги видео, қонун ва янгиликлар", sorov: "Сўровнома ва бизнес гипотезалари", ux: "UX харита: кликлар ва фойдаланиш йўллари", deck: "Pitch deck ҳаволалари" };
   $("#tabs").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tab]");
     if (!b) return;
@@ -714,6 +714,7 @@
     if (tab === "pay" && window.EkoPay) EkoPay.load();
     if (tab === "analiz" && window.EkoAnaliz) EkoAnaliz.load();
     if (tab === "oqim" && window.EkoOqimAdmin) EkoOqimAdmin.load();
+    if (["sorov", "ux", "deck"].includes(tab) && window.EkoStartap) EkoStartap.load(tab);
   });
   $("#newsForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -735,7 +736,7 @@
     try { await api("/api/admin/turnir/hide", { week: trData.week, id: b.dataset.trh }); await loadCommunity(trData.week); renderCommunity(); }
     catch (err) { if (err.message !== "auth") toast(err.message); }
   });
-  $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth(), loadResults()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } if (tab === "analiz" && window.EkoAnaliz) EkoAnaliz.load(); });
+  $("#range").addEventListener("change", async () => { await Promise.all([loadStats(), loadGrowth(), loadResults()]); renderAll(); if (tab === "journal") { await loadRecent(); renderJournal(); } if (tab === "analiz" && window.EkoAnaliz) EkoAnaliz.load(); if (tab === "ux" && window.EkoStartap) EkoStartap.load("ux"); });
   $("#refresh").addEventListener("click", reloadAll);
   ["#pSearch", "#pKind"].forEach((s) => $(s).addEventListener("input", renderPeople));
   ["#jSearch", "#jType"].forEach((s) => $(s).addEventListener("input", renderJournal));

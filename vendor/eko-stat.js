@@ -6,6 +6,8 @@
 "use strict";
 (() => {
   if (!/^https?:$/.test(location.protocol)) return;
+  /* Бошқарув марказидаги «UX харита» саҳифани ойна (iframe) ичида кўрсатади — у статистикага қўшилмасин */
+  try { if (window.top !== window.self) return; } catch (e) { return; }
   const VKEY = "ekotalim:vid";
   let vid = "";
   try { vid = localStorage.getItem(VKEY) || ""; } catch (e) { /* хотира йўқ */ }

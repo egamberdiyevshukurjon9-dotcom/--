@@ -88,7 +88,8 @@ if (!ADMIN_PASSWORD) {
 
 /* ---------- Маълумотлар омбори (JSON файл) ---------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
-let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {}, turnir: {}, refs: {}, refClaimed: {}, news: [], resetReqs: [], adminSess: {}, meta: {} };
+let db = { users: [], sessions: {}, events: [], reports: [], classes: [], visits: [], blockedIps: {}, blockedVids: {}, adminLog: [], errors: [], certs: [], feedback: [], geo: {}, turnir: {}, refs: {}, refClaimed: {}, news: [], resetReqs: [], adminSess: {}, meta: {},
+  survey: [], ux: { clicks: [], scroll: {}, sessions: [] }, decks: { files: [], links: [], views: [] } };
 const DB_EMPTY = JSON.stringify(db);
 /* db.json йўқ бўлса — сервер «бўш» бошланди: ё биринчи марта, ё диск доимий эмас (Render'да диск уланмаган) */
 let FRESH_START = false;
@@ -1113,6 +1114,9 @@ const qrMod = require("./qr")({ db, send, readBody, currentUser, startSession, e
 const ustMod = require("./ustoz")({ db, save, send, readBody, currentUser, newId, now, logEvent, clientIp, DATA_DIR, getAi: () => ai, AI_MODEL, Anthropic, aiQuota, aiCount, aiRefund, aiLeft });
 /* ---------- Янги видео, қонун ва янгиликлар (расмий манбалардан автоматик) — feeds.js ---------- */
 const feedMod = require("./feeds")({ db, save, send, readBody, isAdmin, now, adminLog });
+/* ---------- Сўровнома, UX таҳлили (heatmap) ва pitch deck ҳаволалари — startap.js ---------- */
+const stMod = require("./startap")({ db, save, send, readBody, isAdmin, now, newId, clientIp, devOf, placeOf, cleanText, DATA_DIR, adminLog, publicOrigin,
+  deck: { maxMb: Number(process.env.DECK_MAX_MB) || 30 } });
 /* ---------- Барча фойдаланувчилар таҳлили ва PDF / Word ҳисобот — analytics.js, report.js ---------- */
 const anMod = require("./analytics")({ db, now, placeOf, geoOf, deviceParts, proActive: (u) => proMod.proActive(u), STATS_TZ_MS, AGE_BANDS, EXAM_PASS });
 const anFilters = (q) => ({
@@ -1331,6 +1335,11 @@ async function api(req, res, pathname) {
 
   if (pathname === "/api/feed") {
     const r = await feedMod.api(req, res, pathname);
+    if (r !== null) return r;
+  }
+
+  if (pathname === "/api/survey" || pathname === "/api/ux" || pathname.startsWith("/api/deck/")) {
+    const r = await stMod.api(req, res, pathname);
     if (r !== null) return r;
   }
 
@@ -1990,6 +1999,11 @@ async function api(req, res, pathname) {
     if (r !== null) return r;
   }
 
+  if (/^\/api\/admin\/(survey|ux|deck)(\/|$)/.test(pathname)) {
+    const r = await stMod.adminApi(req, res, pathname);
+    if (r !== null) return r;
+  }
+
   if (pathname === "/api/admin/config" && method === "GET") {
     return send(res, 200, { totp: !!ADMIN_TOTP_SECRET, ready: !!ADMIN_PASSWORD, authed: isAdmin(req) });
   }
@@ -2386,7 +2400,7 @@ async function api(req, res, pathname) {
       now: now(), started: STARTED, uptime: Math.round(process.uptime()), node: process.version,
       mem: { rss: mem.rss, heap: mem.heapUsed }, dbSize,
       counts: { users: db.users.length, visits: db.visits.length, events: db.events.length, reports: db.reports.length, certs: db.certs.length, errors: db.errors.length, ustoz: ustMod.stats() },
-      backups: listBackups(), backupKeep: BACKUP_KEEP, health: "/api/health", storage: storageInfo(), zaxira: zaxMod.status(), feed: feedMod.stats(),
+      backups: listBackups(), backupKeep: BACKUP_KEEP, health: "/api/health", storage: storageInfo(), zaxira: zaxMod.status(), feed: feedMod.stats(), startap: stMod.stats(),
       errors: db.errors.slice().sort((a, b) => b.last - a.last).slice(0, 200)
     });
   }
@@ -2537,6 +2551,11 @@ const STATIC = {
   "/vendor/eko-video-data.js": { file: "vendor/eko-video-data.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-video.js": { file: "vendor/eko-video.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-fikr.js": { file: "vendor/eko-fikr.js", type: "text/javascript; charset=utf-8" },
+  /* Стартап воситалари: сўровнома (Tally), аноним UX таҳлили (Hotjar), pitch deck кўриш саҳифаси (DocSend) */
+  "/vendor/eko-sorov-data.js": { file: "vendor/eko-sorov-data.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-sorov.js": { file: "vendor/eko-sorov.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-ux.js": { file: "vendor/eko-ux.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-deck.js": { file: "vendor/eko-deck.js", type: "text/javascript; charset=utf-8" },
   /* Ekomun 2.9: паспорт, шахсий йўл, сайёра саломатлиги, ўқитувчи устахонаси, турнир */
   "/vendor/eko-global.css": { file: "vendor/eko-global.css", type: "text/css; charset=utf-8" },
   "/vendor/eko-pasport.js": { file: "vendor/eko-pasport.js", type: "text/javascript; charset=utf-8" },
@@ -2582,6 +2601,8 @@ const ADMIN_FILES = {
   "/pay.js": { file: "admin/pay.js", type: "text/javascript; charset=utf-8" },
   "/analiz.js": { file: "admin/analiz.js", type: "text/javascript; charset=utf-8" },
   "/oqim.js": { file: "admin/oqim.js", type: "text/javascript; charset=utf-8" },
+  "/startap.js": { file: "admin/startap.js", type: "text/javascript; charset=utf-8" },
+  "/sorov-data.js": { file: "vendor/eko-sorov-data.js", type: "text/javascript; charset=utf-8" },
   "/app.css": { file: "admin/app.css", type: "text/css; charset=utf-8" },
   "/theme.js": { file: "admin/theme.js", type: "text/javascript; charset=utf-8" },
   "/fonts/onest-cyrillic.woff2": { file: "vendor/fonts/onest-cyrillic-wght-normal.woff2", type: "font/woff2" },
@@ -2662,12 +2683,14 @@ const server = http.createServer(async (req, res) => {
   /* Блокланган IP га платформа очилмайди */
   if (db.blockedIps[clientIp(req)]) return blockedPage(res);
 
-  const entry = STATIC[pathname];
+  /* Pitch deck ҳаволаси (/d/<калит>) — инвестор учун кўриш саҳифаси */
+  const entry = STATIC[pathname] || (stMod.isDeckPage(pathname) ? { file: "deck.html", type: HTML, deck: true } : null);
   if (!entry || (req.method !== "GET" && req.method !== "HEAD")) return send(res, 404, "Топилмади");
   fs.readFile(path.join(__dirname, entry.file), (err, data) => {
     if (err) return send(res, 500, "Файл ўқилмади");
     const headers = { "Content-Type": entry.type, "Cache-Control": entry.cache ? "public, max-age=604800" : "no-cache" };
     if (entry.file === "sw.js") headers["Service-Worker-Allowed"] = "/";
+    if (entry.deck) { headers["X-Robots-Tag"] = "noindex, nofollow"; headers["Cache-Control"] = "no-store"; res.setHeader("Referrer-Policy", "no-referrer"); }
     /* Телефон модели ва тизим версиясини сўраш (бошқарув марказидаги «Қурилма» учун) */
     if (entry.file === "index.html") headers["Accept-CH"] = "Sec-CH-UA-Model, Sec-CH-UA-Platform-Version";
     if (entry.file === "privacy.html") {
