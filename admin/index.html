@@ -14,6 +14,8 @@
   <script src="pay.js" defer></script>
   <script src="analiz.js" defer></script>
   <script src="oqim.js" defer></script>
+  <script src="sorov-data.js" defer></script>
+  <script src="startap.js" defer></script>
 </head>
 <body>
   <!-- Кириш ойнаси -->
@@ -47,6 +49,9 @@
         <button data-tab="growth">🚀 <span>Ўсиш ва ўқиш</span></button>
         <button data-tab="blocks">⛔ <span>Блок ва хавфсизлик</span> <i class="badge warn" id="bSusp" hidden>0</i></button>
         <button data-tab="feedback">💬 <span>Фикр-мулоҳазалар</span> <i class="badge" id="bFeedback" hidden>0</i></button>
+        <button data-tab="sorov">📋 <span>Сўровнома</span></button>
+        <button data-tab="ux">🔥 <span>UX харита</span></button>
+        <button data-tab="deck">📑 <span>Pitch deck</span> <i class="badge" id="bDeck" hidden>0</i></button>
         <button data-tab="reports">🗺️ <span>Эко-харита</span> <i class="badge" id="bPending" hidden>0</i></button>
         <button data-tab="community">📣 <span>Эълон ва турнир</span></button>
         <button data-tab="oqim">📡 <span>Эко-оқим</span> <i class="badge" id="bOqim" hidden>0</i></button>
@@ -285,6 +290,72 @@
           <div class="card"><h2>Энг кўп ёзилган бўлимлар</h2><div id="chFbSecs"></div></div>
         </div>
         <div class="card"><div id="fbList"></div></div>
+      </section>
+
+      <section data-view="sorov" hidden>
+        <p class="small muted">Tally ўрнига ўз сўровномамиз: бир экранда бир савол, аноним, бир қурилмадан битта жавоб. Ҳавола: <code class="mono" id="svLink"></code> — Telegram, ота-оналар ва ўқитувчилар гуруҳига юборинг. Хулоса чиқариш учун камида 30–50 та жавоб керак.</p>
+        <div class="kpis" id="svKpis"></div>
+        <div class="toolbar">
+          <select id="svStage" aria-label="Босқич"><option value="">Барча босқичлар</option><option value="maktab">🎒 Мактаб</option><option value="uni">🎓 Университет</option></select>
+          <select id="svRole" aria-label="Ким"><option value="">Барча фойдаланувчилар</option></select>
+          <select id="svVer" aria-label="Версия"><option value="">Барча версиялар</option></select>
+          <button class="btn ghost sm" id="svCsv" type="button">⬇ CSV (Excel)</button>
+        </div>
+        <div class="card"><h2>🧪 Бизнес гипотезалари</h2><div class="table" id="svHyp"></div>
+          <p class="small muted">PMF — Шон Эллис тести: «маҳсулот ёпилса жуда хафа бўламан» дейдиганлар 40% дан кўп бўлса, маҳсулот бозорга мос деб ҳисобланади. NPS = тавсия қиладиганлар (9–10) % − танқид қиладиганлар (0–6) %.</p></div>
+        <div class="grid2" id="svCharts"></div>
+        <div class="card"><h2>💬 Эркин жавоблар: нима етишмаяпти</h2><div class="table" id="svTexts"></div></div>
+      </section>
+
+      <section data-view="ux" hidden>
+        <p class="small muted">Hotjar ўрнига ўз аноним таҳлилимиз: қаерда босишади, қаерда «жаҳл» билан қайта-қайта босишади, қаерда босилса ҳам ҳеч нарса бўлмайди ва бўлимни қанча чуқур ўқишади. Матн, исм, киритилган қийматлар ва экран тасвири ёзилмайди; «Do Not Track» ёқилган браузерлар ҳисобга олинмайди. Давр — юқоридаги «давр» танлови.</p>
+        <div class="kpis" id="uxKpis"></div>
+        <div class="toolbar">
+          <select id="uxDc" aria-label="Қурилма"><option value="">Барча қурилмалар</option><option value="m">📱 Телефон</option><option value="t">📟 Планшет</option><option value="d">💻 Компьютер</option></select>
+          <select id="uxSec" aria-label="Бўлим"></select>
+          <button class="btn ghost sm" id="uxClear" type="button">🗑️ Тозалаш</button>
+        </div>
+        <div class="card"><h2>Бўлимлар: вақт, чуқурлик ва муаммоли кликлар</h2><div class="table" id="uxSecs"></div></div>
+        <div class="card" id="uxHeatCard"><h2>🔥 Клик харитаси: <span id="uxSecName"></span></h2>
+          <div class="toolbar"><label class="small"><input type="checkbox" id="uxShowPage" checked> Сайт саҳифаси устида кўрсатиш</label></div>
+          <div id="uxHeat"></div></div>
+        <div class="grid2">
+          <div class="card"><h2>Энг кўп босилган тугма ва ҳаволалар</h2><div id="uxTop"></div></div>
+          <div class="card"><h2>Муаммоли кликлар</h2><div id="uxBad"></div></div>
+        </div>
+        <div class="grid2">
+          <div class="card"><h2>Йўллар: қайси бўлимдан қаерга ўтишади</h2><div id="uxTrans"></div></div>
+          <div class="card"><h2>Кириш ва чиқиш нуқталари</h2><div id="uxExits"></div></div>
+        </div>
+        <div class="card"><h2>Охирги сессия йўллари</h2><div class="table" id="uxSess"></div></div>
+      </section>
+
+      <section data-view="deck" hidden>
+        <p class="small muted">DocSend ўрнига: pitch deck (PDF) ни ҳар бир инвесторга алоҳида ҳавола билан юборинг ва ким, қачон очгани, қайси саҳифада қанча вақт ўтказганини кўринг. Ҳаволани истаган вақт ёпиш мумкин. PDF сервер дискида сақланади (Render'да доимий диск уланган бўлиши керак).</p>
+        <div class="kpis" id="dkKpis"></div>
+        <div class="grid2">
+          <div class="card"><h2>1. Тақдимот (PDF)</h2>
+            <form id="dkUp" class="stack">
+              <input type="file" name="file" accept="application/pdf,.pdf" required aria-label="PDF файл">
+              <input type="text" name="name" maxlength="120" placeholder="Номи (масалан: Ekomun investor 2026)" aria-label="Номи">
+              <button class="btn primary sm" type="submit">⬆ Юклаш</button>
+            </form>
+            <div class="table" id="dkFiles"></div></div>
+          <div class="card"><h2>2. Инвестор учун ҳавола</h2>
+            <form id="dkNew" class="stack" autocomplete="off">
+              <select name="deck" aria-label="Тақдимот"></select>
+              <input type="text" name="label" maxlength="120" required placeholder="Кимга: масалан «UzVC — Азиз Каримов»" aria-label="Кимга">
+              <label class="small"><input type="checkbox" name="email" checked> Очишдан олдин электрон почтасини сўраш</label>
+              <label class="small"><input type="checkbox" name="download"> PDF ни юклаб олишга рухсат</label>
+              <div class="toolbar"><select name="days" aria-label="Муддати"><option value="0">Муддатсиз</option><option value="7">7 кун</option><option value="30" selected>30 кун</option><option value="90">90 кун</option></select></div>
+              <input type="text" name="note" maxlength="300" placeholder="Кўрувчига изоҳ (ихтиёрий)" aria-label="Изоҳ">
+              <button class="btn primary sm" type="submit">🔗 Ҳавола яратиш</button>
+            </form></div>
+        </div>
+        <div class="card"><h2>Ҳаволалар</h2><div class="table" id="dkLinks"></div></div>
+        <div class="card" id="dkDetail" hidden><h2 id="dkDetT"></h2>
+          <h3 class="small">Ҳар бир саҳифада ўртача вақт (очганлар орасида)</h3><div id="dkPer"></div>
+          <h3 class="small">Кўришлар</h3><div class="table" id="dkViews"></div></div>
       </section>
 
       <section data-view="community" hidden>

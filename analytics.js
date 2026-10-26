@@ -26,7 +26,7 @@ const COURSES = { kichik: "Кичик эколог", yosh: "Ёш тадқиқо�
 const SECTIONS = { bosh: "Бош саҳифа", kurslar: "Курслар", onlayn: "Онлайн дарсликлар", monografiya: "Сув ва ҳаво", krossvord: "Кроссвордлар", kutubxona: "Кутубхона",
   yangiliklar: "Янгиликлар", adabiyot: "Хорижий адабиёт", sayohat: "Эко-саёҳат", oyinlar: "Ўйинлар", dunyo3d: "3D Эко-дунё", lab3d: "3D лаборатория", lab: "Лаборатория",
   vlab: "Виртуал лаборатория", ilmiy: "Илмий лаборатория", loyiha: "Лойиҳалар", chellenj: "Челленж", hashar: "Ҳашар", ekokoz: "Эко-кўз", xarita: "Эко-харита",
-  oyinmarkaz: "Ўйин маркази", takror: "Такрорлаш хонаси", video: "Видео дарслар", fikr: "Фикр-мулоҳаза", internet: "Онлайн маълумотлар", havo: "Ҳаво сифати",
+  oyinmarkaz: "Ўйин маркази", takror: "Такрорлаш хонаси", video: "Видео дарслар", fikr: "Фикр-мулоҳаза", sorov: "Сўровнома", internet: "Онлайн маълумотлар", havo: "Ҳаво сифати",
   kalkulyator: "Калькулятор", yordamchi: "Ёрдамчи", maktab: "Мактаб (синф)", qonun: "Экологик ҳуқуқ", pro: "PRO", agent: "AI агент" };
 const courseName = (c) => COURSES[c] || c;
 const secName = (k) => SECTIONS[k] || k;

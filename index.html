@@ -12,6 +12,13 @@
     <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwNDc4NTciLz48c3RvcCBvZmZzZXQ9Ii41NSIgc3RvcC1jb2xvcj0iIzBkOTQ4OCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyODRjNyIvPjwvbGluZWFyR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJoIiBjeD0iLjMiIGN5PSIuMiIgcj0iLjkiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIuMTYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPgogIDxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTEyIiBmaWxsPSJ1cmwoI2cpIi8+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9InVybCgjaCkiLz4KICA8ZyBmaWxsPSIjZmZmIj4KICAgIDxwYXRoIGQ9Ik0yNDkgMzcwYy00MC0yNC04OC0zMi0xMzctMjd2NjJjNDktNSA5NyAzIDEzNyAyN3oiLz4KICAgIDxwYXRoIGQ9Ik0yNjMgMzcwYzQwLTI0IDg4LTMyIDEzNy0yN3Y2MmMtNDktNS05NyAzLTEzNyAyN3oiLz4KICA8L2c+CiAgPHBhdGggZD0iTTI1NiAzNzJWMjYyIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0ibm9uZSIvPgogIDxwYXRoIGQ9Ik0yNTYgMjY2YzQtNzYgNjItMTI4IDE0Mi0xMzItNCA4MC02MiAxMzAtMTQyIDEzMnoiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMjUyIDMwNmMtMTQtNTAtNTYtODAtMTE0LTgwIDYgNTggNTIgODYgMTE0IDgweiIgZmlsbD0iI2Q5Zjk5ZCIvPgogIDxwYXRoIGQ9Ik0yNzIgMjQ4YzI4LTM0IDYyLTYyIDEwNC05MiIgc3Ryb2tlPSJ1cmwoI2cpIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iLjU1Ii8+Cjwvc3ZnPgo=" type="image/svg+xml">
   <script>
     /* Бўлимлар алоҳида экранда очилади (pageNav). Скрипт ишламаса, ҳаммаси битта саҳифада қолади. */
+    /* Бошқарув марказидаги «UX харита» саҳифани ойна ичида ?uxpreview=uni|maktab билан очади: сохта профил,
+       онбордингсиз ва админнинг ўз localStorage'ига ҳеч нарса ёзилмайди */
+    (function () { try { var m = /[?&]uxpreview=(uni|maktab)\b/.exec(location.search); if (!m || window.top === window.self) return;
+      var y = new Date().getFullYear() - (m[1] === "uni" ? 20 : 12), gi = Storage.prototype.getItem;
+      Storage.prototype.getItem = function (k) { if (k === "ekotalim:profile") return JSON.stringify({ name: "Preview", by: y, bm: 1 }); if (k === "ekotalim:onboard") return "1"; return gi.call(this, k); };
+      Storage.prototype.setItem = function () {}; Storage.prototype.removeItem = function () {};
+      document.documentElement.classList.add("ux-preview"); } catch (e) { /* ignore */ } })();
     (function () { var d = document.documentElement, h = location.hash.slice(1); d.classList.add("spa"); if (h && h !== "bosh") d.classList.add("in-page");
       try { var t = localStorage.getItem("ekotalim:theme"); if (t) d.dataset.theme = t; } catch (e) { /* ignore */ }
       /* Мавзу танланмаган бўлса, тизим мавзуси data-theme га ёзилади: [data-theme="dark"] қоидалари ҳам ишлайди */
@@ -2143,6 +2150,57 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
 .fk-st { margin-left: auto; padding: 2px 9px; border-radius: 999px; font-size: .78rem; font-weight: 700; background: var(--line); color: var(--text); }
 .st-replied .fk-st { background: #15803d; color: #fff; } .st-read .fk-st { background: #1d4ed8; color: #fff; } .st-queue .fk-st { background: #b45309; color: #fff; }
 .fk-reply { margin-top: 8px; padding: 10px 12px; border-radius: 12px; border-left: 4px solid #15803d; background: color-mix(in srgb, #15803d 10%, var(--card)); }
+/* 📋 Сўровнома (vendor/eko-sorov.js) */
+.sv-card { max-width: 720px; margin: 0 auto; padding: clamp(18px, 4vw, 34px); border-radius: 26px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); display: grid; gap: 16px; }
+.sv-intro .section-title, .sv-end .section-title { margin: 0; }
+.sv-top { display: grid; gap: 8px; }
+.sv-prog { height: 6px; border-radius: 99px; background: var(--bg-alt); overflow: hidden; }
+.sv-prog span { display: block; height: 100%; border-radius: 99px; background: #7c3aed; transition: width .25s; }
+.sv-q { font-size: clamp(1.2rem, 3.2vw, 1.6rem); line-height: 1.3; margin: 0; outline: none; }
+.sv-opts { display: grid; gap: 10px; }
+.sv-opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 10px 14px; border-radius: 16px; border: 1.5px solid var(--line); background: var(--bg); color: var(--text); font: inherit; font-weight: 600; text-align: left; cursor: pointer; transition: border-color .15s, background .15s; }
+.sv-opt:hover { border-color: #7c3aed; }
+.sv-opt.on { border-color: #7c3aed; background: color-mix(in srgb, #7c3aed 12%, var(--card)); }
+.sv-opt span { flex: 1; }
+.sv-opt kbd { flex: none; display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); font: 700 .8rem/1 inherit; color: var(--muted); }
+.sv-opt.on kbd { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+.sv-opt .fa-check { color: #7c3aed; }
+.sv-scale { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 6px; }
+.sv-num { min-height: 48px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); color: var(--text); font: inherit; font-weight: 700; cursor: pointer; padding: 0; }
+.sv-num:hover { border-color: #7c3aed; }
+.sv-num.on { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+.sv-scale-l { display: flex; justify-content: space-between; gap: 10px; }
+@media (max-width: 480px) { .sv-scale { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.sv-text { width: 100%; min-height: 110px; padding: 12px 14px; border-radius: 16px; border: 1.5px solid var(--line); background: var(--bg); color: var(--text); font: inherit; resize: vertical; }
+.sv-acts { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.sv-hint { margin: 0; }
+@media (hover: none) { .sv-hint, .sv-opt kbd { display: none; } }
+.sv-big { font-size: 3rem; line-height: 1; }
+.sv-ux { margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sv-invite { position: fixed; z-index: 95; right: 16px; bottom: 16px; width: min(380px, calc(100vw - 32px)); padding: 14px 16px; border-radius: 20px; background: var(--card); color: var(--text); border: 1px solid var(--line); box-shadow: 0 20px 40px -16px rgba(0, 0, 0, .4); animation: eko-in .25s ease both; }
+.sv-invite p { margin: 0 0 10px; }
+@media (max-width: 720px) { .sv-invite { left: 12px; right: 12px; width: auto; bottom: calc(86px + env(safe-area-inset-bottom)); } }
+.ux-preview .sv-invite, .ux-preview #toast, .ux-preview .toast { display: none !important; }
+/* Қурилмалар синови (tools/device-test.js, 2026-10): 1440 px дан кенг экранда менюдаги бўлимлар кўпайиб,
+   юқори панел экрандан чиқиб кетарди — энди меню панел ичида ёнга суриладиган тасмага айланади.
+   320 px телефонда (iPhone SE) профил тугмасида фақат белги қолади; курс карталари тор экранга сиғади. */
+@media (min-width: 1440px) {
+  .topbar-inner > :not(.nav) { flex-shrink: 0; }
+  .nav { flex: 1 1 auto; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); padding-right: 32px; }
+  .nav::-webkit-scrollbar { display: none; }
+}
+@media (max-width: 360px) {
+  .auth-btn.signed { padding: 0 11px; }
+  .auth-btn.signed .auth-name, .auth-btn.signed .pb-pro { display: none; }
+  .topbar-inner { gap: 4px; }
+  .theme-btn, .menu-btn, .lang-btn { min-width: 38px; }
+}
+@media (max-width: 640px) {
+  .aud-grid, .course-grid, .news-grid { grid-template-columns: minmax(0, 1fr); }
+}
+/* Телефонда тегиш майдони камида 24 px (WCAG 2.2, 2.5.8) */
+.vd-link { min-height: 28px; }
+#scRoot input[type="search"], #scRoot input[type="text"] { min-height: 40px; }
 </style>
   <link rel="stylesheet" href="/vendor/eko-global.css">
   <link rel="stylesheet" href="/vendor/eko-dars.css">
@@ -2326,6 +2384,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
         <a href="#kutubxona">Кутубхона</a>
         <a href="#havo">Ҳаво</a>
         <a class="nav-x" href="#fikr">Фикр-мулоҳаза</a>
+        <a class="nav-x" href="#sorov">Сўровнома</a>
         <a class="nav-x" href="#kalkulyator">Калькулятор</a>
         <a class="nav-x" href="#chellenj">Челленж</a>
         <a class="nav-x" href="#yordamchi">Ёрдамчи</a>
@@ -2442,6 +2501,7 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
           <a class="app" data-cat="tool" href="#havo" style="--c:#0f766e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-wind"></i></span><b>Ҳаво сифати</b><small>Шаҳарлар, жонли</small></a>
           <a class="app" data-cat="tool" href="#kalkulyator" style="--c:#0e7490;--c1:#67e8f9"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span><b>Калькулятор</b><small>Углерод изингиз</small></a>
           <a class="app" data-cat="tool" href="#fikr" style="--c:#1d4ed8;--c1:#93c5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></span><b>Фикр-мулоҳаза</b><small>Таклиф ва хатоларни ёзинг</small></a>
+          <a class="app" data-cat="tool" href="#sorov" style="--c:#7c3aed;--c1:#c4b5fd"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-square-poll-horizontal"></i></span><b>Сўровнома</b><small>2 дақиқа, +20 XP</small></a>
           <a class="app" data-cat="tool" href="#yordamchi" style="--c:#0f766e;--c1:#99f6e4"><span class="app-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><b>Ёрдамчи</b><small>Саволингизга жавоб</small></a>
         </nav>
         <p class="muted app-none" id="appNone" hidden>Бундай бўлим топилмади.</p>
@@ -2910,6 +2970,11 @@ html.a11y-hc .app-ic { background: var(--c, var(--primary)); box-shadow: 0 0 0 2
     <!-- FIKR-MULOHAZA: foydalanuvchi fikri serverga, admin panelda ko'rinadi — vendor/eko-fikr.js -->
     <section class="section" id="fikr">
       <div class="wrap" id="fkRoot" data-notr></div>
+    </section>
+
+    <!-- SO'ROVNOMA (Tally uslubida): NPS, PMF, narx gipotezalari — vendor/eko-sorov.js, natijalar admin panelda -->
+    <section class="section alt" id="sorov">
+      <div class="wrap" id="svRoot" data-notr></div>
     </section>
 
     <!-- UNIVERSITET: CHIQINDILAR HOSIL BO'LISHINI HISOBLASH (MRO-1 … MRO-10) — vendor/eko-mro.js -->
@@ -62429,6 +62494,9 @@ window.ekoFetch = async function (url, opts, onSlow) {
   <script src="/vendor/eko-oqim-data.js" defer></script>
   <script src="/vendor/eko-oqim.js" defer></script>
   <script src="/vendor/eko-fikr.js" defer></script>
+  <script src="/vendor/eko-ux.js" defer></script>
+  <script src="/vendor/eko-sorov-data.js" defer></script>
+  <script src="/vendor/eko-sorov.js" defer></script>
   <script src="/vendor/eko-pasport.js" defer></script>
   <script src="/vendor/eko-yol.js" defer></script>
   <script src="/vendor/eko-sayyora.js" defer></script>
