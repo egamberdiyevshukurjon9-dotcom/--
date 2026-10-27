@@ -2531,6 +2531,7 @@ const STATIC = {
   "/vendor/eko-labxona-davriy.js": { file: "vendor/eko-labxona-davriy.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-labxona-tahlil.js": { file: "vendor/eko-labxona-tahlil.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-labxona.js": { file: "vendor/eko-labxona.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-oqova-lab.js": { file: "vendor/eko-oqova-lab.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-scopus.js": { file: "vendor/eko-scopus.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-dunyo3d.js": { file: "vendor/eko-dunyo3d.js", type: "text/javascript; charset=utf-8" },
   "/vendor/world-land.json": { file: "vendor/world-land.json", type: "application/json; charset=utf-8", cache: true },
