@@ -75,7 +75,7 @@
     suvhavo: [[6, 3, 13], ["sys", "crit"]], biotoza: [[6, 14, 3], ["sys", "crit"]], monitoring: [[15, 3, 13, 6], ["crit", "sys"]],
     iqlim: [[13, 7, 11], ["ant", "strat", "sys"]], qayta: [[12, 9, 11], ["integ", "strat"]], ekologiya: [[15, 14, 13, 4], ["sys", "ant"]],
     litosfera: [[12, 15, 3], ["integ", "crit"]], xalqaro: [[17, 13, 12], ["collab", "norm", "ant"]], qollanma: [[16, 12, 9], ["norm", "integ"]],
-    tadqiqot: [[4, 9, 17], ["crit", "self"]], binoxavf: [[11, 9, 3], ["sys", "strat", "crit"]], tibbiy: [[3, 4, 8], ["self", "crit", "collab"]], chbt: [[12, 11, 6], ["sys", "crit", "strat"]], mehnat: [[8, 3, 9], ["norm", "sys", "crit"]]
+    tadqiqot: [[4, 9, 17], ["crit", "self"]], binoxavf: [[11, 9, 3], ["sys", "strat", "crit"]], tibbiy: [[3, 4, 8], ["self", "crit", "collab"]], chbt: [[12, 11, 6], ["sys", "crit", "strat"]], mehnat: [[8, 3, 9], ["norm", "sys", "crit"]], favqulodda: [[11, 13, 9], ["sys", "ant", "crit"]]
   };
   const LEVELS = [
     { min: 0, n: t3("Бошланғич", "Начальный", "Beginner") },
