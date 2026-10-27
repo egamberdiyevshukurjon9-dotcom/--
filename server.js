@@ -1130,7 +1130,7 @@ const publicReport = (r) => ({ id: r.id, category: r.category, text: r.text, lat
 
 /* ---------- Мактаблар учун ---------- */
 const TASK_TYPES = ["xp", "sort", "quiz", "memory", "tree", "course", "streak"];
-const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "qayta", "ekologiya", "yosh", "tabiat", "steam", "qollanma", "tadqiqot", "litosfera", "yerqalqon", "xalqaro", "dunyo", "binoxavf", "tibbiy", "chbt"];
+const COURSE_IDS = ["kichik", "asoslar", "korxona", "talaba", "suvhavo", "biotoza", "monitoring", "iqlim", "qayta", "ekologiya", "yosh", "tabiat", "steam", "qollanma", "tadqiqot", "litosfera", "yerqalqon", "xalqaro", "dunyo", "binoxavf", "tibbiy", "chbt", "mehnat"];
 const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function newClassCode() {
   for (;;) {
@@ -1208,7 +1208,7 @@ function publicOrigin(req) {
   return proto + "://" + host;
 }
 /* Курс → БМТ Барқарор ривожланиш мақсадлари (vendor/eko-pasport.js даги META билан бир хил) */
-const COURSE_SDG = { yerqalqon: [12, 11, 4], yosh: [4, 15, 13], tabiat: [15, 14, 4], steam: [9, 4, 12], dunyo: [17, 11, 4], kichik: [4, 15, 12], asoslar: [13, 15, 6, 4], korxona: [12, 9, 8, 13], talaba: [4, 7, 11, 13], suvhavo: [6, 3, 13], biotoza: [6, 14, 3], monitoring: [15, 3, 13, 6], iqlim: [13, 7, 11], qayta: [12, 9, 11], ekologiya: [15, 14, 13, 4], litosfera: [12, 15, 3], xalqaro: [17, 13, 12], qollanma: [16, 12, 9], tadqiqot: [4, 9, 17], binoxavf: [11, 9, 3], tibbiy: [3, 4, 8], chbt: [12, 11, 6] };
+const COURSE_SDG = { yerqalqon: [12, 11, 4], yosh: [4, 15, 13], tabiat: [15, 14, 4], steam: [9, 4, 12], dunyo: [17, 11, 4], kichik: [4, 15, 12], asoslar: [13, 15, 6, 4], korxona: [12, 9, 8, 13], talaba: [4, 7, 11, 13], suvhavo: [6, 3, 13], biotoza: [6, 14, 3], monitoring: [15, 3, 13, 6], iqlim: [13, 7, 11], qayta: [12, 9, 11], ekologiya: [15, 14, 13, 4], litosfera: [12, 15, 3], xalqaro: [17, 13, 12], qollanma: [16, 12, 9], tadqiqot: [4, 9, 17], binoxavf: [11, 9, 3], tibbiy: [3, 4, 8], chbt: [12, 11, 6], mehnat: [8, 3, 9] };
 const SDG_EN = { 3: "Good health and well-being", 4: "Quality education", 6: "Clean water and sanitation", 7: "Affordable and clean energy", 8: "Decent work and economic growth", 9: "Industry, innovation and infrastructure", 11: "Sustainable cities and communities", 12: "Responsible consumption and production", 13: "Climate action", 14: "Life below water", 15: "Life on land", 16: "Peace, justice and strong institutions", 17: "Partnerships for the goals" };
 const ob3Issuer = (o) => ({ "@context": ["https://www.w3.org/ns/credentials/v2", "https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json"], id: o + "/api/ob3/issuer", type: ["Profile"], name: "Ekomun", url: o, description: "Ekomun — environmental education platform (Uzbekistan)" });
 function ob3Achievement(o, cid, title) {
