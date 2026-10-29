@@ -435,5 +435,5 @@
   if (!st.last) { st.last = Date.now(); save(); }
   welcomeBack();
 
-  window.EkoPath = { recommend, mastery: (cid) => kc(cid).p, render, observe };
+  window.EkoPath = { recommend, mastery: (cid) => kc(cid).p, render, observe, known: () => JSON.parse(JSON.stringify(st.kc)), get pref() { return { ...st.pref }; } };
 })();

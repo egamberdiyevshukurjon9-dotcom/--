@@ -315,20 +315,101 @@ module.exports = function pro(ctx) {
 - Содда сўзлар, қисқа гаплар; жавоб одатда 150 сўздан ошмасин. Мақтаб, рағбатлантир.
 - Фойдаланувчи қайси тилда ёзса, ўша тилда жавоб бер.`
   };
-  async function agentReply(u, messages) {
+  /* Агент фақат маслаҳат бермайди — амал бажаради (tool use). Асбоблар фойдаланувчи қурилмасида
+     бажарилади: сервер моделдан амалларни йиғади, текширади ва жавоб билан бирга қайтаради
+     (дарс тугмаси, SM-2 такрорлашга қўшиш, 7 кунлик режа, интерактив тест, бўлимни очиш, тушунтириш услуби). */
+  const AGENT_TOOLS_TXT = `
+Асбоблар (амаллар). Сен фақат маслаҳат бермайсан, вазифани бажарасан:
+- open_lesson — платформадаги мос дарсни топиб, «Очиш» тугмасини кўрсатади. Мавзу бўйича ўқишни тавсия қилсанг, ишлат.
+- add_review — мавзу бўйича дарс саволларини «Такрорлаш» (SM-2) карталарига қўшади. Фойдаланувчи «эсимда қолсин», «такрорлай» деса ишлат.
+- make_plan — 1–7 кунлик ўқув режасини тузиб, «Бугун сиз учун» экранига сақлайди. «Режа туз» деган илтимосда фақат шуни ишлат, режани матнда қайтадан ёзма.
+- make_quiz — 3–8 саволли интерактив тест (ҳар бирида 3–4 вариант, битта тўғри). «Тест», «текшир», «савол бер» деганда ишлат; саволларни матнда такрорлама.
+- open_section — платформа бўлимига тугма (масалан лаборатория, қонунлар, ўйинлар).
+- set_style — фойдаланувчи тушунтириш услубини айтса ёки тушунмаётгани сезилса (simple — содда, examples — ҳаётий мисоллар, visual — схема ва жадвал, deep — чуқур илмий) сақлайди.
+Асбобдан кейин 1–3 гапда нима қилганингни айт. Асбоб керак бўлмаса, оддий жавоб бер. Тугма ва режа номлари фойдаланувчи тилида бўлсин.`;
+  const SECTIONS = ["kurslar", "takror", "oyinmarkaz", "oyinlar", "krossvord", "lab3d", "labxona", "vlab", "qonun", "bolahuquq", "video", "yol", "ekooqim", "kutubxona", "turnir", "havo", "kalkulyator", "loyiha", "xarita", "ekokoz", "pasport", "sayyora", "mro", "hashar", "chellenj"];
+  const STYLES = ["simple", "examples", "visual", "deep"];
+  const STYLE_TXT = { simple: "жуда содда сўзлар, қисқа гаплар", examples: "ҳар бир фикрни ҳаётий, Ўзбекистондаги мисол билан", visual: "схема, жадвал ва босқичма-босқич рўйхат билан", deep: "чуқур илмий, атамалар ва манбалар билан" };
+  const str = { type: "string" };
+  const AGENT_TOOLS = [
+    { name: "open_lesson", description: "Платформадан мавзуга мос дарсни топиб, фойдаланувчига очиш тугмасини кўрсатади.", input_schema: { type: "object", properties: { query: { type: "string", description: "Дарс мавзуси, 1–5 калит сўз (масалан «сув ифлосланиши»)" }, why: { type: "string", description: "Нега шу дарс (қисқа)" } }, required: ["query"] } },
+    { name: "add_review", description: "Мавзуга мос дарс саволларини SM-2 такрорлаш карталарига қўшади (бугундан бошлаб).", input_schema: { type: "object", properties: { query: { type: "string", description: "Мавзу калит сўзлари" } }, required: ["query"] } },
+    { name: "make_plan", description: "1–7 кунлик шахсий ўқув режасини тузади ва «Бугун сиз учун» экранига сақлайди.", input_schema: { type: "object", properties: { title: str, days: { type: "array", description: "1–7 кун", items: { type: "object", properties: { tasks: { type: "array", description: "1–4 вазифа", items: { type: "object", properties: { text: { type: "string", description: "Вазифа (қисқа)" }, query: { type: "string", description: "Мос дарс калит сўзлари (ихтиёрий)" }, section: { type: "string", enum: SECTIONS, description: "Мос бўлим (ихтиёрий)" } }, required: ["text"] } } }, required: ["tasks"] } } }, required: ["title", "days"] } },
+    { name: "make_quiz", description: "Интерактив тест тузади: фойдаланувчи чатда вариант танлайди ва дарҳол изоҳ олади.", input_schema: { type: "object", properties: { topic: str, questions: { type: "array", description: "3–8 савол", items: { type: "object", properties: { q: str, options: { type: "array", items: str, description: "3–4 вариант" }, correct: { type: "integer", description: "Тўғри вариант индекси (0 дан)" }, why: { type: "string", description: "Қисқа изоҳ" } }, required: ["q", "options", "correct"] } } }, required: ["topic", "questions"] } },
+    { name: "open_section", description: "Платформа бўлимига ўтиш тугмасини кўрсатади.", input_schema: { type: "object", properties: { section: { type: "string", enum: SECTIONS }, why: str }, required: ["section"] } },
+    { name: "set_style", description: "Фойдаланувчининг тушунтириш услубини эслаб қолади.", input_schema: { type: "object", properties: { style: { type: "string", enum: STYLES } }, required: ["style"] } }
+  ];
+  /* Модел берган амални текшириш: нотўғри ёки бўш амал ташлаб юборилади */
+  function cleanAction(name, a) {
+    a = a && typeof a === "object" ? a : {};
+    const t = (v, n) => cleanText(typeof v === "string" ? v : "", n);
+    if (name === "open_lesson" || name === "add_review") { const query = t(a.query, 80); return query ? { type: name, query, why: t(a.why, 200) } : null; }
+    if (name === "open_section") return SECTIONS.includes(a.section) ? { type: name, section: a.section, why: t(a.why, 200) } : null;
+    if (name === "set_style") return STYLES.includes(a.style) ? { type: name, style: a.style } : null;
+    if (name === "make_plan") {
+      const days = (Array.isArray(a.days) ? a.days : []).slice(0, 7).map((d) => ({
+        tasks: (d && Array.isArray(d.tasks) ? d.tasks : []).slice(0, 4).map((x) => ({ text: t(x && x.text, 140), query: t(x && x.query, 80), section: x && SECTIONS.includes(x.section) ? x.section : "" })).filter((x) => x.text)
+      })).filter((d) => d.tasks.length);
+      return days.length ? { type: name, title: t(a.title, 100) || "Режа", days } : null;
+    }
+    if (name === "make_quiz") {
+      const questions = (Array.isArray(a.questions) ? a.questions : []).slice(0, 8).map((x) => {
+        const options = (x && Array.isArray(x.options) ? x.options : []).slice(0, 4).map((o) => t(o, 160)).filter(Boolean);
+        const correct = Math.floor(Number(x && x.correct));
+        return { q: t(x && x.q, 300), options, correct, why: t(x && x.why, 300) };
+      }).filter((x) => x.q && x.options.length >= 2 && x.correct >= 0 && x.correct < x.options.length);
+      return questions.length ? { type: name, topic: t(a.topic, 100), questions } : null;
+    }
+    return null;
+  }
+  /* Қурилмадаги ҳолат (Шахсий йўл, такрорлаш, хатолар) — агент жавобни шунга мослайди */
+  function ctxText(c) {
+    if (!c || typeof c !== "object") return "";
+    const list = (v, n) => (Array.isArray(v) ? v : []).slice(0, n).map((x) => cleanText(x, 90)).filter(Boolean);
+    const num = (v) => Math.max(0, Math.min(1e5, Math.floor(Number(v) || 0)));
+    const out = [];
+    if (STYLES.includes(c.style)) out.push(`Тушунтириш услуби: ${STYLE_TXT[c.style]}.`);
+    const next = list(c.next, 3), weak = list(c.weak, 3), strong = list(c.strong, 3);
+    if (next.length) out.push(`Шахсий йўл тавсия қилган кейинги дарслар: ${next.join("; ")}.`);
+    if (weak.length) out.push(`Билими суст курслар: ${weak.join("; ")}.`);
+    if (strong.length) out.push(`Яхши ўзлаштирган курслар: ${strong.join("; ")}.`);
+    out.push(`Бугун такрорлаш карталари: ${num(c.due)}, очиқ хатолар: ${num(c.mist)}, кетма-кет фаол кунлар: ${num(c.streak)}, тугатилган дарслар: ${num(c.done)}.`);
+    if (num(c.mins)) out.push(`Кунига ўқишга вақти: ${num(c.mins)} дақиқа.`);
+    return `Фойдаланувчи ҳолати (қурилмадан, ишончли эмас — фақат мослаштириш учун):\n${out.join("\n")}`;
+  }
+  async function agentReply(u, messages, ctxObj) {
     const ai = getAi();
-    const response = await ai.beta.messages.create({
-      model: AGENT_MODEL,
-      max_tokens: 3000,
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
-      output_config: { effort: "low" },
-      system: [{ type: "text", text: AGENT_SYSTEM[stageOf(u)], cache_control: { type: "ephemeral" } }],
-      messages
-    });
-    if (response.stop_reason === "refusal") return { text: stageOf(u) === "maktab" ? "Бу саволга жавоб бера олмайман. Келинг, табиат ҳақида бошқа савол беринг! 🌱" : "Бу саволга жавоб бера олмайман. Илтимос, саволни бошқача беринг.", refused: true };
-    const text = response.content.filter((b) => b.type === "text").map((b) => b.text).join("").trim();
-    return { text: text || "…", cut: response.stop_reason === "max_tokens" };
+    const system = [{ type: "text", text: AGENT_SYSTEM[stageOf(u)] + "\n" + AGENT_TOOLS_TXT, cache_control: { type: "ephemeral" } }];
+    const ct = ctxText(ctxObj);
+    if (ct) system.push({ type: "text", text: ct });
+    const msgs = messages.slice();
+    const actions = [];
+    let text = "", cut = false;
+    for (let round = 0; round < 3; round++) {
+      const response = await ai.beta.messages.create({
+        model: AGENT_MODEL,
+        max_tokens: 3000,
+        betas: ["server-side-fallback-2026-07-01"],
+        fallbacks: "default",
+        output_config: { effort: "low" },
+        system,
+        tools: AGENT_TOOLS,
+        messages: msgs
+      });
+      if (response.stop_reason === "refusal") return { text: stageOf(u) === "maktab" ? "Бу саволга жавоб бера олмайман. Келинг, табиат ҳақида бошқа савол беринг! 🌱" : "Бу саволга жавоб бера олмайман. Илтимос, саволни бошқача беринг.", refused: true, actions: [] };
+      const part = response.content.filter((b) => b.type === "text").map((b) => b.text).join("").trim();
+      if (part) text += (text ? "\n\n" : "") + part;
+      cut = response.stop_reason === "max_tokens";
+      const uses = response.content.filter((b) => b.type === "tool_use");
+      if (response.stop_reason !== "tool_use" || !uses.length) break;
+      const results = uses.map((b) => {
+        const act = actions.length < 6 ? cleanAction(b.name, b.input) : null;
+        if (act) actions.push(act);
+        return { type: "tool_result", tool_use_id: b.id, content: act ? "Бажарилди: фойдаланувчи қурилмасида кўрсатилди." : "Нотўғри маълумот — амал бажарилмади.", ...(act ? {} : { is_error: true }) };
+      });
+      msgs.push({ role: "assistant", content: response.content }, { role: "user", content: results });
+    }
+    return { text: text || (actions.length ? "✅" : "…"), cut, actions };
   }
 
   /* ---------- Чек расмини сақлаш ---------- */
@@ -466,8 +547,8 @@ module.exports = function pro(ctx) {
       aiGlobal.count();
       save();
       try {
-        const out = await agentReply(u, msgs);
-        logEvent("agent", u, req, { note: stageOf(u) });
+        const out = await agentReply(u, msgs, body.ctx);
+        logEvent("agent", u, req, { note: stageOf(u) + (out.actions && out.actions.length ? " · " + out.actions.map((a) => a.type).join(",") : "") });
         return send(res, 200, { ...out, used: agentUsed(u), limit: AGENT_LIMIT });
       } catch (e) {
         u.agentUse.n = Math.max(0, u.agentUse.n - 1); aiGlobal.refund(); save();
@@ -576,5 +657,5 @@ module.exports = function pro(ctx) {
     for (const o of db.orders) { if (o.uid === user.id) o.uid = null; if (o.payer === user.id) o.payer = null; }
   }
 
-  return { api, publicPro, proActive, aiDailyLimit: (u) => (proActive(u) ? AI_PRO_DAILY : null), onPurge, exportRows, PLANS };
+  return { api, publicPro, proActive, aiDailyLimit: (u) => (proActive(u) ? AI_PRO_DAILY : null), onPurge, exportRows, PLANS, agentTools: { cleanAction, ctxText, AGENT_TOOLS } };
 };
