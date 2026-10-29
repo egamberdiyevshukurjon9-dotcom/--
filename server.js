@@ -2561,6 +2561,7 @@ const STATIC = {
   "/vendor/eko-global.css": { file: "vendor/eko-global.css", type: "text/css; charset=utf-8" },
   "/vendor/eko-pasport.js": { file: "vendor/eko-pasport.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-yol.js": { file: "vendor/eko-yol.js", type: "text/javascript; charset=utf-8" },
+  "/vendor/eko-bugun.js": { file: "vendor/eko-bugun.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-sayyora.js": { file: "vendor/eko-sayyora.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-ustoz.js": { file: "vendor/eko-ustoz.js", type: "text/javascript; charset=utf-8" },
   "/vendor/eko-oqim-data.js": { file: "vendor/eko-oqim-data.js", type: "text/javascript; charset=utf-8" },

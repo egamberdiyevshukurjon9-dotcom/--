@@ -5,7 +5,11 @@
    • Android илова ичида (User-Agent «EkomunApp/» ёки оффлайн нусха) нарх, тўлов тугмаси ва ташқи ҳавола
      йўқ (Google Play қоидаси): PRO фақат сайтда сотиб олинган бўлса, иловада ўзи очилади.
    • #agent: PRO фойдаланувчининг шахсий AI агенти. Босқичга мос (мактаб — «Эко-устоз», университет —
-     илмий маслаҳатчи). Суҳбат фақат шу қурилмада сақланади (localStorage «ekotalim:agent:<id>»). */
+     илмий маслаҳатчи). Суҳбат фақат шу қурилмада сақланади (localStorage «ekotalim:agent:<id>»).
+   • Агент амал бажаради (tool use, сервер: pro.js): мос дарсни очиш тугмаси, мавзуни SM-2 такрорлашга
+     қўшиш, 7 кунлик режа («Бугун сиз учун» экранига — vendor/eko-bugun.js), интерактив тест, бўлимга ўтиш.
+     Ҳар саволга қурилмадаги ҳолат (Шахсий йўл тавсиялари, суст курслар, такрорлаш, хатолар) ва
+     танланган тушунтириш услуби қўшилади — агент жавобни шу ўқувчига мослайди. */
 (() => {
   "use strict";
   const PRO_SEC = document.getElementById("pro");
@@ -118,8 +122,8 @@
     pill: t3("🤖 Шахсий агент · PRO", "🤖 Личный агент · PRO", "🤖 Personal agent · PRO"),
     titleK: t3("Эко-устоз: шахсий ёрдамчингиз", "Эко-наставник: ваш помощник", "Eco tutor: your helper"),
     titleU: t3("Шахсий AI агент", "Личный AI-агент", "Personal AI agent"),
-    leadK: t3("Табиат ва экология ҳақида сўранг: тушунтириб беради, топишмоқ ва кичик тест тузади, уй вазифасини ўзингиз бажаришингизга ёрдам беради.", "Спрашивайте о природе и экологии: объяснит, загадает загадку, составит мини-тест и поможет сделать домашнее задание самому.", "Ask about nature and ecology: it explains, makes riddles and mini-quizzes, and helps you do homework yourself."),
-    leadU: t3("Экология, экологик ҳуқуқ, чиқиндилар, сув, ҳаво ва иқлим бўйича илмий маслаҳатчи: ўқув режа, тест, курс иши ва лойиҳа режаси.", "Научный консультант по экологии, экоправу, отходам, воде, воздуху и климату: план обучения, тесты, курсовая и проект.", "A science adviser on ecology, environmental law, waste, water, air and climate: study plans, quizzes, coursework and project plans."),
+    leadK: t3("Табиат ва экология ҳақида сўранг. Эко-устоз фақат тушунтирмайди, ишни ўзи бажаради: мос дарсни топади, тест тузади, такрорлашга қўшади ва «Бугун сиз учун» режасини тузади.", "Спрашивайте о природе и экологии. Эко-наставник не только объясняет, но и действует: находит урок, составляет тест, добавляет в повторение и строит план «Сегодня для вас».", "Ask about nature and ecology. The Eco tutor doesn't just explain, it acts: finds the right lesson, builds a quiz, adds topics to review and makes your “Today for you” plan."),
+    leadU: t3("Экология, экологик ҳуқуқ, чиқиндилар, сув, ҳаво ва иқлим бўйича илмий маслаҳатчи. Агент вазифани ўзи бажаради: дарс топади, интерактив тест тузади, мавзуни такрорлашга қўшади ва 7 кунлик режани «Бугун сиз учун» экранига жойлайди.", "Научный консультант по экологии, экоправу, отходам, воде, воздуху и климату. Агент сам выполняет задачи: находит урок, делает интерактивный тест, добавляет тему в повторение и кладёт 7-дневный план на экран «Сегодня для вас».", "A science adviser on ecology, environmental law, waste, water, air and climate. The agent does the work: finds lessons, builds interactive quizzes, adds topics to review and puts a 7-day plan on your “Today for you” screen."),
     ph: t3("Саволингизни ёзинг…", "Напишите вопрос…", "Type your question…"),
     send: t3("Юбориш", "Отправить", "Send"),
     clear: t3("Суҳбатни тозалаш", "Очистить чат", "Clear chat"),
@@ -130,8 +134,26 @@
     needLogin: t3("Агентдан фойдаланиш учун ҳисобингизга киринг.", "Войдите в аккаунт, чтобы пользоваться агентом.", "Sign in to use the agent."),
     notReady: t3("AI ҳали созланмаган (админ ANTHROPIC_API_KEY ни қўшиши керак).", "AI ещё не настроен (админ должен добавить ANTHROPIC_API_KEY).", "AI isn't configured yet (the admin must add ANTHROPIC_API_KEY)."),
     privacy: t3("Суҳбат фақат шу қурилмада сақланади. Шахсий маълумот (тўлиқ исм, манзил, телефон) ёзманг. AI хато қилиши мумкин — муҳим фактларни текширинг.", "Чат хранится только на этом устройстве. Не пишите личные данные (полное имя, адрес, телефон). AI может ошибаться — проверяйте важные факты.", "The chat is stored only on this device. Don't share personal data (full name, address, phone). AI can make mistakes — check key facts."),
-    qK: [t3("Нега дарахтлар муҳим?", "Почему деревья важны?", "Why are trees important?"), t3("Чиқиндини қандай саралайман?", "Как сортировать мусор?", "How do I sort waste?"), t3("Сув ҳақида 5 та саволли тест туз", "Составь тест из 5 вопросов о воде", "Make a 5-question quiz about water"), t3("Менга экологик топишмоқ айт", "Загадай экологическую загадку", "Tell me an eco riddle")],
-    qU: [t3("Менга 4 ҳафталик экология ўқув режасини туз", "Составь мне 4-недельный план изучения экологии", "Make me a 4-week ecology study plan"), t3("ПДК ва ЧММ фарқини тушунтир", "Объясни разницу ПДК и ПДВ", "Explain MPC vs. emission limits"), t3("«Чиқиндилар тўғрисида»ги қонуннинг асосий талаблари", "Основные требования закона «Об отходах»", "Key requirements of the Waste law"), t3("Курс иши мавзуси ва режасини таклиф қил", "Предложи тему и план курсовой", "Suggest a coursework topic and outline")]
+    qK: [t3("Нега дарахтлар муҳим?", "Почему деревья важны?", "Why are trees important?"), t3("Чиқиндини саралаш бўйича 7 кунлик режа туз", "Составь 7-дневный план по сортировке отходов", "Make a 7-day plan about sorting waste"), t3("Сув ҳақида 5 та саволли тест туз", "Составь тест из 5 вопросов о воде", "Make a 5-question quiz about water"), t3("Хато қилган мавзуларимни такрорлашга қўш", "Добавь темы с ошибками в повторение", "Add the topics I got wrong to my review")],
+    qU: [t3("Сув ифлосланиши бўйича 7 кунлик режа туз", "Составь 7-дневный план по загрязнению воды", "Make a 7-day plan on water pollution"), t3("Суст мавзуларим бўйича 5 саволли тест туз", "Сделай тест из 5 вопросов по моим слабым темам", "Make a 5-question quiz on my weak topics"), t3("ПДК ва ЧММ фарқини тушунтир", "Объясни разницу ПДК и ПДВ", "Explain MPC vs. emission limits"), t3("«Чиқиндилар тўғрисида»ги қонуннинг асосий талаблари", "Основные требования закона «Об отходах»", "Key requirements of the Waste law"), t3("Курс иши мавзуси ва режасини таклиф қил", "Предложи тему и план курсовой", "Suggest a coursework topic and outline")],
+    style: t3("Тушунтириш", "Объяснение", "Explanations"),
+    styles: { "": t3("Ўзи танласин", "На выбор агента", "Agent decides"), simple: t3("Содда", "Просто", "Simple"), examples: t3("Мисоллар билан", "С примерами", "With examples"), visual: t3("Схема ва жадвал", "Схемы и таблицы", "Diagrams & tables"), deep: t3("Чуқур илмий", "Глубоко, научно", "In-depth") },
+    styleSet: t3("Тушунтириш услуби сақланди", "Стиль объяснения сохранён", "Explanation style saved"),
+    aOpen: t3("Дарсни очиш", "Открыть урок", "Open lesson"),
+    aNoLesson: t3("Мос дарс топилмади", "Подходящий урок не найден", "No matching lesson found"),
+    aCourses: t3("Курслар", "Курсы", "Courses"),
+    aReview: t3("та карта такрорлашга қўшилди", "карт. добавлено в повторение", "cards added to review"),
+    aReview0: t3("Бу мавзуда янги карта йўқ (саволлари бор дарс топилмади ёки аллақачон қўшилган)", "Новых карт нет (урок с вопросами не найден или уже добавлен)", "No new cards (no lesson with questions found, or already added)"),
+    aGoReview: t3("Такрорлашни бошлаш", "Начать повторение", "Start review"),
+    aPlan: t3("Режа «Бугун сиз учун» экранига сақланди", "План сохранён на экран «Сегодня для вас»", "Plan saved to “Today for you”"),
+    aSeePlan: t3("Бош саҳифада кўриш", "Посмотреть на главной", "See on home"),
+    aDay: t3("кун", "день", "day"),
+    aQuiz: t3("Тест", "Тест", "Quiz"),
+    aRight: t3("Тўғри!", "Верно!", "Correct!"),
+    aWrong: t3("Нотўғри. Тўғри жавоб:", "Неверно. Правильный ответ:", "Not quite. Correct answer:"),
+    aScore: t3("Натижа", "Результат", "Score"),
+    aGo: t3("Ўтиш", "Перейти", "Go"),
+    aStyle: t3("Услуб эслаб қолинди", "Стиль запомнен", "Style remembered")
   };
 
   const PX = {
@@ -332,6 +354,9 @@
 
   /* ---------- Шахсий агент ---------- */
   const chatKey = () => "ekotalim:agent:" + ((info && info.me && info.me.id) || "me");
+  const STYLE_KEY = "ekotalim:agstyle";
+  const getStyle = () => { try { return localStorage.getItem(STYLE_KEY) || ""; } catch (e) { return ""; } };
+  const setStyle = (v) => { try { if (v) localStorage.setItem(STYLE_KEY, v); else localStorage.removeItem(STYLE_KEY); } catch (e) { /* ignore */ } };
   let chat = [];
   const loadChat = () => { try { chat = JSON.parse(localStorage.getItem(chatKey()) || "[]"); if (!Array.isArray(chat)) chat = []; } catch (e) { chat = []; } };
   const saveChat = () => { try { localStorage.setItem(chatKey(), JSON.stringify(chat.slice(-40))); } catch (e) { /* ignore */ } };
@@ -349,6 +374,66 @@
     if (list) out += "</ul>";
     return out.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
   }
+  /* Қурилмадаги ҳолат: Шахсий йўл (BKT), такрорлаш, хатолар — агент жавобни шунга мослайди */
+  function agentCtx() {
+    const a = App(), cs = (a && a.courses) || [], T = (s) => (EL() && EL().t ? EL().t(s) : s);
+    const ctx = { style: getStyle() };
+    try {
+      if (window.EkoPath) {
+        ctx.next = EkoPath.recommend(3).map((r) => (r.li < 0 ? `${T(r.c.title)} (якуний тест)` : `${T(r.c.lessons[r.li].title)} (${T(r.c.title)})`));
+        const kn = EkoPath.known ? EkoPath.known() : {};
+        const seen = Object.entries(kn).filter(([cid, k]) => k.n >= 3 && cs.some((c) => c.id === cid));
+        const name = (cid) => T(cs.find((c) => c.id === cid).title);
+        ctx.weak = seen.filter(([, k]) => k.p < 0.6).sort((x, y) => x[1].p - y[1].p).map(([cid]) => name(cid));
+        ctx.strong = seen.filter(([, k]) => k.p >= 0.85).sort((x, y) => y[1].p - x[1].p).map(([cid]) => name(cid));
+        ctx.mins = EkoPath.pref ? EkoPath.pref.mins : 0;
+      }
+      if (window.EkoGame) { ctx.due = EkoGame.due ? EkoGame.due() : 0; ctx.mist = EkoGame.mistakes ? EkoGame.mistakes() : 0; ctx.streak = EkoGame.streak ? EkoGame.streak() : 0; }
+      if (a && a.state) ctx.done = Object.keys(a.state.perfect || {}).length;
+    } catch (e) { /* ҳолатсиз ҳам ишлайди */ }
+    return ctx;
+  }
+  /* Сервердан келган амални қурилмада бажариш (бир марта, натижаси суҳбатда сақланади) */
+  function runAction(act) {
+    const B = window.EkoBugun;
+    if (act.type === "open_lesson") {
+      const hit = B ? B.findLessons(act.query, 1)[0] : null;
+      return { ...act, hit: hit || null };
+    }
+    if (act.type === "add_review") {
+      let n = 0;
+      const hits = B ? B.findLessons(act.query, 3) : [];
+      if (window.EkoGame && EkoGame.addLesson) hits.forEach((h) => { n += EkoGame.addLesson(h.cid, h.li); });
+      return { ...act, n, hits: hits.map((h) => h.title) };
+    }
+    if (act.type === "make_plan") { if (B) B.savePlan(act); return { ...act, saved: !!B }; }
+    if (act.type === "set_style") { setStyle(act.style); return act; }
+    if (act.type === "make_quiz") return { ...act, ans: {} };
+    return act;
+  }
+  /* Агентга тарих сифатида: нима бажарилгани қисқа ёзилади (тугма ва тестлар серверга кетмайди) */
+  const actNote = (a) => a.type === "make_plan" ? `режа «${a.title}» (${a.days.length} кун) тузилди` : a.type === "make_quiz" ? `тест «${a.topic}» (${a.questions.length} савол${a.ans && Object.keys(a.ans).length ? `, ${Object.entries(a.ans).filter(([i, v]) => a.questions[i] && a.questions[i].correct === v).length} тўғри` : ""})` : a.type === "open_lesson" ? `дарс «${a.hit ? a.hit.title : a.query}» тавсия қилинди` : a.type === "add_review" ? `«${a.query}» такрорлашга қўшилди (${a.n || 0} карта)` : a.type === "open_section" ? `бўлим #${a.section}` : a.type === "set_style" ? `услуб: ${a.style}` : a.type;
+  const toServer = () => chat.slice(-12).map((m) => ({ role: m.role, content: m.acts && m.acts.length ? `${m.content}\n[Бажарилган амаллар: ${m.acts.map(actNote).join("; ")}]` : m.content }));
+
+  function actHtml(a, mi, ai) {
+    const T = (s) => (EL() && EL().t ? EL().t(s) : s);
+    const at = `data-m="${mi}" data-a="${ai}"`;
+    if (a.type === "open_lesson") return a.hit
+      ? `<div class="ag-act"><span><b>${esc(a.hit.icon)} ${esc(T(a.hit.title))}</b><small class="muted">${esc(T(a.hit.course))}${a.why ? " · " + esc(a.why) : ""}</small></span><button type="button" class="btn btn-primary btn-sm" data-les="${esc(a.hit.cid)}" data-li="${a.hit.li}">▶ ${H(AG.aOpen)}</button></div>`
+      : `<div class="ag-act"><span class="muted">🔎 ${H(AG.aNoLesson)}: «${esc(a.query)}»</span><a class="btn btn-ghost btn-sm" href="#kurslar">${H(AG.aCourses)}</a></div>`;
+    if (a.type === "add_review") return `<div class="ag-act"><span>🧠 ${a.n ? `<b>${a.n}</b> ${H(AG.aReview)}${a.hits && a.hits.length ? `<small class="muted">${a.hits.map((t) => esc(T(t))).join(" · ")}</small>` : ""}` : `<span class="muted">${H(AG.aReview0)}</span>`}</span>${a.n ? `<a class="btn btn-primary btn-sm" href="#takror">${H(AG.aGoReview)}</a>` : ""}</div>`;
+    if (a.type === "make_plan") return `<div class="ag-act ag-plan"><b>🗓️ ${esc(a.title)}</b><ol>${a.days.map((d, i) => `<li><small class="muted">${i + 1}-${H(AG.aDay)}</small> ${d.tasks.map((t) => esc(t.text)).join(" · ")}</li>`).join("")}</ol><span class="small muted">✅ ${H(AG.aPlan)}</span> <a class="btn btn-ghost btn-sm" href="#bosh">${H(AG.aSeePlan)}</a></div>`;
+    if (a.type === "open_section") return `<div class="ag-act"><span>🧭 ${a.why ? esc(a.why) : "#" + esc(a.section)}</span><a class="btn btn-primary btn-sm" href="#${esc(a.section)}">${H(AG.aGo)} →</a></div>`;
+    if (a.type === "set_style") return `<div class="ag-act"><span class="small muted">🎨 ${H(AG.aStyle)}: <b>${H(AG.styles[a.style] || a.style)}</b></span></div>`;
+    if (a.type === "make_quiz") {
+      const ans = a.ans || {}, got = Object.keys(ans).length, ok = Object.entries(ans).filter(([i, v]) => a.questions[i] && a.questions[i].correct === v).length;
+      return `<div class="ag-act ag-quiz"><b>📝 ${H(AG.aQuiz)}: ${esc(a.topic)}</b>${a.questions.map((q, qi) => {
+        const v = ans[qi], done = v != null;
+        return `<fieldset class="ag-qq"><legend>${qi + 1}. ${esc(q.q)}</legend><div class="ag-opts">${q.options.map((o, oi) => `<button type="button" class="ag-opt${done && oi === q.correct ? " ok" : ""}${done && oi === v && v !== q.correct ? " bad" : ""}" ${at} data-q="${qi}" data-o="${oi}" ${done ? "disabled" : ""}>${esc(o)}</button>`).join("")}</div>${done ? `<p class="small ${v === q.correct ? "ag-ok" : "ag-bad"}">${v === q.correct ? `✓ ${H(AG.aRight)}` : `✗ ${H(AG.aWrong)} <b>${esc(q.options[q.correct])}</b>`}${q.why ? " " + esc(q.why) : ""}</p>` : ""}</fieldset>`;
+      }).join("")}${got === a.questions.length ? `<p class="ag-score">🎯 ${H(AG.aScore)}: <b>${ok} / ${a.questions.length}</b></p>` : ""}</div>`;
+    }
+    return "";
+  }
   function renderAgent() {
     const kid = stage() === "maktab";
     const head = tabs("agent") + `<span class="pill">${H(AG.pill)}</span><h2 class="section-title">${H(kid ? AG.titleK : AG.titleU)}</h2><p class="muted">${H(kid ? AG.leadK : AG.leadU)}</p>`;
@@ -357,27 +442,30 @@
     if (!me.pro.active) { AG_ROOT.innerHTML = head + `<p class="muted">${H(AG.needPro)}</p>${inApp() ? "" : `<a class="btn btn-primary btn-sm" href="#pro">${H(AG.seePro)}</a>`}`; return; }
     if (!me.agent.ready) { AG_ROOT.innerHTML = head + `<p class="pr-warn">${H(AG.notReady)}</p>`; return; }
     loadChat();
-    const qs = kid ? AG.qK : AG.qU;
+    const qs = kid ? AG.qK : AG.qU, sty = getStyle();
     AG_ROOT.innerHTML = head + `<div class="ag-box">
-      <div class="ag-top"><span class="small muted">${H(AG.used)}: <b data-used>${me.agent.used}</b> / ${me.agent.limit}</span><button class="btn btn-ghost btn-sm" type="button" data-clear>🧹 ${H(AG.clear)}</button></div>
+      <div class="ag-top"><span class="small muted">${H(AG.used)}: <b data-used>${me.agent.used}</b> / ${me.agent.limit}</span>
+        <label class="small ag-sty">🎨 ${H(AG.style)} <select data-style>${Object.keys(AG.styles).map((k) => `<option value="${k}"${k === sty ? " selected" : ""}>${H(AG.styles[k])}</option>`).join("")}</select></label>
+        <button class="btn btn-ghost btn-sm" type="button" data-clear>🧹 ${H(AG.clear)}</button></div>
       <div class="ag-log" data-log aria-live="polite">${chat.map(bubble).join("")}</div>
       <div class="ag-q">${qs.map((q) => `<button type="button" class="chip" data-q>${H(q)}</button>`).join("")}</div>
       <form class="ag-form" data-ask><textarea name="q" rows="2" maxlength="2000" placeholder="${H(AG.ph)}" required></textarea><button class="btn btn-primary" type="submit">${H(AG.send)}</button></form>
       <p class="small muted">🔒 ${H(AG.privacy)}</p></div>`;
     const log = AG_ROOT.querySelector("[data-log]"); log.scrollTop = log.scrollHeight;
   }
-  const bubble = (m) => `<div class="ag-msg ${m.role === "user" ? "me" : "ai"}" data-notr>${m.role === "user" ? esc(m.content).replace(/\n/g, "<br>") : md(m.content)}</div>`;
+  const bubble = (m, mi) => `<div class="ag-msg ${m.role === "user" ? "me" : "ai"}" data-notr>${m.role === "user" ? esc(m.content).replace(/\n/g, "<br>") : md(m.content)}${m.acts && m.acts.length ? `<div class="ag-acts">${m.acts.map((a, ai) => actHtml(a, mi, ai)).join("")}</div>` : ""}</div>`;
   async function ask(text) {
     if (busy || !text.trim()) return;
     busy = true;
     chat.push({ role: "user", content: text.trim() });
     saveChat();
     const log = AG_ROOT.querySelector("[data-log]");
-    log.insertAdjacentHTML("beforeend", bubble(chat[chat.length - 1]) + `<div class="ag-msg ai ag-wait">${H(AG.think)}</div>`);
+    log.insertAdjacentHTML("beforeend", bubble(chat[chat.length - 1], chat.length - 1) + `<div class="ag-msg ai ag-wait">${H(AG.think)}</div>`);
     log.scrollTop = log.scrollHeight;
     try {
-      const d = await api("/api/agent", { messages: chat.slice(-12) });
-      chat.push({ role: "assistant", content: d.text });
+      const d = await api("/api/agent", { messages: toServer(), ctx: agentCtx() });
+      const acts = (Array.isArray(d.actions) ? d.actions : []).map(runAction);
+      chat.push({ role: "assistant", content: d.text, ...(acts.length ? { acts } : {}) });
       saveChat();
       if (info && info.me) info.me.agent.used = d.used;
     } catch (e) {
@@ -392,8 +480,27 @@
   AG_ROOT.addEventListener("click", (e) => {
     if (e.target.closest("[data-login]")) { const b = document.getElementById("authBtn"); if (b) b.click(); return; }
     if (e.target.closest("[data-clear]")) { chat = []; saveChat(); renderAgent(); return; }
+    const les = e.target.closest("[data-les]");
+    if (les) { const a = App(); if (a && a.openLesson) a.openLesson(les.dataset.les, +les.dataset.li); return; }
+    const opt = e.target.closest(".ag-opt[data-o]");
+    if (opt) {
+      const m = chat[+opt.dataset.m], a = m && m.acts && m.acts[+opt.dataset.a];
+      if (!a || a.type !== "make_quiz") return;
+      a.ans = a.ans || {};
+      const qi = +opt.dataset.q;
+      if (a.ans[qi] != null) return;
+      a.ans[qi] = +opt.dataset.o;
+      saveChat();
+      const box = opt.closest(".ag-msg");
+      if (box) box.outerHTML = bubble(m, +opt.dataset.m);
+      if (window.EkoGame && EkoGame.track) { if (a.ans[qi] === a.questions[qi].correct) EkoGame.track("correct"); if (Object.keys(a.ans).length === a.questions.length) EkoGame.track("test"); }
+      return;
+    }
     const q = e.target.closest("[data-q]");
-    if (q) ask(q.textContent);
+    if (q && !q.classList.contains("ag-opt")) ask(q.textContent);
+  });
+  AG_ROOT.addEventListener("change", (e) => {
+    if (e.target.matches("select[data-style]")) { setStyle(e.target.value); toast(AG.styleSet); }
   });
   AG_ROOT.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -404,7 +511,6 @@
   AG_ROOT.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey && e.target.matches("textarea[name=q]")) { e.preventDefault(); e.target.form.requestSubmit(); }
   });
-
   /* ---------- Безак ---------- */
   const css = document.createElement("style");
   css.textContent = `
@@ -460,6 +566,18 @@ html.is-pro .pb-pro::after{content:"PRO"}
 html.pro-gold{--primary:#b45309;--primary-soft:rgba(245,158,11,.16);--btn-grad:linear-gradient(135deg,#d97706,#ca8a04);--grad:linear-gradient(135deg,#f59e0b 0%,#eab308 50%,#d97706 100%)}
 @media (prefers-color-scheme:dark){html.pro-gold:not([data-theme=light]){--primary:#fbbf24;--on-primary:#2a1a00}}
 html[data-theme=dark].pro-gold{--primary:#fbbf24;--on-primary:#2a1a00}
+.ag-sty{display:inline-flex;align-items:center;gap:6px}.ag-sty select{padding:4px 8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit}
+.ag-acts{display:grid;gap:8px;margin-top:8px}
+.ag-act{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+.ag-act>span{display:grid;gap:2px;min-width:0;flex:1}.ag-act small{font-size:.78rem}
+.ag-plan,.ag-quiz{display:grid;justify-content:stretch}.ag-plan ol{margin:4px 0;padding-left:1.2em;display:grid;gap:4px}
+.ag-qq{border:0;margin:6px 0 0;padding:0}.ag-qq legend{font-weight:600;padding:0;margin-bottom:6px}
+.ag-opts{display:grid;gap:6px}.ag-opt{text-align:left;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;cursor:pointer}
+.ag-opt:hover:not(:disabled){border-color:var(--primary)}.ag-opt:disabled{cursor:default}
+.ag-opt.ok{border-color:#16a34a;background:color-mix(in srgb,#16a34a 14%,var(--bg))}.ag-opt.bad{border-color:#dc2626;background:color-mix(in srgb,#dc2626 12%,var(--bg))}
+.ag-ok{color:#15803d}.ag-bad{color:#b91c1c}.ag-score{margin:8px 0 0;font-size:1.05rem}
+:root[data-theme="dark"] .ag-ok{color:#86efac}:root[data-theme="dark"] .ag-bad{color:#fca5a5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ag-ok{color:#86efac}:root:not([data-theme="light"]) .ag-bad{color:#fca5a5}}
 @media (max-width:560px){.pr-acts{margin-left:0}.ag-msg{max-width:95%}}`;
   document.head.appendChild(css);
 

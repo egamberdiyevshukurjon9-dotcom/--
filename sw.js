@@ -3,7 +3,7 @@
    /api/, /admin ва «Cache-Control: no-store» жавоблар (бошқарув маркази) ҳеч қачон кешланмайди. */
 "use strict";
 
-const CACHE = "ekomun-v46";
+const CACHE = "ekomun-v47";
 const cacheable = (res) => res.ok && !/no-store/i.test(res.headers.get("Cache-Control") || "");
 const SHELL = [
   "/",
@@ -62,6 +62,7 @@ const SHELL = [
   "/vendor/eko-global.css",
   "/vendor/eko-pasport.js",
   "/vendor/eko-yol.js",
+  "/vendor/eko-bugun.js",
   "/vendor/eko-sayyora.js",
   "/vendor/eko-dars.css",
   "/vendor/eko-dars.js",

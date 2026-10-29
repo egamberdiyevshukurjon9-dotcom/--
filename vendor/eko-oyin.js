@@ -623,7 +623,14 @@
   document.head.appendChild(css);
 
   /* ===================== Ишга тушириш ===================== */
-  window.EkoGame = { track, streak, get coins() { return G.coins; }, get state() { return G; }, render };
+  /* Шахсий агент ва «Бугун сиз учун» учун: дарс саволларини бугундан такрорлашга қўшиш, бугунги фаоллик */
+  function addLesson(cid, li) {
+    let n = 0;
+    lessonRefs(cid, li).forEach((r) => { const id = refId(r); if (addCard(r, 0)) n++; else if (G.srs[id] && G.srs[id].due > dk()) { G.srs[id].due = dk(); n++; } });
+    if (n) { save(); scheduleRender(); }
+    return n;
+  }
+  window.EkoGame = { track, streak, get coins() { return G.coins; }, get state() { return G; }, render, addLesson, due: () => dueCards().length, mistakes: () => Object.keys(G.mist).length, today: () => ({ ...acts(dk()) }) };
   importOld();
   visit();
   if (!G.lvl) { G.lvl = App.levelOf(App.state.xp).n; save(); }
