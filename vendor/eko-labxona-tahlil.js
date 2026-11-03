@@ -635,12 +635,12 @@
       <div class="lx-chips">${["C6H12O6 + O2 = CO2 + H2O", "KMnO4 + HCl = KCl + MnCl2 + Cl2 + H2O", "Cu + HNO3 = Cu(NO3)2 + NO + H2O", "Al + Fe2O3 = Al2O3 + Fe", "CaCO3 + HCl = CaCl2 + CO2 + H2O", "NH3 + O2 = NO + H2O"].map((x) => `<button type="button" class="chip" data-balex="${esc(x)}">${esc(D().pretty(x.replace(/ = /, " → ")))}</button>`).join("")}</div>${out}`;
   }
   function davHtml() {
-    const tabs = [["pt", "fa-table-cells", t3("Менделеев жадвали (118)", "Таблица Менделеева (118)", "Periodic table (118)")], ["rx", "fa-flask-vial", t3("Реакция столи", "Стол реакций", "Reaction bench")], ["bal", "fa-scale-balanced", t3("Тенглама тенглаштиргич", "Уравнивание", "Equation balancer")]];
+    const tabs = [["pt", "fa-table-cells", t3("Менделеев жадвали (118)", "Таблица Менделеева (118)", "Periodic table (118)")], ["rx", "fa-flask-vial", t3("Реакция столи", "Стол реакций", "Reaction bench")], ["bal", "fa-scale-balanced", t3("Тенглама тенглаштиргич", "Уравнивание", "Equation balancer")]].concat(window.EkoLabElem ? [["adv", "fa-wand-magic-sparkles", t3("Кенгайтирилган стол: 3 модда, тажрибалар", "Расширенный стол: 3 вещества, опыты", "Advanced bench: 3 substances, experiments")]] : []);
     return `<h3><i class="fa-solid fa-atom" aria-hidden="true"></i> ${H(t3("Элементлар ва реакциялар", "Элементы и реакции", "Elements & reactions"))}</h3>
       <div class="lx-tabs" role="tablist">${tabs.map(([k, ic, n]) => `<button type="button" role="tab" class="chip ${k === ptTab ? "active" : ""}" aria-selected="${k === ptTab}" data-ptt="${k}"><i class="fa-solid ${ic}" aria-hidden="true"></i> ${H(n)}</button>`).join("")}</div>
-      <div class="lt-body">${ptTab === "pt" ? ptHtml() : ptTab === "rx" ? rxHtml() : balHtml()}</div>`;
+      <div class="lt-body">${ptTab === "pt" ? ptHtml() : ptTab === "rx" ? rxHtml() : ptTab === "adv" ? '<div class="lxe-host" data-lx-elem></div>' : balHtml()}</div>`;
   }
-  function paintDav() { const box = host && host.querySelector("[data-ltdav]"); if (box) box.innerHTML = davHtml(); }
+  function paintDav() { const box = host && host.querySelector("[data-ltdav]"); if (!box) return; box.innerHTML = davHtml(); if (ptTab === "adv" && window.EkoLabElem) window.EkoLabElem.render(); }
   function mix() { rRes = D().react(rA, rB); if (rRes && rRes.type !== "none") { once("rx_first", 2); const k = "ekotalim:rx-done", done = new Set(getJ(k, [])); done.add([rA, rB].sort().join("+")); putJ(k, [...done]); if (done.size >= 10) once("rx_10", 5); } paintDav(); }
   function bindDav(box) {
     box.addEventListener("click", (e) => {
