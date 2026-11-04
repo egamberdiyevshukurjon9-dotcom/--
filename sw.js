@@ -28,6 +28,8 @@ const SHELL = [
   "/vendor/eko-lab3d.js",
   "/vendor/eko-labxona-kimyo.js",
   "/vendor/eko-labxona-davriy.js",
+  "/vendor/eko-kimyo-reak.js",
+  "/vendor/eko-labxona-elem.js",
   "/vendor/eko-labxona-tahlil.js",
   "/vendor/eko-labxona.js",
   "/vendor/eko-oqova-lab.js",
