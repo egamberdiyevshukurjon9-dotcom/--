@@ -119,7 +119,8 @@
 .sy-map { width: 100%; display: block; }
 .sy-uz { fill: color-mix(in srgb, var(--primary) 12%, var(--card)); stroke: var(--primary); stroke-width: 1.2; }
 .sy-dot { cursor: pointer; }
-.sy-dot circle { stroke: var(--card); stroke-width: 2; }
+.sy-dot circle:not(.sy-hit) { stroke: var(--card); stroke-width: 2; }
+.sy-dot .sy-hit { stroke: none !important; }
 .sy-dot text { font-size: 9px; font-weight: 800; fill: #fff; pointer-events: none; }
 .sy-dot.on circle { stroke: var(--text); stroke-width: 2.5; }
 .sy-dot:focus-visible { outline: none; } .sy-dot:focus-visible circle { stroke: var(--text); stroke-width: 3; }
@@ -363,7 +364,9 @@ html.eko-focus :focus-visible { outline: 3px solid #f59e0b !important; outline-o
 /* ---------- Ekomun 3.2 — 📄 Scopus мақолалари (vendor/eko-scopus.js) ---------- */
 .sc-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0; }
 .sc-q { flex: 1 1 260px; max-width: 520px; }
-.sc-oaf { display: inline-flex; gap: 6px; align-items: center; font-size: .9rem; }
+.sc-oaf, .ad-only { display: inline-flex; gap: 6px; align-items: center; min-height: 28px; }
+.sc-oaf { font-size: .9rem; }
+.sc-oaf input, .ad-only input { width: 20px; height: 20px; }
 .sc-tops { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 8px; scrollbar-width: thin; }
 .sc-tops .chip { flex: none; white-space: nowrap; }
 .sc-tops .chip i { color: var(--tc); }
@@ -386,6 +389,7 @@ html.eko-focus :focus-visible { outline: 3px solid #f59e0b !important; outline-o
 
 /* ---------- Ekomun 3.3 — 🔬 Экологик таҳлил лабораторияси: асбоб-ускуналар ---------- */
 .lx-read { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 520px) { .lx-read { grid-template-columns: repeat(2, minmax(0, 1fr)); } .lx-read b { font-size: .95rem; } }
 .lx-tool.lx-q i { color: #0e7490; }
 .lx-tool.lx-q:hover { border-color: #0e7490; }
 .lx-eqbox { margin-top: 18px; padding: 14px 16px; border-radius: 20px; border: 1px solid var(--line); background: linear-gradient(180deg, color-mix(in srgb, #0e7490 8%, var(--card)), var(--card)); }

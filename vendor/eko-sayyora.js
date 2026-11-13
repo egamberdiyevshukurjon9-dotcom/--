@@ -193,6 +193,7 @@
     const dots = CITIES.map((ct, i) => {
       const v = d[i] ? d[i].a : null;
       return `<g class="sy-dot ${i === selCity ? "on" : ""}" data-city="${i}" tabindex="0" role="button" aria-label="${H(ct.n)}: AQI ${v == null ? "—" : Math.round(v)}">
+        <circle class="sy-hit" cx="${px(ct.lo).toFixed(1)}" cy="${py(ct.la).toFixed(1)}" r="19" fill="transparent" stroke="none"/>
         <circle cx="${px(ct.lo).toFixed(1)}" cy="${py(ct.la).toFixed(1)}" r="${i === selCity ? 13 : 10}" fill="${aqC(v)}"/>
         <text x="${px(ct.lo).toFixed(1)}" y="${(py(ct.la) + 4).toFixed(1)}" text-anchor="middle">${v == null ? "·" : Math.round(v)}</text></g>`;
     }).join("");

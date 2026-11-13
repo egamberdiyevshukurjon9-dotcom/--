@@ -211,7 +211,7 @@
 .bg-chk{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:700;color:var(--on-primary,#fff);background:transparent;padding:0;font:inherit;line-height:1}
 button.bg-chk{cursor:pointer}.bg-list li.done .bg-chk{background:var(--primary);border-color:var(--primary)}
 .bg-t{flex:1;min-width:0;display:grid;gap:1px}.bg-t small{color:var(--muted);font-size:.76rem}.bg-t>span{overflow-wrap:anywhere}
-.bg-ask{justify-self:start;color:var(--primary);font-weight:600;text-decoration:none}
+.bg-ask{justify-self:start;color:var(--primary);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:28px}
 @media (max-width:560px){.bg-list li{flex-wrap:wrap}.bg-t{flex:1 1 calc(100% - 40px)}.bg-list li .btn{margin-left:36px}}`;
   document.head.appendChild(css);
 
